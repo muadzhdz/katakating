@@ -238,6 +238,38 @@
       background: radial-gradient(ellipse at center, rgba(0,255,65,0.03) 0%, transparent 60%);
       pointer-events: none;
     }
+    .hero-silhouette {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.5;
+    }
+    .hero-silhouette.s1 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(0,255,65,0.12) 0%, transparent 70%);
+      top: -100px; left: -100px;
+      animation: floatSilhouette 8s ease-in-out infinite;
+    }
+    .hero-silhouette.s2 {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(0,200,255,0.06) 0%, transparent 70%);
+      bottom: -50px; right: -50px;
+      animation: floatSilhouette 10s ease-in-out infinite reverse;
+    }
+    .hero-silhouette.s3 {
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(0,255,65,0.08) 0%, transparent 70%);
+      top: 50%; left: 60%;
+      animation: floatSilhouette 12s ease-in-out infinite 2s;
+    }
+    @keyframes floatSilhouette {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(30px, -30px) scale(1.05); }
+      50% { transform: translate(-20px, 20px) scale(0.95); }
+      75% { transform: translate(20px, 30px) scale(1.02); }
+    }
     .ascii-penguin {
       color: #00ff41; font-size: 11px; line-height: 1.15;
       margin-bottom: 20px; white-space: pre;
@@ -257,11 +289,6 @@
       max-width: 540px; margin: 0 auto 14px;
       line-height: 1.7;
     }
-    .hero .urgency-note {
-      font-size: 12px; color: #f59e0b; margin-bottom: 20px;
-      display: inline-flex; align-items: center; gap: 6px;
-    }
-    .hero .urgency-note i { font-size: 16px; }
     .hero .terminal-line {
       display: inline-flex; align-items: center; gap: 8px;
       background: #111; border: 1px solid #1e1e1e;
@@ -677,13 +704,6 @@
     /* ─── CTA ─── */
     .cta-section { text-align: center; padding: 80px 0; }
     .cta-section p { margin: 0 auto 24px; max-width: 480px; font-size: 13px; }
-    .cta-section .urgency-tag {
-      display: inline-block;
-      background: rgba(245,158,11,0.1); color: #f59e0b;
-      font-size: 10px; font-weight: 600; letter-spacing: 1px;
-      padding: 6px 14px; border-radius: 4px; margin-bottom: 16px;
-    }
-
     /* ─── FOOTER ─── */
     footer {
       border-top: 1px solid #1e1e1e; padding: 32px 0; text-align: center;
@@ -788,27 +808,28 @@
   <!-- ──────── HERO ──────── -->
   <!-- ATTENTION (AIDA) -->
   <header class="hero" id="home">
+    <div class="hero-silhouette s1"></div>
+    <div class="hero-silhouette s2"></div>
+    <div class="hero-silhouette s3"></div>
     <div class="container">
       <pre class="ascii-penguin" aria-hidden="true">
-        ___
-       /.  \
-      | _ _|
-      |(.)(.)|
-       >  <  |
-      /`---'\
-     /  `_`  \
-    (__(_)__)
+       .---.
+      /     \
+     |  .-.  |
+     | (.)(.)|
+     |   >   |
+     |  ___  |
+      \_(_)_/
       </pre>
       <p class="pain-point">Bingung mulai belajar coding? Sendirian gampang nyerah?</p>
       <h1>THE <span class="highlight">PENGUIN</span> CIRCLE</h1>
       <p class="tagline">
         Forum belajar <strong>CLI, Git, &amp; AI coding</strong> gratis untuk mahasiswa &mdash; <strong>dari 0</strong> sampai bisa bikin <strong>website &amp; aplikasi mobile</strong> pake AI. Langsung praktek, tanpa PPT, tanpa biaya.
       </p>
-      <p class="urgency-note"><i class='bx bx-time-five'></i> Session 0: 1 Juni 2026 &bull; Kuota terbatas</p>
       <div class="terminal-line" aria-label="Terminal command example">
         <span class="prompt">$</span>
-        <span>join --circle penguin --from zero</span>
-        <span class="cursor"></span>
+        <span id="typedText"></span>
+        <span class="cursor" id="cursorEl"></span>
       </div>
       <div class="hero-buttons">
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSczFE4zfWlSkgrQ0I0LjyKn7JUDAOoW4XguA66p0ZJ9Q7Rgxg/viewform?usp=header" target="_blank" rel="noopener" class="btn-primary"><i class='bx bx-edit'></i>Daftar Gratis</a>
@@ -1288,7 +1309,7 @@
         <h3><i class='bx bx-star' style="color:#ffd700;"></i> Mentor &amp; Pendiri <span>— Penggagas &amp; pengajar utama</span></h3>
         <div class="team-grid">
           <div class="team-card featured">
-            <img src="file:///home/whoami/Pictures/Profile/ProfileLightGray.png" alt="Mu'adz Hudzaifah — Ketua Divisi Kemahasiswaan TRM 2026/2027 dan Mentor The Penguin Circle" class="avatar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <img src="ProfileLightGray.png" alt="Mu'adz Hudzaifah — Ketua Divisi Kemahasiswaan TRM 2026/2027 dan Mentor The Penguin Circle" class="avatar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
             <div class="avatar-placeholder" style="display:none;"><i class='bx bx-user'></i></div>
             <div class="name">Mu'adz Hudzaifah</div>
             <div class="role">Ketua Divisi &middot; Mentor</div>
@@ -1530,7 +1551,6 @@
   <!-- ACTION (AIDA) -->
   <section id="daftar" class="cta-section">
     <div class="container">
-      <div class="urgency-tag"><i class='bx bx-time-five'></i> Kuota terbatas — daftar sekarang</div>
       <span class="section-label"><i class='bx bx-edit'></i>Daftar</span>
       <h2>Siap Jadi Penguin Selanjutnya?</h2>
       <p>
@@ -1568,6 +1588,43 @@
   <button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Kembali ke atas"><i class='bx bx-chevron-up'></i></button>
 
   <script>
+    // ─── Typing Animation (hacker-movie style) ───
+    (function typeCommand() {
+      const el = document.getElementById('typedText');
+      const cursor = document.getElementById('cursorEl');
+      const text = 'join --circle penguin --from zero';
+      let idx = 0;
+      let isDeleting = false;
+      const typeSpeed = 50;
+      const deleteSpeed = 25;
+      const pauseAtEnd = 2000;
+      const pauseAtStart = 1000;
+
+      function tick() {
+        if (!isDeleting) {
+          el.textContent = text.substring(0, idx + 1);
+          idx++;
+          if (idx === text.length) {
+            setTimeout(() => { isDeleting = true; tick(); }, pauseAtEnd);
+            return;
+          }
+          setTimeout(tick, typeSpeed + Math.random() * 40);
+        } else {
+          el.textContent = text.substring(0, idx - 1);
+          idx--;
+          if (idx === 0) {
+            isDeleting = false;
+            setTimeout(tick, pauseAtStart);
+            return;
+          }
+          setTimeout(tick, deleteSpeed + Math.random() * 20);
+        }
+      }
+
+      // Start typing after page loads
+      setTimeout(tick, 600);
+    })();
+
     // ─── FAQ Toggle ───
     function toggleFaq(el) {
       el.classList.toggle('active');
@@ -1607,7 +1664,7 @@
       const now = new Date().getTime();
       const diff = target - now;
       if (diff <= 0) {
-        document.getElementById('countdown').innerHTML = '<span style="color:#00ff41;font-size:14px;">Circle sedang berjalan! 🐧</span>';
+        document.getElementById('countdown').innerHTML = '<span style="color:#00ff41;font-size:14px;">Circle sedang berjalan!</span>';
         return;
       }
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
