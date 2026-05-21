@@ -49,7 +49,7 @@
           "@id": "https://the-penguin-circle.vercel.app/#organization",
           "name": "The Penguin Circle",
           "alternateName": "Divisi Kemahasiswaan TRM 2026/2027",
-          "description": "Forum belajar teknologi santai untuk mahasiswa — CLI, Git, dan AI coding tools dalam 11 bulan.",
+          "description": "Forum belajar teknologi santai untuk mahasiswa — CLI, Git, dan AI coding tools dalam 8 segmen.",
           "url": "https://the-penguin-circle.vercel.app",
           "logo": "https://the-penguin-circle.vercel.app/og-image.png",
           "founder": { "name": "Mu'adz Hudzaifah" }
@@ -57,10 +57,10 @@
         {
           "@type": "Course",
           "@id": "https://the-penguin-circle.vercel.app/#course",
-          "name": "The Penguin Circle — Program Belajar CLI & AI 11 Bulan",
-          "description": "Kurikulum 11 bulan: 7 bulan CLI dasar (navigasi file, Git, jaringan) + 4 bulan AI coding & project. 44 pertemuan, 11 project. Gratis.",
+          "name": "The Penguin Circle — Program Belajar CLI & AI 8 Segmen",
+          "description": "Kurikulum 8 segmen: 5 segmen CLI core + 3 segmen AI coding & project. 32 pertemuan, 8 project. Gratis. Dari 0 sampai bisa bikin web & mobile pake AI.",
           "courseCode": "TPC-2026",
-          "educationalCredentialAwarded": "Portofolio 11 Project CLI, Web & Mobile",
+          "educationalCredentialAwarded": "Portofolio 8 Project CLI, Web & Mobile",
           "teaches": [
             "CLI Linux (navigasi, file, permission, package manager)",
             "Git & GitHub version control",
@@ -90,7 +90,7 @@
               "repeatFrequency": "weekly",
               "dayOfWeek": "Friday",
               "startDate": "2026-06-01",
-              "endDate": "2027-04-30"
+              "endDate": "2027-01-31"
             }
           }
         },
@@ -98,7 +98,7 @@
           "@type": "Event",
           "@id": "https://the-penguin-circle.vercel.app/#event",
           "name": "The Penguin Circle — Session 0",
-          "description": "Pertemuan pertama The Penguin Circle. Mulai dari 0: navigasi terminal, command dasar, dan perkenalan kurikulum 11 bulan.",
+          "description": "Pertemuan pertama The Penguin Circle. Mulai dari 0: navigasi terminal, command dasar, dan perkenalan kurikulum 8 segmen padat.",
           "startDate": "2026-06-01T15:30:00+07:00",
           "endDate": "2026-06-01T17:00:00+07:00",
           "eventStatus": "https://schema.org/EventScheduled",
@@ -150,7 +150,7 @@
               "name": "Kapan The Penguin Circle dimulai?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Juni 2026 sampai April 2027 — 11 bulan. Tiap Jumat sore jam 15.30-17.00 WIB di Pendopo Kampus TRM."
+                "text": "Juni 2026 — 8 segmen padat. Tiap Jumat sore jam 15.30-17.00 WIB di Pendopo Kampus TRM."
               }
             },
             {
@@ -158,7 +158,7 @@
               "name": "Apa yang dipelajari di The Penguin Circle?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "CLI Linux, Git & GitHub, jaringan & SSH, AI CLI tools (opencode, ollama), web development dengan AI (Laravel/Next.js), dan mobile development dengan AI (Flutter/React Native). Total 11 segmen, 44 pertemuan, 11 project."
+                "text": "CLI Linux, Git & GitHub, jaringan & SSH, AI CLI tools (opencode, ollama), web development dengan AI (Laravel/Next.js), dan mobile development dengan AI (Flutter/React Native). Total 8 segmen, 32 pertemuan, 8 project."
               }
             }
           ]
@@ -831,6 +831,17 @@
       <p class="tagline">
         Forum belajar <strong>CLI, Git, &amp; AI coding</strong> gratis untuk mahasiswa &mdash; <strong>dari 0</strong> sampai bisa bikin <strong>website &amp; aplikasi mobile</strong> pake AI. Langsung praktek, tanpa PPT, tanpa biaya.
       </p>
+
+      <div class="countdown-bar" id="countdownBar" style="margin-bottom:24px;">
+        <div class="label"><i class='bx bx-time'></i>Circle dimulai dalam:</div>
+        <div class="time" id="countdown">
+          <div class="unit"><div class="val" id="cdDays">--</div><div class="lbl">Hari</div></div>
+          <div class="unit"><div class="val" id="cdHours">--</div><div class="lbl">Jam</div></div>
+          <div class="unit"><div class="val" id="cdMins">--</div><div class="lbl">Menit</div></div>
+          <div class="unit"><div class="val" id="cdSecs">--</div><div class="lbl">Detik</div></div>
+        </div>
+      </div>
+
       <div class="terminal-line" aria-label="Terminal command example">
         <span class="prompt">$</span>
         <span id="typedText"></span>
@@ -847,15 +858,15 @@
       </div>
       <div class="social-proof">
         <div class="item">
-          <div class="num">11</div>
+          <div class="num">8</div>
           <div class="lbl">Segmen</div>
         </div>
         <div class="item">
-          <div class="num">44</div>
+          <div class="num">32</div>
           <div class="lbl">Pertemuan</div>
         </div>
         <div class="item">
-          <div class="num">11</div>
+          <div class="num">8</div>
           <div class="lbl">Project</div>
         </div>
         <div class="item">
@@ -879,7 +890,7 @@
         Filosofinya sederhana: <b>coding itu skill, bukan teori</b>. Makanya setiap pertemuan kita cuma ngelakuin 3 hal: <b>dengerin penjelasan singkat (15 menit)</b>, <b>praktek bareng (60 menit)</b>, dan <b>tanya jawab (15 menit)</b>. Duduk melingkar di Pendopo, buka terminal, dan belajar bareng. Kayak ngulik bareng temen, tapi terstruktur.
       </p>
       <p>
-        Target kita: di akhir 11 bulan, peserta bisa <b>navigasi Linux tanpa mouse</b>, <b>push project ke GitHub</b>, <b>remote server pakai SSH</b>, dan <b>bikin website &amp; aplikasi mobile cuma paku prompt AI</b>. Semua dari 0, tanpa biaya.
+        Target kita: di akhir 8 segmen, peserta bisa <b>navigasi Linux tanpa mouse</b>, <b>push project ke GitHub</b>, <b>remote server pakai SSH</b>, dan <b>bikin website &amp; aplikasi mobile cuma pake prompt AI</b>. Semua dari 0, tanpa biaya.
       </p>
 
       <div class="features-grid">
@@ -890,8 +901,8 @@
         </div>
         <div class="feature-card">
           <div class="icon-wrap"><i class='bx bx-calendar'></i></div>
-          <h3>11 Bulan Terstruktur</h3>
-          <p>7 bulan CLI fundamental + 4 bulan AI &amp; project simulation. Setiap segmen 4 pertemuan + 1 project.</p>
+          <h3>8 Bulan Padat</h3>
+          <p>5 segmen CLI core + 3 segmen AI &amp; project. Setiap segmen 4 pertemuan + 1 project. Plus 3 bulan buffer.</p>
         </div>
         <div class="feature-card">
           <div class="icon-wrap"><i class='bx bx-gift'></i></div>
@@ -951,7 +962,7 @@
           <div class="num">4</div>
           <div>
             <h4>Langsung Bikin Project vs. Tutorial Ends</h4>
-            <p>Kebanyakan orang cuma nonton tutorial tanpa pernah bikin. Circle punya 11 project wajib — dari misi CLI sampe aplikasi mobile beneran.</p>
+            <p>Kebanyakan orang cuma nonton tutorial tanpa pernah bikin. Circle punya 8 project wajib — dari misi CLI sampe aplikasi mobile beneran.</p>
           </div>
         </div>
         <div class="why-item">
@@ -1006,7 +1017,7 @@
             </tr>
             <tr>
               <td>Project (Portfolio)</td>
-              <td class="highlight-col"><span class="check">&#10003;</span> 11 project</td>
+              <td class="highlight-col"><span class="check">&#10003;</span> 8 project</td>
               <td><span class="check">&#10003;</span> 2-5 project</td>
               <td><span class="cross">&#10007;</span> Jarang</td>
               <td><span class="cross">&#10007;</span> 1 skripsi</td>
@@ -1042,7 +1053,7 @@
   <section id="kurikulum">
     <div class="container">
       <span class="section-label"><i class='bx bx-book'></i>Kurikulum</span>
-      <h2>Perjalanan 11 Bulan — Dari 0 ke AI Developer</h2>
+      <h2>8 Segmen Padat — Dari 0 ke AI Developer</h2>
       <p>
         Kurikulum didesain bertahap: dari navigasi terminal paling dasar sampe bikin aplikasi mobile pake AI.
         Setiap segmen: <b>materi &rarr; praktik &rarr; project video</b>. Nggak ada ujian, nggak ada tugas deadline — yang ada cuma progress dan portfolio.
@@ -1051,33 +1062,23 @@
       <div class="curriculum-intro">
         <div class="stat">
           <div class="num">PHASE 1</div>
-          <div class="label">CLI Fundamentals &mdash; 7 Segmen (Jun&ndash;Des 2026)</div>
+          <div class="label">CLI Core &mdash; 5 Segmen (Jun&ndash;Okt 2026)</div>
         </div>
         <div class="stat">
           <div class="num">PHASE 2</div>
-          <div class="label">AI CLI + Project &mdash; 4 Segmen (Jan&ndash;Apr 2027)</div>
+          <div class="label">AI + Project &mdash; 3 Segmen (Nov&ndash;Jan 2027)</div>
         </div>
         <div class="stat">
-          <div class="num">100%</div>
-          <div class="label">Praktek, tanpa PPT</div>
-        </div>
-      </div>
-
-      <div class="countdown-bar" id="countdownBar">
-        <div class="label"><i class='bx bx-time'></i>Circle dimulai dalam:</div>
-        <div class="time" id="countdown">
-          <div class="unit"><div class="val" id="cdDays">--</div><div class="lbl">Hari</div></div>
-          <div class="unit"><div class="val" id="cdHours">--</div><div class="lbl">Jam</div></div>
-          <div class="unit"><div class="val" id="cdMins">--</div><div class="lbl">Menit</div></div>
-          <div class="unit"><div class="val" id="cdSecs">--</div><div class="lbl">Detik</div></div>
+          <div class="num">3</div>
+          <div class="label">Bulan Buffer (Feb&ndash;Apr 2027)</div>
         </div>
       </div>
 
       <div class="phase-block">
         <div class="phase-header phase-1">
           <span class="badge">PHASE 1</span>
-          <h3>CLI &amp; Command Line Fundamentals</h3>
-          <span class="months">Juni &mdash; Desember 2026</span>
+          <h3>CLI Core &mdash; Command Line Fundamentals</h3>
+          <span class="months">Juni &mdash; Oktober 2026</span>
         </div>
         <div class="segment-list">
 
@@ -1085,7 +1086,7 @@
             <div class="seg-num">SEG-1</div>
             <div class="seg-body">
               <h4>Navigasi &amp; Manajemen File <span style="color:#6b7280;font-size:11px;font-weight:400;">&mdash; Juni</span></h4>
-              <div class="desc">Belajar orientasi di terminal: tau posisi (<code>pwd</code>), liat isi folder (<code>ls</code>), pindah direktori (<code>cd</code>), bikin &amp; hapus file/folder (<code>mkdir</code>, <code>touch</code>, <code>rm</code>), copy &amp; pindahin file (<code>cp</code>, <code>mv</code>), dan pake wildcard. Ini fondasi paling dasar — dari sini lo bakal paham struktur file system Linux tanpa perlu mouse.</div>
+              <div class="desc">Mulai dari 0: orientasi terminal (<code>pwd</code>, <code>ls</code>, <code>cd</code>), bikin folder &amp; file (<code>mkdir</code>, <code>touch</code>), hapus &amp; pindahin (<code>cp</code>, <code>mv</code>, <code>rm</code>), wildcard. <b style="color:#00ff41;">&#9888; Khusus WSL: langsung praktik bikin folder sendiri</b> (karena WSL fresh install gak punya Downloads/Pictures).</div>
               <div class="topics">
                 <span>pwd</span><span>ls</span><span>cd</span><span>mkdir</span><span>touch</span><span>cp</span><span>mv</span><span>rm</span><span>rmdir</span><span>wildcard</span>
               </div>
@@ -1096,56 +1097,32 @@
           <div class="segment-card">
             <div class="seg-num">SEG-2</div>
             <div class="seg-body">
-              <h4>Editor &amp; Manipulasi Teks <span style="color:#6b7280;font-size:11px;font-weight:400;">&mdash; Juli</span></h4>
-              <div class="desc">Belajar bikin dan edit file langsung dari terminal pake <code>nano</code>, baca file dengan berbagai cara (<code>cat</code>, <code>less</code>, <code>head</code>, <code>tail</code>), dan ngolah data teks (<code>wc</code>, <code>sort</code>, <code>uniq</code>). Tanpa GUI, semua dari terminal — skill yang bakal ngebut ngerjain tugas coding.</div>
+              <h4>Editor &amp; Pengolahan Teks <span style="color:#6b7280;font-size:11px;font-weight:400;">&mdash; Juli</span></h4>
+              <div class="desc"><b style="color:#ffd700;">&#9888; S2+S3 merged.</b> Dua minggu pertama: edit file pake <code>nano</code>, baca file (<code>cat</code>, <code>less</code>, <code>head</code>, <code>tail</code>), olah data (<code>wc</code>, <code>sort</code>, <code>uniq</code>). Dua minggu terakhir: cari file (<code>find</code>, <code>locate</code>), cari teks (<code>grep</code>), potong &amp; ganti teks (<code>cut</code>, <code>tr</code>, <code>diff</code>).</div>
               <div class="topics">
-                <span>nano</span><span>cat</span><span>less</span><span>head</span><span>tail</span><span>tail -f</span><span>wc</span><span>sort</span><span>uniq</span>
-              </div>
-              <div class="project-label"><i class='bx bx-film'></i> Project: Membuat Catatan Kuliah dari Terminal</div>
-            </div>
-          </div>
-
-          <div class="segment-card">
-            <div class="seg-num">SEG-3</div>
-            <div class="seg-body">
-              <h4>Pencarian &amp; Pengolahan Teks <span style="color:#6b7280;font-size:11px;font-weight:400;">&mdash; Agustus</span></h4>
-              <div class="desc">Belajar nyari file di sistem pake <code>find</code> &amp; <code>locate</code>, nyari teks di dalam file pake <code>grep</code> (termasuk flag penting: <code>-r</code>, <code>-i</code>, <code>-c</code>), dan ngolah teks pake <code>cut</code>, <code>tr</code>, <code>diff</code>. Skill yang bakal lo pake tiap hari sebagai developer — grep aja udah bisa nyelametin berjam-jam debugging.</div>
-              <div class="topics">
-                <span>find</span><span>locate</span><span>grep</span><span>grep -r</span><span>cut</span><span>tr</span><span>diff</span><span>pipe</span>
+                <span>nano</span><span>cat</span><span>less</span><span>head</span><span>tail</span><span>wc</span><span>sort</span><span>uniq</span><span>find</span><span>grep</span><span>cut</span><span>tr</span><span>diff</span>
               </div>
               <div class="project-label"><i class='bx bx-film'></i> Project: Detektif File — Cari Jejak Digital</div>
             </div>
           </div>
 
           <div class="segment-card">
+            <div class="seg-num">SEG-3</div>
+            <div class="seg-body">
+              <h4>System Admin &amp; Tools <span style="color:#6b7280;font-size:11px;font-weight:400;">&mdash; Agustus</span></h4>
+              <div class="desc"><b style="color:#ffd700;">&#9888; S4+S5 merged.</b> Dua minggu pertama: user &amp; superuser (<code>sudo</code>), hak akses file (<code>chmod</code>, <code>chown</code>), manajemen proses (<code>ps</code>, <code>kill</code>, <code>htop</code>). Dua minggu terakhir: package manager (<code>apt</code>, <code>brew</code>), download (<code>wget</code>, <code>curl</code>), tools multimedia (<code>ffmpeg</code>, <code>imagemagick</code>).</div>
+              <div class="topics">
+                <span>sudo</span><span>chmod</span><span>chown</span><span>ps</span><span>kill</span><span>htop</span><span>apt</span><span>brew</span><span>wget</span><span>curl</span><span>ffmpeg</span><span>imagemagick</span>
+              </div>
+              <div class="project-label"><i class='bx bx-film'></i> Project: Toolkit Admin Server</div>
+            </div>
+          </div>
+
+          <div class="segment-card">
             <div class="seg-num">SEG-4</div>
             <div class="seg-body">
-              <h4>Permission &amp; Sistem Kontrol <span style="color:#6b7280;font-size:11px;font-weight:400;">&mdash; September</span></h4>
-              <div class="desc">Paham konsep user &amp; superuser (<code>sudo</code>), hak akses file (<code>chmod</code> numerik &amp; simbolik, <code>chown</code>), dan manajemen proses (<code>ps</code>, <code>kill</code>, <code>top</code>/<code>htop</code>). Materi krusial buat lo yang mau jadi sysadmin atau backend developer — atau yang mau ngerti kenapa "Permission denied".</div>
-              <div class="topics">
-                <span>whoami</span><span>sudo</span><span>chmod</span><span>chown</span><span>ps</span><span>kill</span><span>top</span><span>htop</span>
-              </div>
-              <div class="project-label"><i class='bx bx-film'></i> Project: Admin Server Cilik</div>
-            </div>
-          </div>
-
-          <div class="segment-card">
-            <div class="seg-num">SEG-5</div>
-            <div class="seg-body">
-              <h4>Package Manager &amp; Tools Multimedia <span style="color:#6b7280;font-size:11px;font-weight:400;">&mdash; Oktober</span></h4>
-              <div class="desc">Belajar install/update/hapus software lewat terminal pake <code>apt</code> (Linux) &amp; <code>brew</code> (Mac), download file pake <code>wget</code> &amp; <code>curl</code>, dan pake tools multimedia keren: <code>ffmpeg</code> (konversi video), <code>imagemagick</code> (olah gambar), <code>tree</code>, <code>neofetch</code>.</div>
-              <div class="topics">
-                <span>apt</span><span>brew</span><span>wget</span><span>curl</span><span>ffmpeg</span><span>imagemagick</span><span>tree</span>
-              </div>
-              <div class="project-label"><i class='bx bx-film'></i> Project: Toolkit Multimedia dari Terminal</div>
-            </div>
-          </div>
-
-          <div class="segment-card">
-            <div class="seg-num">SEG-6</div>
-            <div class="seg-body">
-              <h4>Jaringan &amp; Remote Access <span style="color:#6b7280;font-size:11px;font-weight:400;">&mdash; November</span></h4>
-              <div class="desc">Paham dasar jaringan komputer: tes koneksi (<code>ping</code>), cek IP (<code>ip addr</code>), transfer file lewat jaringan (<code>scp</code>), dan remote server pake <code>ssh</code>. Termasuk bikin kunci SSH biar login tanpa password — skill wajib developer modern.</div>
+              <h4>Jaringan &amp; Remote Access <span style="color:#6b7280;font-size:11px;font-weight:400;">&mdash; September</span></h4>
+              <div class="desc">Dasar jaringan: tes koneksi (<code>ping</code>), cek IP (<code>ip addr</code>), transfer file (<code>scp</code>), remote server (<code>ssh</code>), dan bikin kunci SSH biar login tanpa password. Skill wajib developer modern — lo bakal pake ini tiap hari kalo udah kerja di tech.</div>
               <div class="topics">
                 <span>ping</span><span>ip addr</span><span>curl</span><span>wget</span><span>ssh</span><span>ssh-keygen</span><span>scp</span>
               </div>
@@ -1154,10 +1131,10 @@
           </div>
 
           <div class="segment-card">
-            <div class="seg-num">SEG-7</div>
+            <div class="seg-num">SEG-5</div>
             <div class="seg-body">
-              <h4>Git &amp; Version Control <span style="color:#6b7280;font-size:11px;font-weight:400;">&mdash; Desember</span></h4>
-              <div class="desc">Belajar Git dari 0: <code>init</code>, <code>add</code>, <code>commit</code>, <code>branch</code>, <code>checkout</code>, <code>push</code>, <code>pull</code>, <code>clone</code>. Konekin repo lokal ke GitHub — skill wajib buat backup project, kerja tim, dan nunjukin portfolio ke calon employer.</div>
+              <h4>Git &amp; Version Control <span style="color:#6b7280;font-size:11px;font-weight:400;">&mdash; Oktober</span></h4>
+              <div class="desc">Git dari 0: <code>init</code>, <code>add</code>, <code>commit</code>, <code>branch</code>, <code>checkout</code>, <code>push</code>, <code>pull</code>, <code>clone</code>. Konekin repo lokal ke GitHub — skill wajib buat backup project, kerja tim, dan nunjukin portfolio ke calon employer.</div>
               <div class="topics">
                 <span>git init</span><span>git add</span><span>git commit</span><span>git branch</span><span>git push</span><span>git pull</span><span>GitHub</span>
               </div>
@@ -1172,14 +1149,14 @@
         <div class="phase-header phase-2">
           <span class="badge">PHASE 2</span>
           <h3>AI CLI + Project Simulation</h3>
-          <span class="months">Januari &mdash; April 2027</span>
+          <span class="months">November 2026 &mdash; Januari 2027</span>
         </div>
         <div class="segment-list">
 
           <div class="segment-card">
-            <div class="seg-num">SEG-8</div>
+            <div class="seg-num">SEG-6</div>
             <div class="seg-body">
-              <h4>Kenalan dengan AI CLI <span style="color:#6b7280;font-size:11px;font-weight:400;">&mdash; Januari</span></h4>
+              <h4>AI CLI &amp; Prompt Engineering <span style="color:#6b7280;font-size:11px;font-weight:400;">&mdash; November</span></h4>
               <div class="desc">Bedah perbedaan AI CLI vs ChatGPT web, instalasi tools (<b>opencode</b>, <b>ollama</b>), dan belajar prompt engineering dasar. Tujuan: peserta paham cara ngobrol sama AI lewat terminal dan bisa pake AI buat bantu tugas kuliah &amp; coding.</div>
               <div class="topics">
                 <span>AI CLI</span><span>opencode</span><span>ollama</span><span>prompt</span><span>terminal AI</span>
@@ -1189,38 +1166,26 @@
           </div>
 
           <div class="segment-card">
-            <div class="seg-num">SEG-9</div>
+            <div class="seg-num">SEG-7</div>
             <div class="seg-body">
-              <h4>Project Planning <span style="color:#6b7280;font-size:11px;font-weight:400;">&mdash; Februari</span></h4>
-              <div class="desc">Belajar merancang project secara terstruktur: brainstorming ide, bikin mockup UI (ASCII / Figma / kertas), user flow, daftar fitur, dan dokumen <code>rancangan_project.md</code>. Ini blueprint yang bakal dieksekusi bulan depan.</div>
+              <h4>Project Planning + Web Dev <span style="color:#6b7280;font-size:11px;font-weight:400;">&mdash; Desember</span></h4>
+              <div class="desc"><b style="color:#ffd700;">&#9888; S9+S10 merged.</b> Dua minggu pertama: merancang project (<code>rancangan_project.md</code>, mockup, user flow). Dua minggu terakhir: eksekusi web pake AI CLI — setup Laravel/Next.js, generate komponen, debugging. Lo cukup ngomong, AI yang nulis kodenya.</div>
               <div class="topics">
-                <span>mockup</span><span>user flow</span><span>rancangan</span><span>UI planning</span><span>.md</span>
-              </div>
-              <div class="project-label"><i class='bx bx-film'></i> Project: Rancang Aplikasi Impian</div>
-            </div>
-          </div>
-
-          <div class="segment-card">
-            <div class="seg-num">SEG-10</div>
-            <div class="seg-body">
-              <h4>Web Dev dengan AI <span style="color:#6b7280;font-size:11px;font-weight:400;">&mdash; Maret</span></h4>
-              <div class="desc">Eksekusi rancangan project jadi website beneran pake AI CLI. Mulai dari setup Laravel/Next.js, generate komponen, debugging error, sampe refine tampilan. Semua pake prompt AI — lo cukup ngomong apa yang mau dibikin, AI yang nulis kodenya.</div>
-              <div class="topics">
-                <span>Laravel</span><span>Next.js</span><span>AI coding</span><span>prompt</span><span>debug</span>
+                <span>mockup</span><span>user flow</span><span>rancangan</span><span>Laravel</span><span>Next.js</span><span>AI coding</span><span>prompt</span><span>debug</span>
               </div>
               <div class="project-label"><i class='bx bx-film'></i> Project: Bikin Website Pake AI</div>
             </div>
           </div>
 
           <div class="segment-card">
-            <div class="seg-num">SEG-11</div>
+            <div class="seg-num">SEG-8</div>
             <div class="seg-body">
-              <h4>Mobile Dev dengan AI <span style="color:#6b7280;font-size:11px;font-weight:400;">&mdash; April</span></h4>
-              <div class="desc">Bikin aplikasi mobile (Flutter / React Native) pake AI CLI. Sama kayak segmen 10, semua dari rancangan ke realita lewat prompt AI. Di akhir segmen, semua peserta bikin dokumentasi warisan buat angkatan selanjutnya.</div>
+              <h4>Mobile Dev + Warisan Digital <span style="color:#6b7280;font-size:11px;font-weight:400;">&mdash; Januari</span></h4>
+              <div class="desc">Bikin aplikasi mobile (Flutter / React Native) pake AI CLI. Tiga minggu build, satu minggu terakhir dokumentasi warisan: kumpulin semua file .md, script, prompt log, dan <code>pesan_untuk_angkatan_selanjutnya.txt</code>.</div>
               <div class="topics">
-                <span>Flutter</span><span>React Native</span><span>AI CLI</span><span>deploy</span><span>dokumentasi</span>
+                <span>Flutter</span><span>React Native</span><span>AI CLI</span><span>deploy</span><span>dokumentasi</span><span>warisan</span>
               </div>
-              <div class="project-label"><i class='bx bx-film'></i> Project: Aplikasi Mobile Pertamaku + Warisan Digital</div>
+              <div class="project-label"><i class='bx bx-film'></i> Project: Aplikasi Mobile + Warisan Digital</div>
             </div>
           </div>
 
@@ -1230,8 +1195,8 @@
       <div class="timeline">
         <div class="timeline-card">
           <div class="step"><i class='bx bx-terminal'></i></div>
-          <div class="phase">Ringkasan Phase 1 &mdash; CLI Dasar</div>
-          <h3>Apa yang Lo Kuasai Setelah 7 Bulan?</h3>
+          <div class="phase">Ringkasan Phase 1 &mdash; CLI Core</div>
+          <h3>Apa yang Lo Kuasai Setelah 5 Segmen?</h3>
           <p>
             Navigasi file system tanpa mouse &bull; Edit teks dari terminal &bull;
             Cari file &amp; teks pake grep/find &bull; Atur permission file &bull;
@@ -1242,12 +1207,22 @@
         <div class="timeline-card">
           <div class="step"><i class='bx bx-bot'></i></div>
           <div class="phase">Ringkasan Phase 2 &mdash; AI + Project</div>
-          <h3>Apa yang Lo Kuasai Setelah 11 Bulan?</h3>
+          <h3>Apa yang Lo Kuasai Setelah 8 Segmen?</h3>
           <p>
             Pake AI CLI buat bantu coding &bull; Nulis prompt efektif &bull;
             Merancang project dari 0 &bull; Bikin website pake AI &bull;
             Bikin aplikasi mobile pake AI &bull; Siap jadi developer modern
             dengan bantuan AI
+          </p>
+        </div>
+        <div class="timeline-card" style="border-color:rgba(245,158,11,0.2);">
+          <div class="step" style="background:rgba(245,158,11,0.1);"><i class='bx bx-calendar' style="color:#f59e0b;"></i></div>
+          <div class="phase" style="color:#f59e0b;">Buffer &mdash; 3 Bulan Cadangan</div>
+          <h3>Februari &mdash; April 2027</h3>
+          <p>
+            Kelas pengganti (jika ada pertemuan miss karena libur/ujian/lomba) &bull;
+            Proker turunan Divisi Kemahasiswaan &bull; Penelitian &amp; lomba mentor &bull;
+            Dokumentasi akhir &amp; closing circle
           </p>
         </div>
       </div>
@@ -1318,7 +1293,7 @@
             <div class="avatar-placeholder" style="display:none;"><i class='bx bx-user'></i></div>
             <div class="name">Mu'adz Hudzaifah</div>
             <div class="role">Ketua Divisi &middot; Mentor</div>
-            <div class="bio">Penggagas The Penguin Circle. 11 bulan ngajar CLI, Git, dan AI coding dari 0.</div>
+            <div class="bio">Penggagas The Penguin Circle. 8 segmen ngajar CLI, Git, dan AI coding dari 0.</div>
           </div>
         </div>
       </div>
@@ -1518,7 +1493,7 @@
             <span>Sampai kapan Circle ini jalan?</span>
             <i class='bx bx-plus'></i>
           </div>
-          <div class="faq-answer">11 bulan — <b>Juni 2026 sampai April 2027</b>. Tiap segmen 1 bulan (4 pertemuan). Total 44 pertemuan, 11 project. Setelah itu ada dokumentasi warisan buat angkatan selanjutnya.</div>
+          <div class="faq-answer">8 segmen — <b>Juni 2026 sampai Januari 2027</b>, plus 3 bulan buffer (Februari&ndash;April 2027). Tiap segmen 4 pertemuan + 1 project. Total 32 pertemuan, 8 project. Setelah itu dokumentasi warisan buat angkatan selanjutnya.</div>
         </div>
         <div class="faq-item">
           <div class="faq-question" onclick="toggleFaq(this)">
@@ -1532,7 +1507,7 @@
             <span>Dapet sertifikat?</span>
             <i class='bx bx-plus'></i>
           </div>
-          <div class="faq-answer">Nggak ada sertifikat. Lo dapet sesuatu yang lebih berharga: <b>skill CLI, Git, networking, AI prompting, dan portfolio 11 project beneran</b>. Itu nilainya jauh di atas sertifikat manapun di mata employer.</div>
+          <div class="faq-answer">Nggak ada sertifikat. Lo dapet sesuatu yang lebih berharga: <b>skill CLI, Git, networking, AI prompting, dan portfolio 8 project beneran</b>. Itu nilainya jauh di atas sertifikat manapun di mata employer.</div>
         </div>
         <div class="faq-item">
           <div class="faq-question" onclick="toggleFaq(this)">
