@@ -89,7 +89,7 @@
               "@type": "Schedule",
               "repeatFrequency": "weekly",
               "dayOfWeek": "Friday",
-              "startDate": "2026-06-01",
+              "startDate": "2026-06-05",
               "endDate": "2027-01-31"
             }
           }
@@ -99,8 +99,8 @@
           "@id": "https://the-penguin-circle.vercel.app/#event",
           "name": "The Penguin Circle — Session 0",
           "description": "Pertemuan pertama The Penguin Circle. Mulai dari 0: navigasi terminal, command dasar, dan perkenalan kurikulum 8 segmen padat.",
-          "startDate": "2026-06-01T15:30:00+07:00",
-          "endDate": "2026-06-01T17:00:00+07:00",
+          "startDate": "2026-06-05T15:30:00+07:00",
+          "endDate": "2026-06-05T17:00:00+07:00",
           "eventStatus": "https://schema.org/EventScheduled",
           "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
           "location": {
@@ -1437,7 +1437,7 @@
               <div class="thumb"><i class='bx bx-image'></i></div>
               <div class="info">
                 <h4>Session 0 — Perkenalan</h4>
-                <p>1 Juni 2026 — Pendopo Kampus TRM</p>
+                <p>Jumat, 5 Juni 2026 — Pendopo Kampus TRM</p>
               </div>
             </div>
             <div class="gallery-item">
@@ -1638,9 +1638,9 @@
       btn.classList.add('active');
     }
 
-    // ─── Countdown to June 1, 2026 15:30 WIB ───
+    // ─── Countdown to Jumat, 5 Juni 2026 15:30 WIB ───
     function updateCountdown() {
-      const target = new Date('2026-06-01T15:30:00+07:00').getTime();
+      const target = new Date('2026-06-05T15:30:00+07:00').getTime();
       const now = new Date().getTime();
       const diff = target - now;
       if (diff <= 0) {
