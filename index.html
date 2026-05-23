@@ -860,12 +860,14 @@
     .modal-box .avatar-lg {
       width: 80px; height: 80px; border-radius: 50%;
       object-fit: cover; border: 3px solid #00ff41; margin-bottom: 14px;
+      display: block; margin-left: auto; margin-right: auto;
     }
     .modal-box .avatar-lg-placeholder {
       width: 80px; height: 80px; border-radius: 50%;
       background: var(--bg-elevated); border: 3px solid #00ff41;
       display: flex; align-items: center; justify-content: center;
       font-size: 30px; color: var(--text-placeholder); margin-bottom: 14px;
+      margin-left: auto; margin-right: auto;
     }
     .modal-box .modal-name {
       font-size: 18px; font-weight: 700; color: var(--text-heading); margin-bottom: 4px;
@@ -900,7 +902,7 @@
     @media (max-width: 768px) {
       .nav-links { display: none; }
       .nav-toggle { display: block; }
-      .nav-cta .theme-toggle { display: none; }
+      
       .nav-links.show {
         display: flex; flex-direction: column;
         position: absolute; top: 56px; left: 0; right: 0;
@@ -960,15 +962,10 @@
         <li><a href="#tim">Tim</a></li>
         <li><a href="#galeri">Galeri</a></li>
         <li><a href="#faq">FAQ</a></li>
-        <li>
-          <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode">
-            <i class='bx bx-moon' id="themeIcon"></i>
-          </button>
-        </li>
       </ul>
       <div class="nav-cta">
-        <button class="theme-toggle" id="themeToggleDesktop" aria-label="Toggle light/dark mode">
-          <i class='bx bx-moon' id="themeIconDesktop"></i>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode">
+          <i class='bx bx-moon' id="themeIcon"></i>
         </button>
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSczFE4zfWlSkgrQ0I0LjyKn7JUDAOoW4XguA66p0ZJ9Q7Rgxg/viewform?usp=header" target="_blank" rel="noopener"><i class='bx bx-edit'></i>Daftar</a>
       </div>
@@ -1763,20 +1760,18 @@
       document.body.classList.toggle('light');
       const isLight = document.body.classList.contains('light');
       localStorage.setItem('theme', isLight ? 'light' : 'dark');
-      const icons = document.querySelectorAll('#themeIcon, #themeIconDesktop');
+      const icons = document.querySelectorAll('#themeIcon');
       icons.forEach(el => {
         el.className = isLight ? 'bx bx-sun' : 'bx bx-moon';
       });
     }
 
     const thBtn = document.getElementById('themeToggle');
-    const thBtnDesk = document.getElementById('themeToggleDesktop');
     if (thBtn) thBtn.addEventListener('click', toggleTheme);
-    if (thBtnDesk) thBtnDesk.addEventListener('click', toggleTheme);
 
     (function syncThemeIcons() {
       const isLight = document.body.classList.contains('light');
-      const icons = document.querySelectorAll('#themeIcon, #themeIconDesktop');
+      const icons = document.querySelectorAll('#themeIcon');
       icons.forEach(el => {
         el.className = isLight ? 'bx bx-sun' : 'bx bx-moon';
       });
