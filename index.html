@@ -713,6 +713,30 @@
     .gallery-item .info p {
       font-size: 10px; color: var(--text-muted); margin: 0;
     }
+    .gallery-item .thumb.embed {
+      display: block; padding: 0; overflow: hidden;
+    }
+    .gallery-item .thumb.embed iframe,
+    .gallery-item .thumb.embed img {
+      width: 100%; height: 100%;
+      border: none; display: block;
+    }
+    .gallery-item .thumb.embed img {
+      object-fit: cover;
+    }
+    .gallery-cta {
+      margin-bottom: 16px; padding: 16px; border: 1px dashed var(--border);
+      border-radius: 6px; text-align: center; background: var(--bg-green-tint);
+    }
+    .gallery-cta p {
+      font-size: 11px; margin: 6px 0 10px; color: var(--text-muted);
+    }
+    .gallery-cta .btn-primary {
+      display: inline-block; padding: 6px 14px; font-size: 10px;
+      background: #00ff41; color: #0a0a0a; border-radius: 4px;
+      text-decoration: none; font-weight: 600; transition: opacity 0.2s;
+    }
+    .gallery-cta .btn-primary:hover { opacity: 0.85; }
 
     /* ─── STATS / COUNTER ─── */
     .stats-row {
@@ -1524,26 +1548,52 @@
 
       <div class="gallery-content">
         <div class="gallery-panel active" id="panel-video">
+          <div class="gallery-cta">
+            <i class='bx bx-upload' style="font-size:22px;color:#00ff41;"></i>
+            <p>Ada video tugas? Upload ke YouTube (Unlisted), submit link-nya lewat Google Form!</p>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdYapIkh3-4iCG6mVnoLs8Gk0hZm7FvgwnqPBbPIJQPYlCFcg/viewform" target="_blank" class="btn-primary"><i class='bx bx-link-external'></i> Submit Video Tugas</a>
+          </div>
           <div class="gallery-grid">
             <div class="gallery-item">
               <div class="thumb"><i class='bx bx-play-circle'></i></div>
               <div class="info">
                 <h4>Misi Merapikan Folder</h4>
-                <p>Video tugas Segmen 1 — CLI navigasi &amp; file management</p>
+                <p>Segmen 1 — CLI navigasi &amp; file management</p>
               </div>
             </div>
             <div class="gallery-item">
               <div class="thumb"><i class='bx bx-play-circle'></i></div>
               <div class="info">
                 <h4>Catatan Kuliah dari Terminal</h4>
-                <p>Video tugas Segmen 2 — text editor &amp; manipulasi teks</p>
+                <p>Segmen 2 — text editor &amp; manipulasi teks</p>
               </div>
             </div>
             <div class="gallery-item">
               <div class="thumb"><i class='bx bx-play-circle'></i></div>
               <div class="info">
                 <h4>Detektif File — Cari Jejak</h4>
-                <p>Video tugas Segmen 3 — grep &amp; find di terminal</p>
+                <p>Segmen 3 — grep &amp; find di terminal</p>
+              </div>
+            </div>
+            <div class="gallery-item">
+              <div class="thumb"><i class='bx bx-play-circle'></i></div>
+              <div class="info">
+                <h4>Kolaborasi dengan Git</h4>
+                <p>Segmen 5 — Git &amp; version control</p>
+              </div>
+            </div>
+            <div class="gallery-item">
+              <div class="thumb"><i class='bx bx-play-circle'></i></div>
+              <div class="info">
+                <h4>Prompt Engineering 101</h4>
+                <p>Segmen 6 — AI CLI &amp; prompt tools</p>
+              </div>
+            </div>
+            <div class="gallery-item">
+              <div class="thumb"><i class='bx bx-play-circle'></i></div>
+              <div class="info">
+                <h4>Landing Page Pertama</h4>
+                <p>Segmen 7 — Web dev &amp; deploy</p>
               </div>
             </div>
           </div>
@@ -1569,6 +1619,27 @@
               <div class="info">
                 <h4>Belajar Bareng Lingkaran</h4>
                 <p>Suasana Circle — Santai tapi fokus</p>
+              </div>
+            </div>
+            <div class="gallery-item">
+              <div class="thumb"><i class='bx bx-image'></i></div>
+              <div class="info">
+                <h4>Diskusi Sesi Q&amp;A</h4>
+                <p>Tanya jawab setelah demo command</p>
+              </div>
+            </div>
+            <div class="gallery-item">
+              <div class="thumb"><i class='bx bx-image'></i></div>
+              <div class="info">
+                <h4>Praktik Pair Programming</h4>
+                <p>Kolaborasi dua orang per terminal</p>
+              </div>
+            </div>
+            <div class="gallery-item">
+              <div class="thumb"><i class='bx bx-image'></i></div>
+              <div class="info">
+                <h4>Foto Bersama Circle</h4>
+                <p>Akhir sesi — dokumentasi mingguan</p>
               </div>
             </div>
           </div>
