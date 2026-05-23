@@ -39,7 +39,7 @@ lines = ASCII.split('\n')
 
 # Cari lebar maksimum (baris terlebar) — biar alignment konsisten
 max_tw = max(draw.textbbox((0, 0), l, font=f_asc)[2] - draw.textbbox((0, 0), l, font=f_asc)[0] for l in lines)
-base_x = (W - max_tw) // 2
+base_x = (W - max_tw) // 2  # posisi x untuk semua baris (centered)
 
 th = len(lines) * LINE_H
 sy = (H - th) // 2 - 10
