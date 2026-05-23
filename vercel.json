@@ -28,6 +28,11 @@
       "source": "/daftar",
       "destination": "https://docs.google.com/forms/d/e/1FAIpQLSczFE4zfWlSkgrQ0I0LjyKn7JUDAOoW4XguA66p0ZJ9Q7Rgxg/viewform?usp=header",
       "permanent": true
+    },
+    {
+      "source": "/favicon.ico",
+      "destination": "/favicon.svg",
+      "permanent": true
     }
   ]
 }
