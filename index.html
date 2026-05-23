@@ -259,10 +259,7 @@
     }
     .nav-logo i { font-size: 22px; }
     .nav-logo span { color: var(--nav-logo-light); }
-    .nav-logo-art {
-      font-size: 4px; line-height: 1.05; margin: 0;
-      color: #00ff41; display: inline-block; white-space: pre;
-    }
+
     .nav-links { display: flex; gap: 16px; list-style: none; }
     .nav-links a {
       color: var(--nav-link); text-decoration: none; font-size: 11px;
@@ -340,7 +337,7 @@
       75% { transform: translate(20px, 30px) scale(1.02); }
     }
     .ascii-penguin {
-      color: #00ff41; font-size: 9px; line-height: 1.1;
+      color: #00ff41; font-size: 8px; line-height: 1.1;
       margin-bottom: 16px; white-space: pre;
       display: inline-block; text-align: left; opacity: 0.92;
     }
@@ -909,14 +906,12 @@
         position: absolute; top: 56px; left: 0; right: 0;
         background: var(--bg-nav); border-bottom: 1px solid var(--border-nav);
         padding: 16px 24px; gap: 12px;
-        transition: background 0.3s;
-        background: var(--bg-nav); border-bottom: 1px solid var(--border-nav);
-        transition: background 0.3s;
+        transition: background 0.3s, border-color 0.3s;
         padding: 16px 24px; gap: 12px;
       }
       .hero h1 { font-size: 26px; }
       .hero { padding: 120px 0 60px; }
-      .ascii-penguin { font-size: 4px; }
+      .ascii-penguin { font-size: 3.5px; }
       section { padding: 60px 0; }
       h2 { font-size: 22px; }
       .features-grid { grid-template-columns: 1fr; }
@@ -939,7 +934,7 @@
       .stats-row { grid-template-columns: 1fr; }
       .gallery-grid { grid-template-columns: 1fr; }
       .hero h1 { font-size: 20px; }
-      .ascii-penguin { font-size: 4px; }
+      .ascii-penguin { font-size: 3.5px; }
       .hero-buttons { flex-direction: column; align-items: center; }
       .countdown-bar { flex-direction: column; align-items: stretch; text-align: center; }
       .countdown-bar .time { justify-content: center; }
@@ -954,12 +949,7 @@
   <nav>
     <div class="container">
       <a href="#" class="nav-logo" aria-label="The Penguin Circle — Beranda">
-        <pre class="nav-logo-art" aria-label="The Penguin Circle">████████╗██╗  ██╗███████╗    ██████╗ ███████╗███╗   ██╗ ██████╗ ██╗   ██╗██╗███╗   ██╗     ██████╗██╗██████╗  ██████╗██╗     ███████╗
-╚══██╔══╝██║  ██║██╔════╝    ██╔══██╗██╔════╝████╗  ██║██╔════╝ ██║   ██║██║████╗  ██║    ██╔════╝██║██╔══██╗██╔════╝██║     ██╔════╝
-   ██║   ███████║█████╗      ██████╔╝█████╗  ██╔██╗ ██║██║  ███╗██║   ██║██║██╔██╗ ██║    ██║     ██║██████╔╝██║     ██║     ███╗
-   ██║   ██╔══██║██╔══╝      ██╔═══╝ ██╔══╝  ██║╚██╗██║██║   ██║██║   ██║██║██║╚██╗██║    ██║     ██║██╔══██╗██║     ██║     ██╔══╝
-   ██║   ██║  ██║███████╗    ██║     ███████╗██║ ╚████║╚██████╔╝╚██████╔╝██║██║ ╚████║    ╚██████╗██║██║  ██║╚██████╗███████╗███████╗
-   ╚═╝   ╚═╝  ╚═╝╚══════╝    ╚═╝     ╚══════╝╚═╝  ╚═══╝ ╚═════╝  ╚═════╝  ╚═╝╚═╝  ╚═══╝     ╚═════╝╚═╝╚═╝  ╚═╝ ╚═════╝╚══════╝╚══════╝</pre>
+        <i class='bx bxs-terminal'></i><span>PENGUIN</span><span style="color:var(--text-muted)">/</span><span>CIRCLE</span>
       </a>
       <button class="nav-toggle" id="navToggle" aria-label="Toggle Menu"><i class='bx bx-menu'></i></button>
       <ul class="nav-links" id="navLinks">
@@ -970,6 +960,11 @@
         <li><a href="#tim">Tim</a></li>
         <li><a href="#galeri">Galeri</a></li>
         <li><a href="#faq">FAQ</a></li>
+        <li>
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode">
+            <i class='bx bx-moon' id="themeIcon"></i>
+          </button>
+        </li>
       </ul>
       <div class="nav-cta">
         <button class="theme-toggle" id="themeToggleDesktop" aria-label="Toggle light/dark mode">
@@ -1509,7 +1504,7 @@
       </div>
 
       <div class="team-category">
-        <h3><i class='bx bx-group' style="color:#6b7280;"></i> Peserta Circle <span>— Mahasiswa umum dari 0</span></h3>
+        <h3><i class='bx bx-group' style="color:var(--text-muted);"></i> Peserta Circle <span>— Mahasiswa umum dari 0</span></h3>
         <div class="team-grid">
           <div class="team-card" onclick="openModal('peserta')" data-member="peserta">
             <div class="avatar-placeholder"><i class='bx bx-user'></i></div>
@@ -1774,8 +1769,10 @@
       });
     }
 
-    document.getElementById('themeToggle').addEventListener('click', toggleTheme);
-    document.getElementById('themeToggleDesktop').addEventListener('click', toggleTheme);
+    const thBtn = document.getElementById('themeToggle');
+    const thBtnDesk = document.getElementById('themeToggleDesktop');
+    if (thBtn) thBtn.addEventListener('click', toggleTheme);
+    if (thBtnDesk) thBtnDesk.addEventListener('click', toggleTheme);
 
     (function syncThemeIcons() {
       const isLight = document.body.classList.contains('light');
@@ -1840,7 +1837,6 @@
         document.getElementById('navLinks').classList.remove('show');
       });
     });
-
 
     // ─── Team Member Modal ───
     const teamMembers = {
