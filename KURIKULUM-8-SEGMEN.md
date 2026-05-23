@@ -21,6 +21,10 @@ Dokumen ini adalah pegangan lo sebagai mentor. Setiap segmen punya struktur:
 
 > 🎯 **Tujuan:** Semua peserta punya terminal yang siap pakai, paham apa itu CLI,
 > dan tau gambaran 8 bulan ke depan.
+>
+> ⚠️ **PENTING:** Peserta WAJIB menyelesaikan **[persiapan-pertemuan-0.md](persiapan-pertemuan-0.md)**
+> SEBELUM datang. Session 0 fokus ke verifikasi & troubleshooting — BUKAN install dari scratch.
+> Share file itu ke grup WA minimal H-3.
 
 ### Flow Lengkap (120 menit):
 
@@ -30,8 +34,9 @@ Dokumen ini adalah pegangan lo sebagai mentor. Setiap segmen punya struktur:
 | 15.45-16.00 | 15' | **Apa itu The Penguin Circle?** — Naskah lo: *"Ini bukan kelas. Ini tempat ngulik bareng. Lo nggak bakal dijejelin teori. Lo bakal praktik, error, benerin sendiri, dan jadi jago."* | - |
 | 16.00-16.20 | 20' | **Apa itu CLI & Linux?** — CLI vs GUI, analogi CLI = stik mobil / GUI = matic, industri pake CLI | Proyektor/laptop demo |
 | 16.20-16.40 | 20' | **Kurikulum 8 Segmen** — Tunjukin poster kurikulum. Sorot: "S1 Navigasi, S2 Editor Teks, S3 Admin, S4 Jaringan, S5 Git, S6 AI CLI, S7 Web Dev, S8 Mobile Dev" | Poster kurikulum |
-| 16.40-17.10 | 30' | **Instalasi Bareng** — Bagi kelompok: Windows (WSL), Mac (brew), Android (Termux), iPhone (iSH) | Panduan instalasi print-out |
-| 17.10-17.20 | 10' | **Tanda Hidup: neofetch** — Semua jalanin `neofetch`. Screenshot, kirim ke grup. | - |
+| 16.40-17.00 | 20' | **Verifikasi Instalasi** — Cek satu per satu: Ubuntu bisa dibuka? Git terinstall? SSH key ke GitHub? neofetch jalan? | Laptop masing-masing |
+| 17.00-17.10 | 10' | **Tanda Hidup: neofetch** — Semua jalanin `neofetch` + `ssh -T git@github.com`. Screenshot, kirim ke grup. | - |
+| 17.10-17.20 | 10' | **Clone Repo Organisasi** — `git clone` kurikulum & template-submission bareng-bareng | - |
 | 17.20-17.30 | 10' | **Preview Segmen 1 + tanya jawab** | - |
 
 ### Naskah Penting Session 0:

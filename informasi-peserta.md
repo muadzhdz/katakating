@@ -17,6 +17,9 @@
 - **OPSI**: PC Lab Komputer (tanpa WSL, pakai terminal bawaan)
 - **TIDAK** pakai HP / Termux / iSH
 
+> Panduan instalasi lengkap (WSL, GitHub, YouTube Channel, SSH, tools) →
+> **[persiapan-pertemuan-0.md](persiapan-pertemuan-0.md)**
+
 ## Cara Submit Video Tugas
 
 Setiap **akhir segmen (minggu ke-4)** kamu wajib bikin **1 video pendek** mendemonstrasikan command yang udah dipelajari.
