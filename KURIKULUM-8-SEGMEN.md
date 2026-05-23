@@ -1,6 +1,10 @@
 # KURIKULUM 8 SEGMEN THE PENGUIN CIRCLE — VERSI MENTOR
 ## Panduan Lengkap Mengajar 8 Segmen + 3 Bulan Buffer (Juni 2026 - April 2027)
 
+> 📱 **Multimedia Survival Kit:** Setiap segmen punya jadwal konten (1 poster + 1 video)
+> untuk media sosial. Lihat [`multimedia-survival-kit.md`](multimedia-survival-kit.md)
+> untuk template caption, storyboard, & jadwal upload.
+
 ---
 
 📘 **Cara Baca Dokumen Ini:**
