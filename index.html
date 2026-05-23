@@ -172,13 +172,68 @@
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
+
+    :root {
+      --bg-body: #0a0a0a;
+      --bg-surface: #0d0d0d;
+      --bg-elevated: #111;
+      --bg-nav: rgba(10,10,10,0.92);
+      --bg-code: #111;
+      --bg-tag: rgba(255,255,255,0.04);
+      --bg-thumb: #151515;
+      --bg-green-tint: rgba(0,255,65,0.03);
+      --bg-green-subtle: rgba(0,255,65,0.06);
+      --bg-compare: rgba(0,255,65,0.04);
+      --bg-block: rgba(0,255,65,0.06);
+      --border: #1a1a1a;
+      --border-nav: #1e1e1e;
+      --border-block: rgba(0,255,65,0.15);
+      --border-card-hover: #00ff41;
+      --text-heading: #fff;
+      --text-body: #e0e0e0;
+      --text-secondary: #9ca3af;
+      --text-muted: #6b7280;
+      --text-dim: #4b5563;
+      --text-placeholder: #3d3d3d;
+      --text-keyword: #2a2a2a;
+      --nav-logo-light: #fff;
+      --nav-link: #6b7280;
+    }
+
+    body.light {
+      --bg-body: #f4faf5;
+      --bg-surface: #ffffff;
+      --bg-elevated: #f0f7f2;
+      --bg-nav: rgba(244,250,245,0.92);
+      --bg-code: #e8f0eb;
+      --bg-tag: rgba(0,0,0,0.04);
+      --bg-thumb: #e8f0eb;
+      --bg-green-tint: #ffffff;
+      --bg-green-subtle: rgba(0,255,65,0.04);
+      --bg-compare: rgba(0,255,65,0.03);
+      --bg-block: rgba(0,255,65,0.04);
+      --border: #d4e0d8;
+      --border-nav: #d4e0d8;
+      --border-block: rgba(0,255,65,0.2);
+      --text-heading: #1a1f1c;
+      --text-body: #2d3742;
+      --text-secondary: #5a8a6a;
+      --text-muted: #6b7280;
+      --text-dim: #9ca3af;
+      --text-placeholder: #d1d5db;
+      --text-keyword: #d1d5db;
+      --nav-logo-light: #1a1f1c;
+      --nav-link: #5a8a6a;
+    }
+
     body {
       font-family: "JetBrains Mono", "Courier New", ui-monospace, monospace;
-      background: #0a0a0a;
-      color: #e0e0e0;
+      background: var(--bg-body);
+      color: var(--text-body);
       font-size: 15px;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
+      transition: background 0.3s, color 0.3s;
     }
     ::selection { background: #00ff41; color: #0a0a0a; }
 
@@ -187,9 +242,10 @@
     /* ─── NAVBAR ─── */
     nav {
       position: fixed; top: 0; left: 0; right: 0;
-      background: rgba(10,10,10,0.92);
+      background: var(--bg-nav);
       backdrop-filter: blur(12px);
-      border-bottom: 1px solid #1e1e1e;
+      border-bottom: 1px solid var(--border-nav);
+      transition: background 0.3s, border-color 0.3s;
       z-index: 100;
       height: 56px;
     }
@@ -202,10 +258,14 @@
       text-decoration: none; letter-spacing: 1px;
     }
     .nav-logo i { font-size: 22px; }
-    .nav-logo span { color: #fff; }
+    .nav-logo span { color: var(--nav-logo-light); }
+    .nav-logo-art {
+      font-size: 4px; line-height: 1.05; margin: 0;
+      color: #00ff41; display: inline-block; white-space: pre;
+    }
     .nav-links { display: flex; gap: 16px; list-style: none; }
     .nav-links a {
-      color: #6b7280; text-decoration: none; font-size: 11px;
+      color: var(--nav-link); text-decoration: none; font-size: 11px;
       transition: color 0.2s;
     }
     .nav-links a:hover { color: #00ff41; }
@@ -218,18 +278,27 @@
     }
     .nav-cta a i { font-size: 16px; }
     .nav-cta a:hover { background: #27c93f; }
+    .theme-toggle {
+      background: none; border: 1px solid var(--border-nav);
+      color: var(--nav-link); width: 32px; height: 32px;
+      border-radius: 4px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; transition: all 0.2s;
+    }
+    .theme-toggle:hover { border-color: #00ff41; color: #00ff41; }
     .nav-toggle {
       display: none; background: none; border: none;
-      color: #e0e0e0; font-size: 24px; cursor: pointer;
+      color: var(--text-body); font-size: 24px; cursor: pointer;
     }
 
     /* ─── HERO ─── */
     .hero {
       padding: 140px 0 80px;
       text-align: center;
-      border-bottom: 1px solid #1e1e1e;
+      border-bottom: 1px solid var(--border);
       position: relative;
       overflow: hidden;
+      transition: border-color 0.3s;
     }
     .hero::before {
       content: "";
@@ -271,32 +340,34 @@
       75% { transform: translate(20px, 30px) scale(1.02); }
     }
     .ascii-penguin {
-      color: #00ff41; font-size: 11px; line-height: 1.15;
-      margin-bottom: 20px; white-space: pre;
-      display: inline-block; text-align: left; opacity: 0.9;
+      color: #00ff41; font-size: 9px; line-height: 1.1;
+      margin-bottom: 16px; white-space: pre;
+      display: inline-block; text-align: left; opacity: 0.92;
     }
     .hero .pain-point {
-      font-size: 12px; color: #9ca3af;
+      font-size: 12px; color: var(--text-secondary);
       letter-spacing: 0.5px;
       max-width: 680px; margin: 0 auto 12px;
     }
     .hero h1 {
-      font-size: 38px; font-weight: 700; color: #fff;
+      font-size: 38px; font-weight: 700; color: var(--text-heading);
+      transition: color 0.3s;
       letter-spacing: 2px; margin-bottom: 14px;
     }
     .hero h1 .highlight { color: #00ff41; }
     .hero .tagline {
-      font-size: 14px; color: #9ca3af;
+      font-size: 14px; color: var(--text-secondary);
       max-width: 540px; margin: 0 auto 14px;
       line-height: 1.7;
     }
     .hero .terminal-line {
       display: inline-flex; align-items: center; gap: 8px;
-      background: #111; border: 1px solid #1e1e1e;
+      background: var(--bg-elevated); border: 1px solid var(--border);
       border-radius: 4px; padding: 10px 20px;
       font-size: 13px; color: #00ff41; margin-bottom: 28px;
+      transition: background 0.3s, border-color 0.3s;
     }
-    .hero .terminal-line .prompt { color: #6b7280; }
+    .hero .terminal-line .prompt { color: var(--text-muted); }
     .hero .terminal-line .cursor {
       display: inline-block; width: 7px; height: 14px;
       background: #00ff41; animation: blink 1s step-end infinite;
@@ -329,13 +400,13 @@
       display: flex; justify-content: center; gap: 24px; flex-wrap: wrap;
     }
     .hero-guarantee span {
-      font-size: 11px; color: #6b7280;
+      font-size: 11px; color: var(--text-muted);
       display: inline-flex; align-items: center; gap: 6px;
     }
     .hero-guarantee i { color: #00ff41; font-size: 14px; }
 
     /* ─── SECTIONS ─── */
-    section { padding: 80px 0; border-bottom: 1px solid #1e1e1e; }
+    section { padding: 80px 0; border-bottom: 1px solid var(--border); transition: border-color 0.3s; }
     section:last-of-type { border-bottom: none; }
     .section-label {
       display: inline-flex; align-items: center; gap: 6px;
@@ -344,18 +415,20 @@
     }
     .section-label i { font-size: 14px; }
     h2 {
-      font-size: 28px; font-weight: 700; color: #fff;
+      font-size: 28px; font-weight: 700; color: var(--text-heading);
       letter-spacing: 1px; margin-bottom: 14px;
+      transition: color 0.3s;
     }
     .section-sub {
-      font-size: 13px; color: #6b7280; margin-bottom: 24px; max-width: 600px;
+      font-size: 13px; color: var(--text-muted); margin-bottom: 24px; max-width: 600px;
     }
-    p { color: #6b7280; margin-bottom: 16px; max-width: 680px; }
-    p b, p strong { color: #e0e0e0; }
+    p { color: var(--text-muted); margin-bottom: 16px; max-width: 680px; }
+    p b, p strong { color: var(--text-body); }
     code {
       font-family: "JetBrains Mono", monospace; font-size: 13px;
-      color: #00ff41; background: #111;
+      color: #00ff41; background: var(--bg-code);
       padding: 1px 6px; border-radius: 3px;
+      transition: background 0.3s;
     }
 
     /* ─── SOCIAL PROOF BANNER ─── */
@@ -367,10 +440,11 @@
       text-align: center;
     }
     .social-proof .item .num {
-      font-size: 20px; font-weight: 700; color: #fff;
+      font-size: 20px; font-weight: 700; color: var(--text-heading);
+      transition: color 0.3s;
     }
     .social-proof .item .lbl {
-      font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 1px;
+      font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;
     }
 
     /* ─── FEATURES ─── */
@@ -378,43 +452,46 @@
       display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 32px;
     }
     .feature-card {
-      background: #0d0d0d; border: 1px solid #1a1a1a;
-      border-radius: 6px; padding: 24px; transition: border-color 0.2s, background 0.2s;
+      background: var(--bg-surface); border: 1px solid var(--border);
+      border-radius: 6px; padding: 24px; transition: border-color 0.2s, background 0.3s;
     }
-    .feature-card:hover { border-color: #00ff41; background: #111; }
+    .feature-card:hover { border-color: var(--border-card-hover); background: var(--bg-elevated); }
     .feature-card .icon-wrap {
       width: 36px; height: 36px; display: flex;
       align-items: center; justify-content: center;
       background: rgba(0,255,65,0.08); border-radius: 6px; margin-bottom: 14px;
     }
     .feature-card .icon-wrap i { color: #00ff41; font-size: 18px; }
-    .feature-card h3 { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 6px; }
+    .feature-card h3 { font-size: 14px; font-weight: 600; color: var(--text-heading); margin-bottom: 6px; }
     .feature-card p {
-      font-size: 12px; color: #6b7280; margin: 0; line-height: 1.5;
+      font-size: 12px; color: var(--text-muted); margin: 0; line-height: 1.5;
     }
 
     /* ─── COMPARISON TABLE ─── */
     .comparison-wrap { margin-top: 32px; overflow-x: auto; }
     .comparison-table { width: 100%; border-collapse: collapse; font-size: 12px; }
     .comparison-table th, .comparison-table td {
-      padding: 12px 16px; text-align: left; border-bottom: 1px solid #1a1a1a;
+      padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border);
+      transition: border-color 0.3s;
     }
     .comparison-table th {
-      background: #0d0d0d; color: #fff; font-weight: 600;
+      background: var(--bg-surface); color: var(--text-heading);
+      transition: background 0.3s, color 0.3s; font-weight: 600;
     }
     .comparison-table th:first-child { border-radius: 6px 0 0 0; }
     .comparison-table th:last-child { border-radius: 0 6px 0 0; }
-    .comparison-table td { background: #0a0a0a; }
+    .comparison-table td { background: var(--bg-body); transition: background 0.3s; }
     .comparison-table tr:last-child td { border-bottom: none; }
     .comparison-table .check { color: #00ff41; }
     .comparison-table .cross { color: #ef4444; }
-    .comparison-table .highlight-col { background: rgba(0,255,65,0.04); }
+    .comparison-table .highlight-col { background: var(--bg-compare); }
 
     /* ─── CURRICULUM ─── */
     .curriculum-intro {
-      background: #0d0d0d; border: 1px solid #1a1a1a;
+      background: var(--bg-surface); border: 1px solid var(--border);
       border-radius: 6px; padding: 20px 24px; margin-top: 24px;
       display: flex; flex-wrap: wrap; gap: 24px;
+      transition: background 0.3s, border-color 0.3s;
     }
     .curriculum-intro .stat {
       flex: 1; min-width: 120px;
@@ -423,7 +500,7 @@
       font-size: 28px; font-weight: 700; color: #00ff41;
     }
     .curriculum-intro .stat .label {
-      font-size: 11px; color: #6b7280; margin-top: 2px;
+      font-size: 11px; color: var(--text-muted); margin-top: 2px;
     }
 
     .phase-block { margin-top: 32px; }
@@ -431,7 +508,7 @@
       display: flex; align-items: center; gap: 12px;
       padding: 16px 20px; border-radius: 6px; margin-bottom: 16px;
     }
-    .phase-header.phase-1 { background: rgba(0,255,65,0.06); border: 1px solid rgba(0,255,65,0.15); }
+    .phase-header.phase-1 { background: var(--bg-block); border: 1px solid var(--border-block); transition: background 0.3s, border-color 0.3s; }
     .phase-header.phase-2 { background: rgba(0,122,255,0.06); border: 1px solid rgba(0,122,255,0.15); }
     .phase-header .badge {
       font-size: 10px; font-weight: 600; letter-spacing: 1px;
@@ -439,36 +516,37 @@
     }
     .phase-header.phase-1 .badge { background: #00ff41; color: #0a0a0a; }
     .phase-header.phase-2 .badge { background: #007aff; color: #fff; }
-    .phase-header h3 { font-size: 15px; font-weight: 600; color: #fff; flex: 1; }
-    .phase-header .months { font-size: 11px; color: #6b7280; }
+    .phase-header h3 { font-size: 15px; font-weight: 600; color: var(--text-heading); flex: 1; }
+    .phase-header .months { font-size: 11px; color: var(--text-muted); }
 
     .segment-list { display: flex; flex-direction: column; gap: 10px; }
     .segment-card {
-      background: #0d0d0d; border: 1px solid #1a1a1a; border-radius: 6px;
-      padding: 18px 20px; transition: border-color 0.2s;
+      background: var(--bg-surface); border: 1px solid var(--border); border-radius: 6px;
+      padding: 18px 20px; transition: border-color 0.2s, background 0.3s;
       display: grid;
       grid-template-columns: 60px 1fr;
       gap: 16px;
       align-items: start;
     }
-    .segment-card:hover { border-color: #00ff41; }
+    .segment-card:hover { border-color: var(--border-card-hover); }
     .segment-card .seg-num {
       font-size: 11px; font-weight: 700; color: #00ff41;
       letter-spacing: 1px; padding-top: 2px;
     }
     .segment-card .seg-body h4 {
-      font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 6px;
+      font-size: 14px; font-weight: 600; color: var(--text-heading); margin-bottom: 6px;
     }
     .segment-card .seg-body .desc {
-      font-size: 12px; color: #6b7280; margin-bottom: 8px; line-height: 1.5;
+      font-size: 12px; color: var(--text-muted); margin-bottom: 8px; line-height: 1.5;
     }
     .segment-card .seg-body .topics {
       display: flex; flex-wrap: wrap; gap: 6px;
     }
     .segment-card .seg-body .topics span {
-      font-size: 10px; color: #9ca3af;
-      background: rgba(255,255,255,0.04);
+      font-size: 10px; color: var(--text-secondary);
+      background: var(--bg-tag);
       padding: 2px 8px; border-radius: 3px;
+      transition: background 0.3s, color 0.3s;
     }
     .segment-card .seg-body .project-label {
       margin-top: 8px; font-size: 10px; color: #ffd700;
@@ -478,11 +556,11 @@
     /* ─── TIMELINE ─── */
     .timeline { margin-top: 32px; display: flex; flex-direction: column; gap: 16px; }
     .timeline-card {
-      background: #0d0d0d; border: 1px solid #1a1a1a; border-radius: 6px;
+      background: var(--bg-surface); border: 1px solid var(--border); border-radius: 6px;
       padding: 24px; position: relative; padding-left: 52px;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, background 0.3s;
     }
-    .timeline-card:hover { border-color: #00ff41; }
+    .timeline-card:hover { border-color: var(--border-card-hover); }
     .timeline-card .step {
       position: absolute; left: 16px; top: 24px;
       width: 24px; height: 24px; display: flex;
@@ -491,24 +569,25 @@
     }
     .timeline-card .step i { color: #00ff41; font-size: 14px; }
     .timeline-card .phase {
-      font-size: 10px; color: #6b7280; letter-spacing: 1.5px;
+      font-size: 10px; color: var(--text-muted); letter-spacing: 1.5px;
       text-transform: uppercase; margin-bottom: 4px;
     }
-    .timeline-card h3 { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 6px; }
-    .timeline-card p { font-size: 12px; color: #6b7280; margin: 0; }
+    .timeline-card h3 { font-size: 15px; font-weight: 600; color: var(--text-heading); margin-bottom: 6px; }
+    .timeline-card p { font-size: 12px; color: var(--text-muted); margin: 0; }
 
     /* ─── TESTIMONIALS ─── */
     .testi-grid {
       display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 24px;
     }
     .testi-card {
-      background: #0d0d0d; border: 1px solid #1a1a1a; border-radius: 6px;
-      padding: 20px; transition: border-color 0.2s;
+      background: var(--bg-surface); border: 1px solid var(--border); border-radius: 6px;
+      padding: 20px; transition: border-color 0.2s, background 0.3s;
     }
-    .testi-card:hover { border-color: #00ff41; }
+    .testi-card:hover { border-color: var(--border-card-hover); }
     .testi-card .stars { color: #ffd700; font-size: 12px; margin-bottom: 8px; }
     .testi-card .quote {
-      font-size: 12px; color: #9ca3af; line-height: 1.6; margin-bottom: 10px;
+      font-size: 12px; color: var(--text-secondary);
+      transition: color 0.3s; line-height: 1.6; margin-bottom: 10px;
       font-style: italic;
     }
     .testi-card .author {
@@ -520,36 +599,37 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 12px; font-weight: 700; flex-shrink: 0;
     }
-    .testi-card .author .name { font-size: 12px; font-weight: 600; color: #fff; }
-    .testi-card .author .role { font-size: 10px; color: #6b7280; }
+    .testi-card .author .name { font-size: 12px; font-weight: 600; color: var(--text-heading); transition: color 0.3s; }
+    .testi-card .author .role { font-size: 10px; color: var(--text-muted); }
 
     /* ─── DETAILS ─── */
     .details-grid {
       display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 24px;
     }
     .detail-card {
-      background: #0d0d0d; border: 1px solid #1a1a1a;
-      border-radius: 6px; padding: 20px; text-align: center; transition: border-color 0.2s;
+      background: var(--bg-surface); border: 1px solid var(--border);
+      border-radius: 6px; padding: 20px; text-align: center; transition: border-color 0.2s, background 0.3s;
     }
-    .detail-card:hover { border-color: #00ff41; }
+    .detail-card:hover { border-color: var(--border-card-hover); }
     .detail-card .icon-wrap {
       width: 40px; height: 40px; display: flex;
       align-items: center; justify-content: center;
       margin: 0 auto 10px; background: rgba(0,255,65,0.08); border-radius: 8px;
     }
     .detail-card .icon-wrap i { color: #00ff41; font-size: 20px; }
-    .detail-card h3 { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 4px; }
-    .detail-card p { font-size: 11px; color: #6b7280; margin: 0; }
+    .detail-card h3 { font-size: 13px; font-weight: 600; color: var(--text-heading); margin-bottom: 4px; }
+    .detail-card p { font-size: 11px; color: var(--text-muted); margin: 0; }
 
     /* ─── TEAM ─── */
     .team-section { margin-top: 32px; }
     .team-category { margin-bottom: 32px; }
     .team-category:last-child { margin-bottom: 0; }
     .team-category h3 {
-      font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 16px;
+      font-size: 14px; font-weight: 600; color: var(--text-heading);
+      transition: color 0.3s; margin-bottom: 16px;
       display: flex; align-items: center; gap: 8px;
     }
-    .team-category h3 span { font-size: 11px; color: #6b7280; font-weight: 400; }
+    .team-category h3 span { font-size: 11px; color: var(--text-muted); font-weight: 400; }
     .team-grid {
       display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;
     }
@@ -557,35 +637,38 @@
       width: calc(25% - 9px); min-width: 160px; flex: 0 0 auto;
     }
     .team-card {
-      background: #0d0d0d; border: 1px solid #1a1a1a; border-radius: 6px;
-      padding: 20px; text-align: center; transition: border-color 0.2s;
+      background: var(--bg-surface); border: 1px solid var(--border); border-radius: 6px;
+      padding: 20px; text-align: center; transition: border-color 0.2s, background 0.3s;
     }
-    .team-card:hover { border-color: #00ff41; }
+    .team-card:hover { border-color: var(--border-card-hover); }
     .team-card .avatar {
       width: 64px; height: 64px; border-radius: 50%;
       margin: 0 auto 12px; object-fit: cover;
-      border: 2px solid #1e1e1e;
+      border: 2px solid var(--border);
+      transition: border-color 0.3s;
     }
     .team-card .avatar-placeholder {
       width: 64px; height: 64px; border-radius: 50%;
       margin: 0 auto 12px;
-      background: #1a1a1a; border: 2px solid #1e1e1e;
+      background: var(--bg-elevated); border: 2px solid var(--border);
       display: flex; align-items: center; justify-content: center;
-      font-size: 20px; color: #3d3d3d;
+      font-size: 20px; color: var(--text-placeholder);
+      transition: background 0.3s, border-color 0.3s, color 0.3s;
     }
     .team-card .name {
-      font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 2px;
+      font-size: 13px; font-weight: 600; color: var(--text-heading);
+      transition: color 0.3s; margin-bottom: 2px;
     }
     .team-card .role {
       font-size: 10px; color: #00ff41; margin-bottom: 4px;
       letter-spacing: 0.5px;
     }
     .team-card .bio {
-      font-size: 11px; color: #6b7280; margin: 0; line-height: 1.4;
+      font-size: 11px; color: var(--text-muted); margin: 0; line-height: 1.4;
     }
     .team-card.featured {
       border-color: rgba(0,255,65,0.2);
-      background: rgba(0,255,65,0.03);
+      background: var(--bg-green-tint);
     }
     .team-card.featured .avatar { border-color: #00ff41; }
 
@@ -595,7 +678,7 @@
     }
     .gallery-tab {
       padding: 8px 16px; border-radius: 4px; font-size: 11px; font-weight: 600;
-      border: 1px solid #1e1e1e; background: transparent; color: #6b7280;
+      border: 1px solid var(--border); background: transparent; color: var(--text-muted);
       cursor: pointer; transition: all 0.2s;
       font-family: "JetBrains Mono", monospace;
     }
@@ -608,25 +691,27 @@
       display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
     }
     .gallery-item {
-      background: #0d0d0d; border: 1px solid #1a1a1a; border-radius: 6px;
-      overflow: hidden; transition: border-color 0.2s;
+      background: var(--bg-surface); border: 1px solid var(--border); border-radius: 6px;
+      overflow: hidden; transition: border-color 0.2s, background 0.3s;
     }
-    .gallery-item:hover { border-color: #00ff41; }
+    .gallery-item:hover { border-color: var(--border-card-hover); }
     .gallery-item .thumb {
       width: 100%; aspect-ratio: 16/9;
-      background: #151515; display: flex;
+      background: var(--bg-thumb); display: flex;
       align-items: center; justify-content: center;
-      color: #3d3d3d; font-size: 28px;
+      color: var(--text-placeholder); font-size: 28px;
+      transition: background 0.3s, color 0.3s;
     }
     .gallery-item .thumb i { font-size: 32px; }
     .gallery-item .info {
       padding: 12px 14px;
     }
     .gallery-item .info h4 {
-      font-size: 12px; font-weight: 600; color: #fff; margin-bottom: 2px;
+      font-size: 12px; font-weight: 600; color: var(--text-heading);
+      transition: color 0.3s; margin-bottom: 2px;
     }
     .gallery-item .info p {
-      font-size: 10px; color: #6b7280; margin: 0;
+      font-size: 10px; color: var(--text-muted); margin: 0;
     }
 
     /* ─── STATS / COUNTER ─── */
@@ -635,22 +720,24 @@
       gap: 12px; margin-top: 24px;
     }
     .stat-card {
-      background: #0d0d0d; border: 1px solid #1a1a1a;
+      background: var(--bg-surface); border: 1px solid var(--border);
       border-radius: 6px; padding: 20px; text-align: center;
+      transition: background 0.3s, border-color 0.3s;
     }
     .stat-card .num {
       font-size: 28px; font-weight: 700; color: #00ff41;
     }
-    .stat-card .label { font-size: 11px; color: #6b7280; margin-top: 4px; }
+    .stat-card .label { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
 
     /* ─── COUNTDOWN ─── */
     .countdown-bar {
-      background: #0d0d0d; border: 1px solid #1a1a1a;
+      background: var(--bg-surface); border: 1px solid var(--border);
       border-radius: 6px; padding: 20px 24px; margin-top: 24px;
       display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+      transition: background 0.3s, border-color 0.3s;
     }
     .countdown-bar .label {
-      font-size: 11px; color: #6b7280;
+      font-size: 11px; color: var(--text-muted);
     }
     .countdown-bar .label i { color: #00ff41; margin-right: 6px; }
     .countdown-bar .time {
@@ -660,10 +747,11 @@
       text-align: center;
     }
     .countdown-bar .time .unit .val {
-      font-size: 22px; font-weight: 700; color: #fff;
+      font-size: 22px; font-weight: 700; color: var(--text-heading);
+      transition: color 0.3s;
     }
     .countdown-bar .time .unit .lbl {
-      font-size: 9px; color: #6b7280; text-transform: uppercase; letter-spacing: 1px;
+      font-size: 9px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;
     }
 
     /* ─── WHY SECTION ─── */
@@ -671,28 +759,29 @@
       display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px;
     }
     .why-item {
-      background: #0d0d0d; border: 1px solid #1a1a1a; border-radius: 6px;
+      background: var(--bg-surface); border: 1px solid var(--border); border-radius: 6px;
       padding: 20px; display: flex; gap: 14px; align-items: flex-start;
-      transition: border-color 0.2s;
+      transition: border-color 0.2s, background 0.3s;
     }
-    .why-item:hover { border-color: #00ff41; }
+    .why-item:hover { border-color: var(--border-card-hover); }
     .why-item .num {
       width: 28px; height: 28px; border-radius: 6px;
       background: rgba(0,255,65,0.1); color: #00ff41;
       display: flex; align-items: center; justify-content: center;
       font-size: 12px; font-weight: 700; flex-shrink: 0;
     }
-    .why-item h4 { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 4px; }
-    .why-item p { font-size: 11px; color: #6b7280; margin: 0; }
+    .why-item h4 { font-size: 13px; font-weight: 600; color: var(--text-heading); margin-bottom: 4px; }
+    .why-item p { font-size: 11px; color: var(--text-muted); margin: 0; }
 
     /* ─── FAQ ─── */
     .faq-list { margin-top: 24px; }
-    .faq-item { border-bottom: 1px solid #1a1a1a; padding: 18px 0; }
+    .faq-item { border-bottom: 1px solid var(--border); transition: border-color 0.3s; padding: 18px 0; }
     .faq-item:last-child { border-bottom: none; }
     .faq-question {
       display: flex; justify-content: space-between; align-items: center;
       cursor: pointer; font-size: 13px; font-weight: 500;
-      color: #fff; gap: 12px;
+      color: var(--text-heading); gap: 12px;
+      transition: color 0.3s;
     }
     .faq-question i {
       color: #00ff41; font-size: 18px; flex-shrink: 0;
@@ -700,7 +789,7 @@
     }
     .faq-question.active i { transform: rotate(45deg); }
     .faq-answer {
-      font-size: 12px; color: #6b7280; margin-top: 10px;
+      font-size: 12px; color: var(--text-muted); margin-top: 10px;
       display: none; line-height: 1.7; max-width: 640px;
     }
     .faq-answer.show { display: block; }
@@ -710,21 +799,23 @@
     .cta-section p { margin: 0 auto 24px; max-width: 480px; font-size: 13px; }
     /* ─── FOOTER ─── */
     footer {
-      border-top: 1px solid #1e1e1e; padding: 32px 0; text-align: center;
+      border-top: 1px solid var(--border-nav); padding: 32px 0; text-align: center;
+      transition: border-color 0.3s;
     }
-    footer p { font-size: 11px; color: #4b5563; margin: 0 auto; max-width: none; }
+    footer p { font-size: 11px; color: var(--text-dim); margin: 0 auto; max-width: none; }
     footer .footer-links {
       display: flex; justify-content: center; gap: 20px;
       margin-top: 10px; flex-wrap: wrap;
     }
     footer .footer-links a {
-      color: #4b5563; text-decoration: none; font-size: 11px;
+      color: var(--text-dim); text-decoration: none; font-size: 11px;
       transition: color 0.2s; display: inline-flex; align-items: center; gap: 4px;
     }
     footer .footer-links a i { font-size: 14px; }
     footer .footer-links a:hover { color: #00ff41; }
     footer .footer-keywords {
-      margin-top: 20px; font-size: 9px; color: #2a2a2a;
+      margin-top: 20px; font-size: 9px; color: var(--text-keyword);
+      transition: color 0.3s;
       max-width: 700px; margin-left: auto; margin-right: auto;
       line-height: 2;
     }
@@ -742,19 +833,90 @@
     .back-top.show { opacity: 1; visibility: visible; }
     .back-top:hover { background: #27c93f; }
 
+    
+    /* ─── MODAL ─── */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,0.7);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; visibility: hidden; transition: all 0.25s;
+      padding: 20px;
+    }
+    .modal-overlay.open { opacity: 1; visibility: visible; }
+    .modal-box {
+      background: var(--bg-surface); border: 1px solid var(--border);
+      border-radius: 8px; max-width: 460px; width: 100%;
+      padding: 28px; position: relative;
+      transform: scale(0.9); transition: transform 0.25s;
+      max-height: 80vh; overflow-y: auto;
+    }
+    .modal-overlay.open .modal-box { transform: scale(1); }
+    .modal-close {
+      position: absolute; top: 12px; right: 12px;
+      background: none; border: none; color: var(--text-muted);
+      font-size: 22px; cursor: pointer;
+      width: 32px; height: 32px; display: flex;
+      align-items: center; justify-content: center;
+      border-radius: 4px; transition: all 0.2s;
+    }
+    .modal-close:hover { color: #00ff41; background: rgba(0,255,65,0.08); }
+    .modal-box .avatar-lg {
+      width: 80px; height: 80px; border-radius: 50%;
+      object-fit: cover; border: 3px solid #00ff41; margin-bottom: 14px;
+    }
+    .modal-box .avatar-lg-placeholder {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: var(--bg-elevated); border: 3px solid #00ff41;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 30px; color: var(--text-placeholder); margin-bottom: 14px;
+    }
+    .modal-box .modal-name {
+      font-size: 18px; font-weight: 700; color: var(--text-heading); margin-bottom: 4px;
+    }
+    .modal-box .modal-role {
+      font-size: 12px; color: #00ff41; margin-bottom: 12px;
+    }
+    .modal-box .modal-bio {
+      font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 14px;
+    }
+    .modal-box .modal-skills {
+      display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px;
+    }
+    .modal-box .modal-skills span {
+      font-size: 10px; color: var(--text-secondary);
+      background: var(--bg-tag); padding: 3px 10px; border-radius: 4px;
+    }
+    .modal-box .modal-sosmed {
+      display: flex; gap: 10px;
+    }
+    .modal-box .modal-sosmed a {
+      width: 36px; height: 36px; border-radius: 6px;
+      background: var(--bg-elevated); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-muted); font-size: 18px; text-decoration: none;
+      transition: all 0.2s;
+    }
+    .modal-box .modal-sosmed a:hover { border-color: #00ff41; color: #00ff41; }
+    .team-card { cursor: pointer; }
+
     /* ─── RESPONSIVE ─── */
     @media (max-width: 768px) {
       .nav-links { display: none; }
       .nav-toggle { display: block; }
+      .nav-cta .theme-toggle { display: none; }
       .nav-links.show {
         display: flex; flex-direction: column;
         position: absolute; top: 56px; left: 0; right: 0;
-        background: #0a0a0a; border-bottom: 1px solid #1e1e1e;
+        background: var(--bg-nav); border-bottom: 1px solid var(--border-nav);
+        padding: 16px 24px; gap: 12px;
+        transition: background 0.3s;
+        background: var(--bg-nav); border-bottom: 1px solid var(--border-nav);
+        transition: background 0.3s;
         padding: 16px 24px; gap: 12px;
       }
       .hero h1 { font-size: 26px; }
       .hero { padding: 120px 0 60px; }
-      .ascii-penguin { font-size: 7px; }
+      .ascii-penguin { font-size: 4px; }
       section { padding: 60px 0; }
       h2 { font-size: 22px; }
       .features-grid { grid-template-columns: 1fr; }
@@ -777,7 +939,7 @@
       .stats-row { grid-template-columns: 1fr; }
       .gallery-grid { grid-template-columns: 1fr; }
       .hero h1 { font-size: 20px; }
-      .ascii-penguin { font-size: 5px; }
+      .ascii-penguin { font-size: 4px; }
       .hero-buttons { flex-direction: column; align-items: center; }
       .countdown-bar { flex-direction: column; align-items: stretch; text-align: center; }
       .countdown-bar .time { justify-content: center; }
@@ -792,7 +954,12 @@
   <nav>
     <div class="container">
       <a href="#" class="nav-logo" aria-label="The Penguin Circle — Beranda">
-        <i class='bx bxs-terminal'></i><span>PENGUIN</span><span style="color:#6b7280">/</span><span>CIRCLE</span>
+        <pre class="nav-logo-art" aria-label="The Penguin Circle">████████╗██╗  ██╗███████╗    ██████╗ ███████╗███╗   ██╗ ██████╗ ██╗   ██╗██╗███╗   ██╗     ██████╗██╗██████╗  ██████╗██╗     ███████╗
+╚══██╔══╝██║  ██║██╔════╝    ██╔══██╗██╔════╝████╗  ██║██╔════╝ ██║   ██║██║████╗  ██║    ██╔════╝██║██╔══██╗██╔════╝██║     ██╔════╝
+   ██║   ███████║█████╗      ██████╔╝█████╗  ██╔██╗ ██║██║  ███╗██║   ██║██║██╔██╗ ██║    ██║     ██║██████╔╝██║     ██║     ███╗
+   ██║   ██╔══██║██╔══╝      ██╔═══╝ ██╔══╝  ██║╚██╗██║██║   ██║██║   ██║██║██║╚██╗██║    ██║     ██║██╔══██╗██║     ██║     ██╔══╝
+   ██║   ██║  ██║███████╗    ██║     ███████╗██║ ╚████║╚██████╔╝╚██████╔╝██║██║ ╚████║    ╚██████╗██║██║  ██║╚██████╗███████╗███████╗
+   ╚═╝   ╚═╝  ╚═╝╚══════╝    ╚═╝     ╚══════╝╚═╝  ╚═══╝ ╚═════╝  ╚═════╝  ╚═╝╚═╝  ╚═══╝     ╚═════╝╚═╝╚═╝  ╚═╝ ╚═════╝╚══════╝╚══════╝</pre>
       </a>
       <button class="nav-toggle" id="navToggle" aria-label="Toggle Menu"><i class='bx bx-menu'></i></button>
       <ul class="nav-links" id="navLinks">
@@ -805,6 +972,9 @@
         <li><a href="#faq">FAQ</a></li>
       </ul>
       <div class="nav-cta">
+        <button class="theme-toggle" id="themeToggleDesktop" aria-label="Toggle light/dark mode">
+          <i class='bx bx-moon' id="themeIconDesktop"></i>
+        </button>
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSczFE4zfWlSkgrQ0I0LjyKn7JUDAOoW4XguA66p0ZJ9Q7Rgxg/viewform?usp=header" target="_blank" rel="noopener"><i class='bx bx-edit'></i>Daftar</a>
       </div>
     </div>
@@ -818,17 +988,15 @@
     <div class="hero-silhouette s3"></div>
     <div class="container">
       <pre class="ascii-penguin" aria-hidden="true">
-       .---.
-      /     \
-     |  .-.  |
-     | (.)(.)|
-     |   >   |
-     |  ___  |
-      \_(_)_/
+████████╗██╗  ██╗███████╗    ██████╗ ███████╗███╗   ██╗ ██████╗ ██╗   ██╗██╗███╗   ██╗     ██████╗██╗██████╗  ██████╗██╗     ███████╗
+╚══██╔══╝██║  ██║██╔════╝    ██╔══██╗██╔════╝████╗  ██║██╔════╝ ██║   ██║██║████╗  ██║    ██╔════╝██║██╔══██╗██╔════╝██║     ██╔════╝
+   ██║   ███████║█████╗      ██████╔╝█████╗  ██╔██╗ ██║██║  ███╗██║   ██║██║██╔██╗ ██║    ██║     ██║██████╔╝██║     ██║     ███╗
+   ██║   ██╔══██║██╔══╝      ██╔═══╝ ██╔══╝  ██║╚██╗██║██║   ██║██║   ██║██║██║╚██╗██║    ██║     ██║██╔══██╗██║     ██║     ██╔══╝
+   ██║   ██║  ██║███████╗    ██║     ███████╗██║ ╚████║╚██████╔╝╚██████╔╝██║██║ ╚████║    ╚██████╗██║██║  ██║╚██████╗███████╗███████╗
+   ╚═╝   ╚═╝  ╚═╝╚══════╝    ╚═╝     ╚══════╝╚═╝  ╚═══╝ ╚═════╝  ╚═════╝  ╚═╝╚═╝  ╚═══╝     ╚═════╝╚═╝╚═╝  ╚═╝ ╚═════╝╚══════╝╚══════╝
       </pre>
       <p class="pain-point">Bingung mulai belajar coding? Sendirian gampang nyerah?</p>
-      <h1>THE <span class="highlight">PENGUIN</span> CIRCLE</h1>
-      <p class="tagline">
+      <p class="tagline" style="margin-top:4px;">
         Forum belajar <strong>CLI, Git, &amp; AI coding</strong> gratis untuk mahasiswa &mdash; <strong>dari 0</strong> sampai bisa bikin <strong>website &amp; aplikasi mobile</strong> pake AI. Langsung praktek, tanpa PPT, tanpa biaya.
       </p>
 
@@ -1085,7 +1253,7 @@
           <div class="segment-card">
             <div class="seg-num">SEG-1</div>
             <div class="seg-body">
-              <h4>Navigasi &amp; Manajemen File <span style="color:#6b7280;font-size:11px;font-weight:400;">&mdash; Juni</span></h4>
+              <h4>Navigasi &amp; Manajemen File <span style="color:var(--text-muted);font-size:11px;font-weight:400;">&mdash; Juni</span></h4>
               <div class="desc">Mulai dari 0: orientasi terminal (<code>pwd</code>, <code>ls</code>, <code>cd</code>), bikin folder &amp; file (<code>mkdir</code>, <code>touch</code>), hapus &amp; pindahin (<code>cp</code>, <code>mv</code>, <code>rm</code>), wildcard. <b style="color:#00ff41;">&#9888; Khusus WSL: langsung praktik bikin folder sendiri</b> (karena WSL fresh install gak punya Downloads/Pictures).</div>
               <div class="topics">
                 <span>pwd</span><span>ls</span><span>cd</span><span>mkdir</span><span>touch</span><span>cp</span><span>mv</span><span>rm</span><span>rmdir</span><span>wildcard</span>
@@ -1097,7 +1265,7 @@
           <div class="segment-card">
             <div class="seg-num">SEG-2</div>
             <div class="seg-body">
-              <h4>Editor &amp; Pengolahan Teks <span style="color:#6b7280;font-size:11px;font-weight:400;">&mdash; Juli</span></h4>
+              <h4>Editor &amp; Pengolahan Teks <span style="color:var(--text-muted);font-size:11px;font-weight:400;">&mdash; Juli</span></h4>
               <div class="desc"><b style="color:#ffd700;">&#9888; S2+S3 merged.</b> Dua minggu pertama: edit file pake <code>nano</code>, baca file (<code>cat</code>, <code>less</code>, <code>head</code>, <code>tail</code>), olah data (<code>wc</code>, <code>sort</code>, <code>uniq</code>). Dua minggu terakhir: cari file (<code>find</code>, <code>locate</code>), cari teks (<code>grep</code>), potong &amp; ganti teks (<code>cut</code>, <code>tr</code>, <code>diff</code>).</div>
               <div class="topics">
                 <span>nano</span><span>cat</span><span>less</span><span>head</span><span>tail</span><span>wc</span><span>sort</span><span>uniq</span><span>find</span><span>grep</span><span>cut</span><span>tr</span><span>diff</span>
@@ -1109,7 +1277,7 @@
           <div class="segment-card">
             <div class="seg-num">SEG-3</div>
             <div class="seg-body">
-              <h4>System Admin &amp; Tools <span style="color:#6b7280;font-size:11px;font-weight:400;">&mdash; Agustus</span></h4>
+              <h4>System Admin &amp; Tools <span style="color:var(--text-muted);font-size:11px;font-weight:400;">&mdash; Agustus</span></h4>
               <div class="desc"><b style="color:#ffd700;">&#9888; S4+S5 merged.</b> Dua minggu pertama: user &amp; superuser (<code>sudo</code>), hak akses file (<code>chmod</code>, <code>chown</code>), manajemen proses (<code>ps</code>, <code>kill</code>, <code>htop</code>). Dua minggu terakhir: package manager (<code>apt</code>, <code>brew</code>), download (<code>wget</code>, <code>curl</code>), tools multimedia (<code>ffmpeg</code>, <code>imagemagick</code>).</div>
               <div class="topics">
                 <span>sudo</span><span>chmod</span><span>chown</span><span>ps</span><span>kill</span><span>htop</span><span>apt</span><span>brew</span><span>wget</span><span>curl</span><span>ffmpeg</span><span>imagemagick</span>
@@ -1121,7 +1289,7 @@
           <div class="segment-card">
             <div class="seg-num">SEG-4</div>
             <div class="seg-body">
-              <h4>Jaringan &amp; Remote Access <span style="color:#6b7280;font-size:11px;font-weight:400;">&mdash; September</span></h4>
+              <h4>Jaringan &amp; Remote Access <span style="color:var(--text-muted);font-size:11px;font-weight:400;">&mdash; September</span></h4>
               <div class="desc">Dasar jaringan: tes koneksi (<code>ping</code>), cek IP (<code>ip addr</code>), transfer file (<code>scp</code>), remote server (<code>ssh</code>), dan bikin kunci SSH biar login tanpa password. Skill wajib developer modern — lo bakal pake ini tiap hari kalo udah kerja di tech.</div>
               <div class="topics">
                 <span>ping</span><span>ip addr</span><span>curl</span><span>wget</span><span>ssh</span><span>ssh-keygen</span><span>scp</span>
@@ -1133,7 +1301,7 @@
           <div class="segment-card">
             <div class="seg-num">SEG-5</div>
             <div class="seg-body">
-              <h4>Git &amp; Version Control <span style="color:#6b7280;font-size:11px;font-weight:400;">&mdash; Oktober</span></h4>
+              <h4>Git &amp; Version Control <span style="color:var(--text-muted);font-size:11px;font-weight:400;">&mdash; Oktober</span></h4>
               <div class="desc">Git dari 0: <code>init</code>, <code>add</code>, <code>commit</code>, <code>branch</code>, <code>checkout</code>, <code>push</code>, <code>pull</code>, <code>clone</code>. Konekin repo lokal ke GitHub — skill wajib buat backup project, kerja tim, dan nunjukin portfolio ke calon employer.</div>
               <div class="topics">
                 <span>git init</span><span>git add</span><span>git commit</span><span>git branch</span><span>git push</span><span>git pull</span><span>GitHub</span>
@@ -1156,7 +1324,7 @@
           <div class="segment-card">
             <div class="seg-num">SEG-6</div>
             <div class="seg-body">
-              <h4>AI CLI &amp; Prompt Engineering <span style="color:#6b7280;font-size:11px;font-weight:400;">&mdash; November</span></h4>
+              <h4>AI CLI &amp; Prompt Engineering <span style="color:var(--text-muted);font-size:11px;font-weight:400;">&mdash; November</span></h4>
               <div class="desc">Bedah perbedaan AI CLI vs ChatGPT web, instalasi tools (<b>opencode</b>, <b>ollama</b>), dan belajar prompt engineering dasar. Tujuan: peserta paham cara ngobrol sama AI lewat terminal dan bisa pake AI buat bantu tugas kuliah &amp; coding.</div>
               <div class="topics">
                 <span>AI CLI</span><span>opencode</span><span>ollama</span><span>prompt</span><span>terminal AI</span>
@@ -1168,7 +1336,7 @@
           <div class="segment-card">
             <div class="seg-num">SEG-7</div>
             <div class="seg-body">
-              <h4>Project Planning + Web Dev <span style="color:#6b7280;font-size:11px;font-weight:400;">&mdash; Desember</span></h4>
+              <h4>Project Planning + Web Dev <span style="color:var(--text-muted);font-size:11px;font-weight:400;">&mdash; Desember</span></h4>
               <div class="desc"><b style="color:#ffd700;">&#9888; S9+S10 merged.</b> Dua minggu pertama: merancang project (<code>rancangan_project.md</code>, mockup, user flow). Dua minggu terakhir: eksekusi web pake AI CLI — setup Laravel/Next.js, generate komponen, debugging. Lo cukup ngomong, AI yang nulis kodenya.</div>
               <div class="topics">
                 <span>mockup</span><span>user flow</span><span>rancangan</span><span>Laravel</span><span>Next.js</span><span>AI coding</span><span>prompt</span><span>debug</span>
@@ -1180,7 +1348,7 @@
           <div class="segment-card">
             <div class="seg-num">SEG-8</div>
             <div class="seg-body">
-              <h4>Mobile Dev + Warisan Digital <span style="color:#6b7280;font-size:11px;font-weight:400;">&mdash; Januari</span></h4>
+              <h4>Mobile Dev + Warisan Digital <span style="color:var(--text-muted);font-size:11px;font-weight:400;">&mdash; Januari</span></h4>
               <div class="desc">Bikin aplikasi mobile (Flutter / React Native) pake AI CLI. Tiga minggu build, satu minggu terakhir dokumentasi warisan: kumpulin semua file .md, script, prompt log, dan <code>pesan_untuk_angkatan_selanjutnya.txt</code>.</div>
               <div class="topics">
                 <span>Flutter</span><span>React Native</span><span>AI CLI</span><span>deploy</span><span>dokumentasi</span><span>warisan</span>
@@ -1288,7 +1456,7 @@
       <div class="team-category">
         <h3><i class='bx bx-star' style="color:#ffd700;"></i> Mentor &amp; Pendiri <span>— Penggagas &amp; pengajar utama</span></h3>
         <div class="team-grid">
-          <div class="team-card featured">
+          <div class="team-card featured" onclick="openModal('muadz')" data-member="muadz">
             <img src="ProfileLightGray.png" alt="Mu'adz Hudzaifah — Ketua Divisi Kemahasiswaan TRM 2026/2027 dan Mentor The Penguin Circle" class="avatar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
             <div class="avatar-placeholder" style="display:none;"><i class='bx bx-user'></i></div>
             <div class="name">Mu'adz Hudzaifah</div>
@@ -1301,37 +1469,37 @@
       <div class="team-category">
         <h3><i class='bx bx-shield' style="color:#00ff41;"></i> Divisi Kemahasiswaan <span>— Anggota khusus &amp; asisten praktik</span></h3>
         <div class="team-grid">
-          <div class="team-card">
+          <div class="team-card" onclick="openModal('anggota1')" data-member="anggota1">
             <div class="avatar-placeholder"><i class='bx bx-user'></i></div>
             <div class="name">Anggota 1</div>
             <div class="role">Co-Mentor</div>
             <div class="bio">Asisten praktik &amp; pendamping peserta.</div>
           </div>
-          <div class="team-card">
+          <div class="team-card" onclick="openModal('anggota2')" data-member="anggota2">
             <div class="avatar-placeholder"><i class='bx bx-user'></i></div>
             <div class="name">Anggota 2</div>
             <div class="role">Co-Mentor</div>
             <div class="bio">Asisten praktik &amp; pendamping peserta.</div>
           </div>
-          <div class="team-card">
+          <div class="team-card" onclick="openModal('anggota3')" data-member="anggota3">
             <div class="avatar-placeholder"><i class='bx bx-user'></i></div>
             <div class="name">Anggota 3</div>
             <div class="role">Co-Mentor</div>
             <div class="bio">Asisten praktik &amp; pendamping peserta.</div>
           </div>
-          <div class="team-card">
+          <div class="team-card" onclick="openModal('anggota4')" data-member="anggota4">
             <div class="avatar-placeholder"><i class='bx bx-user'></i></div>
             <div class="name">Anggota 4</div>
             <div class="role">Co-Mentor</div>
             <div class="bio">Asisten praktik &amp; pendamping peserta.</div>
           </div>
-          <div class="team-card">
+          <div class="team-card" onclick="openModal('anggota5')" data-member="anggota5">
             <div class="avatar-placeholder"><i class='bx bx-user'></i></div>
             <div class="name">Anggota 5</div>
             <div class="role">Co-Mentor</div>
             <div class="bio">Asisten praktik &amp; pendamping peserta.</div>
           </div>
-          <div class="team-card">
+          <div class="team-card" onclick="openModal('anggota6')" data-member="anggota6">
             <div class="avatar-placeholder"><i class='bx bx-user'></i></div>
             <div class="name">Anggota 6</div>
             <div class="role">Co-Mentor</div>
@@ -1343,13 +1511,13 @@
       <div class="team-category">
         <h3><i class='bx bx-group' style="color:#6b7280;"></i> Peserta Circle <span>— Mahasiswa umum dari 0</span></h3>
         <div class="team-grid">
-          <div class="team-card">
+          <div class="team-card" onclick="openModal('peserta')" data-member="peserta">
             <div class="avatar-placeholder"><i class='bx bx-user'></i></div>
             <div class="name">+50 Peserta</div>
             <div class="role">Circle Member</div>
             <div class="bio">Mahasiswa TRM &amp; umum yang belajar dari 0.</div>
           </div>
-          <div class="team-card">
+          <div class="team-card" onclick="openModal('kamu')" data-member="kamu">
             <div class="avatar-placeholder"><i class='bx bx-user-plus'></i></div>
             <div class="name">Kamu?</div>
             <div class="role">Next Member</div>
@@ -1541,7 +1709,7 @@
       </p>
       <a href="https://docs.google.com/forms/d/e/1FAIpQLSczFE4zfWlSkgrQ0I0LjyKn7JUDAOoW4XguA66p0ZJ9Q7Rgxg/viewform?usp=header" target="_blank" rel="noopener" class="btn-primary" style="font-size:14px;padding:14px 32px;"><i class='bx bx-edit'></i>Daftar Gratis Sekarang</a>
       <div style="margin-top:16px;">
-        <span style="font-size:10px;color:#4b5563;">Butuh info lebih? <a href="#faq" style="color:#00ff41;">Cek FAQ</a> atau langsung aja dateng ke Lab Komputer.</span>
+        <span style="font-size:10px;color:var(--text-dim);">Butuh info lebih? <a href="#faq" style="color:#00ff41;">Cek FAQ</a> atau langsung aja dateng ke Lab Komputer.</span>
       </div>
     </div>
   </section>
@@ -1566,9 +1734,57 @@
     </div>
   </footer>
 
+
+  <!-- ─── MODAL ─── -->
+  <div class="modal-overlay" id="memberModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal()"><i class='bx bx-x'></i></button>
+      <div style="text-align:center;">
+        <img id="modalAvatar" class="avatar-lg" src="" alt="" style="display:none;">
+        <div id="modalAvatarPlaceholder" class="avatar-lg-placeholder"><i class='bx bx-user'></i></div>
+        <div class="modal-name" id="modalName"></div>
+        <div class="modal-role" id="modalRole"></div>
+      </div>
+      <div class="modal-bio" id="modalBio"></div>
+      <div class="modal-skills" id="modalSkills"></div>
+      <div class="modal-sosmed" id="modalSosmed"></div>
+    </div>
+  </div>
+
   <button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Kembali ke atas"><i class='bx bx-chevron-up'></i></button>
 
+
   <script>
+
+    // ─── Theme Toggle ───
+    (function initTheme() {
+      const saved = localStorage.getItem('theme');
+      if (saved === 'light') {
+        document.body.classList.add('light');
+      }
+    })();
+
+    function toggleTheme() {
+      document.body.classList.toggle('light');
+      const isLight = document.body.classList.contains('light');
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+      const icons = document.querySelectorAll('#themeIcon, #themeIconDesktop');
+      icons.forEach(el => {
+        el.className = isLight ? 'bx bx-sun' : 'bx bx-moon';
+      });
+    }
+
+    document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+    document.getElementById('themeToggleDesktop').addEventListener('click', toggleTheme);
+
+    (function syncThemeIcons() {
+      const isLight = document.body.classList.contains('light');
+      const icons = document.querySelectorAll('#themeIcon, #themeIconDesktop');
+      icons.forEach(el => {
+        el.className = isLight ? 'bx bx-sun' : 'bx bx-moon';
+      });
+    })();
+
     // ─── Typing Animation (hacker-movie style) ───
     (function typeCommand() {
       const el = document.getElementById('typedText');
@@ -1623,6 +1839,115 @@
       link.addEventListener('click', () => {
         document.getElementById('navLinks').classList.remove('show');
       });
+    });
+
+
+    // ─── Team Member Modal ───
+    const teamMembers = {
+      "muadz": {
+        name: "Mu'adz Hudzaifah",
+        role: "Ketua Divisi · Mentor",
+        bio: "Penggagas The Penguin Circle. 8 segmen ngajar CLI, Git, dan AI coding dari 0. Bertanggung jawab atas kurikulum, materi, dan arah pembelajaran Circle.",
+        img: "ProfileLightGray.png",
+        skills: ["CLI Linux", "Git", "AI CLI", "Web Dev", "System Admin"],
+        sosmed: { "github": "https://github.com/muadzhdz", "instagram": "https://instagram.com/muadz_hdz" }
+      },
+      "anggota1": {
+        name: "Anggota 1",
+        role: "Co-Mentor",
+        bio: "Asisten praktik & pendamping peserta. Siap bantu satu-satu kalo ada yang bingung.",
+        skills: ["CLI", "Git", "AI Tools"]
+      },
+      "anggota2": {
+        name: "Anggota 2",
+        role: "Co-Mentor",
+        bio: "Asisten praktik & pendamping peserta.",
+        skills: ["CLI", "Git", "AI Tools"]
+      },
+      "anggota3": {
+        name: "Anggota 3",
+        role: "Co-Mentor",
+        bio: "Asisten praktik & pendamping peserta.",
+        skills: ["CLI", "Git", "AI Tools"]
+      },
+      "anggota4": {
+        name: "Anggota 4",
+        role: "Co-Mentor",
+        bio: "Asisten praktik & pendamping peserta.",
+        skills: ["CLI", "Git", "AI Tools"]
+      },
+      "anggota5": {
+        name: "Anggota 5",
+        role: "Co-Mentor",
+        bio: "Asisten praktik & pendamping peserta.",
+        skills: ["CLI", "Git", "AI Tools"]
+      },
+      "anggota6": {
+        name: "Anggota 6",
+        role: "Co-Mentor",
+        bio: "Asisten praktik & pendamping peserta.",
+        skills: ["CLI", "Git", "AI Tools"]
+      },
+      "peserta": {
+        name: "+50 Peserta",
+        role: "Circle Member",
+        bio: "Mahasiswa TRM & umum yang belajar dari 0. Siap jadi developer modern dengan bantuan AI.",
+        skills: ["Semangat Belajar", "Dari 0", "AI Ready"]
+      },
+      "kamu": {
+        name: "Kamu?",
+        role: "Next Member",
+        bio: "Yang penting mau belajar. Daftar gratis sekarang dan jadi bagian dari The Penguin Circle!",
+        skills: ["Mau Belajar", "Gratis", "No Syarat"]
+      }
+    };
+
+    function openModal(id) {
+      const m = teamMembers[id];
+      if (!m) return;
+      document.getElementById('modalName').textContent = m.name;
+      document.getElementById('modalRole').textContent = m.role;
+      document.getElementById('modalBio').textContent = m.bio || '';
+      const avatarImg = document.getElementById('modalAvatar');
+      const avatarPh = document.getElementById('modalAvatarPlaceholder');
+      if (m.img) {
+        avatarImg.src = m.img; avatarImg.style.display = 'block';
+        avatarPh.style.display = 'none';
+      } else {
+        avatarImg.style.display = 'none';
+        avatarPh.style.display = 'flex';
+      }
+      const skillsEl = document.getElementById('modalSkills');
+      skillsEl.innerHTML = '';
+      if (m.skills) {
+        m.skills.forEach(s => {
+          const span = document.createElement('span');
+          span.textContent = s; skillsEl.appendChild(span);
+        });
+      }
+      const sosmedEl = document.getElementById('modalSosmed');
+      sosmedEl.innerHTML = '';
+      if (m.sosmed) {
+        Object.entries(m.sosmed).forEach(([platform, url]) => {
+          const a = document.createElement('a');
+          a.href = url; a.target = '_blank'; a.rel = 'noopener';
+          const icons = { github: 'bxl-github', instagram: 'bxl-instagram', linkedin: 'bxl-linkedin', twitter: 'bxl-twitter' };
+          a.innerHTML = `<i class='bx ${icons[platform] || "bx-link-external"}'></i>`;
+          sosmedEl.appendChild(a);
+        });
+      }
+      document.getElementById('memberModal').classList.add('open');
+    }
+
+    function closeModal() {
+      document.getElementById('memberModal').classList.remove('open');
+    }
+
+    document.getElementById('memberModal').addEventListener('click', function(e) {
+      if (e.target === this) closeModal();
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeModal();
     });
 
     // ─── Back to Top ───
