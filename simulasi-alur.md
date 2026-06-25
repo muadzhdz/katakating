@@ -238,9 +238,9 @@ Minggu ke-4 setiap segmen adalah **Project Week**.
 | Bulan | Segmen | Topik | Mentor Action | Peserta Action |
 |-------|--------|-------|---------------|----------------|
 | **Juni** | S1 | CLI Navigasi & File (`pwd`, `ls`, `cd`, `mkdir`, `rm`, `cp`, `mv`) | Ajarin command + error handling | Praktik navigasi, bikin folder, hapus file |
-| **Juli** | S2 | Editor & Teks (`nano`, `cat`, `grep`, `echo`, `find`) | Demo nano + text processing | Bikin file, edit pake nano, grep keyword |
-| **Agustus** | S3 | System Admin (`sudo`, `chmod`, `ps`, `kill`, `apt`, `systemctl`) | Demo permission + process management | Install/uninstall apps, manage proses |
-| **September** | S4 | Jaringan & Remote (`ping`, `ssh`, `scp`, `curl`, `wget`, `netstat`) | Demo koneksi jaringan, SSH ke PC lab | Ping, SSH, download file, cek port |
+| **Juli** | S2 | Editor & Teks (`nano`, `cat`, `grep`, `echo`) | Demo nano + text processing | Bikin file, edit pake nano, grep keyword |
+| **Agustus** | S3 | System Admin (`sudo`, `chmod`, `chown`, `whoami`, `su`, `ps`, `kill`, `htop`, `apt`, `wget`, `curl`, `zip`, `unzip`, `tar`, `tree`) | Demo permission + process management | Install/uninstall apps, manage proses |
+| **September** | S4 | Jaringan & Remote (`ping`, `ip addr`, `ifconfig`, `curl`, `wget`, `ssh`) | Demo koneksi jaringan, SSH ke PC lab | Ping, cek IP, download, SSH remote |
 | **Oktober** | S5 | Git & Version Control (`init`, `add`, `commit`, `push`, `pull`, `branch`) | Ajarin git workflow lengkap | Init repo, commit, push ke GitHub |
 | **November** | S6 | AI CLI & Prompt (`opencode`, `gemini-cli`, `prompt engineering`) | Demo AI tools + cara bikin prompt efektif | Bikin script pake AI, automate task |
 | **Desember** | S7 | Web Dev & Deploy (`HTML/CSS`, `static site`, `Vercel deploy`) | Demo bikin + deploy website sederhana | Bikin website pribadi, deploy online |

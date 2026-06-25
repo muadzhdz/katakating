@@ -606,18 +606,16 @@ tree
 
 Setelah segmen ini, peserta bisa:
 - Bikin dan edit file teks dari terminal pake `nano`
-- Baca isi file dengan berbagai cara (`cat`, `less`, `head`, `tail`)
-- Ngolah teks (`wc`, `sort`, `uniq`, `nl`)
-- Nyari file (`find`, `locate`, `which`)
+- Baca isi file dengan `cat`
+- Nulis output dengan `echo` dan redirect (`>`, `>>`)
 - Nyari teks di dalam file (`grep`)
-- Ngolah teks lanjutan (`cut`, `tr`, `diff`)
 
 ---
 
-## 📅 MINGGU 1: Terminal Text Editor & Baca File
+## 📅 MINGGU 1: Terminal Text Editor
 
 ### Yang Bakal Dipelajari:
-`nano`, `cat`, `less`, `more`, `head`, `tail`, `tail -f`
+`nano`, `cat`
 
 ### ⏱️ Sesi (60-75 menit):
 
@@ -625,10 +623,9 @@ Setelah segmen ini, peserta bisa:
 |-------|-----------|
 | 0-10' | **Review + tanya jawab Segmen 1** |
 | 10-25' | **Demo nano** — Buka, ngetik, save, exit. Shortcut: Ctrl+O (save), Ctrl+X (exit), Ctrl+K (cut), Ctrl+U (paste) |
-| 25-40' | **Demo: cat & less** — Baca file pendek vs panjang |
-| 40-55' | **Demo: head, tail, tail -f** — Liat awal/akhir file |
-| 55-65' | **Praktik bareng** — Bikin catatan kuliah pake nano, baca pake cat/less |
-| 65-75' | **Q&A + tantangan** |
+| 25-40' | **Demo cat** — Baca file pendek |
+| 40-55' | **Praktik bareng** — Bikin catatan kuliah pake nano, baca pake cat |
+| 55-65' | **Q&A + tantangan** |
 
 ---
 
@@ -689,16 +686,6 @@ Atau langsung: `Ctrl+X` → `Y` → `Enter`
 | **Fungsi** | Nampilin isi file langsung di terminal |
 | **Analogi** | "Lo buka lembaran kertas dan baca isinya langsung" |
 
-**Perbedaan `cat` vs `less` vs `head` vs `tail`:**
-
-| Command | Fungsi | Cocok buat file... | Cara baca |
-|---------|--------|-------------------|-----------|
-| `cat file` | Tampilkan semua | Pendek (< 50 baris) | Langsung semua |
-| `less file` | Tampilkan per halaman | Panjang (> 50 baris) | Scroll pake arrow/space |
-| `head file` | 10 baris pertama | Mau liat awal aja | Otomatis 10 baris |
-| `tail file` | 10 baris terakhir | Mau liat akhir aja | Otomatis 10 baris |
-| `tail -f file` | Ikuti perubahan | Log file realtime | Update otomatis |
-
 **Contoh `cat`:**
 ```bash
 cat catatan.txt                       # Tampilin isi catatan.txt
@@ -706,31 +693,7 @@ cat file1.txt file2.txt               # Tampilin file1 lalu file2
 cat file1.txt file2.txt > gabungan.txt  # Gabungin 2 file jadi 1
 ```
 
-**Contoh `less`:**
-```bash
-less file_panjang.txt    # Buka file, scroll pake arrow/spasi
-# Di dalam less:
-# q = keluar
-# /kata = cari kata "kata"
-# n = next match
-# g = ke awal, G = ke akhir
-```
-
-**Contoh `head` & `tail`:**
-```bash
-head -n 5 file.txt         # 5 baris pertama
-tail -n 20 file.txt        # 20 baris terakhir
-tail -f server.log         # Pantau log secara realtime (Ctrl+C buat berhenti)
-```
-
-**Trik keren `tail -f`:**
-```bash
-tail -f storage/logs/laravel.log   # Laravel log
-tail -f /var/log/syslog            # Sistem Linux log
-```
-
 **Error umum:**
-- `cat file_gede_banget.txt` — terminal lo bakal penuh, pake `less` aja
 - File belum ada → "No such file or directory"
 
 ---
@@ -738,30 +701,26 @@ tail -f /var/log/syslog            # Sistem Linux log
 ### 🧪 Tantangan Minggu 1 (PR):
 
 > *"Bikin file `biodata.txt` pake `nano`. Isinya: nama, NIM, prodi, hobi, cita-cita.*
-> *Bikin file `daftar_belanja.txt` isi 15 item.*
-> *Praktikkin:*
-> 1. *`head -n 5 daftar_belanja.txt`*
-> 2. *`tail -n 3 daftar_belanja.txt`*
-> 3. *`cat daftar_belanja.txt`*
-> *Catet hasilnya di file `hasil_baca.txt`."*
+> *Bikin file `daftar_belanja.txt` isi 15 item pake `nano`.*
+> *Baca file-nya pake `cat`."*
 
 ---
 
-## 📅 MINGGU 2: Info & Pengolahan Teks
+## 📅 MINGGU 2: Echo & Redirect
 
 ### Yang Bakal Dipelajari:
-`wc`, `sort`, `uniq`, `nl`, operator `>` dan `>>` (redirect)
+`echo`, operator `>` dan `>>` (redirect)
 
 ### ⏱️ Sesi (60-75 menit):
 
 | Waktu | Aktivitas |
 |-------|-----------|
 | 0-10' | Review |
-| 10-25' | **wc** — Hitung baris, kata, karakter |
-| 25-40' | **sort & uniq** — Urutin & hapus duplikat |
-| 40-50' | **nl** — Nomor baris |
-| 50-60' | **Redirect** — `>` (timpa), `>>` (tambah) |
-| 60-75' | **Praktik: "Analisis Data Teks"** |
+| 10-25' | **echo** — Nulis teks ke terminal |
+| 25-40' | **Redirect `>`** — Simpen output ke file (timpa) |
+| 40-50' | **Redirect `>>`** — Nambah output ke file |
+| 50-60' | **Praktik: "Buat Catatan Harian"** |
+| 60-75' | **Tantangan** |
 
 ---
 
@@ -769,160 +728,80 @@ tail -f /var/log/syslog            # Sistem Linux log
 
 ---
 
-#### `wc` — Word Count
+#### `echo` — Output Teks
 
 | Aspek | Penjelasan |
 |-------|-----------|
-| **Fungsi** | Hitung jumlah baris, kata, dan karakter dalam file |
-| **Contoh** | `wc catatan.txt` |
+| **Fungsi** | Nampilin teks ke terminal |
+| **Contoh** | `echo "Halo Dunia"` |
 
-**Flag `wc`:**
-
-| Flag | Fungsi | Contoh |
-|------|--------|--------|
-| `wc -l` | Hitung BARIS aja | `wc -l data.txt` → "25 data.txt" |
-| `wc -w` | Hitung KATA aja | `wc -w data.txt` |
-| `wc -c` | Hitung KARAKTER aja | `wc -c data.txt` |
-| `wc file` | Baris + kata + karakter | `wc data.txt` |
-
-**Trik keren:**
+**Contoh `echo`:**
 ```bash
-ls | wc -l                      # Hitung ada berapa file di folder ini
-grep "error" log.txt | wc -l    # Hitung ada berapa baris error
+echo "Halo Dunia"                    # Tampilin teks
+echo "Nama: Muadz"                   # Tampilin data
+echo $USER                           # Tampilin isi variable
 ```
 
 ---
 
-#### `sort` — Mengurutkan
+#### Redirect `>` dan `>>`
 
 | Aspek | Penjelasan |
 |-------|-----------|
-| **Fungsi** | Mengurutkan isi file berdasarkan abjad/angka |
-| **Contoh** | `sort data.txt` |
+| **Fungsi** | Simpan output command ke file |
+| **Analogi** | Kayak "Save As" — nangkep apa yang keluar di terminal terus dimasukin ke file |
 
-**Perbedaan `sort` biasa vs `sort -n` vs `sort -r`:**
+**Perbedaan `>` vs `>>`:**
 
-| Command | Fungsi | Contoh Input | Output |
-|---------|--------|-------------|--------|
-| `sort file` | Urut abjad | 2, 10, 1, 20 | 1, 10, 2, 20 |
-| `sort -n file` | Urut angka (numerik) | 2, 10, 1, 20 | 1, 2, 10, 20 |
-| `sort -r file` | Urut terbalik | a, b, c | c, b, a |
-| `sort -u file` | Urut + hapus duplikat | a, a, b | a, b |
+| Operator | Fungsi | Contoh |
+|----------|--------|--------|
+| `>` | Timpa (overwrite) | `echo "Halo" > file.txt` — bikin file baru / timpa isi lama |
+| `>>` | Tambah (append) | `echo "Baris baru" >> file.txt` — tambahin di akhir file |
 
----
-
-#### `uniq` — Unik (Hapus Duplikat)
-
-| Aspek | Penjelasan |
-|-------|-----------|
-| **Fungsi** | Hapus baris yang duplikat (BERURUTAN) |
-| **Contoh** | `uniq data.txt` |
-
-⚠️ **PENTING:** `uniq` cuma hapus duplikat KALO BARISNYA BERURUTAN. Makanya biasanya dipake setelah `sort`:
+**Contoh redirect:**
 ```bash
-sort data.txt | uniq           # Urutin dulu, baru hapus duplikat
-sort data.txt | uniq -c        # Hitung jumlah kemunculan tiap baris
-sort data.txt | uniq -d        # Cuma tampilin yang duplikat
+echo "Catatan harian" > catatan.txt     # Bikin file isi "Catatan harian"
+echo "Hari ini belajar Linux" >> catatan.txt  # Tambah baris
+echo "Senang belajar CLI" >> catatan.txt     # Tambah baris lagi
+cat catatan.txt                          # Liat hasilnya
 ```
 
----
-
-#### `nl` — Number Lines
-
-| Aspek | Penjelasan |
-|-------|-----------|
-| **Fungsi** | Nampilin file dengan nomor baris |
-| **Contoh** | `nl catatan.txt` |
-
-Mirip `cat -n`:
+**Trik keren redirect:**
 ```bash
-nl catatan.txt       # Beri nomor baris
-cat -n catatan.txt   # Sama aja
+ls > daftar_file.txt                     # Simpen daftar file ke teks
+ls >> daftar_file.txt                    # Tambah daftar file ke teks
+cat file1.txt file2.txt > gabungan.txt   # Gabungin file
 ```
 
 ---
 
 ### 🧪 Tantangan Minggu 2 (PR):
 
-> *"Bikin file `data.txt` isi 10 nama buah (pisang, apel, jeruk, apel, mangga, jeruk, pisang, anggur, semangka, apel).*
-> *Praktikkin:*
-> 1. *`sort data.txt` — urutin abjad*
-> 2. *`sort data.txt | uniq` — urutin + hapus duplikat*
-> 3. *`sort data.txt | uniq -c` — hitung jumlah tiap buah*
-> 4. *`wc -l data.txt` — jumlah baris*
-> *Simpen hasilnya di file `analisis_buah.txt` pake redirect `>`*"
+> *"Praktikkin `echo` dan redirect:*
+> 1. *Buat file `buku_harian.txt` pake `echo "Buku Harian Saya" > buku_harian.txt`*
+> 2. *Tambah 3 baris pengalaman lo belajar CLI pake `echo "..." >> buku_harian.txt`*
+> 3. *Baca hasilnya pake `cat`*"
 
 ---
 
-## 📅 MINGGU 3: Cari File & Teks
+## 📅 MINGGU 3: Cari Teks dengan grep
 
 ### Yang Bakal Dipelajari:
-`find`, `locate`, `which`, `grep`, `grep -r`, `grep -i`, `grep -n`, `grep -c`
+`grep`, `grep -r`, `grep -i`, `grep -n`, `grep -c`
 
 ### ⏱️ Sesi (60-75 menit):
 
 | Waktu | Aktivitas |
 |-------|-----------|
 | 0-10' | Review |
-| 10-25' | **find & locate** — Cari file berdasarkan nama, ukuran, type |
-| 25-30' | **which** — Cari lokasi program |
-| 30-50' | **grep** — Cari teks dalam file. Flag -i, -r, -n, -c, -l, -v |
-| 50-60' | **Pipe dengan grep** — `ls | grep`, `history | grep`, `ps aux | grep` |
-| 60-75' | **Praktik bareng** |
+| 10-30' | **grep** — Cari teks dalam file. Flag -i, -r, -n, -c, -l, -v |
+| 30-45' | **Pipe dengan grep** — `ls | grep`, `history | grep`, `ps aux | grep` |
+| 45-60' | **Praktik bareng** |
+| 60-75' | **Tantangan** |
 
 ---
 
 ### 📖 MATERI LENGKAP COMMAND:
-
----
-
-#### `find` — Cari File
-
-| Aspek | Penjelasan |
-|-------|-----------|
-| **Fungsi** | Nyari file/folder berdasarkan nama, ukuran, tanggal |
-| **Analogi** | "Kayak lo nyari dokumen di lemari. Bisa nyari berdasarkan nama, ukuran, atau kapan terakhir dibuka." |
-| **Sintaks** | `find [lokasi] [kriteria]` |
-
-**Berdasarkan NAMA:**
-```bash
-find . -name "catatan.txt"           # Cari file catatan.txt di folder ini
-find . -name "*.txt"                 # Cari semua file .txt
-find /home -name "*.pdf"             # Cari semua pdf di /home
-find . -iname "catatan.TXT"          # -iname = case insensitive
-```
-
-**Berdasarkan TYPE:**
-```bash
-find . -type f                       # Cuma file aja
-find . -type d                       # Cuma folder aja
-```
-
-**Berdasarkan UKURAN:**
-```bash
-find . -size +100M                   # File lebih dari 100MB
-find . -size -1k                     # File kurang dari 1KB
-find . -size 0                       # File kosong
-```
-
-**Perbedaan `find` vs `locate`:**
-
-| Aspek | `find` | `locate` |
-|-------|--------|----------|
-| **Kecepatan** | Lambat (scan realtime) | Cepet (pake database) |
-| **Akurasi** | 100% realtime | Bisa outdated |
-| **Kapan pake** | Butuh akurat | Butuh cepet |
-
-```bash
-locate catatan.txt                   # Cepet pake database
-sudo updatedb                        # Update database locate
-```
-
-#### `which` — Cari Lokasi Program
-```bash
-which nano           # /usr/bin/nano
-which python3        # /usr/bin/python3
-```
 
 ---
 
@@ -969,103 +848,30 @@ ps aux | grep "firefox"              # Cari proses firefox
 
 ### 🧪 Tantangan Minggu 3 (PR):
 
-> *"Bikin folder `latihan_grep` dan isi 5 file teks. Di salah satu file, tulis kata 'rahasia'.*
+> *"Bikin folder `latihan_grep` dan isi 5 file teks pake `nano` atau `echo`. Di salah satu file, tulis kata 'rahasia'.*
 > *Praktikkin:*
 > 1. *`grep -r "rahasia" .` — cari kata rahasia di semua file*
-> 2. *`find . -name "*.txt"` — cari semua file .txt*
-> 3. *`find . -size 0` — cari file kosong*
+> 2. *`grep -n "rahasia" *` — cari + tunjukin nomor baris*
+> 3. *`grep -c "rahasia" *` — hitung berapa kali muncul*
 > *Catet semua hasilnya."*
 
 ---
 
-## 📅 MINGGU 4: Pengolahan Teks Lanjutan + PROJECT SEGMEN 2
+## 📅 MINGGU 4: Review + PROJECT SEGMEN 2
 
 ### Yang Bakal Dipelajari:
-`cut`, `tr`, `diff` + Project
+Review: `nano`, `cat`, `echo`, `grep` + Project
 
 ### ⏱️ Sesi (60-90 menit):
 
 | Waktu | Aktivitas |
 |-------|-----------|
-| 0-15' | **cut** — Potong teks per kolom |
-| 15-25' | **tr** — Ganti/hapus karakter |
-| 25-35' | **diff** — Bandingkan 2 file |
-| 35-90' | **💻 PROJECT** |
+| 0-15' | **Review semua command** — nano, cat, echo, grep |
+| 15-90' | **💻 PROJECT** |
 
 ---
 
-### 📖 MATERI LENGKAP COMMAND:
-
----
-
-#### `cut` — Potong Teks per Kolom
-
-| Aspek | Penjelasan |
-|-------|-----------|
-| **Fungsi** | Motong bagian tertentu dari setiap baris |
-| **Contoh** | `cut -d: -f1 /etc/passwd` — ambil username |
-
-```bash
-echo "nama:email:telpon" | cut -d: -f1     # nama
-echo "nama:email:telpon" | cut -d: -f2     # email
-echo "nama:email:telpon" | cut -d: -f1,3   # nama:telpon
-```
-
-**Perbedaan `cut -d` vs `cut -c`:**
-
-| Flag | Fungsi | Contoh |
-|------|--------|--------|
-| `-d:` | Pemisahnya karakter `:` | `cut -d: -f1` |
-| `-c1-5` | Potong karakter ke 1-5 | `cut -c1-5 file.txt` |
-
-```bash
-ls -la | cut -d" " -f1               # Ambil permission aja
-who | cut -d" " -f1                  # Ambil username aja
-```
-
----
-
-#### `tr` — Translate/Replace Karakter
-
-| Aspek | Penjelasan |
-|-------|-----------|
-| **Fungsi** | Ganti atau hapus karakter tertentu |
-| **Contoh** | `cat file.txt | tr "a" "A"` — ganti a jadi A |
-
-```bash
-echo "hello world" | tr "a-z" "A-Z"        # HELLO WORLD
-echo "Hello World" | tr " " "_"            # Hello_World
-cat file.txt | tr ":" ","                  # Ganti : jadi , (CSV)
-cat file.txt | tr -d " "                   # Hapus semua spasi
-cat file.txt | tr -s "\n"                  # Gabungin baris kosong berurutan
-```
-
----
-
-#### `diff` — Bandingkan 2 File
-
-| Aspek | Penjelasan |
-|-------|-----------|
-| **Fungsi** | Nampilin perbedaan antara 2 file |
-| **Contoh** | `diff file1.txt file2.txt` |
-
-```bash
-diff versi1.txt versi2.txt           # Liat bedanya
-diff -u versi1.txt versi2.txt        # Unified format (lebih gampang dibaca)
-```
-
-**Output `diff`:**
-```
-1c1
-< ini file versi 1
----
-> ini file versi 2
-```
-Arti: baris 1 berubah (c=changed). `<` = isi file1. `>` = isi file2.
-
----
-
-### 💻 PROJECT SEGMEN 2: "Membuat Catatan Kuliah & Analisis Teks"
+### 💻 PROJECT SEGMEN 2: "Membuat Catatan Kuliah"
 
 #### Simulasi Lengkap:
 
@@ -1100,34 +906,23 @@ nano desain_grafis.txt
 # Software desain: Adobe Photoshop, Illustrator, Canva.
 # Desain grafis penting untuk branding dan pemasaran.
 
-# 3. Gabungin semua file pake cat
-cat pengantar_multimedia.txt > rangkuman.txt
+# 3. Gabungin semua file pake echo & redirect
+echo "=== RANGKUMAN ===" > rangkuman.txt
+echo "" >> rangkuman.txt
+cat pengantar_multimedia.txt >> rangkuman.txt
+echo "" >> rangkuman.txt
 cat teknologi_web.txt >> rangkuman.txt
+echo "" >> rangkuman.txt
 cat desain_grafis.txt >> rangkuman.txt
 
-# 4. Hitung statistik tiap file
-wc *.txt
-
-# 5. Cari kata "multimedia" di semua file
+# 4. Cari kata "multimedia" di semua file
 grep -n "multimedia" *.txt
 
-# 6. Urutkan rangkuman
-sort rangkuman.txt > rangkuman_terurut.txt
+# 5. Cari kata "desain" di semua file
+grep -ni "desain" *.txt
 
-# 7. Bandingkan rangkuman asli vs terurut
-diff rangkuman.txt rangkuman_terurut.txt
-
-# 8. Ganti "multimedia" jadi "MM" pake tr
-cat pengantar_multimedia.txt | tr "multimedia" "MM" > pengantar_singkat.txt
-
-# 9. Hasil akhir
-tree
-# ├── desain_grafis.txt
-# ├── pengantar_multimedia.txt
-# ├── pengantar_singkat.txt
-# ├── rangkuman.txt
-# ├── rangkuman_terurut.txt
-# └── teknologi_web.txt
+# 6. Hasil akhir
+cat rangkuman.txt
 ```
 
 ---
@@ -1142,10 +937,10 @@ tree
 Setelah segmen ini, peserta bisa:
 - Paham konsep user, superuser, sudo
 - Atur hak akses file (chmod, chown)
-- Manajemen proses (ps, kill, top/htop)
-- Install software lewat terminal (apt, brew)
+- Manajemen proses (ps, kill, htop)
+- Install software lewat terminal (apt)
 - Download file dari internet (wget, curl)
-- Pake tools multimedia (ffmpeg, imagemagick)
+- Arsip dan ekstrak file (zip, unzip, tar)
 - Visualisasi struktur folder (tree)
 
 ---
@@ -1153,14 +948,14 @@ Setelah segmen ini, peserta bisa:
 ## 📅 MINGGU 1: User, Superuser & File Permissions
 
 ### Yang Bakal Dipelajari:
-`whoami`, `id`, `sudo`, `su`, `chmod`, `chown`
+`whoami`, `sudo`, `su`, `chmod`, `chown`
 
 ### ⏱️ Sesi (60-75 menit):
 
 | Waktu | Aktivitas |
 |-------|-----------|
 | 0-10' | **Review Segmen 2 + tanya jawab** |
-| 10-20' | **whoami, id, sudo, su** — Siapa lo? Gimana jadi admin? |
+| 10-20' | **whoami, sudo, su** — Siapa lo? Gimana jadi admin? |
 | 20-35' | **Konsep Permission** — rwx, user/group/others |
 | 35-50' | **chmod numerik & simbolik** — 755, 644, 600 |
 | 50-60' | **chown** — Ganti pemilik file |
@@ -1175,11 +970,6 @@ Setelah segmen ini, peserta bisa:
 #### `whoami` — Siapa Saya?
 ```bash
 whoami    # Output: muadz (nama user lo)
-```
-
-#### `id` — Detail User
-```bash
-id        # Output: uid=1000(muadz) gid=1000(muadz) groups=1000(muadz),4(adm)
 ```
 
 #### `sudo` — Superuser Do
@@ -1204,7 +994,7 @@ id        # Output: uid=1000(muadz) gid=1000(muadz) groups=1000(muadz),4(adm)
 |------------------|-----------------|
 | `sudo apt update` | `sudo rm -rf /` |
 | `sudo apt install firefox` | `sudo chmod 777 /` |
-| `sudo systemctl restart apache2` | `sudo dd if=/dev/zero of=/dev/sda` |
+| `sudo apt install apache2` | `sudo dd if=/dev/zero of=/dev/sda` |
 
 #### `su` — Switch User
 ```bash
@@ -1318,19 +1108,19 @@ sudo chown -R muadz folder/         # Ganti pemilik beserta isinya (rekursif)
 
 ---
 
-## 📅 MINGGU 2: Proses & Informasi Sistem
+## 📅 MINGGU 2: Manajemen Proses
 
 ### Yang Bakal Dipelajari:
-`ps`, `kill`, `top`/`htop`, `uname`, `df`, `free`, `uptime`
+`ps`, `kill`, `htop`
 
 ### ⏱️ Sesi (60-75 menit):
 
 | Waktu | Aktivitas |
 |-------|-----------|
 | 0-10' | Review |
-| 10-25' | **ps & kill** — Liat dan matiin proses |
-| 25-40' | **top/htop** — Task Manager terminal |
-| 40-55' | **Info Sistem** — uname, df, free, uptime |
+| 10-25' | **ps** — Liat proses yang jalan |
+| 25-40' | **kill** — Matiin proses |
+| 40-55' | **htop** — Task Manager terminal |
 | 55-65' | **Praktik: "Admin Laptop Sendiri"** |
 | 65-75' | **Tantangan** |
 
@@ -1375,9 +1165,8 @@ kill -15 1234          # Coba matiin halus dulu
 kill -9 1234           # Kalo nggak mau mati, paksa
 ```
 
-#### `top` / `htop` — Task Manager Terminal
+#### `htop` — Task Manager Terminal
 ```bash
-top                # Task manager bawaan
 htop               # Task manager keren (install: sudo apt install htop)
 ```
 
@@ -1387,32 +1176,23 @@ Di `htop`:
 - `F9` — kill proses
 - `q` — keluar
 
-#### Informasi Sistem:
-```bash
-uname -a           # Info sistem operasi (kernel, arsitektur)
-df -h              # Kapasitas hardisk (dalam format GB)
-free -h            # Kapasitas RAM
-uptime             # Berapa lama nyala sejak boot
-```
-
 ---
 
 ### 🧪 Tantangan Minggu 2 (PR):
 
 > *"Buka terminal. Jalanin:*
 > 1. *`ps aux` — liat semua proses yang jalan*
-> 2. *`uname -a` — catet info sistem lo*
-> 3. *`df -h` — liat kapasitas hardisk*
-> 4. *`free -h` — liat kapasitas RAM*
-> 5. *`uptime` — liat berapa lama laptop lo nyala*
-> *Catet semua hasilnya di file `spesifikasi_sistem.txt`."*
+> 2. *`htop` — liat task manager* (tekan q buat keluar)
+> 3. *Cari proses firefox atau chrome pake `ps aux | grep`*
+> 4. *Catet PID-nya, terus `kill -15 [PID]`*
+> *Catet semua hasilnya."*
 
 ---
 
 ## 📅 MINGGU 3: Package Manager & Download Tools
 
 ### Yang Bakal Dipelajari:
-`apt`, `brew`, `wget`, `curl`, `unzip`, `tar`
+`apt`, `wget`, `curl`, `zip`, `unzip`, `tar`
 
 ### ⏱️ Sesi (60-75 menit):
 
@@ -1420,10 +1200,10 @@ uptime             # Berapa lama nyala sejak boot
 |-------|-----------|
 | 0-10' | Review |
 | 10-25' | **apt** — Install, update, hapus software |
-| 25-35' | **brew** — Buat pengguna Mac |
-| 35-50' | **wget & curl** — Download dari internet |
-| 50-60' | **unzip & tar** — Ekstrak arsip |
-| 60-75' | **Praktik: "Install & Download"** |
+| 25-40' | **wget & curl** — Download dari internet |
+| 40-55' | **zip, unzip & tar** — Arsip dan ekstrak |
+| 55-70' | **Praktik: "Install & Download"** |
+| 70-75' | **Tantangan** |
 
 ---
 
@@ -1456,21 +1236,6 @@ uptime             # Berapa lama nyala sejak boot
 sudo apt update      # 1. Cek update
 sudo apt upgrade     # 2. Install update (kalo ada)
 ```
-
-**Untuk MacOS (brew):**
-```bash
-brew update
-brew install neofetch
-```
-
-**Perbedaan apt vs brew:**
-
-| Urusan | Linux (apt) | Mac (brew) |
-|--------|-------------|------------|
-| Install | `sudo apt install neofetch` | `brew install neofetch` |
-| Hapus | `sudo apt remove neofetch` | `brew uninstall neofetch` |
-| Update | `sudo apt update` | `brew update` |
-| Cari | `apt search neofetch` | `brew search neofetch` |
 
 ---
 
@@ -1523,67 +1288,34 @@ tar -czvf arsip.tar.gz folder/        # Bikin TAR.GZ
 
 ### 🧪 Tantangan Minggu 3 (PR):
 
-> *"Praktikkin install software:*
+> *"Praktikkin install & download:*
 > 1. *`sudo apt update` — update daftar package*
-> 2. *`sudo apt install htop tree neofetch -y` — install 3 tools*
-> 3. *`tree --version` — verifikasi tree terinstall*
-> 4. *`neofetch` — jalanin neofetch, screenshot*
+> 2. *`sudo apt install htop tree -y` — install tools*
+> 3. *`wget -O contoh.zip https://github.com/opencode-ai/opencode/archive/refs/heads/main.zip` — download file zip*
+> 4. *`unzip contoh.zip` — ekstrak zip*
+> 5. *`tree -L 2` — liat struktur folder*
 > *Catet semua langkahnya."*
 
 ---
 
-## 📅 MINGGU 4: Tools Multimedia + PROJECT SEGMEN 3
+## 📅 MINGGU 4: Tree & PROJECT SEGMEN 3
 
 ### Yang Bakal Dipelajari:
-`ffmpeg`, `imagemagick`, `tree` + Project
+`tree` + Project
 
 ### ⏱️ Sesi (60-90 menit):
 
 | Waktu | Aktivitas |
 |-------|-----------|
-| 0-15' | **ffmpeg** — Convert gambar/video |
-| 15-25' | **imagemagick** — Resize, efek gambar |
-| 25-35' | **tree** — Visualisasi folder |
-| 35-90' | **💻 PROJECT** |
+| 0-15' | **tree** — Visualisasi folder |
+| 15-30' | **Review** — sudo, chmod, ps, kill, apt, wget, curl |
+| 30-90' | **💻 PROJECT** |
 
 ---
 
 ### 📖 MATERI LENGKAP COMMAND:
 
 ---
-
-#### Install Tools:
-```bash
-sudo apt install ffmpeg imagemagick tree neofetch htop
-```
-
-#### `ffmpeg` — Tool Multimedia Superpower
-```bash
-# Convert gambar
-ffmpeg -i foto.jpg foto.png           # JPG → PNG
-ffmpeg -i foto.png foto.jpg           # PNG → JPG
-
-# Convert video
-ffmpeg -i video.mov video.mp4         # MOV → MP4
-ffmpeg -i video.mp4 -ss 00:00:10 -t 5 clip.mp4  # Potong 5 detik
-
-# Compress video
-ffmpeg -i video.mp4 -vcodec libx264 -crf 28 compressed.mp4
-```
-
-#### `imagemagick` — Manipulasi Gambar
-```bash
-# Resize
-convert foto.jpg -resize 50% foto_kecil.jpg
-convert foto.jpg -resize 800x600 foto_baru.jpg
-
-# Convert format
-convert foto.jpg foto.png
-
-# Efek
-convert foto.jpg -negatif foto_negatif.jpg
-convert foto.jpg -blur 0x8 foto_blur.jpg
-```
 
 #### `tree` — Struktur Folder Visual
 ```bash
@@ -1595,7 +1327,7 @@ tree -h                           # Tampilin ukuran file
 
 ---
 
-### 💻 PROJECT SEGMEN 3: "Admin Server & Toolkit Multimedia"
+### 💻 PROJECT SEGMEN 3: "Admin Server & Toolkit"
 
 #### Simulasi Lengkap:
 
@@ -1631,26 +1363,23 @@ ls -la
 ./aplikasi_rahasia.sh
 # Output: Aplikasi berjalan dengan sukses
 
-# ===== BAGIAN 2: Toolkit Multimedia =====
+# ===== BAGIAN 2: Download & Arsip =====
 
 cd ..
 mkdir toolkit_demo
 cd toolkit_demo
 
-# 6. Download gambar contoh
-wget -O contoh.jpg https://picsum.photos/800/600
+# 6. Download file contoh
+wget -O contoh.zip https://github.com/opencode-ai/opencode/archive/refs/heads/main.zip
 
-# 7. Convert format
-ffmpeg -i contoh.jpg hasil_convert.png
+# 7. Ekstrak zip
+unzip contoh.zip
 
-# 8. Resize gambar
-convert contoh.jpg -resize 50% hasil_resize.jpg
+# 8. Liat struktur
+tree -h -L 2
 
-# 9. Liat struktur
-tree -h
-
-# 10. Screenshot spesifikasi
-neofetch
+# 9. Matiin proses kalo perlu
+ps aux | grep wget
 ```
 
 ---
@@ -1661,17 +1390,16 @@ neofetch
 
 Setelah segmen ini, peserta bisa:
 - Tes koneksi jaringan (ping)
-- Cek alamat IP (ip addr)
+- Cek alamat IP (ip addr, ifconfig)
 - Download file dari internet (curl, wget lanjutan)
 - Remote server pake SSH
-- Transfer file pake SCP
 
 ---
 
 ## 📅 MINGGU 1: Cek Jaringan Dasar
 
 ### Yang Bakal Dipelajari:
-`ping`, `ip addr` / `ifconfig`, `curl -I`, `hostname`
+`ping`, `ip addr`, `ifconfig`
 
 ### ⏱️ Sesi (60-75 menit):
 
@@ -1679,9 +1407,9 @@ Setelah segmen ini, peserta bisa:
 |-------|-----------|
 | 0-10' | **Review Segmen 3** |
 | 10-25' | **ping** — Tes koneksi ke server |
-| 25-40' | **ip addr** — Cek alamat IP laptop |
-| 40-55' | **hostname & curl -I** — Cek identitas & respon server |
-| 55-75' | **Praktik: "Network Checkup"** |
+| 25-40' | **ip addr / ifconfig** — Cek alamat IP laptop |
+| 40-55' | **Praktik: "Network Checkup"** |
+| 55-75' | **Tantangan** |
 
 ---
 
@@ -1714,6 +1442,8 @@ PING google.com (142.250.0.46) 56(84) bytes of data.
 ```bash
 ip addr                # Linux — liat alamat IP
 # Di output, cari: inet 192.168.1.10  ← ini IP laptop lo
+
+ifconfig               # Alternatif (perlu install net-tools)
 ```
 
 **Perbedaan ip addr vs ifconfig:**
@@ -1723,21 +1453,14 @@ ip addr                # Linux — liat alamat IP
 | `ip addr` | Bawaan Linux modern — lebih rapi |
 | `ifconfig` | Perlu install (net-tools) — legacy |
 
-#### `hostname` — Nama Komputer
-```bash
-hostname               # Tampilin nama komputer lo
-hostname -I            # Tampilin alamat IP (huruf I besar)
-```
-
 ---
 
 ### 🧪 Tantangan Minggu 1 (PR):
 
 > *"Buka terminal. Catet semua hasil ini ke file `laporan_jaringan.txt`:*
-> 1. *`hostname` — nama komputer lo*
-> 2. *`hostname -I` — alamat IP lo*
-> 3. *`ping -c 5 google.com` — tes koneksi ke Google*
-> 4. *`ping -c 3 8.8.8.8` — tes ke DNS Google*
+> 1. *`ping -c 5 google.com` — tes koneksi ke Google*
+> 2. *`ping -c 3 8.8.8.8` — tes ke DNS Google*
+> 3. *`ip addr` — catet alamat IP laptop lo*
 > *Dari hasil ping, catet: time rata-ratanya berapa ms?"*
 
 ---
@@ -1810,17 +1533,17 @@ wget --limit-rate=200k https://example.com/file.zip
 ## 📅 MINGGU 3: SSH & Remote Access
 
 ### Yang Bakal Dipelajari:
-`ssh`, `ssh-keygen`, `ssh-copy-id`, `scp`
+`ssh` (dasar), `ssh-keygen` (sekilas)
 
 ### ⏱️ Sesi (60-75 menit):
 
 | Waktu | Aktivitas |
 |-------|-----------|
 | 0-10' | Review |
-| 10-25' | **ssh** — Login ke server remote |
-| 25-40' | **ssh-keygen** — Bikin kunci SSH biar gak perlu password |
-| 40-55' | **scp** — Transfer file via SSH |
-| 55-75' | **Praktik: "SSH Simulasi"** (localhost kalo gak punya partner) |
+| 10-30' | **ssh** — Login ke server remote |
+| 30-50' | **ssh-keygen** — Bikin kunci SSH (sekilas) |
+| 50-65' | **Praktik: "SSH Simulasi"** |
+| 65-75' | **Tantangan** |
 
 ---
 
@@ -1843,36 +1566,26 @@ ssh muadz@203.0.113.10
 # $ exit     # Balik ke laptop lo
 ```
 
-#### `ssh-keygen` — Bikin Kunci SSH
+#### `ssh-keygen` — Bikin Kunci SSH (Sekilas)
 ```bash
 ssh-keygen -t rsa -b 4096            # Bikin kunci SSH
 # Hasil:
 # /home/muadz/.ssh/id_rsa       (kunci PRIVAT — jangan dishare!)
 # /home/muadz/.ssh/id_rsa.pub   (kunci PUBLIK — bisa dishare)
-
-ssh-copy-id user@192.168.1.100      # Kirim kunci publik ke server
-# Selanjutnya login tanpa password!
 ```
 
 **Analogi kunci SSH:**
 > *"Kunci privat = kunci rumah lo (jangan dikasih ke siapapun). Kunci publik = gembok (lo bisa pasang di server mana aja)."*
-
-#### `scp` — Secure Copy (Transfer file via SSH)
-```bash
-scp file.txt user@192.168.1.100:/home/user/    # Upload file
-scp user@192.168.1.100:/home/user/file.txt .   # Download file
-scp -r folder/ user@192.168.1.100:/home/user/  # Upload folder
-```
 
 ---
 
 ### 🧪 Tantangan Minggu 3 (PR):
 
 > *"Simulasi SSH ke localhost:*
-> 1. *`ssh-keygen -t rsa -b 4096` — bikin kunci SSH*
-> 2. *`ls -la ~/.ssh/` — liat kunci yang kebikin*
-> 3. *`cat ~/.ssh/id_rsa.pub` — liat kunci publik lo*
-> *Catet: apa bedanya file id_rsa vs id_rsa.pub?"*
+> 1. *`ssh localhost` — coba SSH ke laptop sendiri*
+> 2. *Kalo belum ada SSH server: `sudo apt install openssh-server -y`*
+> 3. *`whoami` — verifikasi lo login sebagai siapa*
+> 4. *`exit` — balik ke terminal asli*"
 
 ---
 
@@ -1892,9 +1605,8 @@ echo "=== LAPORAN JARINGAN ===" > laporan_jaringan.txt
 echo "Waktu: $(date)" >> laporan_jaringan.txt
 echo "" >> laporan_jaringan.txt
 
-# 3. Catat nama komputer & IP
+# 3. Catat IP komputer
 echo "=== Identitas ===" >> laporan_jaringan.txt
-echo "Hostname: $(hostname)" >> laporan_jaringan.txt
 echo "IP Address:" >> laporan_jaringan.txt
 ip addr | grep "inet " >> laporan_jaringan.txt 2>/dev/null
 echo "" >> laporan_jaringan.txt
@@ -1915,14 +1627,10 @@ curl -o contoh_download.txt https://www.google.com/robots.txt 2>/dev/null
 echo "Download selesai" >> laporan_jaringan.txt
 echo "" >> laporan_jaringan.txt
 
-# 7. Simulasi SCP ke localhost
-mkdir -p penerima
-cp laporan_jaringan.txt penerima/   # Simulasi SCP
-
-# 8. Cek hasil
+# 7. Cek hasil
 cat laporan_jaringan.txt
 
-# 9. Tampilkan struktur
+# 8. Tampilkan struktur
 tree -h
 ```
 
@@ -3096,31 +2804,26 @@ Semangat!
 |---------|--------|
 | nano | Edit teks |
 | cat | Baca file |
-| less | Baca file panjang |
-| head | 10 baris pertama |
-| tail | 10 baris terakhir |
-| wc | Hitung baris/kata |
-| sort | Urutin file |
-| uniq | Hapus duplikat |
-| find | Cari file |
+| echo | Output teks |
+| > / >> | Redirect output ke file |
 | grep | Cari teks dalam file |
-| cut | Potong teks per kolom |
-| tr | Ganti karakter |
-| diff | Bandingkan 2 file |
 
 ## Segmen 3: Admin & Tools
 | Command | Fungsi |
 |---------|--------|
+| whoami | Siapa user sekarang |
 | sudo | Jalanin sebagai admin |
+| su | Switch user |
 | chmod | Atur izin file |
 | chown | Ganti pemilik |
 | ps | Liat proses |
 | kill | Matiin proses |
+| htop | Task Manager |
 | apt | Install software |
 | wget | Download file |
 | curl | Pake API |
-| ffmpeg | Convert multimedia |
-| convert | Manipulasi gambar |
+| zip / unzip | Arsip file |
+| tar | Arsip tar.gz |
 | tree | Liat struktur folder |
 
 ## Segmen 4: Jaringan
@@ -3128,9 +2831,11 @@ Semangat!
 |---------|--------|
 | ping | Tes koneksi |
 | ip addr | Cek IP |
+| ifconfig | Cek IP (legacy) |
+| curl | Pake API |
+| wget | Download file |
 | ssh | Remote server |
-| ssh-keygen | Bikin kunci SSH |
-| scp | Transfer file via SSH |
+| ssh-keygen | Bikin kunci SSH (sekilas) |
 
 ## Segmen 5: Git
 | Command | Fungsi |
@@ -3232,9 +2937,9 @@ Minggu 4: Bebas — diskusi / eksplorasi / tanya apa aja
 |--------|-------|-------|----------|----------|----------|----------|
 | **S0** | 1 Juni | Perkenalan + Setup | - | - | - | - |
 | **S1** | Juni | Navigasi & File | pwd, ls, cd, mkdir, touch | cp, mv, wildcard, ls -la | rm, rmdir, rm -rf | **Project: Merapikan Folder** |
-| **S2** | Juli | Editor & Teks | nano, cat, less, head, tail | wc, sort, uniq, nl | find, locate, grep | cut, tr, diff + **Project** |
-| **S3** | Agustus | Admin & Tools | sudo, chmod, chown | ps, kill, top, uname | apt, wget, curl, unzip | ffmpeg, imagemagick + **Project** |
-| **S4** | September | Jaringan | ping, ip addr, hostname | curl API, wget lanjutan | ssh, ssh-keygen, scp | **Project: Network Detective** |
+| **S2** | Juli | Editor & Teks | nano, cat | echo, >, >> | grep | **Project** |
+| **S3** | Agustus | Admin & Tools | sudo, chmod, chown, whoami, su | ps, kill, htop | apt, wget, curl, zip, unzip, tar | tree + **Project** |
+| **S4** | September | Jaringan | ping, ip addr, ifconfig | curl, wget | ssh, ssh-keygen | **Project: Network Detective** |
 | **S5** | Oktober | Git | init, add, commit, log | branch, checkout, merge | remote, push, pull, clone | **Project: Backup ke GitHub** |
 | **S6** | November | AI CLI | Install, prompt dasar | Prompt engineering | Troubleshooting | **Project: Portfolio AI** |
 | **S7** | Desember | Planning + Web | rancangan_project.md | Review & finalisasi | Web dev dengan AI | **Project: From Plan to Product** |
