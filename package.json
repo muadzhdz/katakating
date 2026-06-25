@@ -1,6 +1,6 @@
 {
   "private": true,
   "scripts": {
-    "build": "echo 'static site - no build needed'"
+    "build": "echo done"
   }
 }
