@@ -263,14 +263,15 @@
 > *"Ini PR minggu ini. Kita bakal praktikkin wildcard dan manipulasi file step-by-step.*
 >
 > *Tugasnya:*
-> 1. *mkdir percobaan_copy && cd percobaan_copy — bikin folder baru dan masuk ke dalemnya*
-> 2. *touch file{1..5}.txt foto{1..3}.jpg dok{1..2}.pdf — bikin 10 file cuma dalam 1 baris pake curly braces!*
-> 3. *mkdir backup_jpg arsip_txt backup_pdf — bikin folder tujuan buat masing-masing kategori*
-> 4. *cp *.jpg backup_jpg/ — copy semua file .jpg ke backup_jpg*
-> 5. *mv *.txt arsip_txt/ — pindahin semua file .txt ke arsip_txt*
-> 6. *cp *.pdf backup_pdf/ — copy semua file .pdf ke backup_pdf*
-> 7. *ls ? — output-nya kosong. Wajar! Karena ? itu wildcard buat 1 karakter doang, sementara gak ada file yang namanya cuma 1 karakter.*
-> 8. *nano hasil_wildcard.txt — catet semua perintah yang lo jalanin dan hasilnya*
+> 1. *mkdir percobaan_copy — bikin folder baru*
+> 2. *cd percobaan_copy — masuk ke dalem foldernya*
+> 3. *touch file{1..5}.txt foto{1..3}.jpg dok{1..2}.pdf — bikin 10 file cuma dalam 1 baris pake curly braces!*
+> 4. *mkdir backup_jpg arsip_txt backup_pdf — bikin folder tujuan buat masing-masing kategori*
+> 5. *cp *.jpg backup_jpg/ — copy semua file .jpg ke backup_jpg*
+> 6. *mv *.txt arsip_txt/ — pindahin semua file .txt ke arsip_txt*
+> 7. *cp *.pdf backup_pdf/ — copy semua file .pdf ke backup_pdf*
+> 8. *ls ? — output-nya kosong. Wajar! Karena ? itu wildcard buat 1 karakter doang, sementara gak ada file yang namanya cuma 1 karakter.*
+> 9. *nano hasil_wildcard.txt — catet semua perintah yang lo jalanin dan hasilnya*
 >
 > *Yang penting: catet semua error yang muncul. Kenapa itu terjadi?*
 >

@@ -452,14 +452,15 @@ y = 200
 d6.text((100, y), "Ikuti langkah-langkah ini:", font=fn(FB, 20), fill=GRN)
 y += 38
 tantangan = [
-    ("1. mkdir percobaan_copy && cd percobaan_copy", "Bikin folder & masuk"),
-    ("2. touch file{1..5}.txt foto{1..3}.jpg dok{1..2}.pdf", "Bikin 10 file dalam 1 baris"),
-    ("3. mkdir backup_jpg arsip_txt backup_pdf", "Bikin folder tujuan"),
-    ("4. cp *.jpg backup_jpg/", "Copy semua file .jpg"),
-    ("5. mv *.txt arsip_txt/", "Pindahin semua file .txt"),
-    ("6. cp *.pdf backup_pdf/", "Copy semua file .pdf"),
-    ("7. ls ?", "Output kosong — wajar! Gak ada file 1 karakter"),
-    ("8. nano hasil_wildcard.txt", "Catet perintah & hasil pake nano"),
+    ("1. mkdir percobaan_copy", "Bikin folder baru"),
+    ("2. cd percobaan_copy", "Masuk ke folder"),
+    ("3. touch file{1..5}.txt foto{1..3}.jpg dok{1..2}.pdf", "Bikin 10 file dalam 1 baris"),
+    ("4. mkdir backup_jpg arsip_txt backup_pdf", "Bikin folder tujuan"),
+    ("5. cp *.jpg backup_jpg/", "Copy semua file .jpg"),
+    ("6. mv *.txt arsip_txt/", "Pindahin semua file .txt"),
+    ("7. cp *.pdf backup_pdf/", "Copy semua file .pdf"),
+    ("8. ls ?", "Output kosong — wajar! Gak ada file 1 karakter"),
+    ("9. nano hasil_wildcard.txt", "Catet perintah & hasil pake nano"),
 ]
 for cmd_text, desc in tantangan:
     cd(d6, 120, y, 1680, 42)
