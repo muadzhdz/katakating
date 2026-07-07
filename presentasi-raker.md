@@ -88,19 +88,19 @@
 
 ```
 ┌─────────────────────────────────────────────┐
-│         MULTIMEDIA SURVIVAL KIT              │
-│         (Branding + Pancingan)               │
-│                                              │
+│         MULTIMEDIA SURVIVAL KIT             │
+│         (Branding + Pancingan)              │
+│                                             │
 │  Poster & Video ─► Orang liat ─► Penasaran  │
 └────────────────────┬────────────────────────┘
                      │
                      ▼
 ┌─────────────────────────────────────────────┐
-│           THE PENGUIN CIRCLE                 │
-│           (Eksekusi + Dampak)                │
-│                                              │
+│           THE PENGUIN CIRCLE                │
+│           (Eksekusi + Dampak)               │
+│                                             │
 │  Orang dateng ─► Belajar ─► Jadi bisa ─►    │
-│  Punya project & portofolio                  │
+│  Punya project & portofolio                 │
 └─────────────────────────────────────────────┘
 ```
 
@@ -142,14 +142,14 @@
 
 ```
 ┌──────────────────────────────────────────────┐
-│              KETUA DIVISI                      │
-│          Mu'adz Hudzaifah                     │
+│              KETUA DIVISI                    │
+│          Mu'adz Hudzaifah                    │
 │  Penggagas, pengajar utama, penanggung jawab │
 └──────────────────┬───────────────────────────┘
                    │
 ┌──────────────────▼───────────────────────────┐
-│              KOORDINATOR                      │
-│        Ilham Yusuf Fadillah                   │
+│              KOORDINATOR                     │
+│        Ilham Yusuf Fadillah                  │
 │  Koordinasi anggota, pendamping teknis,      │
 │  admin konten MSK                            │
 └──────────────────┬───────────────────────────┘
