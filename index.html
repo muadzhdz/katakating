@@ -346,10 +346,6 @@
     .hero .container {
       margin-top: auto; margin-bottom: auto;
     }
-    #particleCanvas {
-      position: absolute; inset: 0; width: 100%; height: 100%;
-      pointer-events: none; z-index: 1;
-    }
     .hero::before {
       content: "";
       position: absolute;
@@ -996,7 +992,13 @@
       .hbg { display: block; }
       .hero h1 { font-size: 26px; }
       .hero { padding: 48px 0; }
-      .ascii-line { font-size: 7px; }
+      .ascii-title {
+        transform: scale(0.6);
+        transform-origin: center top;
+        margin-bottom: -26px;
+        overflow: visible;
+      }
+      .ascii-line { font-size: 12px; }
       section { padding: 60px 0; }
       h2 { font-size: 22px; }
       .features-grid { grid-template-columns: 1fr; }
@@ -1014,15 +1016,26 @@
       .comparison-table th, .comparison-table td { padding: 8px 10px; }
     }
     @media (max-width: 480px) {
-      .ascii-line { font-size: 6px; }
-      .ascii-title { display: none; }
-      .hero-title-mobile { display: block; }
+      .ascii-title {
+        transform: scale(0.38);
+        transform-origin: center top;
+        margin-bottom: -44px;
+        overflow: visible;
+      }
+      .ascii-line { font-size: 12px; }
+      .hero-title-mobile { display: none; }
       .hero { padding: 40px 0; }
       .hero-buttons { flex-direction: column; align-items: center; }
       .countdown-bar { flex-direction: column; align-items: center; text-align: center; }
       .countdown-bar .time { justify-content: center; }
       .hero-guarantee { flex-direction: column; align-items: center; gap: 8px; }
       .team-grid .team-card { width: 100%; min-width: 0; }
+    }
+    @media (max-width: 360px) {
+      .ascii-title {
+        transform: scale(0.3);
+        margin-bottom: -56px;
+      }
     }
   </style>
 </head>
@@ -1119,7 +1132,7 @@
       <div class="mouse"><div class="wheel"></div></div>
       <span>Scroll</span>
     </div>
-    <canvas id="particleCanvas"></canvas>
+
   </header>
 
   <!-- ──────── TENTANG ──────── -->
@@ -1937,96 +1950,6 @@
       }
     })();
 
-    // ─── Hero Particle System ───
-    (function() {
-      const canvas = document.getElementById('particleCanvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      let particles = [];
-      let mouse = { x: -1000, y: -1000 };
-      let animId;
-
-      function resize() {
-        const hero = canvas.parentElement;
-        canvas.width = hero.offsetWidth;
-        canvas.height = hero.offsetHeight;
-      }
-
-      function createParticles(count) {
-        for (let i = 0; i < count; i++) {
-          particles.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            vx: (Math.random() - 0.5) * 0.6,
-            vy: (Math.random() - 0.5) * 0.6,
-            r: Math.random() * 2.2 + 0.8,
-            alpha: Math.random() * 0.5 + 0.15,
-          });
-        }
-      }
-
-      function draw() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (let i = 0; i < particles.length; i++) {
-          const p = particles[i];
-          const dx = mouse.x - p.x;
-          const dy = mouse.y - p.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 200) {
-            const force = (200 - dist) / 200 * 0.25;
-            p.vx -= dx / dist * force;
-            p.vy -= dy / dist * force;
-          }
-          p.vx += (Math.random() - 0.5) * 0.04;
-          p.vy += (Math.random() - 0.5) * 0.04;
-          p.vx *= 0.95;
-          p.vy *= 0.95;
-          p.x += p.vx;
-          p.y += p.vy;
-          if (p.x < 0) p.x = canvas.width;
-          if (p.x > canvas.width) p.x = 0;
-          if (p.y < 0) p.y = canvas.height;
-          if (p.y > canvas.height) p.y = 0;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(0, 255, 65, ${p.alpha})`;
-          ctx.fill();
-        }
-        for (let i = 0; i < particles.length; i++) {
-          for (let j = i + 1; j < particles.length; j++) {
-            const dx = particles[i].x - particles[j].x;
-            const dy = particles[i].y - particles[j].y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < 80) {
-              ctx.beginPath();
-              ctx.moveTo(particles[i].x, particles[i].y);
-              ctx.lineTo(particles[j].x, particles[j].y);
-              ctx.strokeStyle = `rgba(0, 255, 65, ${(1 - dist / 80) * 0.12})`;
-              ctx.stroke();
-            }
-          }
-        }
-        animId = requestAnimationFrame(draw);
-      }
-
-      function init() {
-        resize();
-        particles = [];
-        const count = Math.min(Math.floor(canvas.width * canvas.height / 2500), 200);
-        createParticles(count);
-        if (animId) cancelAnimationFrame(animId);
-        draw();
-      }
-
-      window.addEventListener('resize', init);
-      document.addEventListener('mousemove', e => {
-        const rect = canvas.getBoundingClientRect();
-        mouse.x = e.clientX - rect.left;
-        mouse.y = e.clientY - rect.top;
-      });
-      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (!prefersReducedMotion) init();
-    })();
 
     function toggleFaq(el) {
       el.classList.toggle('active');
