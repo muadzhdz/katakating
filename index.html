@@ -180,7 +180,7 @@
       pointer-events: none; width: 0; height: 0; opacity: 0;
     }
     /* suppress transitions during circle animation */
-    .no-trans *, .no-trans *::before, .no-trans *::after {
+    .no-trans, .no-trans *, .no-trans *::before, .no-trans *::after {
       transition: none !important;
     }
 
@@ -1906,7 +1906,7 @@
         ) * 2.1;
 
         // Warna circle = warna theme tujuan
-        const targetBg = isLight ? '#0d1117' : '#ffffff';
+        const targetBg = isLight ? '#0d1117' : '#f5f5f5';
 
         // Reset — no transition, 0 size di posisi tombol
         circle.style.cssText = `
@@ -1920,29 +1920,32 @@
           transition: none;
         `;
 
-        // Suppress semua CSS transition saat animasi
-        document.documentElement.classList.add('no-trans');
-
         // Double rAF untuk force repaint sebelum expand
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
-            circle.style.transition = 'width .65s cubic-bezier(.4,0,.2,1), height .65s cubic-bezier(.4,0,.2,1)';
+            circle.style.transition = 'width .6s cubic-bezier(.4,0,.2,1), height .6s cubic-bezier(.4,0,.2,1)';
             circle.style.width  = maxD + 'px';
             circle.style.height = maxD + 'px';
 
-            // Ganti theme saat circle udah nutup layar (~550ms)
+            // Ganti theme saat circle udah nutup layar (~520ms)
+            // Tambah no-trans ke body supaya CSS transitions nggak bocor
             setTimeout(() => {
+              body.classList.add('no-trans');
               applyTheme(!isLight);
               localStorage.setItem('theme_manual', 'true');
-              document.documentElement.classList.remove('no-trans');
 
-              // Fade out circle
-              circle.style.transition = 'opacity .35s ease';
-              circle.style.opacity = '0';
-              setTimeout(() => {
-                circle.style.cssText = 'position:fixed;width:0;height:0;opacity:0;';
-              }, 370);
-            }, 530);
+              // Force repaint, lalu remove no-trans dan fade circle out
+              requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                  body.classList.remove('no-trans');
+                  circle.style.transition = 'opacity .35s ease';
+                  circle.style.opacity = '0';
+                  setTimeout(() => {
+                    circle.style.cssText = 'position:fixed;width:0;height:0;opacity:0;';
+                  }, 370);
+                });
+              });
+            }, 520);
           });
         });
       });
