@@ -2297,7 +2297,7 @@
         pre.style.transformOrigin = 'top center';
         const nat = pre.scrollWidth;
         const avail = wrap.clientWidth;
-        const ratio = avail < 600 ? 0.85 : 0.92;
+        const ratio = avail < 600 ? 0.65 : 0.92;
         const s = Math.min(1, (avail * ratio) / nat);
         pre.style.transform = 'scale(' + s + ')';
         wrap.style.height = (pre.offsetHeight * s) + 'px';
