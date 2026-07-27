@@ -410,7 +410,7 @@
     .ascii-desc {
       color: var(--text-secondary); font-size: 9px; letter-spacing: 1px;
       min-height: 18px; margin-top: 12px; text-transform: uppercase;
-      display: flex; align-items: center; justify-content: flex-start; gap: 4px;
+      display: flex; align-items: center; justify-content: center; gap: 4px;
       flex-wrap: wrap;
     }
     .ascii-desc .cursor {
@@ -761,8 +761,8 @@
     /* ─── COUNTDOWN ─── */
     .countdown-bar {
       background: var(--bg-surface); border: 1px solid var(--border);
-      border-radius: 6px; padding: 20px 24px; margin-top: 24px;
-      display: flex; align-items: center; justify-content: center; gap: 12px;
+      border-radius: 6px; padding: 20px 24px; margin: 24px auto 0;
+      display: inline-flex; align-items: center; justify-content: center; gap: 12px;
       flex-wrap: wrap; max-width: 100%; box-sizing: border-box;
       transition: background 0.3s, border-color 0.3s;
     }
