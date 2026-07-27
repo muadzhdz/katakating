@@ -414,24 +414,16 @@
       50% { opacity: 1; }
     }
     .ascii-title {
-      display: block; text-align: center; margin-bottom: 40px;
+      display: inline-block; text-align: left; margin-bottom: 40px;
       font-kerning: none; min-height: 66px;
-    }
-    .ascii-pre {
-      display: inline-block; text-align: left;
-      overflow-x: auto; max-width: 100%;
+      max-width: 100%; overflow-x: auto; overflow-y: hidden;
       -webkit-overflow-scrolling: touch;
-      margin: 0; padding: 0;
-      background: none; border: none;
-      font-family: inherit; font-size: inherit; line-height: inherit;
-      white-space: pre;
-      vertical-align: top;
     }
-    .ascii-pre::-webkit-scrollbar { height: 3px; }
-    .ascii-pre::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+    .ascii-title::-webkit-scrollbar { height: 3px; }
+    .ascii-title::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
     .ascii-line {
       color: var(--accent); font-size: 12px; line-height: 1.02;
-      letter-spacing: -0.3px;
+      white-space: pre; letter-spacing: -0.3px;
       opacity: 0; transition: opacity 0.15s ease;
     }
     .ascii-line.visible { opacity: 1; }
@@ -1066,12 +1058,12 @@
     <div class="hero-silhouette s3"></div>
     <div class="container">
       <div class="ascii-title" aria-hidden="true">
-        <pre class="ascii-pre"><div class="ascii-line">████████╗██╗  ██╗███████╗    ██████╗ ███████╗███╗   ██╗ ██████╗ ██╗   ██╗██╗███╗   ██╗     ██████╗██╗██████╗  ██████╗██╗     ███████╗</div>
-<div class="ascii-line">╚══██╔══╝██║  ██║██╔════╝    ██╔══██╗██╔════╝████╗  ██║██╔════╝ ██║   ██║██║████╗  ██║    ██╔════╝██║██╔══██╗██╔════╝██║     ██╔════╝</div>
-<div class="ascii-line">   ██║   ███████║█████╗      ██████╔╝█████╗  ██╔██╗ ██║██║  ███╗██║   ██║██║██╔██╗ ██║    ██║     ██║██████╔╝██║     ██║     █████╗</div>
-<div class="ascii-line">   ██║   ██╔══██║██╔══╝      ██╔═══╝ ██╔══╝  ██║╚██╗██║██║   ██║██║   ██║██║██║╚██╗██║    ██║     ██║██╔══██╗██║     ██║     ██╔══╝</div>
-<div class="ascii-line">   ██║   ██║  ██║███████╗    ██║     ███████╗██║ ╚████║╚██████╔╝╚██████╔╝██║██║ ╚████║    ╚██████╗██║██║  ██║╚██████╗███████╗███████╗</div>
-<div class="ascii-line">   ╚═╝   ╚═╝  ╚═╝╚══════╝    ╚═╝     ╚══════╝╚═╝  ╚═══╝ ╚═════╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝     ╚═════╝╚═╝╚═╝  ╚═╝ ╚═════╝╚══════╝╚══════╝</div></pre>
+        <div class="ascii-line">████████╗██╗  ██╗███████╗    ██████╗ ███████╗███╗   ██╗ ██████╗ ██╗   ██╗██╗███╗   ██╗     ██████╗██╗██████╗  ██████╗██╗     ███████╗</div>
+        <div class="ascii-line">╚══██╔══╝██║  ██║██╔════╝    ██╔══██╗██╔════╝████╗  ██║██╔════╝ ██║   ██║██║████╗  ██║    ██╔════╝██║██╔══██╗██╔════╝██║     ██╔════╝</div>
+        <div class="ascii-line">   ██║   ███████║█████╗      ██████╔╝█████╗  ██╔██╗ ██║██║  ███╗██║   ██║██║██╔██╗ ██║    ██║     ██║██████╔╝██║     ██║     █████╗</div>
+        <div class="ascii-line">   ██║   ██╔══██║██╔══╝      ██╔═══╝ ██╔══╝  ██║╚██╗██║██║   ██║██║   ██║██║██║╚██╗██║    ██║     ██║██╔══██╗██║     ██║     ██╔══╝</div>
+        <div class="ascii-line">   ██║   ██║  ██║███████╗    ██║     ███████╗██║ ╚████║╚██████╔╝╚██████╔╝██║██║ ╚████║    ╚██████╗██║██║  ██║╚██████╗███████╗███████╗</div>
+        <div class="ascii-line">   ╚═╝   ╚═╝  ╚═╝╚══════╝    ╚═╝     ╚══════╝╚═╝  ╚═══╝ ╚═════╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝     ╚═════╝╚═╝╚═╝  ╚═╝ ╚═════╝╚══════╝╚══════╝</div>
         <div class="ascii-desc" id="asciiDesc"></div>
       </div>
       <p class="pain-point">Bingung mulai belajar coding? Sendirian gampang nyerah?</p>
