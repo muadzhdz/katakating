@@ -444,7 +444,7 @@
       word-break: break-word; overflow-wrap: break-word;
     }
     @keyframes blink { 50% { opacity: 0; } }
-    .hero-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .hero-buttons { display: flex; gap: 12px; justify-content: center; align-items: center; flex-wrap: wrap; margin-top: 8px; }
     .btn-primary {
       display: inline-flex; align-items: center; gap: 8px;
       background: var(--accent); color: var(--accent-text);
@@ -1024,7 +1024,7 @@
       .container { padding: 0 16px; }
       .features-grid { grid-template-columns: 1fr; }
       .hero-buttons { flex-direction: column; align-items: center; }
-      .btn-primary, .btn-outline { width: 100%; justify-content: center; }
+      .btn-primary, .btn-outline { min-width: 220px; justify-content: center; }
       .social-proof { gap: 14px; }
       .social-proof .item .num { font-size: 18px; }
     }
@@ -1035,7 +1035,7 @@
       .hero { padding: 40px 0; }
       .hero-title-mobile { font-size: 22px; letter-spacing: 2px; }
       .hero-buttons { flex-direction: column; align-items: center; }
-      .btn-primary, .btn-outline { width: 100%; justify-content: center; }
+      .btn-primary, .btn-outline { min-width: 200px; justify-content: center; }
       .countdown-bar { flex-direction: column; align-items: center; text-align: center; padding: 16px; }
       .countdown-bar .time { justify-content: center; }
       .countdown-bar .time .unit .val { font-size: 16px; }
