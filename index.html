@@ -388,7 +388,7 @@
     .ascii-title {
       display: block; text-align: center; margin-bottom: 40px;
       font-kerning: none; min-height: 66px;
-      max-width: 100%; overflow: hidden;
+      max-width: 100%; overflow-x: auto; overflow-y: hidden;
     }
     .ascii-title-inner {
       display: inline-block; text-align: left;
@@ -398,7 +398,6 @@
     .ascii-line {
       color: var(--accent); font-size: clamp(6px, 1.9vw, 12px); line-height: 1.02;
       white-space: pre;
-      font-family: "Courier New", Courier, monospace;
       opacity: 0; transition: opacity 0.15s ease;
     }
     .ascii-line.visible { opacity: 1; }
