@@ -2293,18 +2293,20 @@
       document.querySelectorAll('.ascii-wrap').forEach(wrap => {
         const pre = wrap.querySelector('.ascii-art');
         if (!pre) return;
-        pre.style.transform = 'scale(1)';
+        pre.style.transform = 'none';
         pre.style.transformOrigin = 'top center';
+        void pre.offsetHeight;
         const nat = pre.scrollWidth;
         const avail = wrap.clientWidth;
-        const ratio = avail < 600 ? 0.65 : 0.92;
+        const ratio = avail < 600 ? 0.45 : 0.92;
         const s = Math.min(1, (avail * ratio) / nat);
         pre.style.transform = 'scale(' + s + ')';
-        wrap.style.height = (pre.offsetHeight * s) + 'px';
+        wrap.style.height = (pre.getBoundingClientRect().height) + 'px';
       });
     }
     window.addEventListener('load', scaleAscii);
     window.addEventListener('resize', scaleAscii);
+    document.fonts.ready.then(scaleAscii);
 
 
   </script>
