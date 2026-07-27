@@ -414,16 +414,17 @@
       50% { opacity: 1; }
     }
     .ascii-title {
-      display: inline-block; text-align: left; margin-bottom: 40px;
+      display: block; text-align: center; margin-bottom: 40px;
       font-kerning: none; min-height: 66px;
       max-width: 100%; overflow-x: auto; overflow-y: hidden;
       -webkit-overflow-scrolling: touch;
     }
-    .ascii-title::-webkit-scrollbar { height: 3px; }
+    .ascii-title::-webkit-scrollbar { height: 0; }
     .ascii-title::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
     .ascii-line {
       color: var(--accent); font-size: 12px; line-height: 1.02;
       white-space: pre;
+      font-family: "Courier New", Courier, monospace;
       opacity: 0; transition: opacity 0.15s ease;
     }
     .ascii-line.visible { opacity: 1; }
@@ -438,6 +439,12 @@
     .ascii-desc .cursor {
       display: inline-block; width: 6px; height: 12px;
       background: var(--accent); animation: blink 1s step-end infinite;
+    }
+    .hero-title-mobile {
+      display: none;
+      font-size: 28px; font-weight: 700; color: var(--accent);
+      letter-spacing: 3px; text-align: center;
+      margin-bottom: 8px; font-family: monospace;
     }
     .hero .pain-point {
       font-size: 12px; color: var(--text-secondary);
@@ -1008,6 +1015,8 @@
     }
     @media (max-width: 480px) {
       .ascii-line { font-size: 6px; }
+      .ascii-title { display: none; }
+      .hero-title-mobile { display: block; }
       .hero { padding: 40px 0; }
       .hero-buttons { flex-direction: column; align-items: center; }
       .countdown-bar { flex-direction: column; align-items: center; text-align: center; }
@@ -1066,6 +1075,7 @@
         <div class="ascii-line">   ╚═╝   ╚═╝  ╚═╝╚══════╝    ╚═╝     ╚══════╝╚═╝  ╚═══╝ ╚═════╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝     ╚═════╝╚═╝╚═╝  ╚═╝ ╚═════╝╚══════╝╚══════╝</div>
         <div class="ascii-desc" id="asciiDesc"></div>
       </div>
+      <h1 class="hero-title-mobile" aria-label="The Penguin Circle">THE PENGUIN CIRCLE</h1>
       <p class="pain-point">Bingung mulai belajar coding? Sendirian gampang nyerah?</p>
       <p class="tagline" style="margin-top:4px;">
         Forum belajar <strong>CLI, Git, &amp; AI coding</strong> gratis untuk mahasiswa &mdash; <strong>dari 0</strong> sampai bisa bikin <strong>website &amp; aplikasi mobile</strong> pake AI. Langsung praktek di terminal, tanpa biaya.
