@@ -393,7 +393,8 @@
     }
     .ascii-title-inner {
       display: inline-block; text-align: left;
-      max-width: 100%;
+      font-family: "Courier New", Courier, monospace;
+    }
     }
     .ascii-title::-webkit-scrollbar { height: 0; }
     .ascii-title::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
@@ -1890,6 +1891,19 @@
       const lines = document.querySelectorAll('.ascii-line');
       const descEl = document.getElementById('asciiDesc');
       const descText = 'mulai dari nol — kuasai cli, git & ai coding';
+
+      // Center ascii-title-inner based on first line's natural width
+      const inner = document.querySelector('.ascii-title-inner');
+      if (inner && lines.length > 0) {
+        // Make first line visible briefly to measure, then hide again
+        lines[0].style.opacity = '1';
+        const naturalW = lines[0].scrollWidth;
+        lines[0].style.opacity = '';
+        const containerW = inner.parentElement.offsetWidth;
+        if (naturalW < containerW) {
+          inner.style.marginLeft = Math.floor((containerW - naturalW) / 2) + 'px';
+        }
+      }
 
       let running = true;
 
