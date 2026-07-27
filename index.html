@@ -396,15 +396,15 @@
       50% { transform: translate(-20px, 20px) scale(0.95); }
       75% { transform: translate(20px, 30px) scale(1.02); }
     }
-    .ascii-art {
+     .ascii-art {
       display: block; text-align: center;
       font-family: "JetBrains Mono", Consolas, "DejaVu Sans Mono", ui-monospace, monospace;
       font-size: clamp(8px, 1.12vw, 11px);
-      line-height: 1.2;
+      line-height: 1.02; letter-spacing: 0;
       white-space: pre;
       overflow-x: auto; overflow-y: hidden;
       max-width: 100%;
-      margin: 0 auto 40px;
+      margin: 0 0 40px;
       padding: 0; background: none; border: none;
       color: var(--accent); font-kerning: none;
       -webkit-overflow-scrolling: touch;
@@ -982,7 +982,7 @@
       .container { padding: 0 20px; }
       .hero h1 { font-size: 26px; }
       .hero { padding: 48px 0; }
-      .ascii-art { font-size: 1vw; line-height: 1.3; font-weight: 600; }
+      .ascii-art { font-size: clamp(3.5px, 0.9vw, 4.5px); }
       section { padding: 60px 0; }
       h2 { font-size: 22px; }
       .features-grid { grid-template-columns: 1fr 1fr; }
@@ -1108,7 +1108,7 @@
     <div class="container">
       <pre class="ascii-art" aria-hidden="true">████████╗██╗  ██╗███████╗    ██████╗ ███████╗███╗   ██╗ ██████╗ ██╗   ██╗██╗███╗   ██╗     ██████╗██╗██████╗  ██████╗██╗     ███████╗
 ╚══██╔══╝██║  ██║██╔════╝    ██╔══██╗██╔════╝████╗  ██║██╔════╝ ██║   ██║██║████╗  ██║    ██╔════╝██║██╔══██╗██╔════╝██║     ██╔════╝
-   ██║   ███████║█████╗      ██████╔╝█████╗  ██╔██╗ ██║██║  ███╗██║   ██║██║██╔██╗ ██║    ██║     ██║██████╔╝██║     ██║     ███╗    
+   ██║   ███████║█████╗      ██████╔╝█████╗  ██╔██╗ ██║██║  ███╗██║   ██║██║██╔██╗ ██║    ██║     ██║██████╔╝██║     ██║     █████╗    
    ██║   ██╔══██║██╔══╝      ██╔═══╝ ██╔══╝  ██║╚██╗██║██║   ██║██║   ██║██║██║╚██╗██║    ██║     ██║██╔══██╗██║     ██║     ██╔══╝  
    ██║   ██║  ██║███████╗    ██║     ███████╗██║ ╚████║╚██████╔╝╚██████╔╝██║██║ ╚████║    ╚██████╗██║██║  ██║╚██████╗███████╗███████╗
    ╚═╝   ╚═╝  ╚═╝╚══════╝    ╚═╝     ╚══════╝╚═╝  ╚═══╝ ╚═════╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝     ╚═════╝╚═╝╚═╝  ╚═╝ ╚═════╝╚══════╝╚══════╝</pre>
