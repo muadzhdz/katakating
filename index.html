@@ -397,14 +397,10 @@
       75% { transform: translate(20px, 30px) scale(1.02); }
     }
     .ascii-title {
-      display: block; text-align: center; margin-bottom: 40px;
+      display: block; margin: 0 auto 40px;
       font-kerning: none;
-      width: 100%;
-    }
-    .ascii-title-inner {
-      display: inline-block; text-align: left;
+      width: fit-content; max-width: 100%;
       font-family: "Courier New", Courier, monospace;
-    }
     }
     .ascii-title::-webkit-scrollbar { height: 0; }
     .ascii-title::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
@@ -1122,14 +1118,12 @@
     <div class="hero-silhouette s3"></div>
     <div class="container">
       <div class="ascii-title" aria-hidden="true">
-        <div class="ascii-title-inner">
         <div class="ascii-line">████████╗██╗  ██╗███████╗    ██████╗ ███████╗███╗   ██╗ ██████╗ ██╗   ██╗██╗███╗   ██╗     ██████╗██╗██████╗  ██████╗██╗     ███████╗</div>
         <div class="ascii-line">╚══██╔══╝██║  ██║██╔════╝    ██╔══██╗██╔════╝████╗  ██║██╔════╝ ██║   ██║██║████╗  ██║    ██╔════╝██║██╔══██╗██╔════╝██║     ██╔════╝</div>
         <div class="ascii-line">   ██║   ███████║█████╗      ██████╔╝█████╗  ██╔██╗ ██║██║  ███╗██║   ██║██║██╔██╗ ██║    ██║     ██║██████╔╝██║     ██║     ███╗    </div>
         <div class="ascii-line">   ██║   ██╔══██║██╔══╝      ██╔═══╝ ██╔══╝  ██║╚██╗██║██║   ██║██║   ██║██║██║╚██╗██║    ██║     ██║██╔══██╗██║     ██║     ██╔══╝  </div>
         <div class="ascii-line">   ██║   ██║  ██║███████╗    ██║     ███████╗██║ ╚████║╚██████╔╝╚██████╔╝██║██║ ╚████║    ╚██████╗██║██║  ██║╚██████╗███████╗███████╗</div>
         <div class="ascii-line">   ╚═╝   ╚═╝  ╚═╝╚══════╝    ╚═╝     ╚══════╝╚═╝  ╚═══╝ ╚═════╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝     ╚═════╝╚═╝╚═╝  ╚═╝ ╚═════╝╚══════╝╚══════╝</div>
-        </div>
       </div>
       <h1 class="hero-title-mobile" aria-label="The Penguin Circle">THE PENGUIN CIRCLE</h1>
       <p class="pain-point">Bingung mulai belajar coding? Sendirian gampang nyerah?</p>
@@ -1936,23 +1930,8 @@
       });
     })();
 
-    // ─── ASCII Title — static, center ───
-    (function() {
-      const lines = document.querySelectorAll('.ascii-line');
-      const inner = document.querySelector('.ascii-title-inner');
-
-      // Tampilkan semua baris sekaligus
-      lines.forEach(l => l.classList.add('visible'));
-
-      // Center inner block berdasarkan lebar natural teks
-      if (inner && lines.length > 0) {
-        const naturalW = lines[0].scrollWidth;
-        const containerW = inner.parentElement.offsetWidth;
-        if (naturalW < containerW) {
-          inner.style.marginLeft = Math.floor((containerW - naturalW) / 2) + 'px';
-        }
-      }
-    })();
+    // ─── ASCII Title — static ───
+    document.querySelectorAll('.ascii-line').forEach(l => l.classList.add('visible'));
 
 
     function toggleFaq(el) {
