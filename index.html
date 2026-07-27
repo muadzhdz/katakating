@@ -70,7 +70,7 @@
             "Web development dengan AI (Laravel, Next.js)",
             "Mobile development dengan AI (Flutter, React Native)"
           ],
-          "totalHistoricalEnrollment": 50,
+          "totalHistoricalEnrollment": 10,
           "provider": { "@id": "https://the-penguin-circle.vercel.app/#organization" },
           "offers": {
             "@type": "Offer",
@@ -101,7 +101,7 @@
           "name": "The Penguin Circle — Session 0",
           "description": "Pertemuan pertama The Penguin Circle. Mulai dari 0: navigasi terminal, command dasar, dan perkenalan kurikulum 8 segmen padat.",
           "startDate": "2026-06-12T15:30:00+07:00",
-          "endDate": "2026-06-05T17:00:00+07:00",
+          "endDate": "2026-06-12T17:00:00+07:00",
           "eventStatus": "https://schema.org/EventScheduled",
           "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
           "location": {
@@ -175,10 +175,13 @@
     html { scroll-behavior: smooth; }
 
     :root {
+      --accent: #00ff41;
+      --accent-hover: #27c93f;
+      --accent-text: #0a0a0a;
       --bg-body: #0a0a0a;
       --bg-surface: #0d0d0d;
       --bg-elevated: #111;
-      --bg-nav: rgba(10,10,10,0.92);
+      --bg-nav: rgba(10,10,10,0.72);
       --bg-code: #111;
       --bg-tag: rgba(255,255,255,0.04);
       --bg-thumb: #151515;
@@ -189,7 +192,7 @@
       --border: #1a1a1a;
       --border-nav: #1e1e1e;
       --border-block: rgba(0,255,65,0.15);
-      --border-card-hover: #00ff41;
+      --border-card-hover: var(--accent);
       --text-heading: #fff;
       --text-body: #e0e0e0;
       --text-secondary: #9ca3af;
@@ -202,10 +205,13 @@
     }
 
     body.light {
+      --accent: #00ff41;
+      --accent-hover: #27c93f;
+      --accent-text: #0a0a0a;
       --bg-body: #f4faf5;
       --bg-surface: #ffffff;
       --bg-elevated: #f0f7f2;
-      --bg-nav: rgba(244,250,245,0.92);
+      --bg-nav: rgba(244,250,245,0.82);
       --bg-code: #e8f0eb;
       --bg-tag: rgba(0,0,0,0.04);
       --bg-thumb: #e8f0eb;
@@ -236,15 +242,24 @@
       -webkit-font-smoothing: antialiased;
       transition: background 0.3s, color 0.3s;
     }
-    ::selection { background: #00ff41; color: #0a0a0a; }
+    ::selection { background: var(--accent); color: var(--accent-text); }
 
     .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+    .skip-link {
+      position: absolute; top: -999px; left: 0; z-index: 999;
+      background: var(--accent); color: var(--accent-text);
+      padding: 8px 16px; font-size: 12px; font-weight: 600;
+      text-decoration: none; border-radius: 0 0 4px 0;
+    }
+    .skip-link:focus { top: 0; }
 
     /* ─── NAVBAR ─── */
     nav {
       position: fixed; top: 0; left: 0; right: 0;
       background: var(--bg-nav);
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border-nav);
       transition: background 0.3s, border-color 0.3s;
       z-index: 100;
@@ -255,28 +270,42 @@
     }
     .nav-logo {
       display: flex; align-items: center; gap: 8px;
-      color: #00ff41; font-weight: 700; font-size: 13px;
+      color: var(--accent); font-weight: 700; font-size: 13px;
       text-decoration: none; letter-spacing: 1px;
     }
-    .nav-logo i { font-size: 22px; }
     .nav-logo span { color: var(--nav-logo-light); }
 
-    .nav-links { display: flex; gap: 16px; list-style: none; }
-    .nav-links a {
-      color: var(--nav-link); text-decoration: none; font-size: 11px;
-      transition: color 0.2s;
+    .desk-nav { position: relative; display: none; }
+    #nav-links-wrap {
+      display: flex; align-items: center; position: relative;
+      gap: 4px;
     }
-    .nav-links a:hover { color: #00ff41; }
+    .nav-link {
+      font-family: "JetBrains Mono", monospace; font-size: 11px;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--nav-link); padding: 12px 16px; min-height: 44px;
+      text-decoration: none; transition: color 0.25s; white-space: nowrap;
+      display: inline-flex; align-items: center;
+    }
+    .nav-link.active, .nav-link:hover { color: var(--accent); }
+
+    .nav-indicator {
+      position: absolute; bottom: -1px; left: 0; height: 2px;
+      background: var(--accent); border-radius: 9999px;
+      transition: left 0.35s cubic-bezier(0.4,0,0.2,1), width 0.35s cubic-bezier(0.4,0,0.2,1);
+      pointer-events: none;
+    }
+
     .nav-cta { display: flex; align-items: center; gap: 8px; }
     .nav-cta a {
       display: inline-flex; align-items: center; gap: 6px;
-      background: #00ff41; color: #0a0a0a;
+      background: var(--accent); color: var(--accent-text);
       padding: 6px 14px; border-radius: 4px;
       font-size: 11px; font-weight: 600; text-decoration: none;
       transition: background 0.2s;
     }
     .nav-cta a i { font-size: 16px; }
-    .nav-cta a:hover { background: #27c93f; }
+    .nav-cta a:hover { background: var(--accent-hover); }
     .theme-toggle {
       background: none; border: 1px solid var(--border-nav);
       color: var(--nav-link); width: 32px; height: 32px;
@@ -284,11 +313,24 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 16px; transition: all 0.2s;
     }
-    .theme-toggle:hover { border-color: #00ff41; color: #00ff41; }
-    .nav-toggle {
-      display: none; background: none; border: none;
-      color: var(--text-body); font-size: 24px; cursor: pointer;
+    .theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ─── HAMBURGER ─── */
+    .hbg {
+      display: none; width: 32px; height: 18px; position: relative;
+      background: transparent !important; border: none !important;
+      outline: none !important; padding: 0; cursor: pointer;
     }
+    .hbg span {
+      position: absolute; height: 1.5px; background: var(--accent);
+      left: 0; transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+    .hbg span:nth-child(1) { top: 0; width: 100%; }
+    .hbg span:nth-child(2) { top: 50%; transform: translateY(-50%); width: 70%; }
+    .hbg span:nth-child(3) { bottom: 0; width: 85%; }
+    .hbg.open span:nth-child(1) { top: 50%; transform: translateY(-50%) rotate(45deg); width: 100%; }
+    .hbg.open span:nth-child(2) { opacity: 0; width: 0; }
+    .hbg.open span:nth-child(3) { bottom: 50%; transform: translateY(50%) rotate(-45deg); width: 100%; }
 
     /* ─── HERO ─── */
     .hero {
@@ -298,6 +340,12 @@
       position: relative;
       overflow: hidden;
       transition: border-color 0.3s;
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    #particleCanvas {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 1;
     }
     .hero::before {
       content: "";
@@ -338,11 +386,51 @@
       50% { transform: translate(-20px, 20px) scale(0.95); }
       75% { transform: translate(20px, 30px) scale(1.02); }
     }
-    .ascii-penguin {
-      color: #00ff41; font-size: 9px; line-height: 1.02;
-      margin-bottom: 16px; white-space: pre; letter-spacing: -0.3px;
-      display: inline-block; text-align: left; opacity: 0.95;
-      font-kerning: none;
+    .scroll-indicator {
+      position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: var(--text-muted); font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+      opacity: 0.5; animation: scrollHint 2.5s ease-in-out infinite;
+    }
+    .scroll-indicator .mouse {
+      width: 22px; height: 34px; border: 2px solid var(--text-muted);
+      border-radius: 12px; position: relative;
+    }
+    .scroll-indicator .wheel {
+      width: 4px; height: 8px; background: var(--accent);
+      border-radius: 3px; position: absolute; top: 6px; left: 50%;
+      transform: translateX(-50%);
+      animation: scrollWheel 1.8s ease-in-out infinite;
+    }
+    @keyframes scrollWheel {
+      0%, 100% { transform: translateX(-50%) translateY(0); opacity: 1; }
+      50% { transform: translateX(-50%) translateY(10px); opacity: 0.3; }
+    }
+    @keyframes scrollHint {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+    .ascii-title {
+      display: inline-block; text-align: left; margin-bottom: 40px;
+      font-kerning: none; min-height: 66px;
+    }
+    .ascii-line {
+      color: var(--accent); font-size: 12px; line-height: 1.02;
+      white-space: pre; letter-spacing: -0.3px;
+      opacity: 0; transition: opacity 0.15s ease;
+    }
+    .ascii-line.visible { opacity: 1; }
+    .ascii-line.fade-out {
+      opacity: 0; transition: opacity 0.2s ease;
+    }
+    .ascii-desc {
+      color: var(--text-secondary); font-size: 13px; letter-spacing: 2px;
+      min-height: 18px; margin-top: 24px; text-transform: uppercase;
+      display: flex; align-items: center; justify-content: center; gap: 4px;
+    }
+    .ascii-desc .cursor {
+      display: inline-block; width: 6px; height: 12px;
+      background: var(--accent); animation: blink 1s step-end infinite;
     }
     .hero .pain-point {
       font-size: 12px; color: var(--text-secondary);
@@ -354,42 +442,30 @@
       transition: color 0.3s;
       letter-spacing: 2px; margin-bottom: 14px;
     }
-    .hero h1 .highlight { color: #00ff41; }
+    .hero h1 .highlight { color: var(--accent); }
     .hero .tagline {
       font-size: 14px; color: var(--text-secondary);
-      max-width: 540px; margin: 0 auto 14px;
+      max-width: 540px; margin: 0 auto 35px;
       line-height: 1.7;
-    }
-    .hero .terminal-line {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: var(--bg-elevated); border: 1px solid var(--border);
-      border-radius: 4px; padding: 10px 20px;
-      font-size: 13px; color: #00ff41; margin-bottom: 28px;
-      transition: background 0.3s, border-color 0.3s;
-    }
-    .hero .terminal-line .prompt { color: var(--text-muted); }
-    .hero .terminal-line .cursor {
-      display: inline-block; width: 7px; height: 14px;
-      background: #00ff41; animation: blink 1s step-end infinite;
     }
     @keyframes blink { 50% { opacity: 0; } }
     .hero-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
     .btn-primary {
       display: inline-flex; align-items: center; gap: 8px;
-      background: #00ff41; color: #0a0a0a;
+      background: var(--accent); color: var(--accent-text);
       padding: 12px 24px; border-radius: 4px;
       font-size: 13px; font-weight: 600; text-decoration: none; transition: all 0.2s;
       border: none; cursor: pointer;
     }
     .btn-primary i { font-size: 18px; }
-    .btn-primary:hover { background: #27c93f; transform: translateY(-1px); }
+    .btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); }
     .btn-primary:active { transform: translateY(0); }
     .btn-outline {
       display: inline-flex; align-items: center; gap: 8px;
-      background: transparent; color: #00ff41;
+      background: transparent; color: var(--accent);
       padding: 12px 24px; border-radius: 4px;
       font-size: 13px; font-weight: 600; text-decoration: none;
-      border: 1px solid #00ff41; transition: all 0.2s;
+      border: 1px solid var(--accent); transition: all 0.2s;
     }
     .btn-outline i { font-size: 18px; }
     .btn-outline:hover { background: rgba(0,255,65,0.08); transform: translateY(-1px); }
@@ -403,14 +479,14 @@
       font-size: 11px; color: var(--text-muted);
       display: inline-flex; align-items: center; gap: 6px;
     }
-    .hero-guarantee i { color: #00ff41; font-size: 14px; }
+    .hero-guarantee i { color: var(--accent); font-size: 14px; }
 
     /* ─── SECTIONS ─── */
     section { padding: 80px 0; border-bottom: 1px solid var(--border); transition: border-color 0.3s; }
     section:last-of-type { border-bottom: none; }
     .section-label {
       display: inline-flex; align-items: center; gap: 6px;
-      color: #00ff41; font-size: 11px; font-weight: 600;
+      color: var(--accent); font-size: 11px; font-weight: 600;
       letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px;
     }
     .section-label i { font-size: 14px; }
@@ -426,7 +502,7 @@
     p b, p strong { color: var(--text-body); }
     code {
       font-family: "JetBrains Mono", monospace; font-size: 13px;
-      color: #00ff41; background: var(--bg-code);
+      color: var(--accent); background: var(--bg-code);
       padding: 1px 6px; border-radius: 3px;
       transition: background 0.3s;
     }
@@ -461,7 +537,7 @@
       align-items: center; justify-content: center;
       background: rgba(0,255,65,0.08); border-radius: 6px; margin-bottom: 14px;
     }
-    .feature-card .icon-wrap i { color: #00ff41; font-size: 18px; }
+    .feature-card .icon-wrap i { color: var(--accent); font-size: 18px; }
     .feature-card h3 { font-size: 14px; font-weight: 600; color: var(--text-heading); margin-bottom: 6px; }
     .feature-card p {
       font-size: 12px; color: var(--text-muted); margin: 0; line-height: 1.5;
@@ -482,7 +558,7 @@
     .comparison-table th:last-child { border-radius: 0 6px 0 0; }
     .comparison-table td { background: var(--bg-body); transition: background 0.3s; }
     .comparison-table tr:last-child td { border-bottom: none; }
-    .comparison-table .check { color: #00ff41; }
+    .comparison-table .check { color: var(--accent); }
     .comparison-table .cross { color: #ef4444; }
     .comparison-table .highlight-col { background: var(--bg-compare); }
 
@@ -497,7 +573,7 @@
       flex: 1; min-width: 120px;
     }
     .curriculum-intro .stat .num {
-      font-size: 28px; font-weight: 700; color: #00ff41;
+      font-size: 28px; font-weight: 700; color: var(--accent);
     }
     .curriculum-intro .stat .label {
       font-size: 11px; color: var(--text-muted); margin-top: 2px;
@@ -514,7 +590,7 @@
       font-size: 10px; font-weight: 600; letter-spacing: 1px;
       padding: 4px 10px; border-radius: 4px;
     }
-    .phase-header.phase-1 .badge { background: #00ff41; color: #0a0a0a; }
+    .phase-header.phase-1 .badge { background: var(--accent); color: var(--accent-text); }
     .phase-header.phase-2 .badge { background: #007aff; color: #fff; }
     .phase-header h3 { font-size: 15px; font-weight: 600; color: var(--text-heading); flex: 1; }
     .phase-header .months { font-size: 11px; color: var(--text-muted); }
@@ -530,7 +606,7 @@
     }
     .segment-card:hover { border-color: var(--border-card-hover); }
     .segment-card .seg-num {
-      font-size: 11px; font-weight: 700; color: #00ff41;
+      font-size: 11px; font-weight: 700; color: var(--accent);
       letter-spacing: 1px; padding-top: 2px;
     }
     .segment-card .seg-body h4 {
@@ -567,7 +643,7 @@
       align-items: center; justify-content: center;
       background: rgba(0,255,65,0.1); border-radius: 6px;
     }
-    .timeline-card .step i { color: #00ff41; font-size: 14px; }
+    .timeline-card .step i { color: var(--accent); font-size: 14px; }
     .timeline-card .phase {
       font-size: 10px; color: var(--text-muted); letter-spacing: 1.5px;
       text-transform: uppercase; margin-bottom: 4px;
@@ -595,7 +671,7 @@
     }
     .testi-card .author .initial {
       width: 32px; height: 32px; border-radius: 50%;
-      background: rgba(0,255,65,0.1); color: #00ff41;
+      background: rgba(0,255,65,0.1); color: var(--accent);
       display: flex; align-items: center; justify-content: center;
       font-size: 12px; font-weight: 700; flex-shrink: 0;
     }
@@ -616,7 +692,7 @@
       align-items: center; justify-content: center;
       margin: 0 auto 10px; background: rgba(0,255,65,0.08); border-radius: 8px;
     }
-    .detail-card .icon-wrap i { color: #00ff41; font-size: 20px; }
+    .detail-card .icon-wrap i { color: var(--accent); font-size: 20px; }
     .detail-card h3 { font-size: 13px; font-weight: 600; color: var(--text-heading); margin-bottom: 4px; }
     .detail-card p { font-size: 11px; color: var(--text-muted); margin: 0; }
 
@@ -660,7 +736,7 @@
       transition: color 0.3s; margin-bottom: 2px;
     }
     .team-card .role {
-      font-size: 10px; color: #00ff41; margin-bottom: 4px;
+      font-size: 10px; color: var(--accent); margin-bottom: 4px;
       letter-spacing: 0.5px;
     }
     .team-card .bio {
@@ -670,60 +746,9 @@
       border-color: rgba(0,255,65,0.2);
       background: var(--bg-green-tint);
     }
-    .team-card.featured .avatar { border-color: #00ff41; }
+    .team-card.featured .avatar { border-color: var(--accent); }
 
-    /* ─── GALLERY ─── */
-    .gallery-tabs {
-      display: flex; gap: 8px; margin-top: 24px; flex-wrap: wrap;
-    }
-    .gallery-tab {
-      padding: 8px 16px; border-radius: 4px; font-size: 11px; font-weight: 600;
-      border: 1px solid var(--border); background: transparent; color: var(--text-muted);
-      cursor: pointer; transition: all 0.2s;
-      font-family: "JetBrains Mono", monospace;
-    }
-    .gallery-tab:hover { border-color: #00ff41; color: #00ff41; }
-    .gallery-tab.active { background: #00ff41; color: #0a0a0a; border-color: #00ff41; }
-    .gallery-content { margin-top: 16px; }
-    .gallery-panel { display: none; }
-    .gallery-panel.active { display: block; }
-    .gallery-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
-    }
-    .gallery-item {
-      background: var(--bg-surface); border: 1px solid var(--border); border-radius: 6px;
-      overflow: hidden; transition: border-color 0.2s, background 0.3s;
-    }
-    .gallery-item:hover { border-color: var(--border-card-hover); }
-    .gallery-item .thumb {
-      width: 100%; aspect-ratio: 16/9;
-      background: var(--bg-thumb); display: flex;
-      align-items: center; justify-content: center;
-      color: var(--text-placeholder); font-size: 28px;
-      transition: background 0.3s, color 0.3s;
-    }
-    .gallery-item .thumb i { font-size: 32px; }
-    .gallery-item .info {
-      padding: 12px 14px;
-    }
-    .gallery-item .info h4 {
-      font-size: 12px; font-weight: 600; color: var(--text-heading);
-      transition: color 0.3s; margin-bottom: 2px;
-    }
-    .gallery-item .info p {
-      font-size: 10px; color: var(--text-muted); margin: 0;
-    }
-    .gallery-item .thumb.embed {
-      display: block; padding: 0; overflow: hidden;
-    }
-    .gallery-item .thumb.embed iframe,
-    .gallery-item .thumb.embed img {
-      width: 100%; height: 100%;
-      border: none; display: block;
-    }
-    .gallery-item .thumb.embed img {
-      object-fit: cover;
-    }
+    /* ─── GALLERY (coming soon) ─── */
     /* ─── STATS / COUNTER ─── */
     .stats-row {
       display: grid; grid-template-columns: repeat(4, 1fr);
@@ -735,7 +760,7 @@
       transition: background 0.3s, border-color 0.3s;
     }
     .stat-card .num {
-      font-size: 28px; font-weight: 700; color: #00ff41;
+      font-size: 28px; font-weight: 700; color: var(--accent);
     }
     .stat-card .label { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
 
@@ -743,13 +768,13 @@
     .countdown-bar {
       background: var(--bg-surface); border: 1px solid var(--border);
       border-radius: 6px; padding: 20px 24px; margin-top: 24px;
-      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+      display: inline-flex; align-items: center; justify-content: center; gap: 12px;
       transition: background 0.3s, border-color 0.3s;
     }
     .countdown-bar .label {
       font-size: 11px; color: var(--text-muted);
     }
-    .countdown-bar .label i { color: #00ff41; margin-right: 6px; }
+    .countdown-bar .label i { color: var(--accent); margin-right: 6px; }
     .countdown-bar .time {
       display: flex; gap: 16px;
     }
@@ -776,7 +801,7 @@
     .why-item:hover { border-color: var(--border-card-hover); }
     .why-item .num {
       width: 28px; height: 28px; border-radius: 6px;
-      background: rgba(0,255,65,0.1); color: #00ff41;
+      background: rgba(0,255,65,0.1); color: var(--accent);
       display: flex; align-items: center; justify-content: center;
       font-size: 12px; font-weight: 700; flex-shrink: 0;
     }
@@ -794,7 +819,7 @@
       transition: color 0.3s;
     }
     .faq-question i {
-      color: #00ff41; font-size: 18px; flex-shrink: 0;
+      color: var(--accent); font-size: 18px; flex-shrink: 0;
       transition: transform 0.25s;
     }
     .faq-question.active i { transform: rotate(45deg); }
@@ -822,7 +847,7 @@
       transition: color 0.2s; display: inline-flex; align-items: center; gap: 4px;
     }
     footer .footer-links a i { font-size: 14px; }
-    footer .footer-links a:hover { color: #00ff41; }
+    footer .footer-links a:hover { color: var(--accent); }
     footer .footer-keywords {
       margin-top: 20px; font-size: 9px; color: var(--text-keyword);
       transition: color 0.3s;
@@ -834,14 +859,30 @@
     .back-top {
       position: fixed; bottom: 24px; right: 24px;
       width: 40px; height: 40px; border-radius: 6px;
-      background: #00ff41; color: #0a0a0a;
+      background: var(--accent); color: var(--accent-text);
       border: none; cursor: pointer; font-size: 20px;
       display: flex; align-items: center; justify-content: center;
       opacity: 0; visibility: hidden; transition: all 0.3s;
       z-index: 99;
     }
     .back-top.show { opacity: 1; visibility: visible; }
-    .back-top:hover { background: #27c93f; }
+    .back-top:hover { background: var(--accent-hover); }
+
+
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      html { scroll-behavior: auto; }
+      .hero-silhouette { display: none; }
+      .modal-box { transform: none; }
+      .ascii-line { opacity: 1; }
+      .ascii-desc .cursor { display: none; }
+      .ascii-desc { color: var(--text-secondary); }
+    }
 
     
     /* ─── MODAL ─── */
@@ -869,15 +910,15 @@
       align-items: center; justify-content: center;
       border-radius: 4px; transition: all 0.2s;
     }
-    .modal-close:hover { color: #00ff41; background: rgba(0,255,65,0.08); }
+    .modal-close:hover { color: var(--accent); background: rgba(0,255,65,0.08); }
     .modal-box .avatar-lg {
       width: 80px; height: 80px; border-radius: 50%;
-      object-fit: cover; border: 3px solid #00ff41; margin-bottom: 14px;
+      object-fit: cover; border: 3px solid var(--accent); margin-bottom: 14px;
       display: block; margin-left: auto; margin-right: auto;
     }
     .modal-box .avatar-lg-placeholder {
       width: 80px; height: 80px; border-radius: 50%;
-      background: var(--bg-elevated); border: 3px solid #00ff41;
+      background: var(--bg-elevated); border: 3px solid var(--accent);
       display: flex; align-items: center; justify-content: center;
       font-size: 30px; color: var(--text-placeholder); margin-bottom: 14px;
       margin-left: auto; margin-right: auto;
@@ -886,7 +927,7 @@
       font-size: 18px; font-weight: 700; color: var(--text-heading); margin-bottom: 4px;
     }
     .modal-box .modal-role {
-      font-size: 12px; color: #00ff41; margin-bottom: 12px;
+      font-size: 12px; color: var(--accent); margin-bottom: 12px;
     }
     .modal-box .modal-bio {
       font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 14px;
@@ -908,24 +949,40 @@
       color: var(--text-muted); font-size: 18px; text-decoration: none;
       transition: all 0.2s;
     }
-    .modal-box .modal-sosmed a:hover { border-color: #00ff41; color: #00ff41; }
+    .modal-box .modal-sosmed a:hover { border-color: var(--accent); color: var(--accent); }
     .team-card { cursor: pointer; }
 
+    /* ─── MOBILE DRAWER ─── */
+    .mob-drawer {
+      position: fixed; inset: 0; z-index: 99;
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      background: var(--bg-nav);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px;
+      transform: translateX(100%);
+      transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+    }
+    .mob-drawer.open { transform: translateX(0); }
+    .mob-link {
+      font-family: "JetBrains Mono", monospace; font-size: 1.6rem; font-weight: 700;
+      color: var(--nav-link); text-transform: uppercase; letter-spacing: 0.1em;
+      text-decoration: none; transition: color 0.2s;
+    }
+    .mob-link:hover, .mob-link.active { color: var(--accent); }
+
+    /* ─── REVEAL ─── */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
     /* ─── RESPONSIVE ─── */
+    @media (min-width: 769px) {
+      .desk-nav { display: block; }
+    }
     @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .nav-toggle { display: block; }
-      
-      .nav-links.show {
-        display: flex; flex-direction: column;
-        position: absolute; top: 56px; left: 0; right: 0;
-        background: var(--bg-nav); border-bottom: 1px solid var(--border-nav);
-        padding: 16px 24px; gap: 12px;
-        transition: background 0.3s, border-color 0.3s;
-      }
+      .desk-nav { display: none !important; }
+      .hbg { display: block; }
       .hero h1 { font-size: 26px; }
       .hero { padding: 120px 0 60px; }
-      .ascii-penguin { font-size: 4.5px; }
+      .ascii-line { font-size: 7px; }
       section { padding: 60px 0; }
       h2 { font-size: 22px; }
       .features-grid { grid-template-columns: 1fr; }
@@ -933,7 +990,6 @@
       .testi-grid { grid-template-columns: 1fr; }
       .details-grid { grid-template-columns: 1fr 1fr; }
       .stats-row { grid-template-columns: 1fr 1fr; }
-      .gallery-grid { grid-template-columns: 1fr 1fr; }
       .team-grid .team-card { width: calc(50% - 6px); min-width: 130px; }
       .segment-card { grid-template-columns: 1fr; gap: 8px; }
       .countdown-bar .time .unit .val { font-size: 16px; }
@@ -944,11 +1000,7 @@
       .comparison-table th, .comparison-table td { padding: 8px 10px; }
     }
     @media (max-width: 480px) {
-      .details-grid { grid-template-columns: 1fr; }
-      .stats-row { grid-template-columns: 1fr; }
-      .gallery-grid { grid-template-columns: 1fr; }
-      .hero h1 { font-size: 20px; }
-      .ascii-penguin { font-size: 4.5px; }
+      .ascii-line { font-size: 6px; }
       .hero-buttons { flex-direction: column; align-items: center; }
       .countdown-bar { flex-direction: column; align-items: stretch; text-align: center; }
       .countdown-bar .time { justify-content: center; }
@@ -959,68 +1011,66 @@
 </head>
 <body>
 
+  <a href="#main-content" class="skip-link">Langsung ke konten</a>
+
   <!-- ──────── NAVBAR ──────── -->
   <nav>
     <div class="container">
-      <a href="#" class="nav-logo" aria-label="The Penguin Circle — Beranda">
-        <i class='bx bxs-terminal'></i><span>PENGUIN</span><span style="color:var(--text-muted)">/</span><span>CIRCLE</span>
+      <a href="#main-content" class="nav-logo" aria-label="The Penguin Circle — Beranda">
+        <span>PENGUIN</span><span style="color:var(--text-muted)">/</span><span>CIRCLE</span>
       </a>
-      <button class="nav-toggle" id="navToggle" aria-label="Toggle Menu"><i class='bx bx-menu'></i></button>
-      <ul class="nav-links" id="navLinks">
-        <li><a href="#tentang">Tentang</a></li>
-        <li><a href="#mengapa">Mengapa</a></li>
-        <li><a href="#kurikulum">Kurikulum</a></li>
-
-        <li><a href="#tim">Tim</a></li>
-        <li><a href="#galeri">Galeri</a></li>
-        <li><a href="#faq">FAQ</a></li>
-      </ul>
+      <div class="desk-nav" id="deskNav">
+        <div id="nav-links-wrap">
+          <a href="#tentang" class="nav-link active" data-sec="tentang">Tentang</a>
+          <a href="#mengapa" class="nav-link" data-sec="mengapa">Mengapa</a>
+          <a href="#kurikulum" class="nav-link" data-sec="kurikulum">Kurikulum</a>
+          <a href="#tim" class="nav-link" data-sec="tim">Tim</a>
+          <a href="#galeri" class="nav-link" data-sec="galeri">Galeri</a>
+          <a href="#faq" class="nav-link" data-sec="faq">FAQ</a>
+          <div class="nav-indicator" id="navInd"></div>
+        </div>
+      </div>
       <div class="nav-cta">
         <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode">
           <i class='bx bx-moon' id="themeIcon"></i>
         </button>
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSczFE4zfWlSkgrQ0I0LjyKn7JUDAOoW4XguA66p0ZJ9Q7Rgxg/viewform?usp=header" target="_blank" rel="noopener"><i class='bx bx-edit'></i>Daftar</a>
+        <button class="hbg" id="hbgBtn" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
       </div>
     </div>
   </nav>
 
   <!-- ──────── HERO ──────── -->
   <!-- ATTENTION (AIDA) -->
-  <header class="hero" id="home">
+  <header class="hero" id="main-content">
     <div class="hero-silhouette s1"></div>
     <div class="hero-silhouette s2"></div>
     <div class="hero-silhouette s3"></div>
     <div class="container">
-      <pre class="ascii-penguin" aria-hidden="true">
-████████╗██╗  ██╗███████╗    ██████╗ ███████╗███╗   ██╗ ██████╗ ██╗   ██╗██╗███╗   ██╗     ██████╗██╗██████╗  ██████╗██╗     ███████╗
-╚══██╔══╝██║  ██║██╔════╝    ██╔══██╗██╔════╝████╗  ██║██╔════╝ ██║   ██║██║████╗  ██║    ██╔════╝██║██╔══██╗██╔════╝██║     ██╔════╝
-   ██║   ███████║█████╗      ██████╔╝█████╗  ██╔██╗ ██║██║  ███╗██║   ██║██║██╔██╗ ██║    ██║     ██║██████╔╝██║     ██║     █████╗
-   ██║   ██╔══██║██╔══╝      ██╔═══╝ ██╔══╝  ██║╚██╗██║██║   ██║██║   ██║██║██║╚██╗██║    ██║     ██║██╔══██╗██║     ██║     ██╔══╝
-   ██║   ██║  ██║███████╗    ██║     ███████╗██║ ╚████║╚██████╔╝╚██████╔╝██║██║ ╚████║    ╚██████╗██║██║  ██║╚██████╗███████╗███████╗
-   ╚═╝   ╚═╝  ╚═╝╚══════╝    ╚═╝     ╚══════╝╚═╝  ╚═══╝ ╚═════╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝     ╚═════╝╚═╝╚═╝  ╚═╝ ╚═════╝╚══════╝╚══════╝
-      </pre></pre>
+      <div class="ascii-title" aria-hidden="true">
+        <div class="ascii-line">████████╗██╗  ██╗███████╗    ██████╗ ███████╗███╗   ██╗ ██████╗ ██╗   ██╗██╗███╗   ██╗     ██████╗██╗██████╗  ██████╗██╗     ███████╗</div>
+        <div class="ascii-line">╚══██╔══╝██║  ██║██╔════╝    ██╔══██╗██╔════╝████╗  ██║██╔════╝ ██║   ██║██║████╗  ██║    ██╔════╝██║██╔══██╗██╔════╝██║     ██╔════╝</div>
+        <div class="ascii-line">   ██║   ███████║█████╗      ██████╔╝█████╗  ██╔██╗ ██║██║  ███╗██║   ██║██║██╔██╗ ██║    ██║     ██║██████╔╝██║     ██║     █████╗</div>
+        <div class="ascii-line">   ██║   ██╔══██║██╔══╝      ██╔═══╝ ██╔══╝  ██║╚██╗██║██║   ██║██║   ██║██║██║╚██╗██║    ██║     ██║██╔══██╗██║     ██║     ██╔══╝</div>
+        <div class="ascii-line">   ██║   ██║  ██║███████╗    ██║     ███████╗██║ ╚████║╚██████╔╝╚██████╔╝██║██║ ╚████║    ╚██████╗██║██║  ██║╚██████╗███████╗███████╗</div>
+        <div class="ascii-line">   ╚═╝   ╚═╝  ╚═╝╚══════╝    ╚═╝     ╚══════╝╚═╝  ╚═══╝ ╚═════╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝     ╚═════╝╚═╝╚═╝  ╚═╝ ╚═════╝╚══════╝╚══════╝</div>
+        <div class="ascii-desc" id="asciiDesc"></div>
+      </div>
       <p class="pain-point">Bingung mulai belajar coding? Sendirian gampang nyerah?</p>
       <p class="tagline" style="margin-top:4px;">
         Forum belajar <strong>CLI, Git, &amp; AI coding</strong> gratis untuk mahasiswa &mdash; <strong>dari 0</strong> sampai bisa bikin <strong>website &amp; aplikasi mobile</strong> pake AI. Langsung praktek di terminal, tanpa biaya.
       </p>
 
       <div class="countdown-bar" id="countdownBar" style="margin-bottom:24px;">
-        <div class="label"><i class='bx bx-time'></i>Circle dimulai dalam:</div>
+        <div class="label"><i class='bx bx-time'></i>Status Circle:</div>
         <div class="time" id="countdown">
-          <div class="unit"><div class="val" id="cdDays">--</div><div class="lbl">Hari</div></div>
-          <div class="unit"><div class="val" id="cdHours">--</div><div class="lbl">Jam</div></div>
-          <div class="unit"><div class="val" id="cdMins">--</div><div class="lbl">Menit</div></div>
-          <div class="unit"><div class="val" id="cdSecs">--</div><div class="lbl">Detik</div></div>
+          <span style="color:var(--accent);font-size:14px;">Circle sedang berjalan!</span>
         </div>
       </div>
 
-      <div class="terminal-line" aria-label="Terminal command example">
-        <span class="prompt">$</span>
-        <span id="typedText"></span>
-        <span class="cursor" id="cursorEl"></span>
-      </div>
       <div class="hero-buttons">
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSczFE4zfWlSkgrQ0I0LjyKn7JUDAOoW4XguA66p0ZJ9Q7Rgxg/viewform?usp=header" target="_blank" rel="noopener" class="btn-primary"><i class='bx bx-edit'></i>Daftar Gratis</a>
         <a href="#kurikulum" class="btn-outline"><i class='bx bx-down-arrow-alt'></i>Lihat Kurikulum</a>
       </div>
       <div class="hero-guarantee">
@@ -1046,13 +1096,18 @@
           <div class="lbl">Rupiah</div>
         </div>
       </div>
+      <div class="scroll-indicator" aria-hidden="true">
+        <div class="mouse"><div class="wheel"></div></div>
+        <span>Scroll</span>
+      </div>
     </div>
+    <canvas id="particleCanvas"></canvas>
   </header>
 
   <!-- ──────── TENTANG ──────── -->
   <!-- INTEREST (AIDA) -->
   <section id="tentang">
-    <div class="container">
+    <div class="container reveal">
       <span class="section-label"><i class='bx bx-info-circle'></i>Tentang</span>
       <h2>Apa Itu The Penguin Circle?</h2>
       <p>
@@ -1103,7 +1158,7 @@
   <!-- ──────── MENGAPA ──────── -->
   <!-- DESIRE (AIDA) — Comparison / Why Us -->
   <section id="mengapa">
-    <div class="container">
+    <div class="container reveal">
       <span class="section-label"><i class='bx bx-stats'></i>Mengapa</span>
       <h2>Kenapa Harus The Penguin Circle?</h2>
       <p class="section-sub">Banyak cara belajar coding. Tapi nggak semuanya cocok buat mahasiswa yang mulai dari 0 dengan budget 0.</p>
@@ -1223,7 +1278,7 @@
 
   <!-- ──────── KURIKULUM ──────── -->
   <section id="kurikulum">
-    <div class="container">
+    <div class="container reveal">
       <span class="section-label"><i class='bx bx-book'></i>Kurikulum</span>
       <h2>8 Segmen Padat — Dari 0 ke AI Developer</h2>
       <p>
@@ -1258,7 +1313,7 @@
             <div class="seg-num">SEG-1</div>
             <div class="seg-body">
               <h4>Navigasi &amp; Manajemen File <span style="color:var(--text-muted);font-size:11px;font-weight:400;">&mdash; Juni</span></h4>
-              <div class="desc">Mulai dari 0: orientasi terminal (<code>pwd</code>, <code>ls</code>, <code>cd</code>), bikin folder &amp; file (<code>mkdir</code>, <code>touch</code>), hapus &amp; pindahin (<code>cp</code>, <code>mv</code>, <code>rm</code>), wildcard. <b style="color:#00ff41;">&#9888; Khusus WSL: langsung praktik bikin folder sendiri</b> (karena WSL fresh install gak punya Downloads/Pictures).</div>
+              <div class="desc">Mulai dari 0: orientasi terminal (<code>pwd</code>, <code>ls</code>, <code>cd</code>), bikin folder &amp; file (<code>mkdir</code>, <code>touch</code>), hapus &amp; pindahin (<code>cp</code>, <code>mv</code>, <code>rm</code>), wildcard. <b style="color:var(--accent);">&#9888; Khusus WSL: langsung praktik bikin folder sendiri</b> (karena WSL fresh install gak punya Downloads/Pictures).</div>
               <div class="topics">
                 <span>pwd</span><span>ls</span><span>cd</span><span>mkdir</span><span>touch</span><span>cp</span><span>mv</span><span>rm</span><span>rmdir</span><span>wildcard</span>
               </div>
@@ -1404,7 +1459,7 @@
 
   <!-- ──────── TIM ──────── -->
   <section id="tim">
-    <div class="container">
+    <div class="container reveal">
       <span class="section-label"><i class='bx bx-group'></i>Tim</span>
       <h2>Struktur The Penguin Circle</h2>
       <p>
@@ -1417,7 +1472,7 @@
         <h3><i class='bx bx-star' style="color:#ffd700;"></i> Mentor &amp; Pendiri <span>— Penggagas &amp; pengajar utama</span></h3>
         <div class="team-grid">
           <div class="team-card featured" onclick="openModal('muadz')" data-member="muadz">
-            <img src="assets/mentor-profile.jpg" alt="Mu'adz Hudzaifah — Ketua Divisi Kemahasiswaan TRM 2026/2027 dan Mentor The Penguin Circle" class="avatar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <img src="assets/mentor-profile.jpg" alt="Mu'adz Hudzaifah — Ketua Divisi Kemahasiswaan TRM 2026/2027 dan Mentor The Penguin Circle" class="avatar" width="64" height="64" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
             <div class="avatar-placeholder" style="display:none;"><i class='bx bx-user'></i></div>
             <div class="name">Mu'adz Hudzaifah</div>
             <div class="role">Ketua Divisi &middot; Mentor</div>
@@ -1427,41 +1482,41 @@
       </div>
 
       <div class="team-category">
-        <h3><i class='bx bx-shield' style="color:#00ff41;"></i> Divisi Kemahasiswaan <span>— Anggota Divisi</span></h3>
+        <h3><i class='bx bx-shield' style="color:var(--accent);"></i> Divisi Kemahasiswaan <span>— Anggota Divisi</span></h3>
         <div class="team-grid">
           <div class="team-card" onclick="openModal('anggota1')" data-member="anggota1">
-            <div class="avatar-placeholder"><i class='bx bx-user'></i></div>
-            <div class="name">Muhammad Hisyam Ariandra</div>
-            <div class="role">Anggota Divisi - Peserta</div>
-            <div class="bio">Belajar CLI, Git, dan AI bareng dari 0.</div>
-          </div>
-          <div class="team-card" onclick="openModal('anggota2')" data-member="anggota2">
-            <div class="avatar-placeholder"><i class='bx bx-user'></i></div>
-            <div class="name">Rassel Juliandri</div>
-            <div class="role">Anggota Divisi - Peserta</div>
-            <div class="bio">Belajar CLI, Git, dan AI bareng dari 0.</div>
-          </div>
-          <div class="team-card" onclick="openModal('anggota3')" data-member="anggota3">
-            <div class="avatar-placeholder"><i class='bx bx-user'></i></div>
-            <div class="name">Hayyan Kalam</div>
-            <div class="role">Anggota Divisi - Peserta</div>
-            <div class="bio">Belajar CLI, Git, dan AI bareng dari 0.</div>
-          </div>
-          <div class="team-card" onclick="openModal('anggota4')" data-member="anggota4">
-            <div class="avatar-placeholder"><i class='bx bx-user'></i></div>
-            <div class="name">Ilham Yusuf Fadillah</div>
-            <div class="role">Anggota Divisi - Peserta</div>
-            <div class="bio">Belajar CLI, Git, dan AI bareng dari 0.</div>
-          </div>
-          <div class="team-card" onclick="openModal('anggota5')" data-member="anggota5">
             <div class="avatar-placeholder"><i class='bx bx-user'></i></div>
             <div class="name">Bayu Fajar. A</div>
             <div class="role">Anggota Divisi - Peserta</div>
             <div class="bio">Belajar CLI, Git, dan AI bareng dari 0.</div>
           </div>
-          <div class="team-card" onclick="openModal('anggota6')" data-member="anggota6">
+          <div class="team-card" onclick="openModal('anggota2')" data-member="anggota2">
+            <div class="avatar-placeholder"><i class='bx bx-user'></i></div>
+            <div class="name">Hayyan Kalam</div>
+            <div class="role">Anggota Divisi - Peserta</div>
+            <div class="bio">Belajar CLI, Git, dan AI bareng dari 0.</div>
+          </div>
+          <div class="team-card" onclick="openModal('anggota3')" data-member="anggota3">
+            <div class="avatar-placeholder"><i class='bx bx-user'></i></div>
+            <div class="name">Ilham Yusuf Fadillah</div>
+            <div class="role">Anggota Divisi - Peserta</div>
+            <div class="bio">Belajar CLI, Git, dan AI bareng dari 0.</div>
+          </div>
+          <div class="team-card" onclick="openModal('anggota4')" data-member="anggota4">
             <div class="avatar-placeholder"><i class='bx bx-user'></i></div>
             <div class="name">Kammila</div>
+            <div class="role">Anggota Divisi - Peserta</div>
+            <div class="bio">Belajar CLI, Git, dan AI bareng dari 0.</div>
+          </div>
+          <div class="team-card" onclick="openModal('anggota5')" data-member="anggota5">
+            <div class="avatar-placeholder"><i class='bx bx-user'></i></div>
+            <div class="name">Muhammad Hisyam Ariandra</div>
+            <div class="role">Anggota Divisi - Peserta</div>
+            <div class="bio">Belajar CLI, Git, dan AI bareng dari 0.</div>
+          </div>
+          <div class="team-card" onclick="openModal('anggota6')" data-member="anggota6">
+            <div class="avatar-placeholder"><i class='bx bx-user'></i></div>
+            <div class="name">Rassel Juliandri</div>
             <div class="role">Anggota Divisi - Peserta</div>
             <div class="bio">Belajar CLI, Git, dan AI bareng dari 0.</div>
           </div>
@@ -1471,9 +1526,63 @@
       <div class="team-category">
         <h3><i class='bx bx-group' style="color:var(--text-muted);"></i> Peserta Circle <span>— Mahasiswa PDBI dari 0</span></h3>
         <div class="team-grid">
-          <div class="team-card" onclick="openModal('peserta')" data-member="peserta">
+          <div class="team-card" onclick="openModal('peserta1')" data-member="peserta1">
             <div class="avatar-placeholder"><i class='bx bx-user'></i></div>
-            <div class="name">+50 Peserta</div>
+            <div class="name">Alya Fahma</div>
+            <div class="role">Circle Member</div>
+            <div class="bio">Mahasiswa PDBI yang belajar dari 0.</div>
+          </div>
+          <div class="team-card" onclick="openModal('peserta2')" data-member="peserta2">
+            <div class="avatar-placeholder"><i class='bx bx-user'></i></div>
+            <div class="name">Ananda Aura Shifa Thitania</div>
+            <div class="role">Circle Member</div>
+            <div class="bio">Mahasiswa PDBI yang belajar dari 0.</div>
+          </div>
+          <div class="team-card" onclick="openModal('peserta3')" data-member="peserta3">
+            <div class="avatar-placeholder"><i class='bx bx-user'></i></div>
+            <div class="name">Arfan Ghifari</div>
+            <div class="role">Circle Member</div>
+            <div class="bio">Mahasiswa PDBI yang belajar dari 0.</div>
+          </div>
+          <div class="team-card" onclick="openModal('peserta4')" data-member="peserta4">
+            <div class="avatar-placeholder"><i class='bx bx-user'></i></div>
+            <div class="name">Bintang Nurzaidani</div>
+            <div class="role">Circle Member</div>
+            <div class="bio">Mahasiswa PDBI yang belajar dari 0.</div>
+          </div>
+          <div class="team-card" onclick="openModal('peserta5')" data-member="peserta5">
+            <div class="avatar-placeholder"><i class='bx bx-user'></i></div>
+            <div class="name">Faris Aghna</div>
+            <div class="role">Circle Member</div>
+            <div class="bio">Mahasiswa PDBI yang belajar dari 0.</div>
+          </div>
+          <div class="team-card" onclick="openModal('peserta6')" data-member="peserta6">
+            <div class="avatar-placeholder"><i class='bx bx-user'></i></div>
+            <div class="name">Muhammad Keviin Ramadhan</div>
+            <div class="role">Circle Member</div>
+            <div class="bio">Mahasiswa PDBI yang belajar dari 0.</div>
+          </div>
+          <div class="team-card" onclick="openModal('peserta7')" data-member="peserta7">
+            <div class="avatar-placeholder"><i class='bx bx-user'></i></div>
+            <div class="name">Raditya Radja</div>
+            <div class="role">Circle Member</div>
+            <div class="bio">Mahasiswa PDBI yang belajar dari 0.</div>
+          </div>
+          <div class="team-card" onclick="openModal('peserta8')" data-member="peserta8">
+            <div class="avatar-placeholder"><i class='bx bx-user'></i></div>
+            <div class="name">Raysha Fadilla</div>
+            <div class="role">Circle Member</div>
+            <div class="bio">Mahasiswa PDBI yang belajar dari 0.</div>
+          </div>
+          <div class="team-card" onclick="openModal('peserta9')" data-member="peserta9">
+            <div class="avatar-placeholder"><i class='bx bx-user'></i></div>
+            <div class="name">Rohman Gunawan</div>
+            <div class="role">Circle Member</div>
+            <div class="bio">Mahasiswa PDBI yang belajar dari 0.</div>
+          </div>
+          <div class="team-card" onclick="openModal('peserta10')" data-member="peserta10">
+            <div class="avatar-placeholder"><i class='bx bx-user'></i></div>
+            <div class="name">Syifa Amelia</div>
             <div class="role">Circle Member</div>
             <div class="bio">Mahasiswa PDBI yang belajar dari 0.</div>
           </div>
@@ -1490,7 +1599,7 @@
 
   <!-- ──────── DETAIL ──────── -->
   <section id="detail">
-    <div class="container">
+    <div class="container reveal">
       <span class="section-label"><i class='bx bx-list-ul'></i>Detail</span>
       <h2>Informasi Lengkap</h2>
       <div class="details-grid">
@@ -1520,119 +1629,19 @@
 
   <!-- ──────── GALERI ──────── -->
   <section id="galeri">
-    <div class="container">
+    <div class="container reveal">
       <span class="section-label"><i class='bx bx-images'></i>Galeri</span>
       <h2>Dokumentasi Circle</h2>
       <p>
         Kumpulan video tugas peserta dan foto dokumentasi selama pembelajaran
         CLI, Git, dan AI coding di The Penguin Circle.
       </p>
-
-      <div class="gallery-tabs">
-        <button class="gallery-tab active" onclick="switchGallery('video', this)"><i class='bx bx-video'></i> Video Tugas</button>
-        <button class="gallery-tab" onclick="switchGallery('foto', this)"><i class='bx bx-camera'></i> Foto Dokumentasi</button>
-      </div>
-
-      <div class="gallery-content">
-        <div class="gallery-panel active" id="panel-video">
-          <div class="gallery-grid">
-            <div class="gallery-item">
-              <div class="thumb"><i class='bx bx-play-circle'></i></div>
-              <div class="info">
-                <h4>Misi Merapikan Folder</h4>
-                <p>Segmen 1 — CLI navigasi &amp; file management</p>
-              </div>
-            </div>
-            <div class="gallery-item">
-              <div class="thumb"><i class='bx bx-play-circle'></i></div>
-              <div class="info">
-                <h4>Catatan Kuliah dari Terminal</h4>
-                <p>Segmen 2 — text editor &amp; manipulasi teks</p>
-              </div>
-            </div>
-            <div class="gallery-item">
-              <div class="thumb"><i class='bx bx-play-circle'></i></div>
-              <div class="info">
-                <h4>Detektif File — Cari Jejak</h4>
-                <p>Segmen 3 — grep &amp; find di terminal</p>
-              </div>
-            </div>
-            <div class="gallery-item">
-              <div class="thumb"><i class='bx bx-play-circle'></i></div>
-              <div class="info">
-                <h4>Kolaborasi dengan Git</h4>
-                <p>Segmen 5 — Git &amp; version control</p>
-              </div>
-            </div>
-            <div class="gallery-item">
-              <div class="thumb"><i class='bx bx-play-circle'></i></div>
-              <div class="info">
-                <h4>Prompt Engineering 101</h4>
-                <p>Segmen 6 — AI CLI &amp; prompt tools</p>
-              </div>
-            </div>
-            <div class="gallery-item">
-              <div class="thumb"><i class='bx bx-play-circle'></i></div>
-              <div class="info">
-                <h4>Landing Page Pertama</h4>
-                <p>Segmen 7 — Web dev &amp; deploy</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="gallery-panel" id="panel-foto">
-          <div class="gallery-grid">
-            <div class="gallery-item">
-              <div class="thumb"><i class='bx bx-image'></i></div>
-              <div class="info">
-                <h4>Session 0 — Perkenalan</h4>
-                <p>Jumat, 12 Juni 2026 — Lab Komputer</p>
-              </div>
-            </div>
-            <div class="gallery-item">
-              <div class="thumb"><i class='bx bx-image'></i></div>
-              <div class="info">
-                <h4>Praktik Command Pertama</h4>
-                <p>Segmen 1 — Minggu 1: ls, cd, pwd</p>
-              </div>
-            </div>
-            <div class="gallery-item">
-              <div class="thumb"><i class='bx bx-image'></i></div>
-              <div class="info">
-                <h4>Belajar Bareng Lingkaran</h4>
-                <p>Suasana Circle — Santai tapi fokus</p>
-              </div>
-            </div>
-            <div class="gallery-item">
-              <div class="thumb"><i class='bx bx-image'></i></div>
-              <div class="info">
-                <h4>Diskusi Sesi Q&amp;A</h4>
-                <p>Tanya jawab setelah demo command</p>
-              </div>
-            </div>
-            <div class="gallery-item">
-              <div class="thumb"><i class='bx bx-image'></i></div>
-              <div class="info">
-                <h4>Praktik Pair Programming</h4>
-                <p>Kolaborasi dua orang per terminal</p>
-              </div>
-            </div>
-            <div class="gallery-item">
-              <div class="thumb"><i class='bx bx-image'></i></div>
-              <div class="info">
-                <h4>Foto Bersama Circle</h4>
-                <p>Akhir sesi — dokumentasi mingguan</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 
   <!-- ──────── FAQ ──────── -->
   <section id="faq">
-    <div class="container">
+    <div class="container reveal">
       <span class="section-label"><i class='bx bx-question-mark'></i>FAQ</span>
       <h2>Pertanyaan Umum Tentang The Penguin Circle</h2>
       <p>Masih ragu? Mungkin jawabannya ada di sini:</p>
@@ -1700,7 +1709,7 @@
   <!-- ──────── CTA ──────── -->
   <!-- ACTION (AIDA) -->
   <section id="daftar" class="cta-section">
-    <div class="container">
+    <div class="container reveal">
       <span class="section-label"><i class='bx bx-edit'></i>Daftar</span>
       <h2>Siap Jadi Penguin Selanjutnya?</h2>
       <p>
@@ -1711,7 +1720,7 @@
       </p>
       <a href="https://docs.google.com/forms/d/e/1FAIpQLSczFE4zfWlSkgrQ0I0LjyKn7JUDAOoW4XguA66p0ZJ9Q7Rgxg/viewform?usp=header" target="_blank" rel="noopener" class="btn-primary" style="font-size:14px;padding:14px 32px;"><i class='bx bx-edit'></i>Daftar Gratis Sekarang</a>
       <div style="margin-top:16px;">
-        <span style="font-size:10px;color:var(--text-dim);">Butuh info lebih? <a href="#faq" style="color:#00ff41;">Cek FAQ</a> atau langsung aja dateng ke Lab Komputer.</span>
+        <span style="font-size:10px;color:var(--text-dim);">Butuh info lebih? <a href="#faq" style="color:var(--accent);">Cek FAQ</a> atau langsung aja dateng ke Lab Komputer.</span>
       </div>
     </div>
   </section>
@@ -1738,6 +1747,20 @@
     </div>
   </footer>
 
+
+  <!-- ─── MOBILE DRAWER ─── -->
+  <div class="mob-drawer" id="mobDrawer" role="dialog">
+    <a href="#tentang" class="mob-link active" onclick="closeDrawer()">Tentang</a>
+    <a href="#mengapa" class="mob-link" onclick="closeDrawer()">Mengapa</a>
+    <a href="#kurikulum" class="mob-link" onclick="closeDrawer()">Kurikulum</a>
+    <a href="#tim" class="mob-link" onclick="closeDrawer()">Tim</a>
+    <a href="#galeri" class="mob-link" onclick="closeDrawer()">Galeri</a>
+    <a href="#faq" class="mob-link" onclick="closeDrawer()">FAQ</a>
+    <div style="display:flex;align-items:center;gap:20px;margin-top:8px;">
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSczFE4zfWlSkgrQ0I0LjyKn7JUDAOoW4XguA66p0ZJ9Q7Rgxg/viewform?usp=header" target="_blank" rel="noopener" class="btn-primary" style="padding:8px 20px;font-size:13px;"><i class='bx bx-edit'></i>Daftar</a>
+      <a href="https://www.instagram.com/tmc.pdbi/" target="_blank" rel="noopener" style="color:var(--nav-link);font-size:22px;"><i class='bx bxl-instagram'></i></a>
+    </div>
+  </div>
 
   <!-- ─── MODAL ─── -->
   <div class="modal-overlay" id="memberModal">
@@ -1789,44 +1812,204 @@
       });
     })();
 
-    // ─── Typing Animation (hacker-movie style) ───
-    (function typeCommand() {
-      const el = document.getElementById('typedText');
-      const cursor = document.getElementById('cursorEl');
-      const text = 'join --circle penguin --from zero';
-      let idx = 0;
-      let isDeleting = false;
-      const typeSpeed = 50;
-      const deleteSpeed = 25;
-      const pauseAtEnd = 2000;
-      const pauseAtStart = 1000;
+    // ─── ASCII Title Animator (THE PENGUIN CIRCLE hero) ───
+    (function() {
+      const lines = document.querySelectorAll('.ascii-line');
+      const descEl = document.getElementById('asciiDesc');
+      const descText = 'mulai dari nol — kuasai cli, git & ai coding';
 
-      function tick() {
-        if (!isDeleting) {
-          el.textContent = text.substring(0, idx + 1);
-          idx++;
-          if (idx === text.length) {
-            setTimeout(() => { isDeleting = true; tick(); }, pauseAtEnd);
-            return;
-          }
-          setTimeout(tick, typeSpeed + Math.random() * 40);
-        } else {
-          el.textContent = text.substring(0, idx - 1);
-          idx--;
-          if (idx === 0) {
-            isDeleting = false;
-            setTimeout(tick, pauseAtStart);
-            return;
-          }
-          setTimeout(tick, deleteSpeed + Math.random() * 20);
+      let running = true;
+
+      function hideLinesBottomUp(cb) {
+        for (let i = lines.length - 1; i >= 0; i--) {
+          const l = lines[i];
+          setTimeout(() => {
+            l.classList.remove('visible');
+            l.classList.add('fade-out');
+            if (i === 0 && cb) setTimeout(cb, 300);
+          }, (lines.length - 1 - i) * 100);
         }
       }
 
-      // Start typing after page loads
-      setTimeout(tick, 600);
+      function resetLines() {
+        lines.forEach(l => l.classList.remove('visible', 'fade-out'));
+      }
+
+      function typeDesc(text, el, cb) {
+        let i = 0;
+        el.innerHTML = '';
+        const span = document.createElement('span');
+        const cursor = document.createElement('span');
+        cursor.className = 'cursor';
+        el.appendChild(span);
+        el.appendChild(cursor);
+
+        function type() {
+          if (i >= text.length) {
+            if (cb) setTimeout(cb, 600);
+            return;
+          }
+          span.textContent += text[i++];
+          setTimeout(type, 30 + Math.random() * 20);
+        }
+        setTimeout(type, 200);
+      }
+
+      function backspaceDesc(el, cb) {
+        const span = el.querySelector('span');
+        if (!span || !span.textContent.length) {
+          if (cb) setTimeout(cb, 100);
+          return;
+        }
+        function del() {
+          if (!span.textContent.length) {
+            el.innerHTML = '';
+            if (cb) setTimeout(cb, 200);
+            return;
+          }
+          span.textContent = span.textContent.slice(0, -1);
+          setTimeout(del, 20 + Math.random() * 15);
+        }
+        setTimeout(del, 300);
+      }
+
+      function removeDesc(el) {
+        el.innerHTML = '';
+      }
+
+      function animLoop() {
+        if (!running) return;
+        resetLines();
+        removeDesc(descEl);
+
+        // Phase 1: fade in lines one by one (top to bottom)
+        lines.forEach((l, i) => {
+          setTimeout(() => l.classList.add('visible'), i * 80);
+        });
+
+        const phase1Duration = lines.length * 80 + 400;
+
+        // Phase 2: type description
+        setTimeout(() => {
+          typeDesc(descText, descEl, () => {
+            // Phase 3: wait then backspace desc
+            setTimeout(() => {
+              backspaceDesc(descEl, () => {
+                // Phase 4: fade out lines bottom to top
+                setTimeout(() => {
+                  hideLinesBottomUp(() => {
+                    setTimeout(() => {
+                      if (running) animLoop();
+                    }, 400);
+                  });
+                }, 300);
+              });
+            }, 2000);
+          });
+        }, phase1Duration);
+      }
+
+      // Start after initial page load
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReducedMotion) {
+        lines.forEach(l => l.classList.add('visible'));
+        descEl.textContent = descText;
+      } else {
+        setTimeout(animLoop, 800);
+      }
     })();
 
-    // ─── FAQ Toggle ───
+    // ─── Hero Particle System ───
+    (function() {
+      const canvas = document.getElementById('particleCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      let mouse = { x: -1000, y: -1000 };
+      let animId;
+
+      function resize() {
+        const hero = canvas.parentElement;
+        canvas.width = hero.offsetWidth;
+        canvas.height = hero.offsetHeight;
+      }
+
+      function createParticles(count) {
+        for (let i = 0; i < count; i++) {
+          particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 0.6,
+            vy: (Math.random() - 0.5) * 0.6,
+            r: Math.random() * 2.2 + 0.8,
+            alpha: Math.random() * 0.5 + 0.15,
+          });
+        }
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+          const dx = mouse.x - p.x;
+          const dy = mouse.y - p.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 200) {
+            const force = (200 - dist) / 200 * 0.25;
+            p.vx -= dx / dist * force;
+            p.vy -= dy / dist * force;
+          }
+          p.vx += (Math.random() - 0.5) * 0.04;
+          p.vy += (Math.random() - 0.5) * 0.04;
+          p.vx *= 0.95;
+          p.vy *= 0.95;
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x < 0) p.x = canvas.width;
+          if (p.x > canvas.width) p.x = 0;
+          if (p.y < 0) p.y = canvas.height;
+          if (p.y > canvas.height) p.y = 0;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(0, 255, 65, ${p.alpha})`;
+          ctx.fill();
+        }
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 80) {
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.strokeStyle = `rgba(0, 255, 65, ${(1 - dist / 80) * 0.12})`;
+              ctx.stroke();
+            }
+          }
+        }
+        animId = requestAnimationFrame(draw);
+      }
+
+      function init() {
+        resize();
+        particles = [];
+        const count = Math.min(Math.floor(canvas.width * canvas.height / 2500), 200);
+        createParticles(count);
+        if (animId) cancelAnimationFrame(animId);
+        draw();
+      }
+
+      window.addEventListener('resize', init);
+      document.addEventListener('mousemove', e => {
+        const rect = canvas.getBoundingClientRect();
+        mouse.x = e.clientX - rect.left;
+        mouse.y = e.clientY - rect.top;
+      });
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!prefersReducedMotion) init();
+    })();
+
     function toggleFaq(el) {
       el.classList.toggle('active');
       const answer = el.nextElementSibling;
@@ -1835,15 +2018,131 @@
       icon.className = answer.classList.contains('show') ? 'bx bx-x' : 'bx bx-plus';
     }
 
-    // ─── Mobile Nav Toggle ───
-    document.getElementById('navToggle').addEventListener('click', () => {
-      document.getElementById('navLinks').classList.toggle('show');
-    });
-    document.querySelectorAll('.nav-links a').forEach(link => {
-      link.addEventListener('click', () => {
-        document.getElementById('navLinks').classList.remove('show');
+    // ─── Mobile Drawer / Hamburger ───
+    const mobDrawer = document.getElementById('mobDrawer');
+    const hbgBtn = document.getElementById('hbgBtn');
+
+    function openDrawer() {
+      mobDrawer.classList.add('open');
+      hbgBtn.classList.add('open');
+      hbgBtn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeDrawer() {
+      mobDrawer.classList.remove('open');
+      hbgBtn.classList.remove('open');
+      hbgBtn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
+    if (hbgBtn) {
+      hbgBtn.addEventListener('click', () => {
+        mobDrawer.classList.contains('open') ? closeDrawer() : openDrawer();
       });
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+
+    // ─── Scroll Spy + Nav Indicator ───
+    (function initScrollSpy() {
+      const links = document.querySelectorAll('.nav-link');
+      const ind = document.getElementById('navInd');
+      const wrap = document.getElementById('nav-links-wrap');
+      const secs = ['tentang', 'mengapa', 'kurikulum', 'tim', 'galeri', 'faq'];
+      let activeId = 'tentang';
+      let clickLock = false;
+      let lockTimer = null;
+
+      function moveInd(link) {
+        if (!link || !wrap || !ind) return;
+        const wr = wrap.getBoundingClientRect();
+        const lr = link.getBoundingClientRect();
+        ind.style.left = (lr.left - wr.left) + 'px';
+        ind.style.width = lr.width + 'px';
+      }
+
+      function setActive(id) {
+        if (activeId === id) return;
+        activeId = id;
+        links.forEach(l => l.classList.remove('active'));
+        const t = document.querySelector(`.nav-link[data-sec="${id}"]`);
+        if (t) { t.classList.add('active'); moveInd(t); }
+        document.querySelectorAll('.mob-link').forEach(l => {
+          l.classList.toggle('active', l.getAttribute('href') === '#' + id);
+        });
+      }
+
+      window.updateNavIndicator = function() {
+        const cur = document.querySelector(`.nav-link[data-sec="${activeId}"]`);
+        if (cur) moveInd(cur);
+      };
+
+      setTimeout(() => { window.updateNavIndicator(); }, 300);
+      window.addEventListener('resize', () => { window.updateNavIndicator(); });
+
+      function updateSpy() {
+        if (clickLock) return;
+        const scrollY = window.scrollY;
+        const winH = window.innerHeight;
+        const docH = document.documentElement.scrollHeight;
+        if (scrollY + winH >= docH - 40) { setActive(secs[secs.length - 1]); return; }
+        const mid = scrollY + winH * 0.45;
+        let bestId = secs[0];
+        let bestDist = Infinity;
+        secs.forEach(id => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          const top = el.getBoundingClientRect().top + scrollY - 80;
+          const dist = mid - top;
+          if (dist >= 0 && dist < bestDist) { bestDist = dist; bestId = id; }
+        });
+        setActive(bestId);
+      }
+
+      let scrollRaf = null;
+      window.addEventListener('scroll', () => {
+        if (scrollRaf) return;
+        scrollRaf = requestAnimationFrame(() => { updateSpy(); scrollRaf = null; });
+      }, { passive: true });
+
+      links.forEach(l => {
+        l.addEventListener('click', () => {
+          clickLock = true;
+          setActive(l.dataset.sec);
+          clearTimeout(lockTimer);
+          lockTimer = setTimeout(() => { clickLock = false; }, 900);
+        });
+      });
+
+      updateSpy();
+    })();
+
+    // ─── Smooth Scroll ───
+    document.addEventListener('click', e => {
+      const a = e.target.closest('a[href^="#"]');
+      if (!a) return;
+      const href = a.getAttribute('href');
+      if (!href || href === '#') return;
+      const target = document.querySelector(href);
+      if (!target) return;
+      e.preventDefault();
+      const top = target.getBoundingClientRect().top + window.scrollY - 70;
+      window.scrollTo({ top, behavior: 'smooth' });
     });
+
+    // ─── Scroll Reveal ───
+    (function initReveal() {
+      const els = document.querySelectorAll('.reveal');
+      if (!els.length) return;
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      els.forEach(el => obs.observe(el));
+    })();
 
     // ─── Team Member Modal ───
     const teamMembers = {
@@ -1856,43 +2155,97 @@
         sosmed: { "github": "https://github.com/muadzhdz", "instagram": "https://instagram.com/muadz_hdz" }
       },
       "anggota1": {
-        name: "Muhammad Hisyam Ariandra",
-        role: "Anggota Divisi · Peserta",
-        bio: "Belajar CLI, Git, dan AI bareng dari 0.",
-        skills: ["CLI", "Git", "AI Tools"]
-      },
-      "anggota2": {
-        name: "Rassel Juliandri",
-        role: "Anggota Divisi · Peserta",
-        bio: "Belajar CLI, Git, dan AI bareng dari 0.",
-        skills: ["CLI", "Git", "AI Tools"]
-      },
-      "anggota3": {
-        name: "Hayyan Kalam",
-        role: "Anggota Divisi · Peserta",
-        bio: "Belajar CLI, Git, dan AI bareng dari 0.",
-        skills: ["CLI", "Git", "AI Tools"]
-      },
-      "anggota4": {
-        name: "Ilham Yusuf Fadillah",
-        role: "Anggota Divisi · Peserta",
-        bio: "Belajar CLI, Git, dan AI bareng dari 0.",
-        skills: ["CLI", "Git", "AI Tools"]
-      },
-      "anggota5": {
         name: "Bayu Fajar. A",
         role: "Anggota Divisi · Peserta",
         bio: "Belajar CLI, Git, dan AI bareng dari 0.",
         skills: ["CLI", "Git", "AI Tools"]
       },
-      "anggota6": {
+      "anggota2": {
+        name: "Hayyan Kalam",
+        role: "Anggota Divisi · Peserta",
+        bio: "Belajar CLI, Git, dan AI bareng dari 0.",
+        skills: ["CLI", "Git", "AI Tools"]
+      },
+      "anggota3": {
+        name: "Ilham Yusuf Fadillah",
+        role: "Anggota Divisi · Peserta",
+        bio: "Belajar CLI, Git, dan AI bareng dari 0.",
+        skills: ["CLI", "Git", "AI Tools"]
+      },
+      "anggota4": {
         name: "Kammila",
         role: "Anggota Divisi · Peserta",
         bio: "Belajar CLI, Git, dan AI bareng dari 0.",
         skills: ["CLI", "Git", "AI Tools"]
       },
-      "peserta": {
-        name: "+50 Peserta",
+      "anggota5": {
+        name: "Muhammad Hisyam Ariandra",
+        role: "Anggota Divisi · Peserta",
+        bio: "Belajar CLI, Git, dan AI bareng dari 0.",
+        skills: ["CLI", "Git", "AI Tools"]
+      },
+      "anggota6": {
+        name: "Rassel Juliandri",
+        role: "Anggota Divisi · Peserta",
+        bio: "Belajar CLI, Git, dan AI bareng dari 0.",
+        skills: ["CLI", "Git", "AI Tools"]
+      },
+      "peserta1": {
+        name: "Alya Fahma",
+        role: "Circle Member",
+        bio: "Mahasiswa PDBI yang belajar dari 0. Siap jadi developer modern dengan bantuan AI.",
+        skills: ["Semangat Belajar", "Dari 0", "AI Ready"]
+      },
+      "peserta2": {
+        name: "Ananda Aura Shifa Thitania",
+        role: "Circle Member",
+        bio: "Mahasiswa PDBI yang belajar dari 0. Siap jadi developer modern dengan bantuan AI.",
+        skills: ["Semangat Belajar", "Dari 0", "AI Ready"]
+      },
+      "peserta3": {
+        name: "Arfan Ghifari",
+        role: "Circle Member",
+        bio: "Mahasiswa PDBI yang belajar dari 0. Siap jadi developer modern dengan bantuan AI.",
+        skills: ["Semangat Belajar", "Dari 0", "AI Ready"]
+      },
+      "peserta4": {
+        name: "Bintang Nurzaidani",
+        role: "Circle Member",
+        bio: "Mahasiswa PDBI yang belajar dari 0. Siap jadi developer modern dengan bantuan AI.",
+        skills: ["Semangat Belajar", "Dari 0", "AI Ready"]
+      },
+      "peserta5": {
+        name: "Faris Aghna",
+        role: "Circle Member",
+        bio: "Mahasiswa PDBI yang belajar dari 0. Siap jadi developer modern dengan bantuan AI.",
+        skills: ["Semangat Belajar", "Dari 0", "AI Ready"]
+      },
+      "peserta6": {
+        name: "Muhammad Keviin Ramadhan",
+        role: "Circle Member",
+        bio: "Mahasiswa PDBI yang belajar dari 0. Siap jadi developer modern dengan bantuan AI.",
+        skills: ["Semangat Belajar", "Dari 0", "AI Ready"]
+      },
+      "peserta7": {
+        name: "Raditya Radja",
+        role: "Circle Member",
+        bio: "Mahasiswa PDBI yang belajar dari 0. Siap jadi developer modern dengan bantuan AI.",
+        skills: ["Semangat Belajar", "Dari 0", "AI Ready"]
+      },
+      "peserta8": {
+        name: "Raysha Fadilla",
+        role: "Circle Member",
+        bio: "Mahasiswa PDBI yang belajar dari 0. Siap jadi developer modern dengan bantuan AI.",
+        skills: ["Semangat Belajar", "Dari 0", "AI Ready"]
+      },
+      "peserta9": {
+        name: "Rohman Gunawan",
+        role: "Circle Member",
+        bio: "Mahasiswa PDBI yang belajar dari 0. Siap jadi developer modern dengan bantuan AI.",
+        skills: ["Semangat Belajar", "Dari 0", "AI Ready"]
+      },
+      "peserta10": {
+        name: "Syifa Amelia",
         role: "Circle Member",
         bio: "Mahasiswa PDBI yang belajar dari 0. Siap jadi developer modern dengan bantuan AI.",
         skills: ["Semangat Belajar", "Dari 0", "AI Ready"]
@@ -1953,40 +2306,83 @@
       if (e.key === 'Escape') closeModal();
     });
 
+    // ─── Keyboard Accessibility ───
+    document.querySelectorAll('.team-card').forEach(card => {
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('role', 'button');
+      card.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          this.click();
+        }
+      });
+    });
+
+    document.querySelectorAll('.faq-question').forEach(q => {
+      q.setAttribute('tabindex', '0');
+      q.setAttribute('role', 'button');
+      q.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          this.click();
+        }
+      });
+    });
+
+    // ─── Focus Trap in Modal ───
+    let lastFocusedEl = null;
+
+    function getFocusableElements(container) {
+      return container.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+    }
+
+    function trapFocus(e) {
+      const modal = document.getElementById('memberModal');
+      if (!modal.classList.contains('open')) return;
+      const focusable = getFocusableElements(modal);
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.key === 'Tab') {
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    }
+
+    document.addEventListener('keydown', trapFocus);
+
+    const origOpen = openModal;
+    openModal = function(id) {
+      lastFocusedEl = document.activeElement;
+      origOpen(id);
+      setTimeout(() => {
+        document.querySelector('.modal-close')?.focus();
+      }, 50);
+    };
+
+    const origClose = closeModal;
+    closeModal = function() {
+      origClose();
+      if (lastFocusedEl) {
+        lastFocusedEl.focus();
+        lastFocusedEl = null;
+      }
+    };
+
     // ─── Back to Top ───
     window.addEventListener('scroll', () => {
       const btn = document.getElementById('backTop');
       btn.classList.toggle('show', window.scrollY > 400);
     });
 
-    // ─── Gallery Tabs ───
-    function switchGallery(id, btn) {
-      document.querySelectorAll('.gallery-panel').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.gallery-tab').forEach(t => t.classList.remove('active'));
-      document.getElementById('panel-' + id).classList.add('active');
-      btn.classList.add('active');
-    }
 
-    // ─── Countdown to Jumat, 12 Juni 2026 15:30 WIB ───
-    function updateCountdown() {
-      const target = new Date('2026-06-12T15:30:00+07:00').getTime();
-      const now = new Date().getTime();
-      const diff = target - now;
-      if (diff <= 0) {
-        document.getElementById('countdown').innerHTML = '<span style="color:#00ff41;font-size:14px;">Circle sedang berjalan!</span>';
-        return;
-      }
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const secs = Math.floor((diff % (1000 * 60)) / 1000);
-      document.getElementById('cdDays').textContent = String(days).padStart(2,'0');
-      document.getElementById('cdHours').textContent = String(hours).padStart(2,'0');
-      document.getElementById('cdMins').textContent = String(mins).padStart(2,'0');
-      document.getElementById('cdSecs').textContent = String(secs).padStart(2,'0');
-    }
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
   </script>
 </body>
 </html>
