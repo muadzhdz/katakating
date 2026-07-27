@@ -961,45 +961,116 @@
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
     /* ─── RESPONSIVE ─── */
+
+    /* Desktop normal: 960px–1199px */
+    @media (max-width: 1199px) {
+      .container { padding: 0 32px; }
+    }
+
+    /* Tablet landscape / small desktop: max 959px */
+    @media (max-width: 959px) {
+      .container { padding: 0 24px; }
+      .details-grid { grid-template-columns: repeat(2, 1fr); }
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .team-grid .team-card { width: calc(33.33% - 8px); min-width: 140px; }
+    }
+
+    /* Tablet portrait: show desktop nav above 768 */
     @media (min-width: 769px) {
       .desk-nav { display: block; }
     }
+
+    /* Tablet portrait: max 768px */
     @media (max-width: 768px) {
       .desk-nav { display: none !important; }
       .hbg { display: block; }
+      .container { padding: 0 20px; }
       .hero h1 { font-size: 26px; }
       .hero { padding: 48px 0; }
-      .ascii-line { font-size: clamp(3px, 0.85vw, 12px); }
+      .ascii-line { font-size: clamp(4px, 1.3vw, 12px); }
       section { padding: 60px 0; }
       h2 { font-size: 22px; }
-      .features-grid { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: 1fr 1fr; }
       .why-grid { grid-template-columns: 1fr; }
       .testi-grid { grid-template-columns: 1fr; }
       .details-grid { grid-template-columns: 1fr 1fr; }
       .stats-row { grid-template-columns: 1fr 1fr; }
       .team-grid .team-card { width: calc(50% - 6px); min-width: 130px; }
       .segment-card { grid-template-columns: 1fr; gap: 8px; }
-      .countdown-bar .time .unit .val { font-size: 16px; }
+      .countdown-bar .time .unit .val { font-size: 18px; }
       .curriculum-intro { flex-direction: column; gap: 12px; }
       .phase-header { flex-wrap: wrap; }
       .social-proof { gap: 20px; }
       .comparison-table { font-size: 10px; }
       .comparison-table th, .comparison-table td { padding: 8px 10px; }
+      .countdown-bar { flex-wrap: wrap; justify-content: center; gap: 8px; }
     }
+
+    /* Large phone landscape / small tablet: max 640px */
+    @media (max-width: 640px) {
+      .container { padding: 0 16px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .ascii-line { font-size: clamp(4px, 1.6vw, 10px); }
+      .hero-buttons { flex-direction: column; align-items: center; }
+      .btn-primary, .btn-outline { width: 100%; justify-content: center; }
+      .social-proof { gap: 14px; }
+      .social-proof .item .num { font-size: 18px; }
+    }
+
+    /* Phone: max 480px */
     @media (max-width: 480px) {
+      .container { padding: 0 14px; }
       .hero-title-mobile { display: none; }
       .hero { padding: 40px 0; }
+      .ascii-line { font-size: clamp(4px, 1.85vw, 9px); }
+      .ascii-title { margin-bottom: 24px; }
       .hero-buttons { flex-direction: column; align-items: center; }
-      .countdown-bar { flex-direction: column; align-items: center; text-align: center; }
+      .btn-primary, .btn-outline { width: 100%; justify-content: center; }
+      .countdown-bar { flex-direction: column; align-items: center; text-align: center; padding: 16px; }
       .countdown-bar .time { justify-content: center; }
+      .countdown-bar .time .unit .val { font-size: 16px; }
       .hero-guarantee { flex-direction: column; align-items: center; gap: 8px; }
       .team-grid .team-card { width: 100%; min-width: 0; }
+      .details-grid { grid-template-columns: 1fr 1fr; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .segment-card { padding: 14px 16px; }
+      .comparison-wrap { margin-left: -14px; margin-right: -14px; }
+      .comparison-table { font-size: 9px; }
+      .comparison-table th, .comparison-table td { padding: 6px 8px; }
+      h2 { font-size: 20px; }
+      section { padding: 48px 0; }
+      .social-proof { gap: 12px; }
+      .social-proof .item .num { font-size: 16px; }
+      .curriculum-intro .stat .num { font-size: 22px; }
     }
-    @media (max-width: 360px) {
-      .ascii-title {
-        transform: scale(0.3);
-        margin-bottom: -56px;
-      }
+
+    /* Small phone: max 390px (iPhone SE, older Androids) */
+    @media (max-width: 390px) {
+      .container { padding: 0 12px; }
+      .ascii-line { font-size: clamp(3.5px, 1.9vw, 8px); }
+      h2 { font-size: 18px; }
+      .hero { padding: 32px 0; }
+      .details-grid { grid-template-columns: 1fr; }
+      .social-proof .item .num { font-size: 15px; }
+      .btn-primary, .btn-outline { font-size: 12px; padding: 11px 18px; }
+      .nav-logo span { font-size: 13px; }
+      .countdown-bar .time .unit .val { font-size: 14px; }
+    }
+
+    /* Very small / legacy phones: max 320px (iPhone 5, Galaxy S3) */
+    @media (max-width: 320px) {
+      .container { padding: 0 10px; }
+      .ascii-line { font-size: 3px; }
+      .ascii-title { margin-bottom: 16px; }
+      h2 { font-size: 16px; }
+      .hero { padding: 28px 0; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .details-grid { grid-template-columns: 1fr; }
+      .btn-primary, .btn-outline { font-size: 11px; padding: 10px 14px; }
+      .social-proof { gap: 8px; }
+      .social-proof .item .num { font-size: 13px; }
+      .team-card .name { font-size: 12px; }
+      section { padding: 40px 0; }
     }
   </style>
 </head>
