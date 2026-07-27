@@ -396,22 +396,21 @@
       50% { transform: translate(-20px, 20px) scale(0.95); }
       75% { transform: translate(20px, 30px) scale(1.02); }
     }
-     .ascii-art {
-      display: block; text-align: center;
-      font-family: "JetBrains Mono", Consolas, "DejaVu Sans Mono", ui-monospace, monospace;
-      font-size: clamp(8px, 1.12vw, 11px);
-      line-height: 1.02; letter-spacing: 0;
-      white-space: pre;
-      overflow-x: auto; overflow-y: hidden;
-      max-width: 100%;
+    .ascii-wrap {
+      width: 100%; overflow: hidden;
+      display: flex; justify-content: center;
       margin: 0 0 40px;
+    }
+    .ascii-art {
+      display: inline-block; text-align: left;
+      font-family: "JetBrains Mono", Consolas, "DejaVu Sans Mono", ui-monospace, monospace;
+      font-size: 14px; line-height: 1.09375; letter-spacing: -0.0425em;
+      white-space: pre;
+      transform-origin: top center;
       padding: 0; background: none; border: none;
       color: var(--accent); font-kerning: none;
-      -webkit-overflow-scrolling: touch;
       -webkit-text-size-adjust: 100%;
     }
-    .ascii-art::-webkit-scrollbar { height: 0; }
-    .ascii-art::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
     .hero .pain-point {
       font-size: 12px; color: var(--text-secondary);
       letter-spacing: 0.5px;
@@ -982,7 +981,6 @@
       .container { padding: 0 20px; }
       .hero h1 { font-size: 26px; }
       .hero { padding: 48px 0; }
-      .ascii-art { font-size: clamp(4.5px, 1vw, 5px); }
       section { padding: 60px 0; }
       h2 { font-size: 22px; }
       .features-grid { grid-template-columns: 1fr 1fr; }
@@ -1016,7 +1014,7 @@
     @media (max-width: 480px) {
       .container { padding: 0 14px; }
       .hero { padding: 40px 0; }
-      .ascii-art { margin-bottom: 24px; }
+      .ascii-wrap { margin-bottom: 24px; }
       .hero-buttons { flex-direction: column; align-items: center; }
       .btn-primary, .btn-outline { min-width: 200px; justify-content: center; }
       .countdown-bar { flex-direction: column; align-items: center; text-align: center; padding: 16px; }
@@ -1052,7 +1050,7 @@
     /* Very small / legacy phones: max 320px (iPhone 5, Galaxy S3) */
     @media (max-width: 320px) {
       .container { padding: 0 10px; }
-      .ascii-art { margin-bottom: 16px; }
+      .ascii-wrap { margin-bottom: 16px; }
       h2 { font-size: 16px; }
       .hero { padding: 28px 0; }
       .stats-row { grid-template-columns: 1fr 1fr; }
@@ -1106,12 +1104,12 @@
     <div class="hero-silhouette s2"></div>
     <div class="hero-silhouette s3"></div>
     <div class="container">
-      <pre class="ascii-art" aria-hidden="true">████████╗██╗  ██╗███████╗    ██████╗ ███████╗███╗   ██╗ ██████╗ ██╗   ██╗██╗███╗   ██╗     ██████╗██╗██████╗  ██████╗██╗     ███████╗
+      <div class="ascii-wrap"><pre class="ascii-art" aria-hidden="true">████████╗██╗  ██╗███████╗    ██████╗ ███████╗███╗   ██╗ ██████╗ ██╗   ██╗██╗███╗   ██╗     ██████╗██╗██████╗  ██████╗██╗     ███████╗
 ╚══██╔══╝██║  ██║██╔════╝    ██╔══██╗██╔════╝████╗  ██║██╔════╝ ██║   ██║██║████╗  ██║    ██╔════╝██║██╔══██╗██╔════╝██║     ██╔════╝
    ██║   ███████║█████╗      ██████╔╝█████╗  ██╔██╗ ██║██║  ███╗██║   ██║██║██╔██╗ ██║    ██║     ██║██████╔╝██║     ██║     █████╗    
    ██║   ██╔══██║██╔══╝      ██╔═══╝ ██╔══╝  ██║╚██╗██║██║   ██║██║   ██║██║██║╚██╗██║    ██║     ██║██╔══██╗██║     ██║     ██╔══╝  
    ██║   ██║  ██║███████╗    ██║     ███████╗██║ ╚████║╚██████╔╝╚██████╔╝██║██║ ╚████║    ╚██████╗██║██║  ██║╚██████╗███████╗███████╗
-   ╚═╝   ╚═╝  ╚═╝╚══════╝    ╚═╝     ╚══════╝╚═╝  ╚═══╝ ╚═════╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝     ╚═════╝╚═╝╚═╝  ╚═╝ ╚═════╝╚══════╝╚══════╝</pre>
+   ╚═╝   ╚═╝  ╚═╝╚══════╝    ╚═╝     ╚══════╝╚═╝  ╚═══╝ ╚═════╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝     ╚═════╝╚═╝╚═╝  ╚═╝ ╚═════╝╚══════╝╚══════╝</pre></div>
       <p class="pain-point">Bingung mulai belajar coding? Sendirian gampang nyerah?</p>
       <p class="tagline" style="margin-top:4px;">
         Forum belajar <strong>CLI, Git, &amp; AI coding</strong> gratis untuk mahasiswa &mdash; <strong>dari 0</strong> sampai bisa bikin <strong>website &amp; aplikasi mobile</strong> pake AI. Langsung praktek di terminal, tanpa biaya.
@@ -2289,6 +2287,23 @@
       const btn = document.getElementById('backTop');
       btn.classList.toggle('show', window.scrollY > 400);
     });
+
+    // ─── ASCII scale ───
+    function scaleAscii() {
+      document.querySelectorAll('.ascii-wrap').forEach(wrap => {
+        const pre = wrap.querySelector('.ascii-art');
+        if (!pre) return;
+        pre.style.transform = 'scale(1)';
+        pre.style.transformOrigin = 'top center';
+        const nat = pre.scrollWidth;
+        const avail = wrap.clientWidth;
+        const s = Math.min(1, avail / nat);
+        pre.style.transform = 'scale(' + s + ')';
+        wrap.style.height = (pre.offsetHeight * s) + 'px';
+      });
+    }
+    window.addEventListener('load', scaleAscii);
+    window.addEventListener('resize', scaleAscii);
 
 
   </script>
