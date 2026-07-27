@@ -412,22 +412,8 @@
       color: var(--accent); font-size: clamp(8px, 1.15vw, 12px); line-height: 1.02;
       white-space: pre;
       display: block;
-      opacity: 0; transition: opacity 0.15s ease;
     }
     .ascii-line.visible { opacity: 1; }
-    .ascii-line.fade-out {
-      opacity: 0; transition: opacity 0.2s ease;
-    }
-    .ascii-desc {
-      color: var(--text-secondary); font-size: 9px; letter-spacing: 1px;
-      min-height: 18px; margin-top: 12px; text-transform: uppercase;
-      display: flex; align-items: center; justify-content: center; gap: 4px;
-      flex-wrap: wrap;
-    }
-    .ascii-desc .cursor {
-      display: inline-block; width: 6px; height: 12px;
-      background: var(--accent); animation: blink 1s step-end infinite;
-    }
     .hero-title-mobile {
       display: none;
       font-size: 28px; font-weight: 700; color: var(--accent);
@@ -1144,7 +1130,6 @@
         <div class="ascii-line">   ██║   ██║  ██║███████╗    ██║     ███████╗██║ ╚████║╚██████╔╝╚██████╔╝██║██║ ╚████║    ╚██████╗██║██║  ██║╚██████╗███████╗███████╗</div>
         <div class="ascii-line">   ╚═╝   ╚═╝  ╚═╝╚══════╝    ╚═╝     ╚══════╝╚═╝  ╚═══╝ ╚═════╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝     ╚═════╝╚═╝╚═╝  ╚═╝ ╚═════╝╚══════╝╚══════╝</div>
         </div>
-        <div class="ascii-desc" id="asciiDesc"></div>
       </div>
       <h1 class="hero-title-mobile" aria-label="The Penguin Circle">THE PENGUIN CIRCLE</h1>
       <p class="pain-point">Bingung mulai belajar coding? Sendirian gampang nyerah?</p>
@@ -1951,123 +1936,21 @@
       });
     })();
 
-    // ─── ASCII Title Animator (THE PENGUIN CIRCLE hero) ───
+    // ─── ASCII Title — static, center ───
     (function() {
       const lines = document.querySelectorAll('.ascii-line');
-      const descEl = document.getElementById('asciiDesc');
-      const descText = 'mulai dari nol — kuasai cli, git & ai coding';
-
-      // Center ascii-title-inner based on first line's natural width
       const inner = document.querySelector('.ascii-title-inner');
+
+      // Tampilkan semua baris sekaligus
+      lines.forEach(l => l.classList.add('visible'));
+
+      // Center inner block berdasarkan lebar natural teks
       if (inner && lines.length > 0) {
-        // Make first line visible briefly to measure, then hide again
-        lines[0].style.opacity = '1';
         const naturalW = lines[0].scrollWidth;
-        lines[0].style.opacity = '';
         const containerW = inner.parentElement.offsetWidth;
         if (naturalW < containerW) {
           inner.style.marginLeft = Math.floor((containerW - naturalW) / 2) + 'px';
         }
-      }
-
-      let running = true;
-
-      function hideLinesBottomUp(cb) {
-        for (let i = lines.length - 1; i >= 0; i--) {
-          const l = lines[i];
-          setTimeout(() => {
-            l.classList.remove('visible');
-            l.classList.add('fade-out');
-            if (i === 0 && cb) setTimeout(cb, 300);
-          }, (lines.length - 1 - i) * 100);
-        }
-      }
-
-      function resetLines() {
-        lines.forEach(l => l.classList.remove('visible', 'fade-out'));
-      }
-
-      function typeDesc(text, el, cb) {
-        let i = 0;
-        el.innerHTML = '';
-        const span = document.createElement('span');
-        const cursor = document.createElement('span');
-        cursor.className = 'cursor';
-        el.appendChild(span);
-        el.appendChild(cursor);
-
-        function type() {
-          if (i >= text.length) {
-            if (cb) setTimeout(cb, 600);
-            return;
-          }
-          span.textContent += text[i++];
-          setTimeout(type, 30 + Math.random() * 20);
-        }
-        setTimeout(type, 200);
-      }
-
-      function backspaceDesc(el, cb) {
-        const span = el.querySelector('span');
-        if (!span || !span.textContent.length) {
-          if (cb) setTimeout(cb, 100);
-          return;
-        }
-        function del() {
-          if (!span.textContent.length) {
-            el.innerHTML = '';
-            if (cb) setTimeout(cb, 200);
-            return;
-          }
-          span.textContent = span.textContent.slice(0, -1);
-          setTimeout(del, 20 + Math.random() * 15);
-        }
-        setTimeout(del, 300);
-      }
-
-      function removeDesc(el) {
-        el.innerHTML = '';
-      }
-
-      function animLoop() {
-        if (!running) return;
-        resetLines();
-        removeDesc(descEl);
-
-        // Phase 1: fade in lines one by one (top to bottom)
-        lines.forEach((l, i) => {
-          setTimeout(() => l.classList.add('visible'), i * 80);
-        });
-
-        const phase1Duration = lines.length * 80 + 400;
-
-        // Phase 2: type description
-        setTimeout(() => {
-          typeDesc(descText, descEl, () => {
-            // Phase 3: wait then backspace desc
-            setTimeout(() => {
-              backspaceDesc(descEl, () => {
-                // Phase 4: fade out lines bottom to top
-                setTimeout(() => {
-                  hideLinesBottomUp(() => {
-                    setTimeout(() => {
-                      if (running) animLoop();
-                    }, 400);
-                  });
-                }, 300);
-              });
-            }, 2000);
-          });
-        }, phase1Duration);
-      }
-
-      // Start after initial page load
-      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (prefersReducedMotion) {
-        lines.forEach(l => l.classList.add('visible'));
-        descEl.textContent = descText;
-      } else {
-        setTimeout(animLoop, 800);
       }
     })();
 
