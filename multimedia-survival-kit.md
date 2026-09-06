@@ -3,6 +3,7 @@
 > Media branding resmi The Penguin Circle.
 > Setiap segmen: **2 konten** (1 poster + 1 video pendek).
 > Total: **16 konten** selama 8 segmen (Juni 2026 – Januari 2027).
+> Dokumen ini sejalan dengan `KURIKULUM-8-SEGMEN.md` (berbasis produk digital).
 
 ---
 
@@ -11,14 +12,14 @@
 1. [Design Guidelines](#1-design-guidelines)
 2. [Format & Spesifikasi](#2-format--spesifikasi)
 3. [Konten per Segmen](#3-konten-per-segmen)
-   - [Segmen 1 — CLI Navigasi & File (Juni)](#segmen-1--cli-navigasi--file-juni)
-   - [Segmen 2 — Editor & Pengolahan Teks (Juli)](#segmen-2--editor--pengolahan-teks-juli)
-   - [Segmen 3 — System Admin & Tools (Agustus)](#segmen-3--system-admin--tools-agustus)
-   - [Segmen 4 — Jaringan & Remote (September)](#segmen-4--jaringan--remote-september)
-   - [Segmen 5 — Git & Version Control (Oktober)](#segmen-5--git--version-control-oktober)
-   - [Segmen 6 — AI CLI & Prompt (November)](#segmen-6--ai-cli--prompt-november)
-   - [Segmen 7 — Web Dev & Deploy (Desember)](#segmen-7--web-dev--deploy-desember)
-   - [Segmen 8 — Mobile Dev & Warisan Digital (Januari)](#segmen-8--mobile-dev--warisan-digital-januari)
+   - [Segmen 1 — Terminal & Dev Machine (Juni)](#segmen-1--terminal--dev-machine-juni)
+   - [Segmen 2 — Git & Perancangan Produk (Juli)](#segmen-2--git--perancangan-produk-juli)
+   - [Segmen 3 — Web Dasar & Deploy (Agustus)](#segmen-3--web-dasar--deploy-agustus)
+   - [Segmen 4 — Next.js & API (September)](#segmen-4--nextjs--api-september)
+   - [Segmen 5 — Backend & Database (Oktober)](#segmen-5--backend--database-oktober)
+   - [Segmen 6 — Auth & Media (November)](#segmen-6--auth--media-november)
+   - [Segmen 7 — Kolaborasi Tim (Desember)](#segmen-7--kolaborasi-tim-desember)
+   - [Segmen 8 — Produk Final & Penutup (Januari)](#segmen-8--produk-final--penutup-januari)
 4. [Jadwal Upload](#4-jadwal-upload)
 5. [Caption Templates](#5-caption-templates)
 6. [Hashtag Strategy](#6-hashtag-strategy)
@@ -60,7 +61,7 @@
 
 | Aspek | Gaya |
 |-------|------|
-| Bahasa | Indonesia (casual, "lo/gua", kayak ngomong ke temen) |
+| Bahasa | Indonesia (kasual, "lo/gua", kayak ngomong ke temen) |
 | Nada | Santai tapi informatif, gak kaku |
 | Emoji | JANGAN pake emoji — ganti dengan Boxicons (di website) |
 | Command | `monospace` dengan background gelap |
@@ -94,7 +95,7 @@
 |-------|--------|
 | 0-3s | Hook — pertanyaan / fakta mengejutkan |
 | 3-15s | Problem — "lo pasti pernah ngalamin ini" |
-| 15-45s | Solusi — demo command / tutorial singkat |
+| 15-45s | Solusi — demo prompt AI / alur kerja |
 | 45-60s | CTA — "Ikut The Penguin Circle, gratis" |
 
 ---
@@ -103,7 +104,7 @@
 
 ---
 
-### Segmen 1 — CLI Navigasi & File (Juni)
+### Segmen 1 — Terminal & Dev Machine (Juni)
 
 #### Poster 1.1: "5 Command yang Bikin Lo Kelihatan Hacker"
 
@@ -172,9 +173,9 @@ Link daftar di bio.
 |------|--------|-------------|
 | 0:00 | Layar kosong, cursor berkedip | "Klik kanan → New Folder → ketik nama → enter. Ulang 5x." |
 | 0:05 | Slow motion klik kanan 5x | "Buang waktu." |
-| 0:10 | Ketik: `mkdir -p project/{public/{css,js},src}` | "Bandingin sama ini." |
-| 0:15 | Enter, lalu `tree` | Satu baris, 5 folder sekaligus. |
-| 0:25 | Tampilin hasil tree | "Ini yang namanya CLI — efisien." |
+| 0:10 | Ketik: `mkdir -p project/teks project/gambar` | "Bandingin sama ini." |
+| 0:15 | Enter, lalu `ls` | Satu baris, beberapa folder sekaligus. |
+| 0:25 | Tampilin hasil `ls` | "Ini yang namanya CLI — efisien." |
 | 0:35 | Logo + link | "Mau jago kayak gini? Join The Penguin Circle. Gratis." |
 
 **Copy caption:**
@@ -182,13 +183,13 @@ Link daftar di bio.
 Kalo lo masih klik kanan → New Folder satu-satu, lo rugi waktu.
 
 Dengan 1 baris di terminal:
-mkdir -p project/{public/{css,js},src}
+mkdir -p project/teks project/gambar
 
-Lo bikin 6 folder dalam 5 detik.
+Lo bikin beberapa folder dalam 5 detik.
 
 Ini baru permulaan. Bayangin 8 bulan lagi apa yang bisa lo lakuin.
 
-The Penguin Circle — belajar CLI, Git, dan AI coding dari 0.
+The Penguin Circle — belajar terminal, Git, dan AI coding dari 0.
 Gratis. Setiap Jumat sore. Di Lab Komputer PDBI.
 
 Link daftar di bio.
@@ -198,29 +199,31 @@ Link daftar di bio.
 
 ---
 
-### Segmen 2 — Editor & Pengolahan Teks (Juli)
+### Segmen 2 — Git & Perancangan Produk (Juli)
 
-#### Poster 2.1: "Shortcut nano yang Wajib Lo Hafal"
+#### Poster 2.1: "Ide Gak Perlu Jadi Beban — Tulis Rancangan Pake AI"
 
 ```
 ┌──────────────────────────────────┐
 │                                  │
-│  SHORTCUT NANO TERMINAL          │
+│  DARI IDE KE BLUEPRINT           │
 │                                  │
-│  ┌──────────────┬────────────┐  │
-│  │ Ctrl + O     │ Save       │  │
-│  ├──────────────┼────────────┤  │
-│  │ Ctrl + X     │ Exit       │  │
-│  ├──────────────┼────────────┤  │
-│  │ Ctrl + K     │ Potong     │  │
-│  ├──────────────┼────────────┤  │
-│  │ Ctrl + U     │ Tempel     │  │
-│  ├──────────────┼────────────┤  │
-│  │ Ctrl + W     │ Cari       │  │
-│  └──────────────┴────────────┘  │
-│                                  │
-│  💡 Ctrl+S di nano = LOCK layar │
-│  Tekan Ctrl+Q buat unlock.      │
+│  ┌────────────────────────────┐ │
+│  │  1. Curhat ide ke AI       │ │
+│  │  "gue mau bikin web [...]" │ │
+│  └────────────────────────────┘ │
+│  ┌────────────────────────────┐ │
+│  │  2. AI nulis PRD.md        │ │
+│  │  konsep, fitur, desain     │ │
+│  └────────────────────────────┘ │
+│  ┌────────────────────────────┐ │
+│  │  3. Buka di VS Code        │ │
+│  │  koreksi, perbaiki         │ │
+│  └────────────────────────────┘ │
+│  ┌────────────────────────────┐ │
+│  │  4. Simpen ke GitHub       │ │
+│  │  git add → commit → push   │ │
+│  └────────────────────────────┘ │
 │                                  │
 │  ─── ─── ─── ─── ─── ─── ──    │
 │  The Penguin Circle             │
@@ -230,30 +233,25 @@ Link daftar di bio.
 
 **Copy caption:**
 ```
-Nano adalah editor teks di terminal.
-Ringan, cepat, dan udah built-in di Linux.
+Ide web app bisa jadi dokumen rancangan dalam hitungan menit.
 
-5 shortcut ini cukup buat lo mulai:
-- Ctrl+O → simpan file
-- Ctrl+X → keluar
-- Ctrl+K → potong baris
-- Ctrl+U → tempel
-- Ctrl+W → cari kata
+Alurnya:
+1. Ceritain ide lo ke AI Agent (di terminal)
+2. AI bikin file rancangan (PRD.md, DESIGN.md)
+3. Lo buka di VS Code, koreksi
+4. Simpen & share lewat GitHub
 
-⚠️ Ingat: Ctrl+S di nano itu BUKAN save.
-Itu malah ngunci layar. Tekan Ctrl+Q buat unlock.
+Lo lebih berperan sebagai "arsitek" — ngatur arah, bukan ngetik ulang semuanya.
 
-Skill ini bakal lo pake terus — dari catatan kuliah sampe coding.
+Ini yang bakal lo pelajari di Segmen 2 The Penguin Circle.
+Gratis. Setiap Jumat sore. Lab Komputer PDBI.
 
-The Penguin Circle — gratis, setiap Jumat sore, Lab Komputer PDBI.
-Link daftar di bio.
-
-#ThePenguinCircle #NanoTextEditor #TerminalLinux #BelajarLinux #PDBI
+#ThePenguinCircle #AI #PromptEngineering #Git #VS Code #PDBI
 ```
 
 ---
 
-#### Video 2.2: "3 Cara Baca File di Terminal — Mana Favorit Lo?"
+#### Video 2.2: "Git dalam 4 Langkah — Nyelametin Project Lo"
 
 **Durasi:** 50 detik
 
@@ -261,302 +259,24 @@ Link daftar di bio.
 
 | Time | Visual | Audio / Teks |
 |------|--------|-------------|
-| 0:00 | File catatan.txt isi 50 baris | "Lo punya file teks. Cara bacanya tergantung kebutuhan." |
-| 0:05 | `cat catatan.txt` — semuanya keluar | `cat` — semua ditampilkan. Cocok buat file pendek. |
-| 0:15 | `less catatan.txt` — scroll | `less` — halaman per halaman. Cocok buat file panjang. |
-| 0:25 | `head -5 catatan.txt` | `head` — 10 baris pertama aja. |
-| 0:35 | `tail -f log.txt` | `tail -f` — mantau log realtime. Ini favorit admin server. |
-| 0:45 | Logo + CTA | "Mau bisa kayak gini? Gabung The Penguin Circle." |
-
-**Copy caption:**
-```
-Baca file di terminal ada 4 cara, tergantung situasi:
-
-cat  → semua langsung ditampilkan (file pendek)
-less → scroll per halaman (file panjang)
-head → 10 baris pertama aja
-tail → 10 baris terakhir (atau mantau log realtime pake tail -f)
-
-Yang paling sering dipake admin server: tail -f.
-Buat mantau error log tanpa perlu buka GUI.
-
-Skill simpel tapi bedain lo sama yang lain.
-
-The Penguin Circle — belajar terminal dari 0. Gratis.
-Link daftar di bio.
-
-#ThePenguinCircle #TerminalTips #LinuxCommands #BelajarLinux #PDBI
-```
-
----
-
-### Segmen 3 — System Admin & Tools (Agustus)
-
-#### Poster 3.1: "Permission Linux — Jangan Asal chmod 777!"
-
-```
-┌──────────────────────────────────┐
-│                                  │
-│  FILE PERMISSION CHEAT SHEET     │
-│                                  │
-│  ┌────────────┬────────┬──────┐ │
-│  │ Angka      │ Izin   │ Untuk│ │
-│  ├────────────┼────────┼──────┤ │
-│  │ 755        │ rwxr-x │script│ │
-│  │            │ -r-x   │      │ │
-│  ├────────────┼────────┼──────┤ │
-│  │ 644        │ rw-r-- │ file │ │
-│  │            │ -r--   │ biasa│ │
-│  ├────────────┼────────┼──────┤ │
-│  │ 600        │ rw-----│ file │ │
-│  │            │ ---    │ prib │ │
-│  ├────────────┼────────┼──────┤ │
-│  │ 777        │ rwxrwx │ ❌   │ │
-│  │            │ rwx    │ BAHA │ │
-│  └────────────┴────────┴──────┘ │
-│                                  │
-│  ─── ─── ─── ─── ─── ─── ──    │
-│  The Penguin Circle             │
-│  Segmen 3 — Agustus 2026        │
-└──────────────────────────────────┘
-```
-
-**Copy caption:**
-```
-File permission di Linux itu kayak kunci rumah lo:
-- r = read (bisa liat)
-- w = write (bisa edit)
-- x = execute (bisa jalanin)
-
-Tingkat keamanan:
-755 → script umum — aman
-644 → file teks — standar
-600 → file pribadi — cuma lo yang bisa baca
-777 → SEMUA BISA NGAPAIN AJA — BERBAHAYA
-
-Jangan asal chmod 777 ya.
-Itu kayak lo ngasih kunci rumah ke orang asing.
-
-Pelajari permission dengan bener di The Penguin Circle.
-Gratis. Setiap Jumat sore. Lab Komputer PDBI.
-
-#ThePenguinCircle #LinuxPermission #BelajarLinux #SystemAdmin #PDBI
-```
-
----
-
-#### Video 3.2: "Cek Spesifikasi Laptop Pake Terminal — Gak Perlu Download Aplikasi"
-
-**Durasi:** 45 detik
-
-**Storyboard:**
-
-| Time | Visual | Audio / Teks |
-|------|--------|-------------|
-| 0:00 | Layar terminal kosong | "Mau tau spesifikasi laptop lo? Gak perlu download Speccy." |
-| 0:05 | `neofetch` — muncul ASCII + spek | `neofetch` — OS, kernel, uptime, RAM, semua keliatan. |
-| 0:15 | `df -h` | `df -h` — kapasitas hardisk. Tinggal berapa GB? |
-| 0:25 | `free -h` | `free -h` — RAM total, terpakai, tersisa. |
-| 0:35 | `uptime` | `uptime` — udah berapa lama laptop nyala sejak boot. |
-| 0:40 | Logo + CTA | "Command sederhana yang bikin lo kelihatan pro." |
-
-**Copy caption:**
-```
-Mau tau spesifikasi laptop tapi males download aplikasi tambahan?
-Terminal aja cukup.
-
-4 command ini:
-neofetch → OS, RAM, kernel
-df -h → kapasitas hardisk
-free -h → RAM terpakai & tersisa
-uptime → berapa lama laptop nyala
-
-Semua udah built-in di Linux & WSL. Gak perlu install apa-apa lagi.
-
-Skill yang keliatan kecil tapi ngebantu banget pas troubleshooting.
-
-The Penguin Circle — belajar terminal dari 0. Gratis.
-Link daftar di bio.
-
-#ThePenguinCircle #TerminalTips #LinuxCommands #SpesifikasiLaptop #PDBI
-```
-
----
-
-### Segmen 4 — Jaringan & Remote (September)
-
-#### Poster 4.1: "Cek Koneksi Internet — Diagnostik Pake Terminal"
-
-```
-┌──────────────────────────────────┐
-│                                  │
-│  NETWORK DIAGNOSTIC CLI          │
-│                                  │
-│  ┌──────────────────────────┐   │
-│  │ ping google.com          │   │
-│  │ Tes koneksi ke internet  │   │
-│  │ time=12ms = cepet        │   │
-│  └──────────────────────────┘   │
-│  ┌──────────────────────────┐   │
-│  │ ip addr                  │   │
-│  │ Cek alamat IP laptop lo  │   │
-│  └──────────────────────────┘   │
-│  ┌──────────────────────────┐   │
-│  │ curl -I google.com       │   │
-│  │ Cek respon server        │   │
-│  │ HTTP/2 200 = hidup       │   │
-│  └──────────────────────────┘   │
-│  ┌──────────────────────────┐   │
-│  │ ssh user@192.168.1.x     │   │
-│  │ Remote ke server lain    │   │
-│  └──────────────────────────┘   │
-│                                  │
-│  ─── ─── ─── ─── ─── ─── ──    │
-│  The Penguin Circle             │
-│  Segmen 4 — September 2026      │
-└──────────────────────────────────┘
-```
-
-**Copy caption:**
-```
-Internet lemot? Bukan berarti lo harus nelpon ISP.
-Cek sendiri lewat terminal.
-
-4 command diagnostik jaringan:
-ping → tes koneksi ke server (time < 20ms = bagus)
-ip addr → liat alamat IP laptop lo
-curl -I → cek apakah website hidup (200 = ok)
-ssh → remote ke server lain dari terminal
-
-Semua gratis, semua dari terminal.
-Gak perlu download tool tambahan.
-
-Pelajari jaringan bareng The Penguin Circle.
-Gratis. Setiap Jumat sore. Lab Komputer PDBI.
-
-#ThePenguinCircle #JaringanKomputer #TerminalLinux #SSH #PDBI
-```
-
----
-
-#### Video 4.2: "SSH dalam 1 Menit — Remote Server Kayak Programmer Beneran"
-
-**Durasi:** 55 detik
-
-**Storyboard:**
-
-| Time | Visual | Audio / Teks |
-|------|--------|-------------|
-| 0:00 | Termometer analogi | "Bayangin lo di rumah, tapi bisa akses komputer kantor." |
-| 0:05 | `ssh user@192.168.1.100` | `ssh` — Secure Shell. Lo login ke komputer lain dari terminal. |
-| 0:15 | Masuk ke server remote | "Begitu masuk, lo bisa ngapain aja. Cek file, jalanin program, restart service." |
-| 0:25 | Demo ls di remote | "Ini yang dipake admin server tiap hari." |
-| 0:35 | `exit` | `exit` — balik ke laptop lo. |
-| 0:40 | Logo + CTA | "Keren kan? Lo bisa belajar ini di The Penguin Circle." |
-
-**Copy caption:**
-```
-SSH = Secure Shell.
-Cara lo akses komputer lain lewat terminal.
-
-Contoh simpel:
-ssh muadz@192.168.1.100
-
-Begitu masuk, lo bisa:
-- Cek file & folder di komputer itu
-- Jalanin program
-- Restart service
-- Transfer file (pake SCP)
-
-Ini skill yang dipake admin server, developer, dan engineer tiap hari.
-
-Pelajari SSH dan jaringan bareng The Penguin Circle.
-Gratis. Setiap Jumat sore. Lab Komputer PDBI.
-
-#ThePenguinCircle #SSH #RemoteServer #TerminalLinux #PDBI
-```
-
----
-
-### Segmen 5 — Git & Version Control (Oktober)
-
-#### Poster 5.1: "Git Flow — Nyelametin Project Lo dari Kekacauan"
-
-```
-┌──────────────────────────────────┐
-│                                  │
-│  GIT DALAM 4 LANGKAH            │
-│                                  │
-│  ┌────────────────────────────┐ │
-│  │                            │ │
-│  │  1. git init               │ │
-│  │     "Bikin repo baru"      │ │
-│  │                            │ │
-│  │  2. git add .              │ │
-│  │     "Siapin semua file"    │ │
-│  │                            │ │
-│  │  3. git commit -m "..."    │ │
-│  │     "Simpen snapshot"      │ │
-│  │                            │ │
-│  │  4. git push origin main   │ │
-│  │     "Upload ke GitHub"     │ │
-│  │                            │ │
-│  └────────────────────────────┘ │
-│                                  │
-│  ─── ─── ─── ─── ─── ─── ──    │
-│  The Penguin Circle             │
-│  Segmen 5 — Oktober 2026        │
-└──────────────────────────────────┘
-```
-
-**Copy caption:**
-```
-Lo pernah ngalamin project rusak abis gonta-ganti kode?
-Git solusinya.
-
-Alur dasar Git:
-1. git init — bikin repository baru
-2. git add . — pilih file yang mau disimpen
-3. git commit -m "pesan" — simpen snapshot
-4. git push — upload ke GitHub
-
-Dengan Git, lo bisa balik ke versi sebelumnya kapan aja.
-Kayak tombol "save point" di game.
-
-Pelajari Git dari 0 bareng The Penguin Circle.
-Gratis. Setiap Jumat sore. Lab Komputer PDBI.
-
-#ThePenguinCircle #Git #VersionControl #BelajarGit #PDBI
-```
-
----
-
-#### Video 5.2: "Pernah Hapus Project Karena Error? Git Nyelametin Hidup Lo"
-
-**Durasi:** 50 detik
-
-**Storyboard:**
-
-| Time | Visual | Audio / Teks |
-|------|--------|-------------|
-| 0:00 | Dramatis: folder project error | "Lo lagi ngerjain project. Terus error. Terus lo hapus semua." |
-| 0:05 | `git log --oneline` | "Tapi kalo lo pake Git, lo tinggal..." |
-| 0:10 | `git checkout 1a2b3c4` | `git checkout` ke commit sebelumnya. Semua balik kayak semula. |
-| 0:20 | File balik normal | "Lihat? File lo balik. Error ilang. Gak ada yang ilang." |
-| 0:30 | Demo: git diff sebelum-sesudah | "Git nyimpen SEMUA perubahan. Lo bebas bereksperimen." |
+| 0:00 | Dramatis: project error | "Lo lagi ngerjain project. Terus error. Lo mau hapus semua." |
+| 0:05 | `git add .` | "Kalo lo pake Git, lo tinggal..." |
+| 0:10 | `git commit -m "versi aman"` | "Simpen versi aman." |
+| 0:15 | `git push origin main` | "Backup ke GitHub." |
+| 0:20 | Error muncul lagi | "Sekarang tinggal balik ke versi aman. Gak ada yang ilang." |
+| 0:30 | `git log --oneline` | "Git nyimpen SEMUA perubahan. Lo bebas bereksperimen." |
 | 0:40 | Logo + CTA | "Skill yang ngebantu lo tidur nyenyak." |
 
 **Copy caption:**
 ```
 Ini skenario yang sering terjadi:
-Project error → lo panik → lo edit sana-sini → makin rusak → lo hapus semua.
+Project error → lo edit sana-sini → makin rusak → lo hapus semua.
 
 Coba bedanya kalo lo pake Git:
 
-git log → liat semua versi yang pernah lo simpen
-git checkout [kode] → balik ke versi sebelumnya
-
-Semua file balik kayak semula. Error ilang. Lo gak kehilangan apa-apa.
+git add . → pilih file
+git commit -m "versi aman" → simpen snapshot
+git push → backup ke GitHub
 
 Git itu kayak "save point" di game. Lo bisa nyoba apa aja, kalo gagal, tinggal reload.
 
@@ -568,27 +288,289 @@ Link daftar di bio.
 
 ---
 
-### Segmen 6 — AI CLI & Prompt (November)
+### Segmen 3 — Web Dasar & Deploy (Agustus)
 
-#### Poster 6.1: "Prompt Engineering — Biar AI Ngerti Maksud Lo"
+#### Poster 3.1: "Dari Rancangan ke Website Online — Gratis"
 
 ```
 ┌──────────────────────────────────┐
 │                                  │
-│  PROMPT AI YANG BENER            │
+│  DARI BLUEPRINT KE WEBSITE       │
 │                                  │
-│  ┌────────────────────────────┐ │
-│  │  ❌ "bikin script"         │ │
-│  │  Terlalu umum, hasil acak │ │
-│  └────────────────────────────┘ │
-│  ┌────────────────────────────┐ │
-│  │  ✅ "Buat bash script     │ │
-│  │  backup folder /home      │ │
-│  │  ke /backup, format       │ │
-│  │  tar.gz, jalan otomatis   │ │
-│  │  tiap jam 2 pagi"         │ │
-│  │  Spesifik = hasil tepat   │ │
-│  └────────────────────────────┘ │
+│  ┌──────────────────────────┐   │
+│  │  1. AI bikin index.html  │   │
+│  │  struktur dari PRD/DESIGN│   │
+│  └──────────────────────────┘   │
+│              │                   │
+│              ▼                   │
+│  ┌──────────────────────────┐   │
+│  │  2. AI bikin style.css   │   │
+│  │  warna & layout          │   │
+│  └──────────────────────────┘   │
+│              │                   │
+│              ▼                   │
+│  ┌──────────────────────────┐   │
+│  │  3. Push ke GitHub       │   │
+│  │  simpen project          │   │
+│  └──────────────────────────┘   │
+│              │                   │
+│              ▼                   │
+│  ┌──────────────────────────┐   │
+│  │  4. Deploy ke Vercel     │   │
+│  │  https://...vercel.app   │   │
+│  └──────────────────────────┘   │
+│                                  │
+│  ─── ─── ─── ─── ─── ─── ──    │
+│  The Penguin Circle             │
+│  Segmen 3 — Agustus 2026        │
+└──────────────────────────────────┘
+```
+
+**Copy caption:**
+```
+Rancangan produk udah jadi. Sekarang eksekusi jadi website — dan online.
+
+1. Prompt AI → index.html + style.css sesuai DESIGN lo
+2. Buka di VS Code, koreksi, iterasi
+3. Push ke GitHub
+4. Deploy ke Vercel — gratis, otomatis dari GitHub
+
+Gak perlu bayar domain. Gak perlu server ribet.
+Lo punya website publik: https://project-lo.vercel.app
+
+Pelajari web dasar bareng The Penguin Circle.
+Gratis. Setiap Jumat sore. Lab Komputer PDBI.
+
+#ThePenguinCircle #WebDev #BelajarWebsite #HTMLCSS #DeployVercel #PDBI
+```
+
+---
+
+#### Video 3.2: "Bikin Website Pribadi Dalam 5 Menit — Gratis"
+
+**Durasi:** 60 detik
+
+**Storyboard:**
+
+| Time | Visual | Audio / Teks |
+|------|--------|-------------|
+| 0:00 | Terminal: prompt AI | "5 menit aja. Lo bakal punya website online." |
+| 0:05 | Prompt: "bikin index.html portofolio..." | "Step 1: Curhat ke AI Agent." |
+| 0:15 | File index.html terbuat, dibuka VS Code | "Step 2: Buka hasilnya di VS Code." |
+| 0:25 | `git push` ke GitHub | "Step 3: Push ke GitHub." |
+| 0:35 | Buka Vercel → import repo | "Step 4: Deploy ke Vercel." |
+| 0:45 | Website LIVE di browser | "Selesai. Lo punya website online." |
+| 0:55 | Logo + CTA | "Gratis. Gak perlu kartu kredit. Gak perlu domain." |
+
+**Copy caption:**
+```
+Bikin website pribadi dalam 5 menit. Gratis. Pake AI.
+
+Step 1: Curhat ke AI Agent → dia bikin file HTML/CSS
+Step 2: Buka & koreksi di VS Code
+Step 3: Push ke GitHub
+Step 4: Deploy ke Vercel
+
+Dalam 5 menit, lo punya website online.
+https://project-lo.vercel.app
+
+Ini yang bakal lo praktikin langsung di Segmen 3 The Penguin Circle.
+Gratis. Setiap Jumat sore. Lab Komputer PDBI.
+
+#ThePenguinCircle #BikinWebsite #WebDev #Deploy #HTML #AI #PDBI
+```
+
+---
+
+### Segmen 4 — Next.js & API (September)
+
+#### Poster 4.1: "Dari Halaman Statis ke Framework Modern"
+
+```
+┌──────────────────────────────────┐
+│                                  │
+│  NEXT.JS — LANJUTANNYA           │
+│  SETELAH HTML/CSS/JS             │
+│                                  │
+│  ┌──────────────────────────┐   │
+│  │  Komponen (LEGO)         │   │
+│  │  pakai ulang bagian UI   │   │
+│  └──────────────────────────┘   │
+│  ┌──────────────────────────┐   │
+│  │  Routing (halaman)       │   │
+│  │  /about /projects        │   │
+│  └──────────────────────────┘   │
+│  ┌──────────────────────────┐   │
+│  │  API Routes (app/api)    │   │
+│  │  backend pertama lo      │   │
+│  └──────────────────────────┘   │
+│                                  │
+│  ─── ─── ─── ─── ─── ─── ──    │
+│  The Penguin Circle             │
+│  Segmen 4 — September 2026      │
+└──────────────────────────────────┘
+```
+
+**Copy caption:**
+```
+HTML/CSS/JS udah dikuasai? Naik level ke Next.js.
+
+Kenapa Next.js?
+- Komponen: kode dipakai ulang kayak LEGO
+- Routing: gampang bikin banyak halaman
+- API Routes: backend pertama lo di dalam project yang sama
+
+Dan yang penting: ini framework yang dipake di matkul TRM.
+Jadi lo belajar sesuatu yang langsung kepake.
+
+Pelajari Next.js dari 0 bareng The Penguin Circle.
+Gratis. Setiap Jumat sore. Lab Komputer PDBI.
+
+#ThePenguinCircle #NextJS #React #WebDev #BelajarCoding #PDBI
+```
+
+---
+
+#### Video 4.2: "Apa Itu API? Analogi Waiter di Restoran"
+
+**Durasi:** 50 detik
+
+**Storyboard:**
+
+| Time | Visual | Audio / Teks |
+|------|--------|-------------|
+| 0:00 | Restoran, pelanggan + waiter | "Bayangin restoran. Lo pelanggan, waiter itu API." |
+| 0:10 | Pelanggan pesan | "Lo bilang 'saya mau data'. API bawa pesanan lo ke dapur." |
+| 0:20 | Dapur (server) masak | "Dapur = server/database. API yang anterin." |
+| 0:30 | Waiter balik bawa pesanan | "API balik bawa jawaban → data JSON." |
+| 0:40 | Terminal: curl ke API | "Di backend, lo minta data pake request. Dapet JSON balik." |
+| 0:48 | Logo + CTA | "Paham API = paham cara web beneran jalan." |
+
+**Copy caption:**
+```
+Apa itu API? Analoginya simpel: waiter di restoran.
+
+Lo (frontend) pesan → waiter (API) anterin ke dapur (server/database) → balik bawa pesanan (data JSON).
+
+Di project web:
+- Frontend minta data ke API
+- API ambil data dari database
+- API balikin JSON ke frontend
+- Frontend tampilin ke user
+
+Di Segmen 4 The Penguin Circle, lo bakal bikin API Route pertama lo.
+Gratis. Setiap Jumat sore. Lab Komputer PDBI.
+
+#ThePenguinCircle #API #Backend #WebDev #NextJS #PDBI
+```
+
+---
+
+### Segmen 5 — Backend & Database (Oktober)
+
+#### Poster 5.1: "Database Itu Bukan Hal Menakutkan"
+
+```
+┌──────────────────────────────────┐
+│                                  │
+│  SUPABASE = DATABASE + API       │
+│                                  │
+│  ┌──────────────────────────┐   │
+│  │  Tabel (bagan data)      │   │
+│  │  id, judul, deskripsi    │   │
+│  └──────────────────────────┘   │
+│  ┌──────────────────────────┐   │
+│  │  REST API otomatis       │   │
+│  │  GET / POST / PUT / DELETE│  │
+│  └──────────────────────────┘   │
+│  ┌──────────────────────────┐   │
+│  │  Gratis (free tier)      │   │
+│  │  gak perlu server sendiri│   │
+│  └──────────────────────────┘   │
+│                                  │
+│  ─── ─── ─── ─── ─── ─── ──    │
+│  The Penguin Circle             │
+│  Segmen 5 — Oktober 2026        │
+└──────────────────────────────────┘
+```
+
+**Copy caption:**
+```
+Frontend itu tampilan. Data itu hidup di database.
+
+Di Segmen ini lo bakal pake Supabase:
+- Database PostgreSQL (gratis)
+- REST API otomatis
+- Gak perlu setup server sendiri
+
+Alurnya:
+Frontend → API Route Next.js → Supabase → data balik ke tampilan
+
+Mulai dari "website menampilkan teks" jadi "website menampilkan data dari database".
+
+Pelajari database bareng The Penguin Circle. Gratis.
+Setiap Jumat sore. Lab Komputer PDBI.
+
+#ThePenguinCircle #Database #Supabase #Backend #WebDev #PDBI
+```
+
+---
+
+#### Video 5.2: "Biar Frontend Lo Punya Otak — Hubungin ke Database"
+
+**Durasi:** 55 detik
+
+**Storyboard:**
+
+| Time | Visual | Audio / Teks |
+|------|--------|-------------|
+| 0:00 | Website statis, teks mati | "Website yang polos cuma nampilin teks mati." |
+| 0:05 | Dashboard Supabase | "Tapi begitu disambungin ke database..." |
+| 0:15 | Data masuk lewat form | "Data yang diketik user bisa disimpen & ditampilin." |
+| 0:25 | Halaman render data dari DB | "Sekarang websitenya 'hidup' — datanya dinamis." |
+| 0:35 | Demo refresh | "Refresh halaman, data tetep ada — karena di database." |
+| 0:45 | Logo + CTA | "Ini yang namanya frontend + backend + database." |
+
+**Copy caption:**
+```
+Website yang "hidup" itu datanya ada di database.
+
+Di Segmen 5 The Penguin Circle:
+1. Lo buat tabel di Supabase (database gratis)
+2. Lo sambungin ke API Route Next.js
+3. Website lo bisa nyimpen & nampilin data beneran
+
+Dari frontend statis → full data-driven.
+
+Gratis. Setiap Jumat sore. Lab Komputer PDBI.
+Link daftar di bio.
+
+#ThePenguinCircle #Supabase #Database #WebDev #Backend #PDBI
+```
+
+---
+
+### Segmen 6 — Auth & Media (November)
+
+#### Poster 6.1: "Login, Upload Gambar, Polish — Website Lo Makin Pro"
+
+```
+┌──────────────────────────────────┐
+│                                  │
+│  FITUR PRO YANG LO BIKIN         │
+│                                  │
+│  ┌──────────────────────────┐   │
+│  │  Login & Register        │   │
+│  │  Supabase Auth           │   │
+│  └──────────────────────────┘   │
+│  ┌──────────────────────────┐   │
+│  │  Upload Gambar           │   │
+│  │  Cloudinary (gratis)     │   │
+│  └──────────────────────────┘   │
+│  ┌──────────────────────────┐   │
+│  │  Polish & Debugging      │   │
+│  │  rapikan, test, fix      │   │
+│  └──────────────────────────┘   │
 │                                  │
 │  ─── ─── ─── ─── ─── ─── ──    │
 │  The Penguin Circle             │
@@ -598,92 +580,79 @@ Link daftar di bio.
 
 **Copy caption:**
 ```
-AI tools di terminal kayak opencode atau ollama bisa bantu lo bikin script, debugging, bahkan generate kode.
+Website lo udah punya data. Sekarang bikin makin pro:
 
-Tapi hasilnya tergantung prompt lo.
+1. Auth — user bisa login & register (Supabase Auth)
+2. Media — upload gambar (Cloudinary, gratis)
+3. Polish — debug, rapikan, bikin responsif
 
-Prompt yang jelek:
-❌ "bikin script" → hasilnya random
+Hasilnya: satu aplikasi web full-stack individual yang bisa lo deploy & banggain.
 
-Prompt yang bener:
-✅ "Buat bash script backup folder /home ke /backup, format tar.gz, jalan otomatis tiap jam 2 pagi"
+Gak perlu hafal syntax. AI Agent bantu nulis. Lo yang ngatur arah.
 
-Makin spesifik lo, makin tepat hasil AI.
+Pelajari full-stack bareng The Penguin Circle. Gratis.
+Setiap Jumat sore. Lab Komputer PDBI.
 
-Pelajari prompt engineering dan AI tools di terminal bareng The Penguin Circle.
-Gratis. Setiap Jumat sore. Lab Komputer PDBI.
-
-#ThePenguinCircle #AI #PromptEngineering #AITerminal #Opencode #PDBI
+#ThePenguinCircle #FullStack #Supabase #Cloudinary #WebDev #PDBI
 ```
 
 ---
 
-#### Video 6.2: "Bikin Script Pake AI — 10 Detik dari Nol"
+#### Video 6.2: "Debug Error Pakai AI — 10 Detik, Gak Perlu Panik"
 
-**Durasi:** 40 detik
+**Durasi:** 45 detik
 
 **Storyboard:**
 
 | Time | Visual | Audio / Teks |
 |------|--------|-------------|
-| 0:00 | Prompt: "Buat bash script... format PNG..." | "Dulu lo harus nulis script manual." |
-| 0:05 | AI generate script | "Sekarang lo tinggal ngetik prompt." |
-| 0:10 | Script keluar + langsung jalan | "10 detik, script jadi. Tinggal run." |
-| 0:20 | `bash script.sh` berhasil | "Bayangin kalo lo mau bikin script kayak gini manual — bisa 30 menit." |
-| 0:30 | Logo + CTA | "AI di terminal bukan masa depan. Ini udah terjadi sekarang." |
+| 0:00 | Error merah di terminal | "Error. Semua orang ngalamin. Yang beda: cara lo nyikapin." |
+| 0:05 | Copy error message | "Gak usah panik. Copy error-nya." |
+| 0:10 | Tempel ke AI Agent + minta penjelasan | "Tempel ke AI Agent, minta analisis." |
+| 0:20 | AI kasih penyebab + solusi | "AI jelasin penyebab & kasih perbaikan." |
+| 0:30 | Perbaikan diterapkan, jalan mulus | "Fix. Website jalan lagi." |
+| 0:38 | Logo + CTA | "Gak ada error yang menakutkan kalo lo tau caranya." |
 
 **Copy caption:**
 ```
-Bikin script bash pake AI:
-Tinggal ngetik prompt → AI generate → lo jalanin.
+Error itu bukan tanda lo gagal. Itu tanda lo lagi belajar.
 
-Contoh:
-"Buat script yang convert semua file .jpg di folder ini ke .png"
+Cara cerdas ngadepin error:
+1. Copy pesan error-nya
+2. Tempel ke AI Agent, minta jelasin & benerin
+3. Terapkan fix-nya
+4. Selesai
 
-AI ngeluarin scriptnya dalam 10 detik.
-Lo tinggal copy, paste, run.
+Skill ngadepin error ini bakal lo pake seumur hidup — bukan cuma coding.
 
-Dulu: 30 menit nulis manual.
-Sekarang: 10 detik generate + 5 detik run.
-
-Ini yang bakal lo pelajari di Segmen 6 The Penguin Circle.
+Pelajari debugging pake AI di Segmen 6 The Penguin Circle.
 Gratis. Setiap Jumat sore. Lab Komputer PDBI.
 
-#ThePenguinCircle #AITerminal #PromptEngineering #Opencode #BelajarAI #PDBI
+#ThePenguinCircle #Debugging #AI #CodingTips #PDBI
 ```
 
 ---
 
-### Segmen 7 — Web Dev & Deploy (Desember)
+### Segmen 7 — Kolaborasi Tim (Desember)
 
-#### Poster 7.1: "Dari Nol Sampai Online — Bikin Website Gratis"
+#### Poster 7.1: "Project Tim Gak Perlu Ribet — Git Solusinya"
 
 ```
 ┌──────────────────────────────────┐
 │                                  │
-│  WEB DEV PIPELINE                │
+│  KERJA TIM PALING RAPI           │
 │                                  │
 │  ┌──────────────────────────┐   │
-│  │  1. HTML / CSS           │   │
-│  │     Bikin halaman web    │   │
+│  │  1. Satu repo GitHub     │   │
+│  │  dua orang, kolaborator  │   │
 │  └──────────────────────────┘   │
-│              │                   │
-│              ▼                   │
 │  ┌──────────────────────────┐   │
-│  │  2. Git init + push      │   │
-│  │     Simpen di GitHub     │   │
+│  │  2. Branch sendiri-sendiri│   │
+│  │  frontend-ui / backend-api│  │
 │  └──────────────────────────┘   │
-│              │                   │
-│              ▼                   │
 │  ┌──────────────────────────┐   │
-│  │  3. Vercel deploy        │   │
-│  │     Online dalam 10 detik│   │
-│  └──────────────────────────┘   │
-│              │                   │
-│              ▼                   │
-│  ┌──────────────────────────┐   │
-│  │  4. https://...vercel.app│   │
-│  │     Lo punya website!    │   │
+│  │  3. Pull Request & Merge │   │
+│  │  gabungkan tanpa tabrakan│   │
 │  └──────────────────────────┘   │
 │                                  │
 │  ─── ─── ─── ─── ─── ─── ──    │
@@ -694,81 +663,82 @@ Gratis. Setiap Jumat sore. Lab Komputer PDBI.
 
 **Copy caption:**
 ```
-Bikin website sampe online dalam 4 langkah — gratis.
+Kerja berdua bikin aplikasi gak harus ribet.
 
-1. Tulis HTML/CSS di terminal pake nano
-2. Simpen di GitHub pake Git
-3. Deploy ke Vercel — otomatis, 10 detik
-4. Lo punya website: https://project-lo.vercel.app
+Dengan Git:
+1. Bikin satu repo, ajak partner lo jadi collaborator
+2. Masing-masing kerja di branch sendiri
+3. Gabungkan lewat Pull Request — rapi & tidak ada yang ketimpa
 
-Gak perlu beli domain.
-Gak perlu server.
-Gak perlu bayar hosting.
+Ada frontend, ada backend. Dua-duanya saling butuh, saling bantu.
 
-Pelajari web dev dari 0 bareng The Penguin Circle.
-Gratis. Setiap Jumat sore. Lab Komputer PDBI.
+Ini simulasi cara kerja tim developer beneran.
 
-#ThePenguinCircle #WebDev #BelajarWebsite #DeployVercel #HTMLCSS #PDBI
+Pelajari kolaborasi bareng The Penguin Circle. Gratis.
+Setiap Jumat sore. Lab Komputer PDBI.
+
+#ThePenguinCircle #Git #Kolaborasi #Teamwork #WebDev #PDBI
 ```
 
 ---
 
-#### Video 7.2: "Bikin Website Pribadi Dalam 5 Menit — Gratis"
+#### Video 7.2: "Dua Orang, Satu Project — Gimana Biar Gak Tabrakan?"
 
-**Durasi:** 60 detik
+**Durasi:** 55 detik
 
 **Storyboard:**
 
 | Time | Visual | Audio / Teks |
 |------|--------|-------------|
-| 0:00 | Layar kosong nano | "5 menit aja. Lo bakal punya website pribadi." |
-| 0:05 | Nano: ngetik HTML simpel `<h1>Halo Dunia</h1>` | "Step 1: Tulis HTML pake nano." |
-| 0:15 | `git init && git add . && git commit` | "Step 2: Simpen ke Git." |
-| 0:25 | `git push` ke GitHub | "Step 3: Push ke GitHub." |
-| 0:35 | Buka Vercel → import repo | "Step 4: Deploy ke Vercel." |
-| 0:45 | Website LIVE di browser | "Selesai. Lo punya website online." |
-| 0:55 | Logo + CTA | "Gratis. Gak perlu kartu kredit. Gak perlu domain." |
+| 0:00 | Dua orang di satu file barengan | "Ngerjain file yang sama barengan — chaos." |
+| 0:05 | Diagram branch | "Solusinya: masing-masing pake branch sendiri." |
+| 0:15 | frontend-ui commit & push | "Frontend kerjain di branch frontend-ui." |
+| 0:20 | backend-api commit & push | "Backend kerjain di branch backend-api." |
+| 0:30 | Pull Request di GitHub | "Tinggal bikin Pull Request, review, merge." |
+| 0:40 | Kode tergabung rapi | "Hasilnya: dua orang, satu product, nol tabrakan." |
+| 0:48 | Logo + CTA | "Ini cara tim developer beneran kerja." |
 
 **Copy caption:**
 ```
-Bikin website pribadi dalam 5 menit. Gratis.
+Dua orang ngerjain satu project — caranya?
 
-Step 1: Bikin file index.html pake nano
-Step 2: git init + git commit
-Step 3: Push ke GitHub
-Step 4: Deploy ke Vercel
+Jangan dua-duanya edit file yang sama di waktu yang sama.
 
-Dalam 5 menit, lo punya website online.
-https://project-lo.vercel.app
+Pakai Git:
+1. Satu repo + collaborator
+2. Branch per orang / per fitur
+3. Pull Request → review → merge
 
-Ini yang bakal lo praktikin langsung di Segmen 7 The Penguin Circle.
+Ada frontend, ada backend. Saling melengkapi, saling belajar.
+
+Di Segmen 7 The Penguin Circle, lo bakal ngerasain kerja tim beneran.
 Gratis. Setiap Jumat sore. Lab Komputer PDBI.
 
-#ThePenguinCircle #BikinWebsite #WebDev #Deploy #HTML #PDBI
+#ThePenguinCircle #Git #Kolaborasi #Teamwork #PDBI
 ```
 
 ---
 
-### Segmen 8 — Mobile Dev & Warisan Digital (Januari)
+### Segmen 8 — Produk Final & Penutup (Januari)
 
-#### Poster 8.1: "Bikin Aplikasi Mobile — Modal Laptop + Niat"
+#### Poster 8.1: "8 Bulan, Dari Ide Menjadi Produk"
 
 ```
 ┌──────────────────────────────────┐
 │                                  │
 │  JANUARI 2027                    │
-│  LO JADI MOBILE DEVELOPER        │
+│  LO PUNYA PRODUK SENDIRI         │
 │                                  │
 │  8 bulan perjalanan:             │
 │                                  │
-│  Jun → CLI dasar                 │
-│  Jul → Edit teks & grep         │
-│  Agu → Admin sistem             │
-│  Sep → Jaringan & SSH           │
-│  Okt → Git & version control    │
-│  Nov → AI tools & prompt        │
-│  Des → Web dev & deploy         │
-│  Jan → 🎯 MOBILE DEV            │
+│  Jun → Terminal & dev machine    │
+│  Jul → Git & rancangan produk    │
+│  Agu → Website pertama online    │
+│  Sep → Next.js & API             │
+│  Okt → Database & data           │
+│  Nov → Login & media             │
+│  Des → Kolaborasi tim            │
+│  Jan → 🎯 PRODUK FINAL           │
 │                                  │
 │  ─── ─── ─── ─── ─── ─── ──    │
 │  The Penguin Circle             │
@@ -781,21 +751,19 @@ Gratis. Setiap Jumat sore. Lab Komputer PDBI.
 Januari 2027.
 8 bulan dari sekarang.
 
-Juni: lo gak tau ls.
-Januari: lo bikin aplikasi mobile sendiri.
+Juni: lo mulai dari terminal.
+Januari: lo & tim punya web app sendiri yang online.
 
 Perjalanan 8 segmen:
-CLI → Teks → Admin → Jaringan → Git → AI → Web → Mobile
+Terminal → Git → Web Dasar → Next.js → Database → Auth & Media → Kolaborasi → Produk Final
 
-Dari nol sampe bisa bikin aplikasi.
-Gratis. Setiap Jumat sore. Lab Komputer PDBI.
+Gak ada ujian. Gak ada nilai.
+Cuma praktik, error, dan jadi jago bareng-bareng.
 
 Ini yang ditawarin The Penguin Circle.
-Bukan kelas. Bukan kursus. Tapi lingkaran belajar yang ngubah cara lo liat teknologi.
-
 Link daftar di bio.
 
-#ThePenguinCircle #MobileDev #BelajarAplikasi #8BulanJago #PDBI
+#ThePenguinCircle #ProdukDigital #8BulanJago #BelajarCoding #PDBI
 ```
 
 ---
@@ -808,29 +776,29 @@ Link daftar di bio.
 
 | Time | Visual | Audio / Teks |
 |------|--------|-------------|
-| 0:00 | Montage cepat: neofetch, nano, chmod | "8 bulan lalu, terminal adalah layar item yang menakutkan." |
-| 0:10 | Montage: SSH, git log, curl API | "Sekarang? Terminal adalah senjata utama lo." |
-| 0:20 | Montage: AI generate script, web dev, Vercel deploy | "Lo bisa bikin website dalem 5 menit." |
-| 0:30 | Montage: Flutter / React Native | "Lo bisa bikin aplikasi mobile." |
-| 0:40 | Potongan peserta praktik di Lab | "Dan lo gak sendiri. Ada lingkaran yang nemenin." |
+| 0:00 | Montage: terminal, ls, mkdir | "8 bulan lalu, terminal adalah layar yang menakutkan." |
+| 0:10 | Montage: AI Agent nulis file, VS Code | "Sekarang? Lo bisa ngatur AI untuk bikin website." |
+| 0:20 | Montage: Vercel deploy, URL online | "Lo punya website yang hidup di internet." |
+| 0:30 | Montage: Supabase, Cloudinary | "Data jalan, gambar jalan, login jalan." |
+| 0:40 | Montage: tim kolaborasi di lab | "Dan lo gak sendiri. Ada lingkaran yang nemenin." |
 | 0:50 | Logo + CTA + link | "The Penguin Circle. Dari 0. Untuk semua." |
 
 **Copy caption:**
 ```
 8 bulan.
 
-Juni: Lo belajar ls, cd, mkdir.
-Januari: Lo bikin aplikasi mobile.
+Juni: Lo belajar terminal.
+Januari: Lo & tim punya web app sendiri.
 
 Antara Juni dan Januari ada 8 segmen:
-CLI → Teks → Admin → Jaringan → Git → AI → Web → Mobile
+Terminal → Git → Web Dasar → Next.js → Database → Auth & Media → Kolaborasi → Produk Final
 
 Gak ada ujian. Gak ada nilai. Cuma praktik, error, dan jadi jago bareng-bareng.
 
 The Penguin Circle.
 Gratis. Setiap Jumat sore. Lab Komputer PDBI.
 
-Yang udah daftar, siapin laptop + WSL.
+Yang udah daftar, siapin laptop + WSL + VS Code.
 Yang belum, link daftar di bio.
 
 #ThePenguinCircle #8BulanJago #BelajarCoding #DariNol #PDBI
@@ -842,14 +810,14 @@ Yang belum, link daftar di bio.
 
 | Bulan | Segmen | Poster (Minggu 1) | Video (Minggu 3) |
 |-------|--------|-------------------|-------------------|
-| Juni 2026 | 1 | 5 Command Wajib CLI | 1 Menit Bikin Folder |
-| Juli 2026 | 2 | Shortcut nano | 3 Cara Baca File |
-| Agustus 2026 | 3 | Permission Cheat Sheet | Cek Spek Laptop |
-| September 2026 | 4 | Network Diagnostic | SSH 1 Menit |
-| Oktober 2026 | 5 | Git 4 Langkah | Git Nyelametin Project |
-| November 2026 | 6 | Prompt Engineering | Bikin Script Pake AI |
-| Desember 2026 | 7 | Web Dev Pipeline | Bikin Website 5 Menit |
-| Januari 2027 | 8 | Jadi Mobile Developer | Montase 8 Bulan |
+| Juni 2026 | 1 | 5 Command Wajib Terminal | 1 Menit Bikin Folder |
+| Juli 2026 | 2 | Ide ke Blueprint (AI + Git) | Git 4 Langkah |
+| Agustus 2026 | 3 | Blueprint ke Website | Bikin Website 5 Menit |
+| September 2026 | 4 | Next.js & API | Apa Itu API |
+| Oktober 2026 | 5 | Supabase Database | Hubungin ke Database |
+| November 2026 | 6 | Fitur Pro (Auth & Media) | Debug Pakai AI |
+| Desember 2026 | 7 | Kerja Tim Rapi | Dua Orang Satu Project |
+| Januari 2027 | 8 | Produk Final | Montase 8 Bulan |
 
 **Upload day:** Setiap **Senin** minggu 1 (poster) & minggu 3 (video).
 
@@ -906,15 +874,15 @@ Link daftar di bio.
 
 | Segmen | Hashtag |
 |--------|---------|
-| S1 — CLI | #BelajarCLI #TerminalLinux #LinuxCommands |
-| S2 — Teks | #NanoTextEditor #ManipulasiTeks |
-| S3 — Admin | #SystemAdmin #LinuxPermission |
-| S4 — Jaringan | #JaringanKomputer #SSH #RemoteServer |
-| S5 — Git | #Git #VersionControl #BelajarGit |
-| S6 — AI | #AI #PromptEngineering #AITerminal #Opencode |
-| S7 — Web | #WebDev #BelajarWebsite #HTMLCSS #Deploy |
-| S8 — Mobile | #MobileDev #BelajarAplikasi |
-| General | #BelajarLinux #BelajarCoding #DariNol #MahasiswaIndonesia |
+| S1 — Terminal | #BelajarCLI #TerminalLinux #LinuxCommands |
+| S2 — Git & Rancangan | #Git #VersionControl #PromptEngineering #AI |
+| S3 — Web Dasar | #WebDev #BelajarWebsite #HTMLCSS #DeployVercel |
+| S4 — Next.js | #NextJS #React #WebDev #API |
+| S5 — Database | #Supabase #Database #Backend #WebDev |
+| S6 — Full-stack | #FullStack #Cloudinary #Auth #Debugging |
+| S7 — Kolaborasi | #Git #Kolaborasi #Teamwork #WebDev |
+| S8 — Produk Final | #ProdukDigital #8BulanJago |
+| General | #BelajarCoding #DariNol #MahasiswaIndonesia |
 
 ### Aturan
 
@@ -952,13 +920,26 @@ Link daftar di bio.
 | DaVinci Resolve | Edit pro (PC) | ✅ |
 | ffmpeg | Edit dari terminal | ✅ |
 
+### Teknologi yang Dipakai Circle
+
+| Teknologi | Fungsi | Gratis? |
+|-----------|--------|---------|
+| WSL Ubuntu | Terminal & lingkungan kerja | ✅ |
+| VS Code | Editor & inspeksi hasil AI | ✅ |
+| AI Agent (opencode / claude) | Menulis & men-debug file | ✅ (pilih yang gratis) |
+| Git & GitHub | Version control & kolaborasi | ✅ |
+| Next.js | Framework web | ✅ (open source) |
+| Vercel | Deploy frontend | ✅ (free tier) |
+| Supabase | Database + API + Auth | ✅ (free tier) |
+| Cloudinary | Media & gambar | ✅ (free tier) |
+
 ### Command Bikin Poster dari Terminal (ImageMagick)
 
 ```bash
 # Poster 1080x1080 dengan teks
 convert -size 1080x1080 xc:'#0a0a0a' \
   -font JetBrains-Mono-Bold -pointsize 36 \
-  -fill '#00ff41' -annotate +60+80 "5 COMMAND WAJIB CLI" \
+  -fill '#00ff41' -annotate +60+80 "5 COMMAND WAJIB TERMINAL" \
   -font JetBrains-Mono-Regular -pointsize 24 \
   -fill '#e6f7ec' -annotate +60+160 "pwd — Gua dimana?" \
   poster-s1.png
@@ -1000,5 +981,5 @@ Tujuan buffer: menjaga engagement tanpa beban bikin konten baru tiap minggu.
 
 ---
 
-> **Maintainer:** Divisi Kemahasiswaan PDBI 2026/2027
-> **Last updated:** Mei 2026
+> **Maintainer:** Divisi Kemahasiswaan, Himpunan Mahasiswa TRM (HIMATRA)
+> **Last updated:** September 2026

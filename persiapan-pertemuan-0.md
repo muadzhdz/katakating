@@ -8,12 +8,13 @@
 ## Daftar Isi
 
 1. [Instalasi WSL Ubuntu](#1-instalasi-wsl-ubuntu)
-2. [Bikin Akun GitHub](#2-bikin-akun-github)
-3. [Bikin YouTube Channel](#3-bikin-youtube-channel)
+2. [Instalasi VS Code](#2-instalasi-vs-code)
+3. [Bikin Akun GitHub](#3-bikin-akun-github)
 4. [Install Tools Awal](#4-install-tools-awal)
 5. [Setup Git + SSH Key](#5-setup-git--ssh-key)
-6. [Clone Repo Organisasi](#6-clone-repo-organisasi)
-7. [Ceklist Final Sebelum Datang](#7-ceklist-final-sebelum-datang)
+6. [Install AI Agent](#6-install-ai-agent)
+7. [Clone Repo Organisasi](#7-clone-repo-organisasi)
+8. [Ceklist Final Sebelum Datang](#8-ceklist-final-sebelum-datang)
 
 ---
 
@@ -103,13 +104,43 @@ PC Lab pake Linux langsung — **gak perlu WSL**. Tinggal boot, login, buka term
 
 ---
 
-## 2. Bikin Akun GitHub
+## 2. Instalasi VS Code
 
 ### Kenapa?
 
-- **Menyimpan portofolio** project CLI, script, dan web yang bakal lo buat
-- **Kolaborasi** — ngirim tugas, ikut project bareng
-- **Wajib** buat Segmen 5 (Git & Version Control) dan Segmen 7 (Web Dev)
+- **VS Code** adalah tempat lo melihat & mengelola hasil kerja (file markdown & kode)
+- AI Agent menulis file di terminal, lo buka & koreksi di VS Code
+- Ini jadi "editor utama" The Penguin Circle (bukan nano/editor terminal)
+
+### Step-by-step (5 menit)
+
+1. Buka https://code.visualstudio.com
+2. Klik **Download for Windows** (atau untuk Mac/Linux sesuai OS lo)
+3. Jalankan installer, ikuti default (centang "Add to PATH" bila muncul)
+4. Buka VS Code, lalu install ekstensi penting:
+
+| Ekstensi | Fungsi |
+|----------|--------|
+| **WSL** (Microsoft) | Bisa buka folder Linux WSL langsung dari VS Code |
+| **Live Server** (Ritwick Dey) | Preview HTML langsung di browser |
+| **Prettier** | Merapikan format kode otomatis |
+| **Tailwind CSS IntelliSense** | Bantuan penulisan Tailwind (Segmen 4+) |
+
+### Verifikasi
+
+1. Buka WSL Ubuntu → ketik `code .` 
+2. VS Code harus terbuka dari terminal WSL
+3. Kalo belum, buka VS Code → Ctrl+Shift+P → "WSL: Connect to WSL"
+
+---
+
+## 3. Bikin Akun GitHub
+
+### Kenapa?
+
+- **Menyimpan portofolio** project web yang lo buat
+- **Kolaborasi** — ngirim tugas, kerja tim (Segmen 7-8)
+- **Wajib** buat Segmen 2 (Git & Perancangan Produk) dan seterusnya
 
 ### Step-by-step (5 menit)
 
@@ -128,31 +159,6 @@ Setelah selesai, catet username GitHub lo. Nanti dipake buat clone repo dan push
 
 ---
 
-## 3. Bikin YouTube Channel
-
-### Kenapa?
-
-- Tempat upload **video tugas** tiap akhir segmen
-- Mode **Unlisted** — cuma orang yang punya link yang bisa nonton
-- Gratis, pake Google Account yang sama
-
-### Step-by-step (3 menit)
-
-1. Buka https://youtube.com
-2. Klik logo profil pojok kanan atas → **Create a channel**
-3. Pilih **"Get started"**
-4. Isi nama channel:
-   ```
-   Nama: Ahmad Fauzi     ← pakai nama asli aja
-   ```
-5. Klik **Create channel**
-
-### Selesai! ✅
-
-Channel lo udah jadi. Gak perlu upload apa-apa dulu — nanti pas akhir segmen baru upload video tugas.
-
----
-
 ## 4. Install Tools Awal
 
 Tools ini bakal dipake mulai dari Session 0 dan Segmen 1.
@@ -168,17 +174,31 @@ Penjelasan tiap tools:
 
 | Tools | Fungsi | Dipake di Segmen |
 |-------|--------|-----------------|
-| `htop` | Task Manager di terminal | Segmen 3 |
+| `htop` | Task Manager di terminal | Sepanjang sesi (opsional) |
 | `tree` | Liat struktur folder secara visual | Segmen 1 |
 | `neofetch` | Info sistem keren (pake di Session 0) | Session 0 |
-| `git` | Version control (WAJIB) | Segmen 5 |
-| `curl` | Download & API | Segmen 3 & 4 |
-| `wget` | Download file | Segmen 3 & 4 |
+| `git` | Version control (WAJIB) | Segmen 2+ |
+| `curl` | Download & API | Sambil jalan (opsional) |
+| `wget` | Download file | Sambil jalan (opsional) |
+
+### Node.js & npm (WAJIB untuk Segmen 4+)
+
+```bash
+sudo apt install -y nodejs npm
+```
+
+> **Note:** Versi bawaan Ubuntu kadang lawas. Cara paling mudah mengupdate Node.js:
+> ```bash
+> # Install Node.js LTS via NodeSource
+> curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+> sudo apt install -y nodejs
+> ```
+> Verifikasi: `node -v` dan `npm -v`
 
 ### Di MacOS
 
 ```bash
-brew install htop tree neofetch git curl wget
+brew install htop tree neofetch git curl wget node
 ```
 
 ### Di PC Lab
@@ -243,7 +263,32 @@ Hi ahmadfauzi! You've successfully authenticated...
 
 ---
 
-## 6. Clone Repo Organisasi
+## 6. Install AI Agent
+
+> AI Agent adalah "kru kerja" lo sepanjang The Penguin Circle. Dia menulis file
+> (dokumen & kode) atas perintah lo. Lo yang mengarahkan, dia yang mengeksekusi.
+> Kalau belum bisa install, jangan khawatir — kita bantu bareng di Session 0.
+
+### Pilihan AI Agent
+
+| AI Agent | Cara Install | Catatan |
+|----------|--------------|---------|
+| **opencode** | `curl -fsSL https://opencode.ai/install.sh | sh` | Rekomendasi, gratis, jalan di terminal |
+| **Claude Code** (Anthropic) | `npm install -g @anthropic-ai/claude-code` | Perlu akun, ada batasan gratis |
+| **Gemini CLI** (Google) | `npm install -g @google/gemini-cli` | Perlu API key |
+
+### Verifikasi
+
+```bash
+# Contoh untuk opencode
+opencode
+```
+
+Jika muncul helo/antarmuka percakapan di terminal — berhasil.
+
+---
+
+## 7. Clone Repo Organisasi
 
 Repo organisasi berisi bahan belajar, template, dan kurikulum. Clone biar bisa diakses offline.
 
@@ -277,7 +322,7 @@ di dalam folder masing-masing.
 
 ---
 
-## 7. Ceklist Final Sebelum Datang
+## 8. Ceklist Final Sebelum Datang
 
 > Centang semua sebelum berangkat ke Lab:
 
@@ -287,17 +332,28 @@ di dalam folder masing-masing.
 - [ ] WSL Ubuntu sudah terinstall dan bisa dibuka
 - [ ] `sudo apt update && sudo apt upgrade` sudah jalan
 
+### VS Code
+
+- [ ] VS Code sudah terinstall
+- [ ] Ekstensi WSL, Live Server, Prettier sudah terpasang
+- [ ] `code .` dari terminal WSL bisa membuka VS Code
+
 ### Akun
 
 - [ ] Akun GitHub sudah jadi — catet username
-- [ ] YouTube Channel sudah jadi
 - [ ] SSH Key sudah ditambahkan ke GitHub
 
 ### Tools
 
 - [ ] `htop`, `tree`, `neofetch`, `git`, `curl`, `wget` terinstall
+- [ ] Node.js & npm terinstall (`node -v` berjalan)
 - [ ] `git config --global user.name` dan `user.email` sudah diisi
 - [ ] `ssh -T git@github.com` berhasil (tampilin nama lo)
+
+### AI Agent
+
+- [ ] AI Agent sudah terinstall (opencode / claude / gemini)
+- [ ] `opencode` (atau sesuai pilihan) bisa dibuka di terminal
 
 ### Repo
 
@@ -318,11 +374,12 @@ di dalam folder masing-masing.
 | H- | Yang Dilakuin | Estimasi |
 |----|---------------|----------|
 | H-3 | Install WSL + update | 20 menit |
-| H-2 | Bikin GitHub + YouTube + SSH | 15 menit |
-| H-1 | Install tools + clone repo | 10 menit |
-| H-0 | Cek ceklist final | 5 menit |
+| H-2 | Bikin GitHub + SSH + Install VS Code | 20 menit |
+| H-2 | Install Node.js, Git, tools, AI Agent | 15 menit |
+| H-1 | Clone repo + ceklist final | 10 menit |
+| H-0 | Verifikasi di Session 0 | 5 menit |
 
-Total: **~50 menit**. Gak sampe 1 jam, bro.
+Total: **~70 menit**. Gak sampe 1,5 jam, bro.
 
 ---
 
@@ -348,6 +405,20 @@ wsl --set-default-version 2
 2. Cek kunci publik udah di-paste dengan bener di GitHub Settings
 3. Coba lagi: `ssh -T git@github.com`
 
+### VS Code tidak membuka folder WSL
+
+1. Pastikan ekstensi **WSL** terinstall di VS Code (versi Windows)
+2. Buka VS Code → klik logo hijau pojok kiri bawah → "Connect to WSL"
+3. Baru buka folder (File → Open Folder) di dalam WSL
+
+### Node.js versi terlalu lama
+
+```bash
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt install -y nodejs
+node -v
+```
+
 ### Lupa password WSL
 
 Di PowerShell Admin:
@@ -356,6 +427,12 @@ wsl --unregister Ubuntu
 wsl --install
 ```
 Ini ngulangin instalasi dari awal — semua data di WSL akan ilang.
+
+### AI Agent tidak bisa diinstall
+
+- Pastikan `curl` terinstall: `sudo apt install curl -y`
+- Pastikan koneksi internet stabil (kadang butuh proxy/VPN)
+- Tanya admin di grup WA — kita bantu bareng di Session 0
 
 ### Ada error lain?
 

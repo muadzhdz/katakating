@@ -93,7 +93,7 @@ def s2():
     misi = Text.from_markup(
         "[bold #00ff41]3 Misi[/]\n\n"
         "[bold white]1.[/] The Penguin Circle\n"
-        "  Forum CLI/Git/AI coding gratis dari 0\n"
+        "  Forum web dev/Git/AI coding gratis dari 0\n"
         "  [dim]8 segmen \u00b7 32 pertemuan \u00b7 8 project[/]\n\n"
         "[bold white]2.[/] Multimedia Survival Kit\n"
         "  Konten digital edukatif kolaborasi Kominfo\n"
@@ -156,17 +156,19 @@ def s4():
 def s5():
     left = Text.from_markup(
         "[bold #00ff41]Definisi[/]\n\n"
-        "Forum belajar CLI Linux, Git, Jaringan,\n"
+        "Forum belajar web development, Git,\n"
         "dan AI coding GRATIS untuk mahasiswa PDBI.\n"
+        "Dari ide \u2192 rancangan \u2192 produk digital \n"
+        "(frontend, database, auth, deploy).\n"
         "Dari 0 \u2014 tidak perlu basic coding.\n"
         "Tidak ada biaya. Tidak ada ikatan.\n\n"
         "[bold #00ff41]Metode 3+1[/]\n\n"
-        "[bold white]3 Minggu:[/] PPT \u2192 Demo \u2192 Praktik\n"
+        "[bold white]3 Minggu:[/] Konsep \u2192 Demo AI Agent \u2192 Praktik\n"
         "[bold white]1 Minggu:[/] Video Submission\n\n"
         "[bold #00ff41]Logistik[/]\n\n"
         "Jumat, 15:30-17:30 WIB\n"
         "Lab Komputer PDBI\n"
-        "Laptop + WSL (wajib)\n"
+        "Laptop + WSL + VS Code (wajib)\n"
         "PC Lab (opsi)  GRATIS"
     )
     t = Table(expand=True, box=box.SIMPLE, border_style="#00ff41")
@@ -175,14 +177,14 @@ def s5():
     t.add_column("Topik", style="bold white")
     t.add_column("Project", style="dim white")
     for r in [
-        ("S1", "Jun", "CLI Navigasi & File", "Merapikan folder"),
-        ("S2", "Jul", "Editor & Teks", "Catatan kuliah"),
-        ("S3", "Agu", "System Admin", "Toolkit server"),
-        ("S4", "Sep", "Jaringan & Remote", "Network diagnostic"),
-        ("S5", "Okt", "Git & Version Control", "Repo GitHub"),
-        ("S6", "Nov", "AI CLI & Prompt", "Script otomatis"),
-        ("S7", "Des", "Web Dev & Deploy", "Website online"),
-        ("S8", "Jan", "Mobile Dev", "Aplikasi mobile"),
+        ("S1", "Jun", "Navigasi & File", "Merapikan folder"),
+        ("S2", "Jul", "Git & Rancangan Produk", "Blueprint produk"),
+        ("S3", "Agu", "Web Dasar & Deploy", "Landing page online"),
+        ("S4", "Sep", "Next.js & API", "API pertama"),
+        ("S5", "Okt", "Backend & Database", "Data-driven web"),
+        ("S6", "Nov", "Auth, Media & Polish", "Full-stack individual"),
+        ("S7", "Des", "Kolaborasi Tim (Sprint 1)", "Working prototype"),
+        ("S8", "Jan", "Produk Final & Penutup", "Deploy + warisan digital"),
     ]:
         t.add_row(*r)
     
@@ -200,26 +202,26 @@ def s6():
     wt.add_column("S", style="bold #00ff41")
     wt.add_column("Cheatsheet (Wajib)", style="bold white")
     for r in [
-        ("S1", "5 Command Wajib CLI"),
-        ("S2", "Shortcut nano & Baca File"),
-        ("S3", "Permission & System Tools"),
-        ("S4", "Network Diagnostic"),
-        ("S5", "Git dalam 4 Langkah"),
-        ("S6", "Prompt Engineering 101"),
-        ("S7", "Web Dev Pipeline"),
-        ("S8", "Recap 8 Segmen"),
+        ("S1", "5 Command Wajib Terminal"),
+        ("S2", "Git 4 Langkah + Rancang Produk"),
+        ("S3", "Bikin Website 5 Menit"),
+        ("S4", "Apa Itu API"),
+        ("S5", "Hubungin ke Database"),
+        ("S6", "Debug Pakai AI"),
+        ("S7", "Kerja Tim Rapi (Branch + PR)"),
+        ("S8", "Recap 8 Bulan"),
     ]:
         wt.add_row(*r)
 
     right_text = Text.from_markup(
         "[bold #00ff41]8 Opsional (Video Tutorial)[/]\n\n"
         "[bold white]S1[/] 1 Menit Bikin Folder\n"
-        "[bold white]S2[/] 3 Cara Baca File\n"
-        "[bold white]S3[/] Cek Spek Laptop\n"
-        "[bold white]S4[/] SSH dalam 1 Menit\n"
-        "[bold white]S5[/] Git Nyelametin Project\n"
-        "[bold white]S6[/] Bikin Script 10 Detik\n"
-        "[bold white]S7[/] Bikin Website 5 Menit\n"
+        "[bold white]S2[/] Git Nyelametin Project\n"
+        "[bold white]S3[/] Ide ke Website Online\n"
+        "[bold white]S4[/] Waiter API di Restoran\n"
+        "[bold white]S5[/] Frontend Punya Otak\n"
+        "[bold white]S6[/] Gak Takut Error Lagi\n"
+        "[bold white]S7[/] Dua Orang Satu Project\n"
         "[bold white]S8[/] Montase 8 Bulan\n\n"
         "[bold #00ff41]Pembagian Tugas[/]\n\n"
         "[bold white]Kemahasiswaan:[/] Materi teknis, draft konten\n"
@@ -259,14 +261,14 @@ def s8():
     t.add_column("Turunan", style="dim white")
     for r in [
         ("Mei",  "Persiapan: kurikulum, slides", "Briefing Kominfo",    "Admin himpunan"),
-        ("Jun",  "S1 - CLI Navigasi & File",     "Cheatsheet + video",  "-"),
-        ("Jul",  "S2 - Editor & Teks",           "Cheatsheet + video",  "17-an (persiapan)"),
-        ("Agu",  "S3 - System Admin",            "Cheatsheet + video",  "OMM + 17-an"),
-        ("Sep",  "S4 - Jaringan & Remote",       "Cheatsheet + video",  "OMM lanjutan"),
-        ("Okt",  "S5 - Git & Version Control",   "Cheatsheet + video",  "Makrab"),
-        ("Nov",  "S6 - AI CLI & Prompt",         "Cheatsheet + video",  "Por persiapan"),
-        ("Des",  "S7 - Web Dev & Deploy",        "Cheatsheet + video",  "Por"),
-        ("Jan",  "S8 - Mobile Dev & Final",      "Cheatsheet + video",  "-"),
+        ("Jun",  "S1 - Navigasi & File",         "Cheatsheet + video",  "-"),
+        ("Jul",  "S2 - Git & Rancangan Produk",  "Cheatsheet + video",  "17-an (persiapan)"),
+        ("Agu",  "S3 - Web Dasar & Deploy",      "Cheatsheet + video",  "OMM + 17-an"),
+        ("Sep",  "S4 - Next.js & API",           "Cheatsheet + video",  "OMM lanjutan"),
+        ("Okt",  "S5 - Backend & Database",      "Cheatsheet + video",  "Makrab"),
+        ("Nov",  "S6 - Auth, Media & Polish",    "Cheatsheet + video",  "Por persiapan"),
+        ("Des",  "S7 - Kolaborasi Tim (SPR1)",   "Cheatsheet + video",  "Por"),
+        ("Jan",  "S8 - Produk Final (SPR2)",     "Cheatsheet + video",  "-"),
         ("Feb",  "Buffer: workshop lanjutan",    "Repost konten",       "-"),
         ("Mar",  "Buffer: review portofolio",    "-",                    "-"),
         ("Apr",  "Dokumentasi & regenerasi",     "Evaluasi konten",     "Evaluasi akhir"),

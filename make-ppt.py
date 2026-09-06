@@ -305,7 +305,7 @@ d5.text((1370, yy+42), "Di segmen 4 nanti baru upload tugas.", font=fn(FR, 16), 
 # SLIDE 6 — TOOLS + GIT/SSH + CLONE
 ##############################################################
 i6, d6 = sl()
-hd(d6, "Langkah 4-6: Tools, Git/SSH, Clone Repo", 6, "Tiga langkah terakhir biar siap coding.")
+hd(d6, "Langkah 4-6: Tools, Node.js, Git/SSH, Clone Repo", 6, "Tiga langkah terakhir biar siap coding.")
 
 # Tools — left
 d6.text((100, 200), "Install Tools", font=fn(FB, 26), fill=GREEN)
@@ -313,13 +313,13 @@ cmd(d6, 120, 250, ["sudo apt update", "sudo apt install -y htop tree neofetch gi
 d6.text((120, 360), "MacOS: brew install ...", font=fn(FR, 15), fill=DIM)
 
 # Tool badges
-tools = ["htop", "tree", "neofetch", "git", "curl", "wget"]
+tools = ["git", "nodejs & npm", "tree", "neofetch", "curl", "wget", "htop"]
 ytb = 400
 for i, t in enumerate(tools):
     col, row = i % 2, i // 2
     cd(d6, 120+col*270, ytb+row*60, 250, 50)
     d6.text((245+col*270, ytb+row*60+14), t, font=fn(FM, 18), fill=GREEN, anchor="mm")
-    d6.text((245+col*270, ytb+row*60+34), f"Segmen {['3','1','S0','5','3/4','3/4'][i]}", font=fn(FR, 12), fill=DIM, anchor="mm")
+    d6.text((245+col*270, ytb+row*60+34), f"Segmen {['S2','S4+','S1','S0','S3','S3','ops'][i]}", font=fn(FR, 12), fill=DIM, anchor="mm")
 
 # Divider
 d6.rectangle([680, 180, 682, 900], fill=C2)
@@ -530,14 +530,14 @@ i11, d11 = sl()
 hd(d11, "Timeline 12 Bulan", 11, "8 Segmen Aktif (Juni 2026 — Jan 2027) + 3 Buffer (Feb — Apr 2027)")
 
 segments = [
-    ("JUN", "SEG-1", "CLI Navigasi & File"),
-    ("JUL", "SEG-2", "Editor & Teks"),
-    ("AGU", "SEG-3", "System Admin"),
-    ("SEP", "SEG-4", "Jaringan & Remote"),
-    ("OKT", "SEG-5", "Git & Version Control"),
-    ("NOV", "SEG-6", "AI CLI & Prompt"),
-    ("DES", "SEG-7", "Web Dev & Deploy"),
-    ("JAN", "SEG-8", "Mobile Dev + Final"),
+    ("JUN", "SEG-1", "Navigasi & File"),
+    ("JUL", "SEG-2", "Git & Rancangan"),
+    ("AGU", "SEG-3", "Web Dasar & Deploy"),
+    ("SEP", "SEG-4", "Next.js & API"),
+    ("OKT", "SEG-5", "Backend & Database"),
+    ("NOV", "SEG-6", "Auth & Media"),
+    ("DES", "SEG-7", "Tim Sprint 1"),
+    ("JAN", "SEG-8", "Produk Final"),
 ]
 
 for i, (month, seg, topic) in enumerate(segments):
