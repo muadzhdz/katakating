@@ -136,3 +136,74 @@ document.addEventListener('DOMContentLoaded', () => {
   initSearchFilter();
   initTheme();
 });
+
+// ── Shared Lightweight Markdown Parser ──
+function parseSimpleMarkdown(md) {
+  if (!md) return '';
+  let clean = md.replace(/^---[\s\S]*?---/, '').trim();
+  const esc = str => str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+  const codeBlocks = [];
+  clean = clean.replace(/```([a-zA-Z0-9_-]*)\n([\s\S]*?)```/g, (match, lang, code) => {
+    const idx = codeBlocks.length;
+    const language = lang || 'text';
+    codeBlocks.push(`
+      <div class="code-container">
+        <div class="code-header">
+          <span class="code-lang">${esc(language)}</span>
+          <button class="copy-btn" aria-label="Salin kode">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            Salin
+          </button>
+        </div>
+        <pre class="code-body"><code>${esc(code.trim())}</code></pre>
+      </div>
+    `);
+    return `__CODE_BLOCK_${idx}__`;
+  });
+
+  clean = clean.replace(/^>\s*(.*$)/gim, '<blockquote style="border-left: 3px solid var(--accent); padding: 8px 14px; background: var(--surface-hover); margin: 12px 0; border-radius: 0 4px 4px 0; color: var(--fg); font-size: 0.9em;">$1</blockquote>');
+  clean = clean.replace(/`([^`]+)`/g, (m, c) => `<code style="font-family:'JetBrains Mono',monospace;font-size:0.85em;background:var(--surface);border:1px solid var(--border);padding:2px 5px;border-radius:4px;color:var(--accent);">${esc(c)}</code>`);
+
+  clean = clean.replace(/^### (.*$)/gim, '<h3 style="font-size: 1.1rem; font-weight: 600; color: var(--primary); margin: 20px 0 8px;">$1</h3>');
+  clean = clean.replace(/^## (.*$)/gim, '<h2 style="font-size: 1.35rem; font-weight: 700; color: var(--primary); margin: 28px 0 12px; border-bottom: 1px solid var(--border); padding-bottom: 6px;">$1</h2>');
+  clean = clean.replace(/^# (.*$)/gim, '<h1 style="font-size: 1.6rem; font-weight: 700; color: var(--primary); margin: 24px 0 12px;">$1</h1>');
+
+  clean = clean.replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>');
+  clean = clean.replace(/\*(.*?)\*/gim, '<em>$1</em>');
+
+  clean = clean.replace(/^\s*\d+\.\s+(.*$)/gim, '<li style="margin-left: 20px; list-style-type: decimal; margin-bottom: 4px;">$1</li>');
+  clean = clean.replace(/^\s*[\-\*]\s+(.*$)/gim, '<li style="margin-left: 20px; list-style-type: disc; margin-bottom: 4px;">$1</li>');
+
+  clean = clean.replace(/\|(.+)\|/g, (match) => {
+    const cells = match.split('|').slice(1, -1).map(c => c.trim());
+    if (cells.every(c => /^:?-+:?$/.test(c))) {
+      return '__TABLE_DIVIDER__';
+    }
+    return `<tr>${cells.map(c => `<td style="padding: 6px 12px; border: 1px solid var(--border);">${c}</td>`).join('')}</tr>`;
+  });
+  clean = clean.replace(/(<tr>[\s\S]*?<\/tr>(\s*__TABLE_DIVIDER__\s*<tr>[\s\S]*?<\/tr>)+)/g, (match) => {
+    const rows = match.replace(/__TABLE_DIVIDER__/g, '').trim();
+    return `<table style="width:100%; border-collapse: collapse; margin: 16px 0; font-size: 0.85em;">${rows}</table>`;
+  });
+  clean = clean.replace(/__TABLE_DIVIDER__/g, '');
+
+  clean = clean.split('\n\n').map(chunk => {
+    chunk = chunk.trim();
+    if (!chunk) return '';
+    if (chunk.startsWith('<h') || chunk.startsWith('<li') || chunk.startsWith('<table') || chunk.startsWith('<block') || chunk.startsWith('__CODE_BLOCK_')) {
+      return chunk;
+    }
+    return `<p style="margin-bottom: 12px; line-height: 1.65; color: var(--fg); font-size: 0.95rem;">${chunk.replace(/\n/g, '<br>')}</p>`;
+  }).join('\n\n');
+
+  codeBlocks.forEach((block, i) => {
+    clean = clean.replace(`__CODE_BLOCK_${i}__`, block);
+  });
+
+  return clean;
+}
+
