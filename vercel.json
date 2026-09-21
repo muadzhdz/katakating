@@ -24,8 +24,13 @@
   "redirects": [
     {
       "source": "/daftar",
-      "destination": "https://docs.google.com/forms/d/e/1FAIpQLSczFE4zfWlSkgrQ0I0LjyKn7JUDAOoW4XguA66p0ZJ9Q7Rgxg/viewform?usp=header",
-      "permanent": true
+      "destination": "/#tips-catalog",
+      "permanent": false
+    },
+    {
+      "source": "/wa",
+      "destination": "https://whatsapp.com/channel/",
+      "permanent": false
     }
   ]
 }
