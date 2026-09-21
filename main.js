@@ -1,6 +1,6 @@
 /* ══════════════════════════════════════════════════════════════════
-   THE PENGUIN CIRCLE — LIGHTWEIGHT MINIMAL CLIENT
-   Search, Category Filtering, Copy Snippet, & Theme Manager
+   THE PENGUIN CIRCLE — TECH JOURNAL CLIENT
+   Search, Category Filtering, Code Copy (No Overlap), Theme Manager
    ══════════════════════════════════════════════════════════════════ */
 
 // ── Toast Notification ──
@@ -15,31 +15,36 @@ function showToast(msg) {
   toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
 }
 
-// ── 1-Click Code Copy ──
+// ── 1-Click Code Copy (Supports .code-container and .code-header) ──
 function initCopy() {
   document.addEventListener('click', (e) => {
     const btn = e.target.closest('.copy-btn');
     if (!btn) return;
-    const codeEl = btn.closest('.code-box')?.querySelector('code');
+    
+    // Find code element inside .code-container or .code-box
+    const container = btn.closest('.code-container') || btn.closest('.code-box');
+    const codeEl = container ? container.querySelector('code') : null;
     if (!codeEl) return;
 
     navigator.clipboard.writeText(codeEl.textContent.trim()).then(() => {
       const orig = btn.innerHTML;
-      btn.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Salin`;
+      btn.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Tersalin!`;
       showToast('Perintah disalin ke clipboard');
       setTimeout(() => { btn.innerHTML = orig; }, 1800);
     }).catch(() => {
-      showToast('Gagal menyalin');
+      showToast('Gagal menyalin otomatis');
     });
   });
 }
 
-// ── Live Search & Filter ──
+// ── Live Search & Category Filtering (Index Page) ──
 function initSearchFilter() {
   const input = document.getElementById('search-input');
   const pills = document.querySelectorAll('.filter-pill');
-  const cards = document.querySelectorAll('.card');
+  const cards = document.querySelectorAll('.article-card');
   const empty = document.getElementById('search-empty');
+
+  if (!cards.length) return; // Not on index page
 
   let activeCat = 'all';
   let query = '';

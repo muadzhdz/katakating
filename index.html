@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="The Penguin Circle — Knowledge Hub & Template Laporan 4-4-3-3 Mahasiswa TRM Universitas Boash. Dikelola oleh Divisi Kemahasiswaan HIMATRA.">
+  <meta name="description" content="The Penguin Circle (TPC) — Portal Jurnal & Panduan Praktikum Mahasiswa TRM Universitas Boash. Template Laporan 4-4-3-3, Jaringan, Web, Basis Data, Algoritma, IoT, dan Multimedia.">
+  <meta name="keywords" content="The Penguin Circle, TRM Boash, HIMATRA, Jurnal Praktikum, Format Laporan 4-4-3-3, Cisco VLAN, Normalisasi Database, Wokwi IoT, MDLC">
+  <meta name="author" content="Divisi Kemahasiswaan HIMATRA">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://the-penguin-circle.vercel.app/">
   <meta name="theme-color" content="#09090b" media="(prefers-color-scheme: dark)">
@@ -11,14 +13,14 @@
 
   <!-- Open Graph -->
   <meta property="og:title" content="The Penguin Circle | TRM Knowledge Hub">
-  <meta property="og:description" content="Pusat panduan praktikum mandiri, template laporan 4-4-3-3, dan cheat sheet mahasiswa TRM Boash.">
+  <meta property="og:description" content="Pusat jurnal praktikum mandiri, template laporan 4-4-3-3, dan dokumentasi akademik mahasiswa TRM Boash.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://the-penguin-circle.vercel.app/">
   <meta property="og:site_name" content="The Penguin Circle">
 
-  <title>The Penguin Circle — TRM Knowledge Hub</title>
+  <title>The Penguin Circle — TRM Tech Journal & Knowledge Hub</title>
 
-  <!-- Typography: Inter (UI/Reading) + JetBrains Mono (Code/Tags) -->
+  <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -40,7 +42,7 @@
 <!-- NAVBAR -->
 <header class="nav-wrap">
   <div class="nav-container">
-    <a href="#" class="nav-brand">
+    <a href="index.html" class="nav-brand">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="4 17 10 11 4 5"></polyline>
         <line x1="12" y1="19" x2="20" y2="19"></line>
@@ -49,8 +51,9 @@
     </a>
 
     <div class="nav-links">
-      <a href="#katalog" class="nav-item">Panduan</a>
-      <a href="#saluran" class="nav-item">Saluran WA</a>
+      <a href="#katalog" class="nav-item">Semua Jurnal</a>
+      <a href="article.html?id=panduan-kontribusi" class="nav-item">Tulis Artikel</a>
+      <a href="https://chat.whatsapp.com/GzEfQkl53ZUBC9R2JF9CEf" target="_blank" rel="noopener" class="nav-item" style="color: #22c55e;">Saluran WA</a>
       <a href="https://github.com/muadzhdz/the-penguin-circle" target="_blank" rel="noopener" class="icon-btn" aria-label="GitHub Repo">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
@@ -59,14 +62,7 @@
       <button id="theme-toggle" class="icon-btn" aria-label="Toggle Theme">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="5"></circle>
-          <line x1="12" y1="1" x2="12" y2="3"></line>
-          <line x1="12" y1="21" x2="12" y2="23"></line>
-          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-          <line x1="1" y1="12" x2="3" y2="12"></line>
-          <line x1="21" y1="12" x2="23" y2="12"></line>
-          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          <line x1="12" y1="19" x2="12" y2="23"></line>
         </svg>
       </button>
     </div>
@@ -78,208 +74,268 @@
   <!-- HERO -->
   <section class="hero-section">
     <span class="badge">HIMATRA • TRM KNOWLEDGE HUB</span>
-    <h1 class="hero-title">Dokumentasi & Cheat Sheet Praktikum</h1>
+    <h1 class="hero-title">Dokumentasi & Jurnal Praktikum TRM</h1>
     <p class="hero-desc">
-      Template laporan standar 4-4-3-3, command cheat sheet, dan kurasi panduan praktikum mandiri untuk mahasiswa TRM Universitas Boash.
+      Kumpulan artikel teknis, modul praktikum mandiri, dan template dokumen akademik mahasiswa Teknologi Rekayasa Multimedia Universitas Boash. Dibangun dan dikurasi secara terbuka.
     </p>
 
-    <!-- SEARCH & FILTER -->
+    <!-- SEARCH BAR -->
     <div id="katalog" class="search-container">
       <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="11" cy="11" r="8"></circle>
         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
       </svg>
-      <input type="text" id="search-input" class="search-input" placeholder="Cari panduan praktikum (misal: margin, git, wokwi, unity)..." autocomplete="off" spellcheck="false">
+      <input type="text" id="search-input" class="search-input" placeholder="Cari topik (jaringan, web, basis data, algoritma, iot, laporan, unity)..." autocomplete="off" spellcheck="false">
       <span class="search-key">/</span>
     </div>
 
+    <!-- CATEGORY FILTER PILLS -->
     <div class="filter-group">
-      <button class="filter-pill active" data-cat="all">Semua</button>
+      <button class="filter-pill active" data-cat="all">Semua Kategori</button>
+      <button class="filter-pill" data-cat="web">Web & Linux</button>
       <button class="filter-pill" data-cat="laporan">Laporan 4-4-3-3</button>
-      <button class="filter-pill" data-cat="git">Git & GitHub</button>
-      <button class="filter-pill" data-cat="iot">IoT & Wokwi</button>
-      <button class="filter-pill" data-cat="multimedia">Multimedia 3D</button>
-      <button class="filter-pill" data-cat="linux">Linux & WSL</button>
+      <button class="filter-pill" data-cat="jaringan">Jaringan</button>
+      <button class="filter-pill" data-cat="database">Basis Data</button>
+      <button class="filter-pill" data-cat="algoritma">Algoritma</button>
+      <button class="filter-pill" data-cat="iot">IoT & Embedded</button>
+      <button class="filter-pill" data-cat="multimedia">Multimedia & Game</button>
+      <button class="filter-pill" data-cat="metodologi">Metodologi TA</button>
     </div>
 
     <!-- EMPTY STATE -->
-    <div id="search-empty" style="display: none; padding: 32px; text-align: center; border: 1px dashed var(--border); border-radius: 8px; margin-bottom: 24px;">
-      <p style="font-size: 0.85rem; color: var(--fg-muted);">Panduan tidak ditemukan. Tekan Escape untuk reset pencarian.</p>
+    <div id="search-empty" style="display: none; padding: 36px; text-align: center; border: 1px dashed var(--border); border-radius: 8px; margin-bottom: 24px;">
+      <p style="font-size: 0.88rem; color: var(--fg-muted);">Tidak ada artikel yang cocok dengan kata kunci tersebut. Tekan Escape untuk reset pencarian.</p>
     </div>
 
-    <!-- CARDS GRID -->
+    <!-- ARTICLE CARDS GRID (CHRIS TITUS TECH STYLE) -->
     <div class="cards-grid">
 
-      <!-- Card 1 -->
-      <article class="card" data-cat="laporan">
+      <!-- Article 1: WSL2 Ubuntu -->
+      <a href="article.html?id=setup-wsl2-ubuntu-webdev" class="article-card" data-cat="web">
         <div>
-          <span class="card-tag">// DOKUMEN</span>
-          <h2 class="card-title" style="margin: 4px 0 6px;">Format Margin Laporan 4-4-3-3</h2>
-          <p class="card-desc" style="margin-bottom: 12px;">Aturan baku margin Word/LaTeX laporan mingguan & skripsi Boash.</p>
-          <div class="code-box">
-            <button class="copy-btn" aria-label="Salin">Salin</button>
-            <code>Top: 4cm | Left: 4cm (Binding)
-Bottom: 3cm | Right: 3cm
-Font: Times New Roman 12pt, Spasi 1.5</code>
+          <div class="card-meta-top">
+            <span class="card-tag">// WEB & TOOLING</span>
+            <span>6 menit baca</span>
           </div>
+          <h2 class="card-title">Setup Lengkap WSL2 Ubuntu 24.04 untuk Web Development</h2>
+          <p class="card-excerpt">
+            Instalasi dan konfigurasi native Linux kernel di Windows menggunakan WSL2 untuk praktikum web, lengkap dengan NVM, PHP, dan integrasi VS Code.
+          </p>
         </div>
-      </article>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 12px;">
+          <span style="font-size: 0.72rem; color: var(--fg-muted);">Mu'adz Hudzaifah</span>
+          <span class="card-read-more">
+            Baca Panduan
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
+        </div>
+      </a>
 
-      <!-- Card 2 -->
-      <article class="card" data-cat="laporan">
+      <!-- Article 2: Margin 4-4-3-3 -->
+      <a href="article.html?id=format-margin-laporan-4433" class="article-card" data-cat="laporan">
         <div>
-          <span class="card-tag">// DOKUMEN</span>
-          <h2 class="card-title" style="margin: 4px 0 6px;">Scaffolding Modul Praktikum</h2>
-          <p class="card-desc" style="margin-bottom: 12px;">Buat struktur folder modul & template markdown via terminal.</p>
-          <div class="code-box">
-            <button class="copy-btn" aria-label="Salin">Salin</button>
-            <code>mkdir -p modul-{01..05}/{kode,screens} && \
-cat << 'EOF' > README.md
-# Laporan Praktikum TRM Boash
-## Bab 1: Teori | Bab 2: Langkah Kerja
-EOF</code>
+          <div class="card-meta-top">
+            <span class="card-tag">// AKADEMIK & LAPORAN</span>
+            <span>5 menit baca</span>
           </div>
+          <h2 class="card-title">Standar Baku Format Margin Laporan Praktikum & TA (4-4-3-3)</h2>
+          <p class="card-excerpt">
+            Aturan baku margin dokumen skripsi & laporan mingguan Boash (4cm kiri & atas, 3cm kanan & bawah) dan pemisahan nomor romawi via section break.
+          </p>
         </div>
-      </article>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 12px;">
+          <span style="font-size: 0.72rem; color: var(--fg-muted);">Divisi Kemahasiswaan</span>
+          <span class="card-read-more">
+            Baca Panduan
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
+        </div>
+      </a>
 
-      <!-- Card 3 -->
-      <article class="card" data-cat="git">
+      <!-- Article 3: Jaringan Cisco Inter-VLAN -->
+      <a href="article.html?id=jaringan-routing-vlan-cisco" class="article-card" data-cat="jaringan">
         <div>
-          <span class="card-tag">// GIT</span>
-          <h2 class="card-title" style="margin: 4px 0 6px;">Rescue Detached HEAD</h2>
-          <p class="card-desc" style="margin-bottom: 12px;">Simpan commit yang melayang ke branch baru secara aman.</p>
-          <div class="code-box">
-            <button class="copy-btn" aria-label="Salin">Salin</button>
-            <code>git branch temp-save
-git checkout main
-git merge temp-save</code>
+          <div class="card-meta-top">
+            <span class="card-tag">// JARINGAN KOMPUTER</span>
+            <span>7 menit baca</span>
           </div>
+          <h2 class="card-title">Konfigurasi Inter-VLAN Routing & Trunking pada Cisco Packet Tracer</h2>
+          <p class="card-excerpt">
+            Tutorial konfigurasi switch layer-2 dan router on-a-stick 802.1Q untuk memisahkan segmentasi traffic mahasiswa dan dosen di lab praktikum.
+          </p>
         </div>
-      </article>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 12px;">
+          <span style="font-size: 0.72rem; color: var(--fg-muted);">Mu'adz Hudzaifah</span>
+          <span class="card-read-more">
+            Baca Panduan
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
+        </div>
+      </a>
 
-      <!-- Card 4 -->
-      <article class="card" data-cat="git">
+      <!-- Article 4: Basis Data Normalisasi -->
+      <a href="article.html?id=basis-data-relasional-normalisasi" class="article-card" data-cat="database">
         <div>
-          <span class="card-tag">// GIT</span>
-          <h2 class="card-title" style="margin: 4px 0 6px;">Sync & Hindari Conflict</h2>
-          <p class="card-desc" style="margin-bottom: 12px;">Amankan perubahan lokal ke temporary stash sebelum pull upstream.</p>
-          <div class="code-box">
-            <button class="copy-btn" aria-label="Salin">Salin</button>
-            <code>git stash
-git pull --rebase origin main
-git stash pop</code>
+          <div class="card-meta-top">
+            <span class="card-tag">// BASIS DATA</span>
+            <span>6 menit baca</span>
           </div>
+          <h2 class="card-title">Panduan Praktis Normalisasi Basis Data (1NF, 2NF, 3NF)</h2>
+          <p class="card-excerpt">
+            Memahami teknik dekomposisi tabel anomali menjadi bentuk normal bebas redundansi pada studi kasus sistem akademik kampus.
+          </p>
         </div>
-      </article>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 12px;">
+          <span style="font-size: 0.72rem; color: var(--fg-muted);">Divisi Kemahasiswaan</span>
+          <span class="card-read-more">
+            Baca Panduan
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
+        </div>
+      </a>
 
-      <!-- Card 5 -->
-      <article class="card" data-cat="git">
+      <!-- Article 5: Algoritma Stack & Queue -->
+      <a href="article.html?id=algoritma-struktur-data-dasar" class="article-card" data-cat="algoritma">
         <div>
-          <span class="card-tag">// GIT</span>
-          <h2 class="card-title" style="margin: 4px 0 6px;">Conventional Commits</h2>
-          <p class="card-desc" style="margin-bottom: 12px;">Format pesan commit rapi untuk tugas kelompok praktikum.</p>
-          <div class="code-box">
-            <button class="copy-btn" aria-label="Salin">Salin</button>
-            <code>feat: tambah modul login praktikum
-fix: perbaiki routing navigasi
-docs: update laporan bab 3</code>
+          <div class="card-meta-top">
+            <span class="card-tag">// ALGORITMA</span>
+            <span>6 menit baca</span>
           </div>
+          <h2 class="card-title">Implementasi Struktur Data Stack & Queue pada Praktikum Pemrograman</h2>
+          <p class="card-excerpt">
+            Logika LIFO dan FIFO dengan implementasi Python murni serta analisis kompleksitas waktu O(1) untuk tugas praktikum struktur data.
+          </p>
         </div>
-      </article>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 12px;">
+          <span style="font-size: 0.72rem; color: var(--fg-muted);">Mu'adz Hudzaifah</span>
+          <span class="card-read-more">
+            Baca Panduan
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
+        </div>
+      </a>
 
-      <!-- Card 6 -->
-      <article class="card" data-cat="iot">
+      <!-- Article 6: Wokwi ESP32 MQTT -->
+      <a href="article.html?id=wokwi-esp32-mqtt-hivemq" class="article-card" data-cat="iot">
         <div>
-          <span class="card-tag">// IOT</span>
-          <h2 class="card-title" style="margin: 4px 0 6px;">Wokwi ESP32 + MQTT Broker</h2>
-          <p class="card-desc" style="margin-bottom: 12px;">Simulasi IoT virtual di browser tanpa hardware fisik.</p>
-          <div class="code-box">
-            <button class="copy-btn" aria-label="Salin">Salin</button>
-            <code>WiFi.begin("Wokwi-GUEST", "");
-client.setServer("broker.hivemq.com", 1883);
-client.publish("boash/trm/sensor", "{\"val\": 1}");</code>
+          <div class="card-meta-top">
+            <span class="card-tag">// IOT & SENSOR</span>
+            <span>6 menit baca</span>
           </div>
+          <h2 class="card-title">Simulasi Telemetri ESP32 & MQTT HiveMQ di Browser (Zero Hardware)</h2>
+          <p class="card-excerpt">
+            Monitoring sensor suhu virtual DHT22 di simulator online Wokwi dan publikasi data telemetry ke broker publik MQTT tanpa modal alat fisik.
+          </p>
         </div>
-      </article>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 12px;">
+          <span style="font-size: 0.72rem; color: var(--fg-muted);">Mu'adz Hudzaifah</span>
+          <span class="card-read-more">
+            Baca Panduan
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
+        </div>
+      </a>
 
-      <!-- Card 7 -->
-      <article class="card" data-cat="iot">
+      <!-- Article 7: Git Conflict & Detached HEAD -->
+      <a href="article.html?id=git-workflow-conflict-detached-head" class="article-card" data-cat="web">
         <div>
-          <span class="card-tag">// IOT</span>
-          <h2 class="card-title" style="margin: 4px 0 6px;">Pinout Aman ESP32</h2>
-          <p class="card-desc" style="margin-bottom: 12px;">Daftar pin GPIO input/output yang bebas dari strapping issue.</p>
-          <div class="code-box">
-            <button class="copy-btn" aria-label="Salin">Salin</button>
-            <code>Safe IO : GPIO 4, 18, 19, 21, 22, 23
-ADC In  : GPIO 34, 35, 36, 39
-Hindari : GPIO 0, 2, 12, 15 saat booting</code>
+          <div class="card-meta-top">
+            <span class="card-tag">// GIT & DEVOPS</span>
+            <span>5 menit baca</span>
           </div>
+          <h2 class="card-title">Mengatasi Detached HEAD & Merge Conflict pada Git Kolaboratif</h2>
+          <p class="card-excerpt">
+            Troubleshooting commit yang tersangkut di detached HEAD dan cara rebase branch tanpa merusak commit rekan kelompok di repository GitHub.
+          </p>
         </div>
-      </article>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 12px;">
+          <span style="font-size: 0.72rem; color: var(--fg-muted);">Mu'adz Hudzaifah</span>
+          <span class="card-read-more">
+            Baca Panduan
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
+        </div>
+      </a>
 
-      <!-- Card 8 -->
-      <article class="card" data-cat="multimedia">
+      <!-- Article 8: Blender to Unity 3D -->
+      <a href="article.html?id=blender-to-unity-pipeline" class="article-card" data-cat="multimedia">
         <div>
-          <span class="card-tag">// MULTIMEDIA</span>
-          <h2 class="card-title" style="margin: 4px 0 6px;">Blender ke Unity FBX Export</h2>
-          <p class="card-desc" style="margin-bottom: 12px;">Fix rotasi -90 derajat sumbu X dan skala 1.0 pada Unity.</p>
-          <div class="code-box">
-            <button class="copy-btn" aria-label="Salin">Salin</button>
-            <code>Blender FBX Settings:
-Forward: -Z Forward | Up: Y Up
-Check: [x] Apply Transform</code>
+          <div class="card-meta-top">
+            <span class="card-tag">// GAME & MULTIMEDIA</span>
+            <span>5 menit baca</span>
           </div>
+          <h2 class="card-title">Pipeline Export Aset 3D Blender ke Unity 2022 LTS (Fix Axis & Scale)</h2>
+          <p class="card-excerpt">
+            Setting ekspor FBX dari Blender 4.x ke engine Unity agar model tidak miring -90 derajat pada sumbu X dan skala objek proporsional 1:1.
+          </p>
         </div>
-      </article>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 12px;">
+          <span style="font-size: 0.72rem; color: var(--fg-muted);">Divisi Kemahasiswaan</span>
+          <span class="card-read-more">
+            Baca Panduan
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
+        </div>
+      </a>
 
-      <!-- Card 9 -->
-      <article class="card" data-cat="multimedia">
+      <!-- Article 9: MDLC Skripsi -->
+      <a href="article.html?id=metodologi-mdlc-multimedia" class="article-card" data-cat="metodologi">
         <div>
-          <span class="card-tag">// MULTIMEDIA</span>
-          <h2 class="card-title" style="margin: 4px 0 6px;">Metodologi MDLC (Luther-Sutopo)</h2>
-          <p class="card-desc" style="margin-bottom: 12px;">6 tahapan siklus perancangan proyek multimedia dan skripsi.</p>
-          <div class="code-box">
-            <button class="copy-btn" aria-label="Salin">Salin</button>
-            <code>1. Concept    > 2. Design
-3. Material   > 4. Assembly
-5. Testing    > 6. Distribution</code>
+          <div class="card-meta-top">
+            <span class="card-tag">// METODOLOGI PENELITIAN</span>
+            <span>6 menit baca</span>
           </div>
+          <h2 class="card-title">Penerapan Metodologi MDLC (Luther-Sutopo) pada Skripsi Multimedia</h2>
+          <p class="card-excerpt">
+            Panduan 6 tahapan siklus perancangan proyek multimedia (Concept, Design, Material, Assembly, Testing, Distribution) yang diakui penguji sidang.
+          </p>
         </div>
-      </article>
-
-      <!-- Card 10 -->
-      <article class="card" data-cat="linux">
-        <div>
-          <span class="card-tag">// LINUX</span>
-          <h2 class="card-title" style="margin: 4px 0 6px;">WSL2 Ubuntu Setup</h2>
-          <p class="card-desc" style="margin-bottom: 12px;">Pasang environment Linux native di Windows untuk praktikum.</p>
-          <div class="code-box">
-            <button class="copy-btn" aria-label="Salin">Salin</button>
-            <code>wsl --install -d Ubuntu-24.04
-sudo apt update && sudo apt install -y git curl</code>
-          </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 12px;">
+          <span style="font-size: 0.72rem; color: var(--fg-muted);">Divisi Kemahasiswaan</span>
+          <span class="card-read-more">
+            Baca Panduan
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
         </div>
-      </article>
+      </a>
 
     </div>
   </section>
 
-  <!-- WHATSAPP CALLOUT -->
+  <!-- OPEN CONTRIBUTION CALLOUT -->
+  <section style="max-width: 1080px; margin: 0 auto; padding: 16px 20px;">
+    <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 24px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px;">
+      <div>
+        <span class="card-tag" style="margin-bottom: 4px; display: inline-block;">// OPEN FOR CONTRIBUTION</span>
+        <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--primary); margin-bottom: 4px;">
+          Ingin Mempublikasikan Artikel / Jurnal Anda Sendiri?
+        </h3>
+        <p style="font-size: 0.85rem; color: var(--fg-muted); max-width: 680px;">
+          Setiap mahasiswa TRM Boash dapat menyumbangkan panduan praktikum dalam format Markdown via GitHub Pull Request. Wajib berlandaskan pengujian nyata dan referensi valid.
+        </p>
+      </div>
+      <a href="article.html?id=panduan-kontribusi" class="btn btn-secondary">
+        Lihat Syarat & Ketentuan Kontribusi
+      </a>
+    </div>
+  </section>
+
+  <!-- WHATSAPP CALLOUT (REAL LINK INTEGRATED) -->
   <section id="saluran" class="wa-banner">
     <div class="wa-box">
       <div>
         <h3 style="font-size: 1.05rem; font-weight: 600; color: var(--primary); margin-bottom: 4px;">
-          Saluran WhatsApp The Penguin Circle
+          Saluran Komunitas WhatsApp The Penguin Circle
         </h3>
         <p style="font-size: 0.85rem; color: var(--fg-muted);">
-          Broadcast satu arah pembaruan template & info praktikum. Bebas spam chat, nomor HP tersembunyi aman.
+          Kanal rilis resmi pembaruan modul, template praktikum, dan info revisi tugas. Komunikasi satu arah bebas spam obrolan.
         </p>
       </div>
-      <a href="https://whatsapp.com/channel/" target="_blank" rel="noopener" class="btn btn-wa">
+      <a href="https://chat.whatsapp.com/GzEfQkl53ZUBC9R2JF9CEf" target="_blank" rel="noopener" class="btn btn-wa">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
         </svg>
-        Gabung Saluran
+        Gabung WhatsApp
       </a>
     </div>
   </section>
@@ -289,11 +345,12 @@ sudo apt update && sudo apt install -y git curl</code>
 <!-- FOOTER -->
 <footer class="footer">
   <div>
-    <span style="font-weight: 600; color: var(--primary);">The Penguin Circle</span> &bull; Divisi Kemahasiswaan HIMATRA Boash
+    <span style="font-weight: 600; color: var(--primary);">The Penguin Circle</span> &bull; Divisi Kemahasiswaan HIMATRA Universitas Boash
   </div>
   <div style="display: flex; gap: 16px;">
-    <a href="#katalog" style="color: var(--fg-muted);">Katalog</a>
-    <a href="#saluran" style="color: var(--fg-muted);">WhatsApp</a>
+    <a href="index.html" style="color: var(--fg-muted);">Semua Jurnal</a>
+    <a href="article.html?id=panduan-kontribusi" style="color: var(--fg-muted);">Panduan Kontribusi</a>
+    <a href="https://chat.whatsapp.com/GzEfQkl53ZUBC9R2JF9CEf" target="_blank" rel="noopener" style="color: var(--fg-muted);">Saluran WA</a>
     <a href="/sitemap.xml" style="color: var(--fg-muted);">Sitemap</a>
   </div>
 </footer>

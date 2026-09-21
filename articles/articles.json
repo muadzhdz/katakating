@@ -1,0 +1,112 @@
+[
+  {
+    "id": "setup-wsl2-ubuntu-webdev",
+    "title": "Setup Lengkap WSL2 Ubuntu 24.04 untuk Web Development",
+    "category": "Web & Tooling",
+    "author": "Mu'adz Hudzaifah",
+    "date": "2026-09-21",
+    "readTime": "6 menit",
+    "tags": ["linux", "wsl2", "ubuntu", "webdev", "nodejs", "php"],
+    "summary": "Panduan instalasi dan konfigurasi native Linux kernel di Windows menggunakan WSL2 untuk kebutuhan praktikum web, lengkap dengan NVM, PHP, dan VS Code integration.",
+    "file": "setup-wsl2-ubuntu-webdev.md"
+  },
+  {
+    "id": "format-margin-laporan-4433",
+    "title": "Standar Baku Format Margin Laporan Praktikum & TA (4-4-3-3)",
+    "category": "Akademik & Laporan",
+    "author": "Divisi Kemahasiswaan HIMATRA",
+    "date": "2026-09-21",
+    "readTime": "5 menit",
+    "tags": ["akademik", "laporan", "word", "margin", "skripsi", "boash"],
+    "summary": "Panduan tata letak layout dokumen akademik Universitas Boash. Aturan margin 4-4-3-3, pemisahan nomor romawi dengan angka arab via section break, dan struktur baku bab.",
+    "file": "format-margin-laporan-4433.md"
+  },
+  {
+    "id": "jaringan-routing-vlan-cisco",
+    "title": "Konfigurasi Inter-VLAN Routing & Trunking pada Cisco Packet Tracer",
+    "category": "Jaringan Komputer",
+    "author": "Mu'adz Hudzaifah",
+    "date": "2026-09-21",
+    "readTime": "7 menit",
+    "tags": ["jaringan", "cisco", "vlan", "routing", "packet-tracer", "networking"],
+    "summary": "Tutorial konfigurasi jaringan switch layer-2 dan router on-a-stick untuk memisahkan segmentasi traffic mahasiswa dan dosen di lab praktikum.",
+    "file": "jaringan-routing-vlan-cisco.md"
+  },
+  {
+    "id": "basis-data-relasional-normalisasi",
+    "title": "Panduan Praktis Normalisasi Basis Data (1NF, 2NF, 3NF)",
+    "category": "Basis Data",
+    "author": "Divisi Kemahasiswaan HIMATRA",
+    "date": "2026-09-21",
+    "readTime": "6 menit",
+    "tags": ["database", "sql", "normalisasi", "mysql", "basis-data"],
+    "summary": "Memahami teknik dekomposisi tabel anomali menjadi bentuk normal 1NF, 2NF, dan 3NF pada studi kasus sistem akademik kampus.",
+    "file": "basis-data-relasional-normalisasi.md"
+  },
+  {
+    "id": "algoritma-struktur-data-dasar",
+    "title": "Implementasi Struktur Data Stack & Queue pada Praktikum Pemrograman",
+    "category": "Algoritma & Pemrograman",
+    "author": "Mu'adz Hudzaifah",
+    "date": "2026-09-21",
+    "readTime": "6 menit",
+    "tags": ["algoritma", "struktur-data", "python", "stack", "queue"],
+    "summary": "Memahami logika LIFO (Last In First Out) dan FIFO (First In First Out) dengan implementasi Python murni serta analisis kompleksitas waktu O(1).",
+    "file": "algoritma-struktur-data-dasar.md"
+  },
+  {
+    "id": "wokwi-esp32-mqtt-hivemq",
+    "title": "Simulasi Telemetri ESP32 & MQTT HiveMQ di Browser (Tanpa Alat Fisik)",
+    "category": "IoT & Embedded",
+    "author": "Mu'adz Hudzaifah",
+    "date": "2026-09-21",
+    "readTime": "6 menit",
+    "tags": ["iot", "esp32", "mqtt", "wokwi", "hivemq", "arduino"],
+    "summary": "Tutorial membuat simulasi monitoring sensor suhu virtual di Wokwi dan mempublikasikan data telemetry real-time ke broker publik MQTT tanpa membeli modul hardware.",
+    "file": "wokwi-esp32-mqtt-hivemq.md"
+  },
+  {
+    "id": "git-workflow-conflict-detached-head",
+    "title": "Mengatasi Detached HEAD & Merge Conflict pada Git Kolaboratif",
+    "category": "Git & DevOps",
+    "author": "Mu'adz Hudzaifah",
+    "date": "2026-09-21",
+    "readTime": "5 menit",
+    "tags": ["git", "github", "detached-head", "conflict", "devops"],
+    "summary": "Panduan pemecahan masalah (troubleshooting) ketika commit tersangkut di detached HEAD atau branch lokal bentrok dengan commit rekan kelompok di repository GitHub.",
+    "file": "git-workflow-conflict-detached-head.md"
+  },
+  {
+    "id": "blender-to-unity-pipeline",
+    "title": "Pipeline Export Aset 3D Blender ke Unity 2022 LTS (Fix Skala & Rotasi)",
+    "category": "Game & Multimedia",
+    "author": "Divisi Kemahasiswaan HIMATRA",
+    "date": "2026-09-21",
+    "readTime": "5 menit",
+    "tags": ["blender", "unity", "3d", "gamedev", "fbx", "multimedia"],
+    "summary": "Panduan export FBX dari Blender 4.x ke engine Unity agar model tidak miring rotasi -90 derajat pada sumbu X dan skala objek proporsional 1:1.",
+    "file": "blender-to-unity-pipeline.md"
+  },
+  {
+    "id": "metodologi-mdlc-multimedia",
+    "title": "Penerapan Metodologi MDLC (Luther-Sutopo) pada Skripsi Multimedia",
+    "category": "Metodologi Penelitian",
+    "author": "Divisi Kemahasiswaan HIMATRA",
+    "date": "2026-09-21",
+    "readTime": "6 menit",
+    "tags": ["mdlc", "skripsi", "metodologi", "multimedia", "luther-sutopo", "tugas-akhir"],
+    "summary": "Penjelasan komprehensif 6 tahapan siklus Multimedia Development Life Cycle (Concept, Design, Material, Assembly, Testing, Distribution) yang diakui penguji sidang.",
+    "file": "metodologi-mdlc-multimedia.md"
+  },
+  {
+    "id": "panduan-kontribusi",
+    "title": "Panduan & Ketentuan Kontribusi Artikel Jurnal The Penguin Circle",
+    "category": "Kontribusi & Panduan",
+    "author": "Divisi Kemahasiswaan HIMATRA",
+    "date": "2026-09-21",
+    "readTime": "4 menit",
+    "tags": ["kontribusi", "panduan", "markdown", "open-source", "himatra", "boash"],
+    "summary": "Syarat, ketentuan akademik, format metadata frontmatter, dan tata cara mengirimkan tulisan jurnal/artikel praktikum ke The Penguin Circle via GitHub Pull Request.",
+    "file": "panduan-kontribusi.md"
+  }
+]

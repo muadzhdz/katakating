@@ -1,0 +1,73 @@
+---
+id: panduan-kontribusi
+title: Panduan & Ketentuan Kontribusi Artikel Jurnal The Penguin Circle
+category: Kontribusi & Panduan
+author: Divisi Kemahasiswaan HIMATRA
+date: 2026-09-21
+readTime: 4 menit
+tags: ["kontribusi", "panduan", "markdown", "open-source", "himatra", "boash"]
+summary: Syarat, ketentuan akademik, format metadata frontmatter, dan tata cara mengirimkan tulisan jurnal/artikel praktikum ke The Penguin Circle via GitHub Pull Request.
+---
+
+## 1. Semangat Komunitas Terbuka
+The Penguin Circle (TPC) dirancang sebagai **Knowledge Hub Mahasiswa TRM Terbuka**. Setiap mahasiswa atau civitas akademika Universitas Boash dipersilakan untuk menyumbangkan tulisan artikel praktikum, tips perkuliahan, maupun dokumentasi riset tugas akhir.
+
+## 2. Syarat & Ketentuan Artikel yang Di-Acc (Diterima)
+Agar kualitas jurnal dan artikel tetap terjaga kredibilitasnya, setiap naskah yang dikirimkan wajib memenuhi 5 kriteria utama:
+
+1. **Berlandaskan Pengalaman & Telah Diuji (Tested)**:
+   * Kode program, konfigurasi CLI, atau rangkaian yang dibahas harus sudah berhasil dicoba dan diverifikasi berjalan dengan baik (bukan sekadar tutorial copy-paste yang belum pernah dijalankan).
+2. **Memiliki Referensi Akademik / Dokumentasi Resmi**:
+   * Setiap artikel wajib mencantumkan minimal 1 referensi valid di akhir dokumen (buku teks, dokumentasi resmi vendor, IEEE/ACM, atau pedoman kampus).
+3. **Bebas dari AI-Slop & Plagiasi**:
+   * Hindari tulisan berbunga-bunga yang tidak memberikan solusi praktis. Gaya bahasa harus teknis, padat, dan langsung membedah solusi masalah.
+4. **Format File Wajib Markdown (`.md`)**:
+   * Seluruh artikel dikemas dalam format `.md` murni dengan metadata YAML di bagian awal file.
+5. **Bahasa Indonesia Baku & Istilah Teknis yang Tepat**:
+   * Gunakan Bahasa Indonesia yang jelas dengan istilah teknis internasional ditulis miring atau diapit code block jika berupa perintah terminal.
+
+## 3. Format Template Markdown Wajib
+Buat file baru di direktori `articles/` dengan penamaan: `nama-topik-singkat.md`. File wajib diawali dengan blok **Frontmatter** seperti contoh berikut:
+
+```markdown
+---
+id: nama-topik-singkat
+title: Judul Artikel yang Jelas dan Spesifik
+category: Jaringan Komputer | Web & Tooling | Basis Data | Algoritma | Game & Multimedia | Akademik & Laporan
+author: Nama Lengkap Penulis (NIM)
+date: YYYY-MM-DD
+readTime: X menit
+tags: ["tag1", "tag2", "tag3"]
+summary: Ringkasan 1-2 kalimat tentang masalah apa yang diselesaikan dan apa output dari artikel ini.
+---
+
+## 1. Tujuan Praktikum / Permasalahan
+Jelaskan latar belakang masalah secara ringkas dan apa tujuan dari panduan ini.
+
+## 2. Prasyarat Sistem
+Software atau hardware apa saja yang dibutuhkan pembaca sebelum mulai.
+
+## 3. Langkah Kerja & Penjelasan Kode
+Tuliskan langkah-langkah secara runtut menggunakan heading dan blok kode:
+
+```bash
+echo "Perintah terminal di sini"
+```
+
+## 4. Troubleshooting / Potensi Kendala
+Sebutkan error yang sering terjadi dan bagaimana cara mengatasinya.
+
+## 5. Referensi & Sumber Rujukan
+* Dokumentasi resmi atau buku referensi yang dijadikan acuan.
+```
+
+## 4. Alur Pengiriman via GitHub (Pull Request)
+1. **Fork Repositori**: Buka repositori `https://github.com/muadzhdz/the-penguin-circle` lalu klik tombol **Fork**.
+2. **Buat File Baru**: Masukkan file artikel Anda ke dalam folder `articles/` di branch baru, contoh `feat/artikel-iot-lora`.
+3. **Commit & Push**:
+   ```bash
+   git add articles/nama-topik.md
+   git commit -m "feat(article): tambah panduan IoT LoRa oleh Budi"
+   git push origin feat/artikel-iot-lora
+   ```
+4. **Buka Pull Request**: Masuk ke GitHub, klik **New Pull Request**. Tim kemahasiswaan akan mereview dan meng-approve artikel Anda untuk langsung tayang di web The Penguin Circle!

@@ -39,15 +39,25 @@
       ]
     }
   ],
+  "rewrites": [
+    {
+      "source": "/article/:slug",
+      "destination": "/article.html?id=:slug"
+    },
+    {
+      "source": "/kontribusi",
+      "destination": "/article.html?id=panduan-kontribusi"
+    }
+  ],
   "redirects": [
     {
       "source": "/daftar",
-      "destination": "/#tips-catalog",
+      "destination": "/#katalog",
       "permanent": false
     },
     {
       "source": "/wa",
-      "destination": "https://whatsapp.com/channel/",
+      "destination": "https://chat.whatsapp.com/GzEfQkl53ZUBC9R2JF9CEf",
       "permanent": false
     }
   ]
