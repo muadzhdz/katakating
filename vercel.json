@@ -47,6 +47,10 @@
     {
       "source": "/kontribusi",
       "destination": "/article.html?id=panduan-kontribusi"
+    },
+    {
+      "source": "/tulis",
+      "destination": "/tulis.html"
     }
   ],
   "redirects": [

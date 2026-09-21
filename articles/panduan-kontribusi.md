@@ -61,7 +61,23 @@ Sebutkan error yang sering terjadi dan bagaimana cara mengatasinya.
 * Dokumentasi resmi atau buku referensi yang dijadikan acuan.
 ```
 
-## 4. Alur Pengiriman via GitHub (Pull Request)
+## 4. Tiga Jalur Pengiriman Artikel (Pilih yang Paling Mudah)
+
+Kami ingin The Penguin Circle dapat diakses oleh **seluruh mahasiswa dari segala jurusan**, bukan hanya mereka yang menguasai Git atau koding. Anda bebas memilih salah satu dari 3 opsi berikut:
+
+### Opsi 1: Formulir Web Otomatis (Direkomendasikan & Paling Cepat)
+1. Buka menu **[Tulis Artikel](tulis.html)** di web The Penguin Circle.
+2. Isi nama, program studi/NIM, kategori matkul, judul, ringkasan, materi praktikum, dan referensi.
+3. Klik tombol **Kirim Draft via WhatsApp Redaksi** atau **Download File Markdown (.md)**.
+4. Tim editorial kemahasiswaan akan langsung menerima dan memvalidasi artikel Anda.
+
+### Opsi 2: Kirim File Microsoft Word (.docx) via WhatsApp
+1. Jika Anda sudah memiliki laporan praktikum atau makalah dalam format Word (`.docx`):
+2. Kirimkan langsung ke kontak WhatsApp Redaksi Kemahasiswaan melalui [Saluran Komunitas WhatsApp](https://chat.whatsapp.com/GzEfQkl53ZUBC9R2JF9CEf).
+3. Tim redaksi Divisi Kemahasiswaan akan mengkonversi tulisan Anda ke format Markdown baku dan menerbitkannya atas nama Anda.
+
+### Opsi 3: Jalur Open-Source (GitHub Pull Request)
+Bagi mahasiswa yang ingin membangun portofolio kontribusi open-source nyata:
 1. **Fork Repositori**: Buka repositori `https://github.com/muadzhdz/the-penguin-circle` lalu klik tombol **Fork**.
 2. **Buat File Baru**: Masukkan file artikel Anda ke dalam folder `articles/` di branch baru, contoh `feat/artikel-iot-lora`.
 3. **Commit & Push**:
@@ -70,4 +86,5 @@ Sebutkan error yang sering terjadi dan bagaimana cara mengatasinya.
    git commit -m "feat(article): tambah panduan IoT LoRa oleh Budi"
    git push origin feat/artikel-iot-lora
    ```
-4. **Buka Pull Request**: Masuk ke GitHub, klik **New Pull Request**. Tim kemahasiswaan akan mereview dan meng-approve artikel Anda untuk langsung tayang di web The Penguin Circle!
+4. **Buka Pull Request**: Masuk ke GitHub, klik **New Pull Request**. Tim kemahasiswaan akan mereview naskah Anda.
+
