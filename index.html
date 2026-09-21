@@ -3,48 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="The Penguin Circle (TPC) — Knowledge Hub, Panduan Praktikum, & Template Laporan 4-4-3-3 Mahasiswa TRM Universitas Boash.">
-  <meta name="keywords" content="The Penguin Circle, TRM Boash, HIMATRA, Laporan 4-4-3-3, Git Cheat Sheet, Wokwi IoT MQTT, MDLC">
-  <meta name="author" content="Divisi Kemahasiswaan HIMATRA">
+  <meta name="description" content="The Penguin Circle — Knowledge Hub & Template Laporan 4-4-3-3 Mahasiswa TRM Universitas Boash. Dikelola oleh Divisi Kemahasiswaan HIMATRA.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://the-penguin-circle.vercel.app/">
-  <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
-  <meta name="theme-color" content="#f8f8f8" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#09090b" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)">
 
   <!-- Open Graph -->
   <meta property="og:title" content="The Penguin Circle | TRM Knowledge Hub">
-  <meta property="og:description" content="Panduan asinkron, template laporan 4-4-3-3, dan cheat sheet praktikum mahasiswa TRM Boash.">
+  <meta property="og:description" content="Pusat panduan praktikum mandiri, template laporan 4-4-3-3, dan cheat sheet mahasiswa TRM Boash.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://the-penguin-circle.vercel.app/">
-  <meta property="og:image" content="https://the-penguin-circle.vercel.app/assets/og-image.png">
   <meta property="og:site_name" content="The Penguin Circle">
 
-  <!-- Twitter / X Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="The Penguin Circle | TRM Knowledge Hub">
-  <meta name="twitter:description" content="Panduan praktikum mandiri dan template laporan 4-4-3-3 mahasiswa TRM Boash.">
+  <title>The Penguin Circle — TRM Knowledge Hub</title>
 
-  <!-- JSON-LD -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "EducationalOrganization",
-    "name": "The Penguin Circle",
-    "url": "https://the-penguin-circle.vercel.app",
-    "description": "Pusat Pengetahuan & Panduan Praktikum Mahasiswa TRM Universitas Boash.",
-    "parentOrganization": {
-      "@type": "Organization",
-      "name": "HIMATRA"
-    }
-  }
-  </script>
-
-  <title>The Penguin Circle | TRM Knowledge Hub</title>
-
-  <!-- Typography -->
+  <!-- Typography: Inter (UI/Reading) + JetBrains Mono (Code/Tags) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css">
   <script src="main.js" defer></script>
@@ -52,96 +29,34 @@
 
 <body>
 
-<!-- PRELOADER -->
-<div id="preloader" aria-hidden="true">
-  <div id="pre-top"></div>
-  <div id="pre-bot"></div>
-  <div id="pre-content">
-    <div id="pre-logo">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="4 17 10 11 4 5"></polyline>
-        <line x1="12" y1="19" x2="20" y2="19"></line>
-      </svg>
-      <span>TPC-KERNEL // v2.0</span>
-    </div>
-    <div id="pre-text">INITIALIZING...</div>
-  </div>
-  <div id="pre-progress"></div>
-</div>
-
-<!-- GRAIN OVERLAY -->
-<div id="grain" aria-hidden="true"></div>
-
-<!-- READING PROGRESS BAR -->
-<div id="read-progress" aria-hidden="true"></div>
-
-<!-- TOAST NOTIFICATION -->
+<!-- TOAST -->
 <div id="toast" role="alert" aria-live="polite">
-  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <polyline points="20 6 9 17 4 12"></polyline>
   </svg>
-  <span id="toast-msg">[OK] Tindakan berhasil dieksekusi</span>
+  <span id="toast-msg">Tindakan berhasil</span>
 </div>
 
-<!-- SCROLL TO TOP -->
-<button id="stb" aria-label="Kembali ke atas">
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <line x1="12" y1="19" x2="12" y2="5"></line>
-    <polyline points="5 12 12 5 19 12"></polyline>
-  </svg>
-</button>
-
-<!-- MOBILE DRAWER -->
-<div id="mob-drawer" class="mob-drawer" role="dialog">
-  <a href="#hero" class="mob-link">// 00. BERANDA</a>
-  <a href="#bento-section" class="mob-link">// 01. BENTO QUICK</a>
-  <a href="#tips-catalog" class="mob-link">// 02. KATALOG TIPS</a>
-  <a href="#saluran-wa" class="mob-link">// 03. SALURAN WA</a>
-  <div style="display: flex; gap: 12px; margin-top: 16px;">
-    <a href="https://github.com/muadzhdz/the-penguin-circle" target="_blank" rel="noopener" class="btn-o">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-      </svg>
-      GitHub
-    </a>
-  </div>
-</div>
-
-<!-- HEADER -->
-<header id="site-header" class="glass-nav" style="position: fixed; top: 0; left: 0; right: 0; z-index: 50; height: var(--nav-h);">
-  <nav style="max-width: 1320px; margin: 0 auto; height: 100%; padding: 0 24px; display: flex; align-items: center; justify-content: space-between;">
-
-    <!-- Brand -->
-    <a href="#hero" style="display: inline-flex; align-items: center; gap: 10px; font-weight: 700; color: var(--primary);">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<!-- NAVBAR -->
+<header class="nav-wrap">
+  <div class="nav-container">
+    <a href="#" class="nav-brand">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="4 17 10 11 4 5"></polyline>
         <line x1="12" y1="19" x2="20" y2="19"></line>
       </svg>
-      <span style="font-size: 0.85rem; letter-spacing: 0.08em;">THE PENGUIN CIRCLE<span style="color: var(--accent);">.TRM</span></span>
+      <span>The Penguin Circle</span>
     </a>
 
-    <!-- Desktop Nav -->
-    <div style="display: none; align-items: center; gap: 4px;" class="desktop-nav" id="desk-nav">
-      <a href="#hero" class="nav-link active">// 00. BERANDA</a>
-      <a href="#bento-section" class="nav-link">// 01. BENTO QUICK</a>
-      <a href="#tips-catalog" class="nav-link">// 02. KATALOG TIPS</a>
-      <a href="#saluran-wa" class="nav-link">// 03. SALURAN WA</a>
-    </div>
-
-    <!-- Utilities -->
-    <div style="display: flex; align-items: center; gap: 10px;">
-      <span id="live-clock" style="font-size: 0.72rem; color: var(--secondary); display: none; padding: 4px 8px; border: 1px solid var(--outline); background: rgba(255,255,255,0.02);" class="clock-badge"></span>
-
-      <!-- Sound Toggle -->
-      <button id="sound-btn" aria-label="Toggle Audio" title="Toggle Audio" style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--outline); background: transparent; cursor: pointer; color: var(--secondary); transition: all 0.2s;">
+    <div class="nav-links">
+      <a href="#katalog" class="nav-item">Panduan</a>
+      <a href="#saluran" class="nav-item">Saluran WA</a>
+      <a href="https://github.com/muadzhdz/the-penguin-circle" target="_blank" rel="noopener" class="icon-btn" aria-label="GitHub Repo">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
         </svg>
-      </button>
-
-      <!-- Theme Toggle -->
-      <button id="theme-btn" aria-label="Ganti Tema" style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--outline); background: transparent; cursor: pointer; color: var(--primary); transition: all 0.2s;">
+      </a>
+      <button id="theme-toggle" class="icon-btn" aria-label="Toggle Theme">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="5"></circle>
           <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -154,658 +69,232 @@
           <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
         </svg>
       </button>
-
-      <!-- Hamburger -->
-      <button id="hbg-btn" class="hbg" aria-label="Menu" aria-expanded="false" style="display: block;">
-        <span></span><span></span><span></span>
-      </button>
     </div>
-
-  </nav>
+  </div>
 </header>
 
-<style>
-@media (min-width: 860px) {
-  #desk-nav { display: flex !important; }
-  #hbg-btn { display: none !important; }
-  .clock-badge { display: inline-block !important; }
-}
-</style>
+<main>
 
-<!-- MAIN CONTENT -->
-<main id="main" style="position: relative; z-index: 1; padding-top: calc(var(--nav-h) + 16px);">
+  <!-- HERO -->
+  <section class="hero-section">
+    <span class="badge">HIMATRA • TRM KNOWLEDGE HUB</span>
+    <h1 class="hero-title">Dokumentasi & Cheat Sheet Praktikum</h1>
+    <p class="hero-desc">
+      Template laporan standar 4-4-3-3, command cheat sheet, dan kurasi panduan praktikum mandiri untuk mahasiswa TRM Universitas Boash.
+    </p>
 
-  <!-- ════ HERO SECTION ════ -->
-  <section id="hero" style="max-width: 1320px; margin: 0 auto; padding: 40px 24px 56px;">
-    <div style="display: grid; grid-template-columns: 1fr; gap: 32px; align-items: center;" id="hero-layout">
-
-      <!-- Text Side -->
-      <div style="display: flex; flex-direction: column; gap: 16px;">
-        <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
-          <span class="status-badge">
-            <span class="dot"></span>
-            HIMATRA // v2.0
-          </span>
-          <span class="sec-label">UNIVERSITAS BOASH</span>
-        </div>
-
-        <h1 style="font-size: clamp(2.2rem, 4.5vw, 3.6rem); line-height: 1.1; letter-spacing: -0.03em;">
-          Knowledge Hub & Panduan Praktikum TRM
-        </h1>
-
-        <p style="color: var(--secondary); font-size: 0.92rem; line-height: 1.7; max-width: 720px;">
-          Dokumentasi mandiri, template laporan 4-4-3-3, dan cheat sheet praktikum mahasiswa TRM Universitas Boash. Akses 24/7 tanpa jam mentoring wajib.
-        </p>
-
-        <!-- CTA Action Buttons -->
-        <div style="display: flex; flex-wrap: wrap; gap: 10px; padding-top: 4px;">
-          <a href="#tips-catalog" class="btn-p">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            Katalog Panduan
-          </a>
-
-          <a href="#saluran-wa" class="btn-whatsapp">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-            </svg>
-            Saluran WhatsApp
-          </a>
-
-          <a href="#format-4433" class="btn-o">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-              <polyline points="14 2 14 8 20 8"></polyline>
-            </svg>
-            Template 4-4-3-3
-          </a>
-        </div>
-      </div>
-
-      <!-- Hero Terminal Mockup -->
-      <div class="terminal-window corner-frame reveal" style="width: 100%;">
-        <div class="terminal-header">
-          <div class="terminal-dots">
-            <span class="terminal-dot red"></span>
-            <span class="terminal-dot yellow"></span>
-            <span class="terminal-dot green"></span>
-          </div>
-          <span style="letter-spacing: 0.08em;">muadz@boash-trm: ~/the-penguin-circle</span>
-          <span style="color: var(--accent); font-size: 0.65rem;">bash</span>
-        </div>
-        <div class="terminal-body">
-          <p style="color: var(--secondary); margin-bottom: 6px;">
-            $ tpc status --all
-          </p>
-          <p style="color: var(--fg); margin-bottom: 3px;">
-            <span style="color: var(--accent);">[OK]</span> Mode     : Asinkron Mandiri (0 Jam Wajib)
-          </p>
-          <p style="color: var(--fg); margin-bottom: 3px;">
-            <span style="color: var(--accent);">[OK]</span> Margin   : Top 4cm | Left 4cm | Bottom 3cm | Right 3cm
-          </p>
-          <p style="color: var(--fg); margin-bottom: 3px;">
-            <span style="color: var(--accent);">[OK]</span> Tools    : Git, Wokwi MQTT, Unity 2022 LTS, Blender
-          </p>
-          <p style="color: var(--fg); margin-bottom: 6px;">
-            <span style="color: var(--accent);">[OK]</span> Broadcast: Saluran WhatsApp (Privasi Kontak 100% Aman)
-          </p>
-          <p style="color: var(--secondary);">
-            <span style="color: var(--primary);">$</span> <span class="t-cursor">tekan '/' untuk cari panduan</span>
-          </p>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ════ STAT STRIP ════ -->
-  <section style="max-width: 1320px; margin: 0 auto; padding: 0 24px 48px;">
-    <div class="stat-strip reveal">
-      <div class="stat-box">
-        <p class="sec-label">METODE</p>
-        <p class="stat-num" style="color: var(--accent);">100% Asinkron</p>
-      </div>
-      <div class="stat-box">
-        <p class="sec-label">JAM MENTORING</p>
-        <p class="stat-num">0 Jam Wajib</p>
-      </div>
-      <div class="stat-box">
-        <p class="sec-label">STANDAR DOKUMEN</p>
-        <p class="stat-num">Margin 4-4-3-3</p>
-      </div>
-      <div class="stat-box">
-        <p class="sec-label">KOMUNIKASI</p>
-        <p class="stat-num" style="color: var(--accent);">1 Arah (No Spam)</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ════ 01. BENTO QUICK SECTION ════ -->
-  <section id="bento-section" style="max-width: 1320px; margin: 0 auto; padding: 24px 24px 64px;">
-    <div style="margin-bottom: 24px;">
-      <p class="sec-label">01. QUICK COMMAND STATION</p>
-      <h2 style="font-size: clamp(1.6rem, 2.5vw, 2.2rem); margin-top: 4px;">Kebutuhan Praktikum TRM</h2>
-    </div>
-
-    <div class="bento-grid">
-
-      <!-- Bento 1: Template 4-4-3-3 -->
-      <div id="format-4433" class="bento-card col-7 featured reveal corner-frame">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
-            <span class="sec-label">DOKUMEN AKADEMIK</span>
-            <span class="status-badge" style="padding: 2px 8px; font-size: 0.62rem;">STANDAR RESMI</span>
-          </div>
-          <h3 style="font-size: 1.3rem; margin-bottom: 8px;">Template Laporan Praktikum & TA (4-4-3-3)</h3>
-          <p style="color: var(--secondary); font-size: 0.82rem; margin-bottom: 14px;">
-            Standar margin skripsi & laporan mingguan Boash (4cm kiri & atas, 3cm kanan & bawah).
-          </p>
-
-          <div class="code-box" style="margin-bottom: 14px;">
-            <button class="btn-copy" data-target="code-bento-laporan" aria-label="Salin">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-              </svg>
-              Salin
-            </button>
-            <code id="code-bento-laporan">Top: 4 cm  |  Left: 4 cm (Binding)
-Bottom: 3 cm  |  Right: 3 cm
-Font: Times New Roman 12pt / Spasi 1.5</code>
-          </div>
-        </div>
-
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <span style="font-size: 0.72rem; color: var(--secondary);">Format: Word (.docx) & Markdown</span>
-          <a href="#tips-catalog" class="btn-o" style="padding: 6px 14px; font-size: 0.68rem;">Lihat Generator</a>
-        </div>
-      </div>
-
-      <!-- Bento 2: Saluran WA -->
-      <div class="bento-card col-5 reveal" style="border-color: rgba(37, 211, 102, 0.3);">
-        <div>
-          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
-            <span class="sec-label">KOMUNIKASI RESMI</span>
-            <span style="font-size: 0.62rem; color: #25d366; border: 1px solid rgba(37,211,102,0.4); padding: 2px 8px;">1 ARAH</span>
-          </div>
-          <h3 style="font-size: 1.2rem; margin-bottom: 8px;">Saluran WhatsApp (Bebas Spam)</h3>
-          <p style="color: var(--secondary); font-size: 0.82rem; margin-bottom: 14px;">
-            Broadcast rilis template praktikum dan pengumuman lomba tanpa obrolan grup.
-          </p>
-
-          <ul style="list-style: none; padding: 0; margin-bottom: 16px; font-size: 0.78rem; display: flex; flex-direction: column; gap: 6px;">
-            <li style="display: flex; align-items: center; gap: 8px;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              Satu arah, 0 spam chat
-            </li>
-            <li style="display: flex; align-items: center; gap: 8px;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              Nomor WhatsApp tersembunyi aman
-            </li>
-            <li style="display: flex; align-items: center; gap: 8px;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              Tautan materi & cheat sheet instan
-            </li>
-          </ul>
-        </div>
-
-        <a href="#saluran-wa" class="btn-whatsapp" style="justify-content: center; padding: 10px 18px; font-size: 0.72rem;">
-          Gabung Saluran
-        </a>
-      </div>
-
-      <!-- Bento 3: Git Conflict -->
-      <div class="bento-card col-4 reveal">
-        <div>
-          <span class="sec-label">GIT</span>
-          <h3 style="font-size: 1.1rem; margin: 6px 0 8px;">Mengatasi Conflict Tugas</h3>
-          <p style="color: var(--secondary); font-size: 0.78rem; margin-bottom: 10px;">
-            Stash perubahan lokal dan rebase branch tanpa conflict.
-          </p>
-          <div class="code-box" style="font-size: 0.72rem;">
-            <button class="btn-copy" data-target="code-bento-git" aria-label="Salin">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              Salin
-            </button>
-            <code id="code-bento-git">git stash
-git pull --rebase origin main
-git stash pop</code>
-          </div>
-        </div>
-      </div>
-
-      <!-- Bento 4: IoT Wokwi -->
-      <div class="bento-card col-4 reveal">
-        <div>
-          <span class="sec-label">IOT & SENSOR</span>
-          <h3 style="font-size: 1.1rem; margin: 6px 0 8px;">ESP32 + MQTT (Zero Hardware)</h3>
-          <p style="color: var(--secondary); font-size: 0.78rem; margin-bottom: 10px;">
-            Simulasi ESP32 di browser tanpa hardware fisik.
-          </p>
-          <div class="code-box" style="font-size: 0.72rem;">
-            <button class="btn-copy" data-target="code-bento-iot" aria-label="Salin">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              Salin
-            </button>
-            <code id="code-bento-iot"># Broker MQTT Praktikum:
-broker.hivemq.com:1883
-Topic: boash/trm/sensor</code>
-          </div>
-        </div>
-      </div>
-
-      <!-- Bento 5: Blender ke Unity -->
-      <div class="bento-card col-4 reveal">
-        <div>
-          <span class="sec-label">MULTIMEDIA</span>
-          <h3 style="font-size: 1.1rem; margin: 6px 0 8px;">Blender ke Unity 2022 LTS</h3>
-          <p style="color: var(--secondary); font-size: 0.78rem; margin-bottom: 10px;">
-            Fix rotasi -90° sumbu X dan scale 1.0 FBX ke Unity.
-          </p>
-          <div class="code-box" style="font-size: 0.72rem;">
-            <button class="btn-copy" data-target="code-bento-blender" aria-label="Salin">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              Salin
-            </button>
-            <code id="code-bento-blender">FBX Export:
-Forward: -Z | Up: Y
-Check: [x] Apply Transform</code>
-          </div>
-        </div>
-      </div>
-
-      <!-- Bento 6: Pekan Olahraga -->
-      <div class="bento-card col-12 reveal" style="background: rgba(18,18,18,0.7); padding: 18px 24px;">
-        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px;">
-          <div>
-            <span class="sec-label">AGENDA HIMATRA</span>
-            <h3 style="font-size: 1.15rem; margin: 4px 0;">Pekan Olahraga Mahasiswa TRM — Desember 2026</h3>
-            <p style="color: var(--secondary); font-size: 0.8rem;">
-              Persiapan teknis & info pendaftaran cabang olahraga akan dirilis via Saluran WhatsApp resmi.
-            </p>
-          </div>
-          <a href="#saluran-wa" class="btn-o" style="padding: 8px 16px; font-size: 0.68rem;">
-            Pantau di Saluran
-          </a>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ════ 02. KATALOG TIPS REPOSITORY ════ -->
-  <section id="tips-catalog" style="max-width: 1320px; margin: 0 auto; padding: 24px 24px 64px;">
-
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 12px;">
-      <div>
-        <p class="sec-label">02. REPOSITORI PANDUAN</p>
-        <h2 style="font-size: clamp(1.6rem, 2.5vw, 2.2rem); margin-top: 4px;">Katalog Solusi Praktikum</h2>
-      </div>
-      <span id="catalog-count" style="font-size: 0.72rem; color: var(--accent); padding: 4px 8px; border: 1px solid var(--outline); background: rgba(255,255,255,0.02);">
-        10 Panduan
-      </span>
-    </div>
-
-    <!-- Search Input -->
-    <div class="search-wrapper reveal">
+    <!-- SEARCH & FILTER -->
+    <div id="katalog" class="search-container">
       <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="11" cy="11" r="8"></circle>
         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
       </svg>
-      <input type="text" id="catalog-search" class="search-input" placeholder="Cari panduan (margin, git, wokwi, unity, mdlc)..." autocomplete="off" spellcheck="false">
-      <span class="search-kbd">/</span>
+      <input type="text" id="search-input" class="search-input" placeholder="Cari panduan praktikum (misal: margin, git, wokwi, unity)..." autocomplete="off" spellcheck="false">
+      <span class="search-key">/</span>
     </div>
 
-    <!-- Category Filter Bar -->
-    <div class="filter-bar reveal">
-      <button class="filter-btn active" data-filter="all">Semua</button>
-      <button class="filter-btn" data-filter="academic">Laporan</button>
-      <button class="filter-btn" data-filter="git">Git</button>
-      <button class="filter-btn" data-filter="iot">IoT</button>
-      <button class="filter-btn" data-filter="multimedia">Multimedia</button>
-      <button class="filter-btn" data-filter="tooling">Linux</button>
+    <div class="filter-group">
+      <button class="filter-pill active" data-cat="all">Semua</button>
+      <button class="filter-pill" data-cat="laporan">Laporan 4-4-3-3</button>
+      <button class="filter-pill" data-cat="git">Git & GitHub</button>
+      <button class="filter-pill" data-cat="iot">IoT & Wokwi</button>
+      <button class="filter-pill" data-cat="multimedia">Multimedia 3D</button>
+      <button class="filter-pill" data-cat="linux">Linux & WSL</button>
     </div>
 
-    <!-- Empty State -->
-    <div id="catalog-empty" style="display: none; padding: 36px 24px; text-align: center; border: 1px dashed var(--outline); margin-top: 20px;">
-      <p style="font-size: 0.85rem; color: var(--secondary);">[ERR_404] Panduan tidak ditemukan. Tekan Escape untuk reset.</p>
+    <!-- EMPTY STATE -->
+    <div id="search-empty" style="display: none; padding: 32px; text-align: center; border: 1px dashed var(--border); border-radius: 8px; margin-bottom: 24px;">
+      <p style="font-size: 0.85rem; color: var(--fg-muted);">Panduan tidak ditemukan. Tekan Escape untuk reset pencarian.</p>
     </div>
 
-    <!-- Catalog Grid -->
-    <div class="catalog-grid" style="margin-top: 24px;">
+    <!-- CARDS GRID -->
+    <div class="cards-grid">
 
       <!-- Card 1 -->
-      <article class="guide-card reveal corner-frame" data-category="academic">
+      <article class="card" data-cat="laporan">
         <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <span class="sec-label">AKADEMIK</span>
-            <span style="font-size: 0.65rem; color: var(--secondary);">DOC-01</span>
-          </div>
-          <h3 style="font-size: 1.1rem; margin-bottom: 6px;">Setup Margin 4-4-3-3 & Numbering Word</h3>
-          <p style="color: var(--secondary); font-size: 0.78rem; margin-bottom: 12px;">
-            Layout section break agar nomor romawi dan angka terpisah rapi.
-          </p>
+          <span class="card-tag">// DOKUMEN</span>
+          <h2 class="card-title" style="margin: 4px 0 6px;">Format Margin Laporan 4-4-3-3</h2>
+          <p class="card-desc" style="margin-bottom: 12px;">Aturan baku margin Word/LaTeX laporan mingguan & skripsi Boash.</p>
           <div class="code-box">
-            <button class="btn-copy" data-target="code-guide-1" aria-label="Salin">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              Salin
-            </button>
-            <code id="code-guide-1">1. Layout > Margins > Custom Margins:
-   Top: 4cm, Left: 4cm, Bottom: 3cm, Right: 3cm
-2. Bab 1: Breaks > Next Page (Section Break)
-3. Unlink to Previous pada header/footer Bab 1.
-4. Format Page Number: Start at 1.</code>
+            <button class="copy-btn" aria-label="Salin">Salin</button>
+            <code>Top: 4cm | Left: 4cm (Binding)
+Bottom: 3cm | Right: 3cm
+Font: Times New Roman 12pt, Spasi 1.5</code>
           </div>
         </div>
       </article>
 
       <!-- Card 2 -->
-      <article class="guide-card reveal corner-frame" data-category="academic">
+      <article class="card" data-cat="laporan">
         <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <span class="sec-label">AKADEMIK</span>
-            <span style="font-size: 0.65rem; color: var(--secondary);">DOC-02</span>
-          </div>
-          <h3 style="font-size: 1.1rem; margin-bottom: 6px;">CLI Scaffolding Bab Laporan Praktikum</h3>
-          <p style="color: var(--secondary); font-size: 0.78rem; margin-bottom: 12px;">
-            Generate struktur folder modul praktikum & template markdown via bash.
-          </p>
+          <span class="card-tag">// DOKUMEN</span>
+          <h2 class="card-title" style="margin: 4px 0 6px;">Scaffolding Modul Praktikum</h2>
+          <p class="card-desc" style="margin-bottom: 12px;">Buat struktur folder modul & template markdown via terminal.</p>
           <div class="code-box">
-            <button class="btn-copy" data-target="code-guide-2" aria-label="Salin">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              Salin
-            </button>
-            <code id="code-guide-2">mkdir -p modul-{01..05}/{kode,screenshot} && \
-cat << 'EOF' > format-laporan.md
-# LAPORAN PRAKTIKUM TRM BOASH
-## BAB I : TUJUAN & TEORI
-## BAB II: LANGKAH KERJA
-## BAB III: ANALISIS & KESIMPULAN
+            <button class="copy-btn" aria-label="Salin">Salin</button>
+            <code>mkdir -p modul-{01..05}/{kode,screens} && \
+cat << 'EOF' > README.md
+# Laporan Praktikum TRM Boash
+## Bab 1: Teori | Bab 2: Langkah Kerja
 EOF</code>
           </div>
         </div>
       </article>
 
       <!-- Card 3 -->
-      <article class="guide-card reveal corner-frame" data-category="git">
+      <article class="card" data-cat="git">
         <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <span class="sec-label">GIT</span>
-            <span style="font-size: 0.65rem; color: var(--secondary);">GIT-01</span>
-          </div>
-          <h3 style="font-size: 1.1rem; margin-bottom: 6px;">Menyelamatkan Repo Detached HEAD</h3>
-          <p style="color: var(--secondary); font-size: 0.78rem; margin-bottom: 12px;">
-            Amankan commit melayang saat checkout hash lama ke branch baru.
-          </p>
+          <span class="card-tag">// GIT</span>
+          <h2 class="card-title" style="margin: 4px 0 6px;">Rescue Detached HEAD</h2>
+          <p class="card-desc" style="margin-bottom: 12px;">Simpan commit yang melayang ke branch baru secara aman.</p>
           <div class="code-box">
-            <button class="btn-copy" data-target="code-guide-3" aria-label="Salin">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              Salin
-            </button>
-            <code id="code-guide-3"># Simpan commit melayang ke branch baru:
-git branch temp-recovery
+            <button class="copy-btn" aria-label="Salin">Salin</button>
+            <code>git branch temp-save
 git checkout main
-git merge temp-recovery</code>
+git merge temp-save</code>
           </div>
         </div>
       </article>
 
       <!-- Card 4 -->
-      <article class="guide-card reveal corner-frame" data-category="git">
+      <article class="card" data-cat="git">
         <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <span class="sec-label">GIT</span>
-            <span style="font-size: 0.65rem; color: var(--secondary);">GIT-02</span>
-          </div>
-          <h3 style="font-size: 1.1rem; margin-bottom: 6px;">Konvensi Pesan Commit (Conventional)</h3>
-          <p style="color: var(--secondary); font-size: 0.78rem; margin-bottom: 12px;">
-            Format pesan commit standar industri (feat, fix, docs, style).
-          </p>
+          <span class="card-tag">// GIT</span>
+          <h2 class="card-title" style="margin: 4px 0 6px;">Sync & Hindari Conflict</h2>
+          <p class="card-desc" style="margin-bottom: 12px;">Amankan perubahan lokal ke temporary stash sebelum pull upstream.</p>
           <div class="code-box">
-            <button class="btn-copy" data-target="code-guide-4" aria-label="Salin">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              Salin
-            </button>
-            <code id="code-guide-4">feat(auth): tambah validasi login
-fix(nav): perbaiki layout mobile
-docs(laporan): update bab perancangan
-style(css): ganti aksen warna</code>
+            <button class="copy-btn" aria-label="Salin">Salin</button>
+            <code>git stash
+git pull --rebase origin main
+git stash pop</code>
           </div>
         </div>
       </article>
 
       <!-- Card 5 -->
-      <article class="guide-card reveal corner-frame" data-category="iot">
+      <article class="card" data-cat="git">
         <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <span class="sec-label">IOT</span>
-            <span style="font-size: 0.65rem; color: var(--secondary);">IOT-01</span>
-          </div>
-          <h3 style="font-size: 1.1rem; margin-bottom: 6px;">Wokwi ESP32 ke Broker MQTT Publik</h3>
-          <p style="color: var(--secondary); font-size: 0.78rem; margin-bottom: 12px;">
-            Koneksi virtual WiFi & publish MQTT ke broker publik HiveMQ.
-          </p>
+          <span class="card-tag">// GIT</span>
+          <h2 class="card-title" style="margin: 4px 0 6px;">Conventional Commits</h2>
+          <p class="card-desc" style="margin-bottom: 12px;">Format pesan commit rapi untuk tugas kelompok praktikum.</p>
           <div class="code-box">
-            <button class="btn-copy" data-target="code-guide-5" aria-label="Salin">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              Salin
-            </button>
-            <code id="code-guide-5">// WiFi Wokwi Virtual:
-WiFi.begin("Wokwi-GUEST", "");
-
-// MQTT ke HiveMQ:
-client.setServer("broker.hivemq.com", 1883);
-client.publish("boash/trm/suhu", "{\"temp\": 28.5}");</code>
+            <button class="copy-btn" aria-label="Salin">Salin</button>
+            <code>feat: tambah modul login praktikum
+fix: perbaiki routing navigasi
+docs: update laporan bab 3</code>
           </div>
         </div>
       </article>
 
       <!-- Card 6 -->
-      <article class="guide-card reveal corner-frame" data-category="iot">
+      <article class="card" data-cat="iot">
         <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <span class="sec-label">IOT</span>
-            <span style="font-size: 0.65rem; color: var(--secondary);">IOT-02</span>
-          </div>
-          <h3 style="font-size: 1.1rem; margin-bottom: 6px;">Pinout Aman GPIO ESP32</h3>
-          <p style="color: var(--secondary); font-size: 0.78rem; margin-bottom: 12px;">
-            Daftar pin GPIO input/output yang aman tanpa memicu boot-loop.
-          </p>
+          <span class="card-tag">// IOT</span>
+          <h2 class="card-title" style="margin: 4px 0 6px;">Wokwi ESP32 + MQTT Broker</h2>
+          <p class="card-desc" style="margin-bottom: 12px;">Simulasi IoT virtual di browser tanpa hardware fisik.</p>
           <div class="code-box">
-            <button class="btn-copy" data-target="code-guide-6" aria-label="Salin">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              Salin
-            </button>
-            <code id="code-guide-6"># Pin Aman untuk Sensor:
-GPIO 4, 18, 19, 21, 22, 23 (Digital/I2C)
-GPIO 34, 35, 36, 39 (Input ADC Only)
-HINDARI GPIO 0, 2, 12, 15 saat booting!</code>
+            <button class="copy-btn" aria-label="Salin">Salin</button>
+            <code>WiFi.begin("Wokwi-GUEST", "");
+client.setServer("broker.hivemq.com", 1883);
+client.publish("boash/trm/sensor", "{\"val\": 1}");</code>
           </div>
         </div>
       </article>
 
       <!-- Card 7 -->
-      <article class="guide-card reveal corner-frame" data-category="multimedia">
+      <article class="card" data-cat="iot">
         <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <span class="sec-label">MULTIMEDIA</span>
-            <span style="font-size: 0.65rem; color: var(--secondary);">MM-01</span>
-          </div>
-          <h3 style="font-size: 1.1rem; margin-bottom: 6px;">Blender ke Unity: Skala & Rotasi Pas</h3>
-          <p style="color: var(--secondary); font-size: 0.78rem; margin-bottom: 12px;">
-            Pengaturan FBX export agar skala & orientasi 3D tidak miring di Unity.
-          </p>
+          <span class="card-tag">// IOT</span>
+          <h2 class="card-title" style="margin: 4px 0 6px;">Pinout Aman ESP32</h2>
+          <p class="card-desc" style="margin-bottom: 12px;">Daftar pin GPIO input/output yang bebas dari strapping issue.</p>
           <div class="code-box">
-            <button class="btn-copy" data-target="code-guide-7" aria-label="Salin">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              Salin
-            </button>
-            <code id="code-guide-7">Di Blender: [Ctrl + A] > Apply All Transforms
-Export FBX:
-- Forward: -Z Forward  |  Up: Y Up
-- Apply Scalings: FBX Units Scale
-- Check: [x] Apply Transform</code>
+            <button class="copy-btn" aria-label="Salin">Salin</button>
+            <code>Safe IO : GPIO 4, 18, 19, 21, 22, 23
+ADC In  : GPIO 34, 35, 36, 39
+Hindari : GPIO 0, 2, 12, 15 saat booting</code>
           </div>
         </div>
       </article>
 
       <!-- Card 8 -->
-      <article class="guide-card reveal corner-frame" data-category="multimedia">
+      <article class="card" data-cat="multimedia">
         <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <span class="sec-label">MULTIMEDIA</span>
-            <span style="font-size: 0.65rem; color: var(--secondary);">MM-02</span>
-          </div>
-          <h3 style="font-size: 1.1rem; margin-bottom: 6px;">Metodologi MDLC (Luther-Sutopo)</h3>
-          <p style="color: var(--secondary); font-size: 0.78rem; margin-bottom: 12px;">
-            6 tahapan siklus MDLC baku untuk skripsi game & multimedia.
-          </p>
+          <span class="card-tag">// MULTIMEDIA</span>
+          <h2 class="card-title" style="margin: 4px 0 6px;">Blender ke Unity FBX Export</h2>
+          <p class="card-desc" style="margin-bottom: 12px;">Fix rotasi -90 derajat sumbu X dan skala 1.0 pada Unity.</p>
           <div class="code-box">
-            <button class="btn-copy" data-target="code-guide-8" aria-label="Salin">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              Salin
-            </button>
-            <code id="code-guide-8">1. Concept    : Tujuan & audiens aplikasi
-2. Design     : Storyboard & flow chart
-3. Material   : Pengumpulan aset 3D & audio
-4. Assembly   : Coding interaksi di engine
-5. Testing    : Alpha/Beta & UAT testing
-6. Distribution: Packaging & dokumentasi</code>
+            <button class="copy-btn" aria-label="Salin">Salin</button>
+            <code>Blender FBX Settings:
+Forward: -Z Forward | Up: Y Up
+Check: [x] Apply Transform</code>
           </div>
         </div>
       </article>
 
       <!-- Card 9 -->
-      <article class="guide-card reveal corner-frame" data-category="tooling">
+      <article class="card" data-cat="multimedia">
         <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <span class="sec-label">LINUX</span>
-            <span style="font-size: 0.65rem; color: var(--secondary);">LIN-01</span>
-          </div>
-          <h3 style="font-size: 1.1rem; margin-bottom: 6px;">WSL2 Ubuntu 24.04 Web Dev Setup</h3>
-          <p style="color: var(--secondary); font-size: 0.78rem; margin-bottom: 12px;">
-            Install Ubuntu & toolchain development via PowerShell.
-          </p>
+          <span class="card-tag">// MULTIMEDIA</span>
+          <h2 class="card-title" style="margin: 4px 0 6px;">Metodologi MDLC (Luther-Sutopo)</h2>
+          <p class="card-desc" style="margin-bottom: 12px;">6 tahapan siklus perancangan proyek multimedia dan skripsi.</p>
           <div class="code-box">
-            <button class="btn-copy" data-target="code-guide-9" aria-label="Salin">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              Salin
-            </button>
-            <code id="code-guide-9"># Di PowerShell Administrator:
-wsl --install -d Ubuntu-24.04
-
-# Di Ubuntu:
-sudo apt update && sudo apt install -y git curl build-essential
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash</code>
+            <button class="copy-btn" aria-label="Salin">Salin</button>
+            <code>1. Concept    > 2. Design
+3. Material   > 4. Assembly
+5. Testing    > 6. Distribution</code>
           </div>
         </div>
       </article>
 
       <!-- Card 10 -->
-      <article class="guide-card reveal corner-frame" data-category="academic">
+      <article class="card" data-cat="linux">
         <div>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <span class="sec-label">AKADEMIK</span>
-            <span style="font-size: 0.65rem; color: var(--secondary);">DOC-03</span>
-          </div>
-          <h3 style="font-size: 1.1rem; margin-bottom: 6px;">Format Slide Presentasi Sidang (10 Slides)</h3>
-          <p style="color: var(--secondary); font-size: 0.78rem; margin-bottom: 12px;">
-            Formula 10 slide ringkas fokus pada arsitektur & demo sistem.
-          </p>
+          <span class="card-tag">// LINUX</span>
+          <h2 class="card-title" style="margin: 4px 0 6px;">WSL2 Ubuntu Setup</h2>
+          <p class="card-desc" style="margin-bottom: 12px;">Pasang environment Linux native di Windows untuk praktikum.</p>
           <div class="code-box">
-            <button class="btn-copy" data-target="code-guide-10" aria-label="Salin">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-              Salin
-            </button>
-            <code id="code-guide-10">Slide 1: Judul Proyek & Mahasiswa
-Slide 2: Latar Belakang Masalah
-Slide 3: Arsitektur / Flowchart Sistem
-Slide 4-6: Live Demo & Fitur Utama
-Slide 7: Pengujian & Metrik
-Slide 8: Kesimpulan & Next Steps</code>
+            <button class="copy-btn" aria-label="Salin">Salin</button>
+            <code>wsl --install -d Ubuntu-24.04
+sudo apt update && sudo apt install -y git curl</code>
           </div>
         </div>
       </article>
 
     </div>
-
   </section>
 
-  <!-- ════ 03. SALURAN WA SECTION ════ -->
-  <section id="saluran-wa" style="max-width: 1320px; margin: 0 auto; padding: 32px 24px 72px;">
-    <div class="bento-card corner-frame reveal" style="border-color: rgba(37, 211, 102, 0.4); background: radial-gradient(ellipse at center, rgba(37,211,102,0.06) 0%, rgba(10,10,10,0.95) 75%); padding: 36px 28px;">
-
-      <div style="max-width: 720px; margin: 0 auto; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 16px;">
-        <span class="status-badge" style="border-color: rgba(37,211,102,0.5); color: #25d366; background: rgba(37,211,102,0.08);">
-          <span class="dot" style="background: #25d366;"></span>
-          SALURAN RESMI
-        </span>
-
-        <h2 style="font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1.15;">
+  <!-- WHATSAPP CALLOUT -->
+  <section id="saluran" class="wa-banner">
+    <div class="wa-box">
+      <div>
+        <h3 style="font-size: 1.05rem; font-weight: 600; color: var(--primary); margin-bottom: 4px;">
           Saluran WhatsApp The Penguin Circle
-        </h2>
-
-        <p style="color: var(--secondary); font-size: 0.88rem; line-height: 1.6;">
-          Kanal broadcast satu arah rilis template praktikum & revisi tugas. Bebas obrolan grup dan privasi nomor HP aman.
+        </h3>
+        <p style="font-size: 0.85rem; color: var(--fg-muted);">
+          Broadcast satu arah pembaruan template & info praktikum. Bebas spam chat, nomor HP tersembunyi aman.
         </p>
-
-        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; font-size: 0.78rem; color: var(--fg);">
-          <span style="display: flex; align-items: center; gap: 6px;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#25d366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            1 Arah & Bebas Spam
-          </span>
-          <span style="display: flex; align-items: center; gap: 6px;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#25d366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Nomor HP Tersembunyi
-          </span>
-          <span style="display: flex; align-items: center; gap: 6px;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#25d366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            Tanpa Panggilan Grup
-          </span>
-        </div>
-
-        <a href="https://whatsapp.com/channel/" target="_blank" rel="noopener" class="btn-whatsapp" style="padding: 12px 28px; font-size: 0.78rem;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-          </svg>
-          Ikuti Saluran WhatsApp
-        </a>
       </div>
-
+      <a href="https://whatsapp.com/channel/" target="_blank" rel="noopener" class="btn btn-wa">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+        </svg>
+        Gabung Saluran
+      </a>
     </div>
   </section>
 
 </main>
 
 <!-- FOOTER -->
-<footer style="border-top: 1px solid var(--outline); background: var(--bg); padding: 36px 24px 28px; position: relative; z-index: 1;">
-  <div style="max-width: 1320px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px;">
-
-    <div>
-      <p style="font-weight: 700; color: var(--primary); font-size: 0.8rem; letter-spacing: 0.08em;">
-        THE PENGUIN CIRCLE // KNOWLEDGE HUB
-      </p>
-      <p style="color: var(--secondary); font-size: 0.7rem;">
-        Divisi Kemahasiswaan HIMATRA &bull; Universitas Boash
-      </p>
-    </div>
-
-    <div style="display: flex; flex-wrap: wrap; gap: 16px; font-size: 0.7rem; color: var(--secondary);">
-      <a href="#hero" class="nav-link" style="padding: 0;">Beranda</a>
-      <a href="#bento-section" class="nav-link" style="padding: 0;">Bento Quick</a>
-      <a href="#tips-catalog" class="nav-link" style="padding: 0;">Katalog</a>
-      <a href="https://github.com/muadzhdz/the-penguin-circle" target="_blank" rel="noopener" class="nav-link" style="padding: 0;">GitHub</a>
-      <a href="/sitemap.xml" class="nav-link" style="padding: 0;">Sitemap</a>
-    </div>
-
-    <div>
-      <span style="font-size: 0.65rem; color: var(--secondary); border: 1px solid var(--outline); padding: 3px 6px;">
-        100% SVG &bull; ZERO EMOJI
-      </span>
-    </div>
-
+<footer class="footer">
+  <div>
+    <span style="font-weight: 600; color: var(--primary);">The Penguin Circle</span> &bull; Divisi Kemahasiswaan HIMATRA Boash
+  </div>
+  <div style="display: flex; gap: 16px;">
+    <a href="#katalog" style="color: var(--fg-muted);">Katalog</a>
+    <a href="#saluran" style="color: var(--fg-muted);">WhatsApp</a>
+    <a href="/sitemap.xml" style="color: var(--fg-muted);">Sitemap</a>
   </div>
 </footer>
 
