@@ -185,7 +185,7 @@
 <!-- KATAKATING FOOTER -->
 <footer class="market-footer" id="site-footer">
   <div class="footer-status">
-    <a class="footer-status-link footer-maintainer" href="https://github.com/muadzhdz" target="_blank" rel="noreferrer">
+    <a class="footer-status-link footer-maintainer" href="https://himatra.vercel.app" target="_blank" rel="noreferrer">
       DIVISI KEMAHASISWAAN HIMATRA <span aria-hidden="true">↗</span>
     </a>
     <div class="footer-status-copy">
@@ -335,13 +335,18 @@ async function initArticleInteractions(articleId) {
       isLiked = false;
       totalLikes = Math.max(0, totalLikes - 1);
       updateLikeUI();
-      await sb.from('guide_likes').delete().eq('guide_id', articleId).eq('user_id', currentUser.id);
+      try { localStorage.removeItem('katakating_like_' + articleId); } catch(e){}
+      if (sb && currentUser) await sb.from('guide_likes').delete().eq('guide_id', articleId).eq('user_id', currentUser.id);
       if (typeof showToast === 'function') showToast('Batal menyukai artikel');
     } else {
       isLiked = true;
       totalLikes += 1;
       updateLikeUI();
-      await sb.from('guide_likes').insert({ guide_id: articleId, user_id: currentUser.id });
+      try { localStorage.setItem('katakating_like_' + articleId, 'true'); } catch(e){}
+      if (sb && currentUser) {
+        const { error } = await sb.from('guide_likes').insert({ guide_id: articleId, user_id: currentUser.id });
+        if (error) console.warn('guide_likes insert notice:', error);
+      }
       if (typeof showToast === 'function') showToast('Artikel disukai!');
     }
   });

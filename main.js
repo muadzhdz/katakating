@@ -384,10 +384,15 @@ function setupCardDelegation() {
 
       if (isLiked) {
         showToast('Batal menyukai artikel');
+        try { localStorage.removeItem('katakating_like_' + articleId); } catch(e){}
         if (sb) await sb.from('guide_likes').delete().eq('guide_id', articleId).eq('user_id', user.id);
       } else {
         showToast('Artikel disukai!');
-        if (sb) await sb.from('guide_likes').insert({ guide_id: articleId, user_id: user.id });
+        try { localStorage.setItem('katakating_like_' + articleId, 'true'); } catch(e){}
+        if (sb) {
+          const { error } = await sb.from('guide_likes').insert({ guide_id: articleId, user_id: user.id });
+          if (error) console.warn('guide_likes insert notice:', error);
+        }
       }
     }
 
@@ -421,10 +426,15 @@ function setupCardDelegation() {
 
       if (isSaved) {
         showToast('Artikel dihapus dari simpanan');
+        try { localStorage.removeItem('katakating_bookmark_' + articleId); } catch(e){}
         if (sb) await sb.from('bookmarks').delete().eq('guide_id', articleId).eq('user_id', user.id);
       } else {
         showToast('Artikel disimpan ke daftar bacaan!');
-        if (sb) await sb.from('bookmarks').insert({ guide_id: articleId, user_id: user.id });
+        try { localStorage.setItem('katakating_bookmark_' + articleId, 'true'); } catch(e){}
+        if (sb) {
+          const { error } = await sb.from('bookmarks').insert({ guide_id: articleId, user_id: user.id });
+          if (error) console.warn('bookmarks insert notice:', error);
+        }
       }
     }
   });

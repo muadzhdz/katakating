@@ -250,12 +250,33 @@
 
     <!-- SAVED GUIDES SECTION -->
     <section style="background: var(--panel); border: 1px solid var(--line); padding: 20px; margin-bottom: 24px;">
-      <div class="page-eyebrow" style="font-size: 10px; margin-bottom: 4px;">// ARSIP PRIBADI</div>
-      <h3 style="font-size: 14px; font-weight: 600; color: var(--heading); margin-bottom: 12px;">
-        Artikel & Panduan yang Disimpan (Bookmarks)
-      </h3>
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+        <div>
+          <div class="page-eyebrow" style="font-size: 10px; margin-bottom: 4px;">// ARSIP PRIBADI</div>
+          <h3 style="font-size: 14px; font-weight: 600; color: var(--heading); margin: 0;">
+            Artikel & Panduan yang Disimpan (Bookmarks)
+          </h3>
+        </div>
+        <span class="status-badge" id="p-saved-count">0 artikel</span>
+      </div>
       <div id="saved-guides-list" style="display: flex; flex-direction: column; gap: 8px;">
-        <p style="font-size: 12px; color: var(--muted);">Belum ada artikel yang disimpan. Jelajahi katalog dan klik tombol simpan.</p>
+        <p style="font-size: 12px; color: var(--muted);">Memuat artikel yang disimpan...</p>
+      </div>
+    </section>
+
+    <!-- LIKED GUIDES SECTION -->
+    <section style="background: var(--panel); border: 1px solid var(--line); padding: 20px; margin-bottom: 24px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+        <div>
+          <div class="page-eyebrow" style="font-size: 10px; margin-bottom: 4px;">// JURNAL FAVORIT</div>
+          <h3 style="font-size: 14px; font-weight: 600; color: var(--heading); margin: 0;">
+            Artikel yang Disukai (Likes)
+          </h3>
+        </div>
+        <span class="status-badge" id="p-liked-count" style="color: #f87171; border-color: rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.08);">0 artikel</span>
+      </div>
+      <div id="liked-guides-list" style="display: flex; flex-direction: column; gap: 8px;">
+        <p style="font-size: 12px; color: var(--muted);">Memuat artikel yang disukai...</p>
       </div>
     </section>
 
@@ -266,7 +287,7 @@
 <!-- KATAKATING FOOTER -->
 <footer class="market-footer" id="site-footer">
   <div class="footer-status">
-    <a class="footer-status-link footer-maintainer" href="https://github.com/muadzhdz" target="_blank" rel="noreferrer">
+    <a class="footer-status-link footer-maintainer" href="https://himatra.vercel.app" target="_blank" rel="noreferrer">
       DIVISI KEMAHASISWAAN HIMATRA <span aria-hidden="true">↗</span>
     </a>
     <div class="footer-status-copy">
@@ -380,8 +401,21 @@ async function initProfilePage() {
     }
   });
 
-  // Render Bookmarks
-  loadBookmarks(sb, user.id);
+  // Render Bookmarks & Likes
+  await Promise.all([
+    loadBookmarks(sb, user.id),
+    loadLikes(sb, user.id)
+  ]);
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
 function renderGitHubBox(user, profile) {
@@ -392,10 +426,10 @@ function renderGitHubBox(user, profile) {
     box.innerHTML = `
       <div style="display: flex; align-items: center; gap: 8px;">
         <span style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border: 1px solid var(--accent); background: var(--accent-dim); color: var(--accent); font-family: var(--mono); font-size: 12px; font-weight: 600;">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-          Terhubung: @${ghUser}
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+          Terhubung: @${escapeHtml(ghUser)}
         </span>
-        <a href="https://github.com/${ghUser}" target="_blank" rel="noreferrer" class="button" style="min-height: 32px; font-size: 11px;">
+        <a href="https://github.com/${escapeHtml(ghUser)}" target="_blank" rel="noreferrer" class="button" style="min-height: 32px; font-size: 11px;">
           Lihat Profil ↗
         </a>
       </div>
@@ -414,32 +448,213 @@ function renderGitHubBox(user, profile) {
   }
 }
 
+// ── Catalog Cache Helper ──
+let cachedCatalogMap = null;
+async function getArticlesCatalog(sb) {
+  if (cachedCatalogMap) return cachedCatalogMap;
+  const catalogMap = new Map();
+
+  // 1. Fetch from articles.json
+  try {
+    const res = await fetch('articles/articles.json');
+    if (res.ok) {
+      const items = await res.json();
+      items.forEach(a => catalogMap.set(a.id, a));
+    }
+  } catch (e) {
+    console.warn('Local articles.json fetch notice:', e);
+  }
+
+  // 2. Fetch from Supabase guides table (for any database-only guides)
+  if (sb) {
+    try {
+      const { data: gData } = await sb.from('guides').select('id, title, summary, category, author_name');
+      if (gData) {
+        gData.forEach(g => {
+          if (!catalogMap.has(g.id)) {
+            catalogMap.set(g.id, {
+              id: g.id,
+              title: g.title,
+              summary: g.summary,
+              category: g.category || 'Panduan',
+              author: g.author_name || 'Kontributor'
+            });
+          }
+        });
+      }
+    } catch (e) {
+      console.warn('Supabase guides fetch notice:', e);
+    }
+  }
+
+  cachedCatalogMap = catalogMap;
+  return catalogMap;
+}
+
+// ── Load Bookmarks (Saved Guides) ──
 async function loadBookmarks(sb, userId) {
   const container = document.getElementById('saved-guides-list');
-  try {
-    const { data, error } = await sb
-      .from('bookmarks')
-      .select('guide_id, created_at, guides(id, title, summary, category)')
-      .eq('user_id', userId);
+  const countBadge = document.getElementById('p-saved-count');
+  if (!container) return;
 
-    if (data && data.length > 0) {
-      container.innerHTML = data.map(b => {
-        const g = b.guides || { id: b.guide_id, title: b.guide_id, category: 'Panduan' };
+  try {
+    const catalog = await getArticlesCatalog(sb);
+    const bookmarkedIds = [];
+
+    // Query remote Supabase
+    if (sb && userId) {
+      const { data, error } = await sb
+        .from('bookmarks')
+        .select('guide_id, created_at')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.warn('Bookmarks query notice:', error);
+      } else if (data) {
+        data.forEach(b => {
+          if (b.guide_id && !bookmarkedIds.includes(b.guide_id)) {
+            bookmarkedIds.push(b.guide_id);
+          }
+        });
+      }
+    }
+
+    // Also check localStorage
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && (key.startsWith('katakating_bookmark_') || key.startsWith('readme_bookmark_'))) {
+        const gid = key.replace('katakating_bookmark_', '').replace('readme_bookmark_', '');
+        if (gid && !bookmarkedIds.includes(gid)) {
+          bookmarkedIds.push(gid);
+        }
+      }
+    }
+
+    if (countBadge) countBadge.textContent = `${bookmarkedIds.length} artikel`;
+
+    if (bookmarkedIds.length > 0) {
+      container.innerHTML = bookmarkedIds.map(gid => {
+        const meta = catalog.get(gid) || {
+          id: gid,
+          title: gid,
+          category: 'Panduan',
+          summary: 'Artikel tersimpan di arsip bacaan pribadi Anda.'
+        };
         return `
-          <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: var(--panel-2); border: 1px solid var(--line);">
-            <div>
-              <span class="status-badge" style="margin-bottom: 2px;">${g.category}</span>
-              <a href="article.html?id=${g.id}" style="font-weight: 600; color: var(--heading); display: block; font-size: 13px;">${g.title}</a>
+          <div class="profile-article-item">
+            <div class="profile-article-info">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                <span class="status-badge">// ${escapeHtml(meta.category || 'PANDUAN').toUpperCase()}</span>
+              </div>
+              <a href="article.html?id=${escapeHtml(meta.id)}" class="profile-article-title">${escapeHtml(meta.title)}</a>
+              ${meta.summary ? `<p class="profile-article-summary">${escapeHtml(meta.summary)}</p>` : ''}
             </div>
-            <a href="article.html?id=${g.id}" class="button" style="min-height: 28px; font-size: 10px;">Buka ↗</a>
+            <div class="profile-article-action">
+              <a href="article.html?id=${escapeHtml(meta.id)}" class="button market-primary" style="min-height: 28px; font-size: 11px; padding: 0 12px;">
+                Buka ↗
+              </a>
+            </div>
           </div>
         `;
       }).join('');
     } else {
-      container.innerHTML = `<p style="font-size: 12px; color: var(--muted);">Belum ada artikel yang disimpan. Kunjungi katalog untuk menyimpan jurnal bacaan Anda.</p>`;
+      container.innerHTML = `
+        <div class="profile-empty-state">
+          <span class="page-eyebrow">// BELUM ADA ARTIKEL DISIMPAN</span>
+          <p style="font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.5;">
+            Jelajahi <a href="index.html#catalog" style="color: var(--accent);">katalog semua jurnal</a> dan klik ikon simpan pada card artikel untuk menyimpannya ke arsip ini.
+          </p>
+        </div>
+      `;
     }
   } catch (e) {
     console.warn('Bookmarks load error:', e);
+    container.innerHTML = `<p style="font-size: 12px; color: var(--muted);">Gagal memuat arsip simpanan.</p>`;
+  }
+}
+
+// ── Load Likes (Liked Guides) ──
+async function loadLikes(sb, userId) {
+  const container = document.getElementById('liked-guides-list');
+  const countBadge = document.getElementById('p-liked-count');
+  if (!container) return;
+
+  try {
+    const catalog = await getArticlesCatalog(sb);
+    const likedIds = [];
+
+    // Query remote Supabase
+    if (sb && userId) {
+      const { data, error } = await sb
+        .from('guide_likes')
+        .select('guide_id, created_at')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.warn('Likes query notice:', error);
+      } else if (data) {
+        data.forEach(l => {
+          if (l.guide_id && !likedIds.includes(l.guide_id)) {
+            likedIds.push(l.guide_id);
+          }
+        });
+      }
+    }
+
+    // Also check localStorage
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && (key.startsWith('katakating_like_') || key.startsWith('readme_like_'))) {
+        const gid = key.replace('katakating_like_', '').replace('readme_like_', '');
+        if (gid && !likedIds.includes(gid)) {
+          likedIds.push(gid);
+        }
+      }
+    }
+
+    if (countBadge) countBadge.textContent = `${likedIds.length} artikel`;
+
+    if (likedIds.length > 0) {
+      container.innerHTML = likedIds.map(gid => {
+        const meta = catalog.get(gid) || {
+          id: gid,
+          title: gid,
+          category: 'Panduan',
+          summary: 'Artikel yang telah Anda sukai.'
+        };
+        return `
+          <div class="profile-article-item">
+            <div class="profile-article-info">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                <span class="status-badge" style="color: #f87171; border-color: rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.08); font-size: 10px;">♥ DISUKAI</span>
+                <span class="status-badge">// ${escapeHtml(meta.category || 'PANDUAN').toUpperCase()}</span>
+              </div>
+              <a href="article.html?id=${escapeHtml(meta.id)}" class="profile-article-title">${escapeHtml(meta.title)}</a>
+              ${meta.summary ? `<p class="profile-article-summary">${escapeHtml(meta.summary)}</p>` : ''}
+            </div>
+            <div class="profile-article-action">
+              <a href="article.html?id=${escapeHtml(meta.id)}" class="button" style="min-height: 28px; font-size: 11px; padding: 0 12px;">
+                Buka ↗
+              </a>
+            </div>
+          </div>
+        `;
+      }).join('');
+    } else {
+      container.innerHTML = `
+        <div class="profile-empty-state">
+          <span class="page-eyebrow">// BELUM ADA ARTIKEL DISUKAI</span>
+          <p style="font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.5;">
+            Berikan apresiasi pada karya mahasiswa dengan menekan tombol hati / suka pada <a href="index.html#catalog" style="color: var(--accent);">katalog semua jurnal</a>.
+          </p>
+        </div>
+      `;
+    }
+  } catch (e) {
+    console.warn('Likes load error:', e);
+    container.innerHTML = `<p style="font-size: 12px; color: var(--muted);">Gagal memuat artikel disukai.</p>`;
   }
 }
 </script>
