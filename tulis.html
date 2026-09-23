@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Portal Pengajuan Jurnal & Artikel Praktikum [>] KATAKATING — HIMATRA Universitas Boash. Terbuka untuk seluruh mahasiswa dan program studi.">
+  <meta name="description" content="Portal Pengajuan Jurnal & Artikel Praktikum KATAKATING — HIMATRA Universitas Boash. Terbuka untuk seluruh mahasiswa dan program studi.">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#000000">
-  <title>Tulis & Kirim Artikel — [>] KATAKATING</title>
+  <title>Tulis & Kirim Artikel — KATAKATING</title>
 
   <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -44,7 +44,7 @@
       <a href="index.html#catalog" aria-label="Semua Jurnal">Semua<span class="market-nav-detail">&nbsp;Jurnal</span></a>
       <a class="active" href="tulis.html" aria-label="Tulis Artikel">Tulis<span class="market-nav-detail">&nbsp;Artikel</span></a>
       <a href="article.html?id=panduan-kontribusi">Panduan</a>
-      <a href="https://github.com/muadzhdz/readme" target="_blank" rel="noreferrer" aria-label="GitHub Repo">GitHub<span aria-hidden="true">&nbsp;↗</span></a>
+      <a href="https://github.com/muadzhdz/katakating" target="_blank" rel="noreferrer" aria-label="GitHub Repo">GitHub<span aria-hidden="true">&nbsp;↗</span></a>
       <div id="auth-nav-container" class="auth-nav-slot"></div>
       <button class="square-action" id="theme-toggle" type="button" aria-label="Ganti Tema">
         <!-- SVG Injected by main.js -->
@@ -69,7 +69,7 @@
       Portal Pengajuan Jurnal & Panduan Praktikum
     </h1>
     <p style="color: var(--muted); font-size: 14px; line-height: 1.6; max-width: 720px;">
-      [>] KATAKATING dirancang sebagai lumbung dokumentasi perkuliahan bersama. Anda tidak perlu menguasai Git atau koding rumit untuk berkontribusi. Pilih salah satu alur pengiriman di bawah ini:
+      KATAKATING dirancang sebagai lumbung dokumentasi perkuliahan bersama. Anda tidak perlu menguasai Git atau koding rumit untuk berkontribusi. Pilih salah satu alur pengiriman di bawah ini:
     </p>
   </header>
 
@@ -560,7 +560,7 @@ document.getElementById('btn-wa-submit').addEventListener('click', () => {
   a.click();
 
   // 3. Buat pesan WhatsApp terstruktur yang tidak terpotong batasan URL
-  const waMsg = 'Halo Dewan Redaksi [>] KATAKATING (Divisi Kemahasiswaan),%0A%0ASaya ingin mengajukan naskah artikel praktikum baru:%0A%0A*Judul:* ' + encodeURIComponent(title) + '%0A*Penulis:* ' + encodeURIComponent(author) + ' (' + encodeURIComponent(nim) + ')%0A*Kategori:* ' + encodeURIComponent(category) + '%0A*Ringkasan:* ' + encodeURIComponent(summary) + '%0A%0A_File naskah format Markdown (' + slug + '.md) telah saya unduh dan saya lampirkan bersama pesan ini untuk direview oleh tim redaksi._';
+  const waMsg = 'Halo Dewan Redaksi KATAKATING (Divisi Kemahasiswaan),%0A%0ASaya ingin mengajukan naskah artikel praktikum baru:%0A%0A*Judul:* ' + encodeURIComponent(title) + '%0A*Penulis:* ' + encodeURIComponent(author) + ' (' + encodeURIComponent(nim) + ')%0A*Kategori:* ' + encodeURIComponent(category) + '%0A*Ringkasan:* ' + encodeURIComponent(summary) + '%0A%0A_File naskah format Markdown (' + slug + '.md) telah saya unduh dan saya lampirkan bersama pesan ini untuk direview oleh tim redaksi._';
 
   window.open('https://api.whatsapp.com/send?text=' + waMsg, '_blank');
   showToast('File ' + slug + '.md berhasil diunduh & WhatsApp terbuka!');

@@ -88,13 +88,20 @@ button, select {
   cursor: pointer;
 }
 
-svg {
+svg:not(.auth-provider-icon):not([data-icon="brand"]) {
   display: block;
   fill: none;
   stroke: currentColor;
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 1.8;
+}
+
+svg.auth-provider-icon,
+svg[data-icon="brand"] {
+  display: block;
+  stroke: none;
+  stroke-width: 0;
 }
 
 :focus-visible {
@@ -1508,11 +1515,11 @@ pre.code-body {
 .auth-modal-card {
   width: 100%;
   max-width: 400px;
-  background: #0d0f12;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 6px;
+  background: #000000;
+  border: 1px solid #1a1a1a;
+  border-radius: 4px;
   padding: 26px 24px 22px;
-  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.95), 0 0 0 1px #111111;
   animation: modalIn 0.15s ease-out;
 }
 
@@ -1593,15 +1600,15 @@ pre.code-body {
   text-transform: none;
   cursor: pointer;
   transition: all 0.15s ease;
-  background: #14171d;
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: #080808;
+  border: 1px solid #1f1f1f;
   color: #f0f6fc;
   user-select: none;
 }
 
 .auth-provider-btn:hover {
-  background: #1c2128;
-  border-color: rgba(255, 255, 255, 0.32);
+  background: #121212;
+  border-color: #333333;
   color: #ffffff;
   transform: translateY(-1px);
 }
@@ -1615,6 +1622,21 @@ pre.code-body {
   display: block;
 }
 
+/* Reset strokes completely on filled brand vector icons (GitHub, Google, etc.) */
+.auth-provider-icon,
+.auth-provider-icon *,
+.auth-provider-btn svg,
+.auth-provider-btn svg *,
+.oauth-btn svg,
+.oauth-btn svg *,
+#btn-link-gh svg,
+#btn-link-gh svg *,
+svg[data-icon="brand"],
+svg[data-icon="brand"] * {
+  stroke: none !important;
+  stroke-width: 0 !important;
+}
+
 .auth-provider-label {
   line-height: 1;
 }
@@ -1622,7 +1644,7 @@ pre.code-body {
 .auth-modal-footer {
   margin-top: 20px;
   padding-top: 14px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid #1a1a1a;
   font-size: 11px;
   color: var(--muted);
   text-align: center;
@@ -1644,8 +1666,8 @@ pre.code-body {
   font-weight: 500;
   letter-spacing: -0.01em;
   text-transform: none;
-  background: #14171d;
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: #080808;
+  border: 1px solid #1f1f1f;
   color: #f0f6fc;
   border-radius: 4px;
   cursor: pointer;
@@ -1653,12 +1675,72 @@ pre.code-body {
 }
 
 .oauth-btn:hover {
-  background: #1c2128;
-  border-color: rgba(255, 255, 255, 0.32);
+  background: #121212;
+  border-color: #333333;
   color: #ffffff;
 }
 
 .oauth-btn svg {
   flex-shrink: 0;
   display: block;
+}
+
+/* ── Light Mode Adaptability for Auth Modal ── */
+html.light .auth-modal-overlay,
+:root[data-theme="light"] .auth-modal-overlay {
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(8px);
+}
+
+html.light .auth-modal-card,
+:root[data-theme="light"] .auth-modal-card {
+  background: #ffffff;
+  border-color: #d1d5db;
+  color: #0f172a;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+html.light .auth-modal-title,
+:root[data-theme="light"] .auth-modal-title {
+  color: #0f172a !important;
+}
+
+html.light .auth-modal-desc,
+:root[data-theme="light"] .auth-modal-desc {
+  color: #475569 !important;
+}
+
+html.light .auth-modal-close,
+:root[data-theme="light"] .auth-modal-close {
+  color: #64748b !important;
+}
+
+html.light .auth-modal-close:hover,
+:root[data-theme="light"] .auth-modal-close:hover {
+  color: #0f172a !important;
+  background: rgba(0, 0, 0, 0.06);
+}
+
+html.light .auth-provider-btn,
+:root[data-theme="light"] .auth-provider-btn,
+html.light .oauth-btn,
+:root[data-theme="light"] .oauth-btn {
+  background: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+html.light .auth-provider-btn:hover,
+:root[data-theme="light"] .auth-provider-btn:hover,
+html.light .oauth-btn:hover,
+:root[data-theme="light"] .oauth-btn:hover {
+  background: #f1f5f9 !important;
+  border-color: #94a3b8 !important;
+  color: #020617 !important;
+}
+
+html.light .auth-modal-footer,
+:root[data-theme="light"] .auth-modal-footer {
+  border-top-color: #e2e8f0 !important;
+  color: #64748b !important;
 }

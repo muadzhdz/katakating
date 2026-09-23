@@ -1,11 +1,11 @@
 <div align="center">
 
-# [>] KATAKATING
+# KATAKATING
 
 **Boash Knowledge Base & Lab Survival Guide**  
 *Repositori Panduan Praktikum, Tips Kuliah, dan Solusi Kendala Teknis Mahasiswa Universitas Boash*
 
-[![CI Verification](https://github.com/muadzhdz/readme/actions/workflows/ci.yml/badge.svg)](https://github.com/muadzhdz/readme/actions)
+[![CI Verification](https://github.com/muadzhdz/katakating/actions/workflows/ci.yml/badge.svg)](https://github.com/muadzhdz/katakating/actions)
 [![Vercel Deployment](https://img.shields.io/badge/Deployment-katakating.vercel.app-00ff66?logo=vercel&logoColor=black)](https://katakating.vercel.app)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Architecture: Cyber Brutalist](https://img.shields.io/badge/Design-_Cyber_Brutalist-00ff66)](#)
@@ -17,7 +17,7 @@
 
 ## Gambaran Umum
 
-`[>] KATAKATING` adalah platform web repositori basis pengetahuan terbuka yang dirancang untuk memecahkan masalah transfer pengetahuan perkuliahan di lingkungan **Fakultas Sains Teknologi dan Informasi (FSTI) serta seluruh sivitas akademika Universitas Boash**.
+`KATAKATING` adalah platform web repositori basis pengetahuan terbuka yang dirancang untuk memecahkan masalah transfer pengetahuan perkuliahan di lingkungan **Fakultas Sains Teknologi dan Informasi (FSTI) serta seluruh sivitas akademika Universitas Boash**.
 
 Platform ini dibangun dengan estetika **Cyber Brutalist** (palet Cyber Emerald `#00ff66`, deep OLED `#000000`, connected 1px border grid, dan tipografi monospaced) serta menerapkan sistem **Matrix Filtering** untuk menjembatani program studi serumpun (TRM, Informatika, Mekatronika, Sistem Informasi, Sistem Rekayasa Komputer, dan Otomotif).
 
@@ -51,7 +51,7 @@ katakating/
 ├── supabase/
 │   └── migrations/               # Skema DDL PostgreSQL dan migrasi Supabase
 ├── catalog.json                  # Single Source of Truth (Katalog Master)
-├── index.html                    # Katalog Web Utama [>] KATAKATING
+├── index.html                    # Katalog Web Utama KATAKATING
 ├── article.html                  # Antarmuka Reader Mode Panduan
 ├── tulis.html                    # Formulir Pengajuan Panduan Mahasiswa
 ├── style.css                     # Desain Sistem Cyber Emerald

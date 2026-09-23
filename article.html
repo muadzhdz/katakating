@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#000000">
-  <title>Membaca Jurnal — [>] KATAKATING</title>
+  <title>Membaca Jurnal — KATAKATING</title>
 
   <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,7 +43,7 @@
       <a href="index.html#catalog" aria-label="Semua Jurnal">Semua<span class="market-nav-detail">&nbsp;Jurnal</span></a>
       <a href="tulis.html" aria-label="Tulis Artikel">Tulis<span class="market-nav-detail">&nbsp;Artikel</span></a>
       <a class="active" href="article.html?id=panduan-kontribusi">Panduan</a>
-      <a href="https://github.com/muadzhdz/readme" target="_blank" rel="noreferrer" aria-label="GitHub Repo">GitHub<span aria-hidden="true">&nbsp;↗</span></a>
+      <a href="https://github.com/muadzhdz/katakating" target="_blank" rel="noreferrer" aria-label="GitHub Repo">GitHub<span aria-hidden="true">&nbsp;↗</span></a>
       <div id="auth-nav-container" class="auth-nav-slot"></div>
       <button class="square-action" id="theme-toggle" type="button" aria-label="Ganti Tema">
         <!-- SVG Injected by main.js -->
@@ -108,7 +108,7 @@
         Ingin memperbaiki atau mengajukan tulisan baru?
       </h3>
       <p style="font-size: 13px; color: var(--muted);">
-        [>] KATAKATING adalah proyek open-source mahasiswa Universitas Boash. Anda dapat mengedit artikel ini di GitHub atau mengirim naskah via formulir web.
+        KATAKATING adalah proyek open-source mahasiswa Universitas Boash. Anda dapat mengedit artikel ini di GitHub atau mengirim naskah via formulir web.
       </p>
     </div>
     <div style="display: flex; gap: 10px; flex-wrap: wrap;">
@@ -161,7 +161,7 @@ async function loadArticle() {
     const meta = catalog.find(a => a.id === articleId) || catalog[0];
 
     // 2. Update metadata DOM
-    document.title = `${meta.title} — [>] KATAKATING`;
+    document.title = `${meta.title} — KATAKATING`;
     document.getElementById('article-title').textContent = meta.title;
     document.getElementById('breadcrumb-title').textContent = meta.title;
     document.getElementById('breadcrumb-category').textContent = meta.category;
@@ -175,7 +175,7 @@ async function loadArticle() {
 
     const btnGh = document.getElementById('btn-edit-gh');
     if (btnGh) {
-      btnGh.href = `https://github.com/muadzhdz/readme/blob/main/articles/${meta.file}`;
+      btnGh.href = `https://github.com/muadzhdz/katakating/blob/main/articles/${meta.file}`;
     }
 
     // 3. Fetch raw Markdown file

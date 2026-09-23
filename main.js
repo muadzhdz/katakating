@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════════════
-   [>] KATAKATING — KNOWLEDGE HUB JAVASCRIPT
+   KATAKATING — KNOWLEDGE HUB JAVASCRIPT
    Search, Category Filtering, Dynamic Sorting, Code Copy, Theme Toggle
    ══════════════════════════════════════════════════════════════════ */
 
