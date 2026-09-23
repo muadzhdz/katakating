@@ -51,6 +51,10 @@
     {
       "source": "/tulis",
       "destination": "/tulis.html"
+    },
+    {
+      "source": "/profile",
+      "destination": "/profile.html"
     }
   ],
   "redirects": [

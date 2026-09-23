@@ -1,46 +1,55 @@
 <!DOCTYPE html>
-<html lang="id" class="dark">
+<html lang="id" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Portal Pengajuan Jurnal & Artikel Praktikum The Penguin Circle — HIMATRA Universitas Boash. Terbuka untuk seluruh mahasiswa dan program studi.">
+  <meta name="description" content="Portal Pengajuan Jurnal & Artikel Praktikum [>] KATAKATING — HIMATRA Universitas Boash. Terbuka untuk seluruh mahasiswa dan program studi.">
   <meta name="robots" content="index, follow">
-  <title>Tulis & Kirim Artikel — The Penguin Circle</title>
+  <meta name="theme-color" content="#000000">
+  <title>Tulis & Kirim Artikel — [>] KATAKATING</title>
 
   <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="main.js" defer></script>
+  <script src="auth.js" defer></script>
 </head>
 
 <body>
 
 <!-- TOAST -->
-<div id="toast" role="alert" aria-live="polite">
+<div id="toast" role="status" aria-live="polite">
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <polyline points="20 6 9 17 4 12"></polyline>
   </svg>
   <span id="toast-msg">Tindakan berhasil</span>
 </div>
 
-<!-- NAVBAR -->
-<header class="nav-wrap">
-  <div class="nav-container">
-    <a href="index.html" class="nav-brand">
-      The Penguin Circle
-    </a>
-
-    <div class="nav-links">
-      <a href="index.html" class="nav-item">Semua Jurnal</a>
-      <a href="tulis.html" class="nav-item active" style="color: var(--primary); font-weight: 600;">Tulis Artikel</a>
-      <a href="https://chat.whatsapp.com/GzEfQkl53ZUBC9R2JF9CEf" target="_blank" rel="noopener" class="nav-item" style="color: #22c55e;">Saluran WA</a>
-      <button id="theme-toggle" class="icon-btn" aria-label="Toggle Theme">
-        <!-- Icon injected by main.js -->
-      </button>
+<!-- KATAKATING HEADER -->
+<header class="market-header">
+  <div class="market-header-inner">
+    <div class="market-brand">
+      <a class="market-brand-home" href="index.html" aria-label="[>] KATAKATING home">
+        <span class="brand-title">[>] KATAKATING</span>
+        <span class="brand-badge">KNOWLEDGE HUB</span>
+      </a>
     </div>
+
+    <nav class="market-nav" aria-label="Main navigation">
+      <a class="market-support-link" href="https://chat.whatsapp.com/GzEfQkl53ZUBC9R2JF9CEf" target="_blank" rel="noreferrer" aria-label="Saluran WhatsApp"><span class="market-support-dot" aria-hidden="true"></span>Saluran WA ↗</a>
+      <a href="index.html#catalog" aria-label="Semua Jurnal">Semua<span class="market-nav-detail">&nbsp;Jurnal</span></a>
+      <a class="active" href="tulis.html" aria-label="Tulis Artikel">Tulis<span class="market-nav-detail">&nbsp;Artikel</span></a>
+      <a href="article.html?id=panduan-kontribusi">Panduan</a>
+      <a href="https://github.com/muadzhdz/readme" target="_blank" rel="noreferrer" aria-label="GitHub Repo">GitHub<span aria-hidden="true">&nbsp;↗</span></a>
+      <div id="auth-nav-container" class="auth-nav-slot"></div>
+      <button class="square-action" id="theme-toggle" type="button" aria-label="Ganti Tema">
+        <!-- SVG Injected by main.js -->
+      </button>
+    </nav>
   </div>
 </header>
 
@@ -50,42 +59,42 @@
   <nav class="breadcrumbs">
     <a href="index.html">Beranda</a>
     <span>/</span>
-    <span style="color: var(--primary);">Tulis Artikel</span>
+    <span style="color: var(--accent);">Tulis Artikel</span>
   </nav>
 
   <!-- HEADER -->
   <header style="margin-bottom: 28px;">
-    <span class="badge">KONTRIBUSI TERBUKA // SEMUA PROGRAM STUDI</span>
-    <h1 style="font-size: clamp(1.8rem, 3.5vw, 2.3rem); font-weight: 700; letter-spacing: -0.025em; line-height: 1.25; margin-bottom: 10px;">
-      Portal Pengajuan Jurnal & Praktikum TRM
+    <span class="page-eyebrow">// KONTRIBUSI TERBUKA // SEMUA PROGRAM STUDI</span>
+    <h1 style="font-size: clamp(1.8rem, 3.5vw, 2.3rem); font-weight: 700; letter-spacing: -0.025em; line-height: 1.25; margin-bottom: 10px; color: var(--heading);">
+      Portal Pengajuan Jurnal & Panduan Praktikum
     </h1>
-    <p style="color: var(--fg-muted); font-size: 0.92rem; line-height: 1.6; max-width: 720px;">
-      The Penguin Circle dirancang sebagai lumbung dokumentasi perkuliahan bersama. Anda tidak perlu menguasai Git atau koding rumit untuk berkontribusi. Pilih salah satu alur pengiriman di bawah ini:
+    <p style="color: var(--muted); font-size: 14px; line-height: 1.6; max-width: 720px;">
+      [>] KATAKATING dirancang sebagai lumbung dokumentasi perkuliahan bersama. Anda tidak perlu menguasai Git atau koding rumit untuk berkontribusi. Pilih salah satu alur pengiriman di bawah ini:
     </p>
   </header>
 
   <!-- 3 PILIHAN ALUR SUBMISSION -->
   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-bottom: 32px;">
-    <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px;">
-      <span class="card-tag">// OPSI 1: DIREKOMENDASIKAN</span>
-      <h3 style="font-size: 0.95rem; font-weight: 600; margin: 6px 0 4px; color: var(--primary);">Formulir Web Cepat</h3>
-      <p style="font-size: 0.78rem; color: var(--fg-muted); line-height: 1.5;">
+    <div style="background: var(--panel); border: 1px solid var(--line); padding: 18px;">
+      <span class="page-eyebrow" style="margin-bottom: 4px; font-size: 10px;">// OPSI 1: DIREKOMENDASIKAN</span>
+      <h3 style="font-size: 14px; font-weight: 600; margin: 6px 0 4px; color: var(--heading);">Formulir Web Cepat</h3>
+      <p style="font-size: 12px; color: var(--muted); line-height: 1.5;">
         Tulis naskah dengan bantuan editor instan & live preview di bawah. Hasil draf otomatis dikemas menjadi file Markdown dan dikirim ke WhatsApp Redaksi.
       </p>
     </div>
 
-    <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px;">
-      <span class="card-tag">// OPSI 2: LAPORAN PRAKTIKUM</span>
-      <h3 style="font-size: 0.95rem; font-weight: 600; margin: 6px 0 4px; color: var(--primary);">Kirim Dokumen Word (.docx)</h3>
-      <p style="font-size: 0.78rem; color: var(--fg-muted); line-height: 1.5;">
+    <div style="background: var(--panel); border: 1px solid var(--line); padding: 18px;">
+      <span class="page-eyebrow" style="margin-bottom: 4px; font-size: 10px;">// OPSI 2: LAPORAN PRAKTIKUM</span>
+      <h3 style="font-size: 14px; font-weight: 600; margin: 6px 0 4px; color: var(--heading);">Kirim Dokumen Word (.docx)</h3>
+      <p style="font-size: 12px; color: var(--muted); line-height: 1.5;">
         Sudah memiliki dokumen laporan praktikum atau makalah? Kirimkan langsung filenya ke Saluran Komunitas WhatsApp agar dirapikan oleh Dewan Redaksi.
       </p>
     </div>
 
-    <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 18px;">
-      <span class="card-tag">// OPSI 3: OPEN SOURCE</span>
-      <h3 style="font-size: 0.95rem; font-weight: 600; margin: 6px 0 4px; color: var(--primary);">GitHub Pull Request</h3>
-      <p style="font-size: 0.78rem; color: var(--fg-muted); line-height: 1.5;">
+    <div style="background: var(--panel); border: 1px solid var(--line); padding: 18px;">
+      <span class="page-eyebrow" style="margin-bottom: 4px; font-size: 10px;">// OPSI 3: OPEN SOURCE</span>
+      <h3 style="font-size: 14px; font-weight: 600; margin: 6px 0 4px; color: var(--heading);">GitHub Pull Request</h3>
+      <p style="font-size: 12px; color: var(--muted); line-height: 1.5;">
         Bagi mahasiswa yang ingin membangun riwayat kontribusi open-source nyata di GitHub, Anda dapat membuat file baru di direktori articles/ lalu ajukan PR.
       </p>
     </div>
@@ -115,7 +124,7 @@
 
           <div class="form-group">
             <label class="form-label" for="f-nim">NIM & Program Studi / Institusi *</label>
-            <input type="text" id="f-nim" class="form-input" placeholder="Contoh: 2310511099 - TRM Boash" required>
+            <input type="text" id="f-nim" class="form-input" placeholder="Contoh: 24903460014 - FSTI Boash" required>
             <span class="form-helper">Terbuka untuk semua jurusan dan angkatan.</span>
           </div>
         </div>
@@ -138,12 +147,13 @@
             <label class="form-label" for="f-category">Kategori Mata Kuliah *</label>
             <select id="f-category" class="form-select">
               <option value="Jaringan Komputer">Jaringan Komputer</option>
-              <option value="Web & Software">Web & Software</option>
+              <option value="Web & Tooling">Web & Software</option>
               <option value="Basis Data">Basis Data</option>
               <option value="Algoritma & Pemrograman">Algoritma & Pemrograman</option>
               <option value="IoT & Embedded">IoT & Embedded</option>
               <option value="Game & Multimedia">Game & Multimedia</option>
               <option value="Akademik & Laporan">Akademik & Laporan</option>
+              <option value="Git & DevOps">Git & DevOps</option>
               <option value="Catatan Kuliah Umum">Catatan Kuliah Umum</option>
             </select>
           </div>
@@ -212,12 +222,12 @@
         <!-- Input Editor Tulis -->
         <div id="pane-write" class="editor-pane">
           <textarea id="f-body" class="form-textarea" rows="12" placeholder="Tuliskan materi naskah Anda di sini menggunakan format Markdown.
-Klik tombol 'Muat Kerangka Standar' di atas untuk melihat struktur panduan praktikum standar TRM..." required></textarea>
+Klik tombol 'Muat Kerangka Standar' di atas untuk melihat struktur panduan praktikum standar Universitas Boash..." required></textarea>
         </div>
 
         <!-- Pratinjau Live -->
         <div id="pane-preview" class="preview-pane article-content">
-          <p style="color: var(--fg-muted);">Belum ada naskah untuk dipratinjau. Ketik materi di tab 'Editor Tulis'.</p>
+          <p style="color: var(--muted);">Belum ada naskah untuk dipratinjau. Ketik materi di tab 'Editor Tulis'.</p>
         </div>
 
         <!-- Footer Meta Editor -->
@@ -256,15 +266,15 @@ Klik tombol 'Muat Kerangka Standar' di atas untuk melihat struktur panduan prakt
 
       <!-- SECTION 6: AKSI SUBMISSION -->
       <div style="margin-top: 28px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
-        <button type="button" id="btn-wa-submit" class="btn btn-wa" style="padding: 12px 22px; font-weight: 600;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <button type="button" id="btn-wa-submit" class="button market-primary" style="padding: 0 18px; min-height: 40px; font-weight: 700;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
           </svg>
           Kirim Draf via WhatsApp Redaksi
         </button>
 
-        <button type="button" id="btn-download-md" class="btn btn-primary" style="padding: 12px 20px;">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <button type="button" id="btn-download-md" class="button" style="padding: 0 16px; min-height: 40px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
             <polyline points="7 10 12 15 17 10"></polyline>
             <line x1="12" y1="15" x2="12" y2="3"></line>
@@ -272,8 +282,8 @@ Klik tombol 'Muat Kerangka Standar' di atas untuk melihat struktur panduan prakt
           Unduh File Markdown (.md)
         </button>
 
-        <button type="button" id="btn-copy-md" class="btn btn-secondary" style="padding: 12px 18px;">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <button type="button" id="btn-copy-md" class="button" style="padding: 0 14px; min-height: 40px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
             <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
           </svg>
@@ -285,45 +295,50 @@ Klik tombol 'Muat Kerangka Standar' di atas untuk melihat struktur panduan prakt
   </section>
 
   <!-- PANDUAN KETENTUAN REVIEW DEWAN REDAKSI -->
-  <section style="background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 24px; margin-bottom: 32px;">
-    <h3 style="font-size: 1.05rem; font-weight: 600; margin-bottom: 12px; color: var(--primary);">
+  <section style="background: var(--panel); border: 1px solid var(--line); padding: 24px; margin-bottom: 32px;">
+    <h3 style="font-size: 15px; font-weight: 600; margin-bottom: 12px; color: var(--heading);">
       Standar Review & Persetujuan Naskah (Editorial Board)
     </h3>
-    <p style="font-size: 0.85rem; color: var(--fg-muted); line-height: 1.6; margin-bottom: 12px;">
+    <p style="font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 14px;">
       Setiap tulisan yang masuk akan diproses oleh 7 anggota Dewan Redaksi Divisi Kemahasiswaan melalui kriteria penilaian baku:
     </p>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px;">
-      <div style="padding: 12px; background: var(--surface-hover); border-radius: 6px; border: 1px solid var(--border);">
-        <strong style="font-size: 0.85rem; color: var(--primary); display: block; margin-bottom: 4px;">1. Validasi Eksekusi Nyata</strong>
-        <span style="font-size: 0.78rem; color: var(--fg-muted);">Seluruh sintaks perintah terminal dan kode program harus telah berhasil dijalankan tanpa galat sebelum diajukan.</span>
+      <div style="padding: 12px; background: var(--panel-2); border: 1px solid var(--line);">
+        <strong style="font-size: 13px; color: var(--heading); display: block; margin-bottom: 4px;">1. Validasi Eksekusi Nyata</strong>
+        <span style="font-size: 12px; color: var(--muted);">Seluruh sintaks perintah terminal dan kode program harus telah berhasil dijalankan tanpa galat sebelum diajukan.</span>
       </div>
-      <div style="padding: 12px; background: var(--surface-hover); border-radius: 6px; border: 1px solid var(--border);">
-        <strong style="font-size: 0.85rem; color: var(--primary); display: block; margin-bottom: 4px;">2. Kejelasan Bahasa & Alur</strong>
-        <span style="font-size: 0.78rem; color: var(--fg-muted);">Bahasa teknis lugas, padat, dan langsung menguraikan pemecahan masalah tanpa basa-basi bertele-tele.</span>
+      <div style="padding: 12px; background: var(--panel-2); border: 1px solid var(--line);">
+        <strong style="font-size: 13px; color: var(--heading); display: block; margin-bottom: 4px;">2. Kejelasan Bahasa & Alur</strong>
+        <span style="font-size: 12px; color: var(--muted);">Bahasa teknis lugas, padat, dan langsung menguraikan pemecahan masalah tanpa basa-basi bertele-tele.</span>
       </div>
-      <div style="padding: 12px; background: var(--surface-hover); border-radius: 6px; border: 1px solid var(--border);">
-        <strong style="font-size: 0.85rem; color: var(--primary); display: block; margin-bottom: 4px;">3. Hak Cipta & Orisinalitas</strong>
-        <span style="font-size: 0.78rem; color: var(--fg-muted);">Mencantumkan modul atau dokumentasi vendor asli sebagai referensi resmi di bagian penutup artikel.</span>
+      <div style="padding: 12px; background: var(--panel-2); border: 1px solid var(--line);">
+        <strong style="font-size: 13px; color: var(--heading); display: block; margin-bottom: 4px;">3. Hak Cipta & Orisinalitas</strong>
+        <span style="font-size: 12px; color: var(--muted);">Mencantumkan modul atau dokumentasi vendor asli sebagai referensi resmi di bagian penutup artikel.</span>
       </div>
-      <div style="padding: 12px; background: var(--surface-hover); border-radius: 6px; border: 1px solid var(--border);">
-        <strong style="font-size: 0.85rem; color: var(--primary); display: block; margin-bottom: 4px;">4. Pengindeksan Repositori</strong>
-        <span style="font-size: 0.78rem; color: var(--fg-muted);">Artikel yang disetujui akan di-merge ke branch main dan langsung masuk ke katalog pencarian web.</span>
+      <div style="padding: 12px; background: var(--panel-2); border: 1px solid var(--line);">
+        <strong style="font-size: 13px; color: var(--heading); display: block; margin-bottom: 4px;">4. Pengindeksan Repositori</strong>
+        <span style="font-size: 12px; color: var(--muted);">Artikel yang disetujui akan di-merge ke branch main dan langsung masuk ke katalog pencarian web.</span>
       </div>
     </div>
   </section>
 
 </main>
 
-<!-- FOOTER -->
-<footer class="footer">
-  <div>
-    <span style="font-weight: 600; color: var(--primary);">The Penguin Circle</span> &bull; Divisi Kemahasiswaan HIMATRA Boash
-  </div>
-  <div style="display: flex; gap: 16px;">
-    <a href="index.html" style="color: var(--fg-muted);">Beranda</a>
-    <a href="tulis.html" style="color: var(--fg-muted);">Tulis Artikel</a>
-    <a href="article.html?id=panduan-kontribusi" style="color: var(--fg-muted);">Panduan Kontribusi</a>
-    <a href="https://chat.whatsapp.com/GzEfQkl53ZUBC9R2JF9CEf" target="_blank" rel="noopener" style="color: var(--fg-muted);">Saluran WA</a>
+<!-- KATAKATING FOOTER -->
+<footer class="market-footer" id="site-footer">
+  <div class="footer-status">
+    <a class="footer-status-link footer-maintainer" href="https://github.com/muadzhdz" target="_blank" rel="noreferrer">
+      DIVISI KEMAHASISWAAN HIMATRA <span aria-hidden="true">↗</span>
+    </a>
+    <div class="footer-status-copy">
+      <span class="footer-wordmark">UNIVERSITAS BOASH</span>
+    </div>
+    <div class="footer-resource-links">
+      <a class="footer-status-link" href="index.html">BERANDA <span aria-hidden="true">↗</span></a>
+      <a class="footer-status-link" href="tulis.html">TULIS ARTIKEL <span aria-hidden="true">↗</span></a>
+      <a class="footer-status-link" href="article.html?id=panduan-kontribusi">PANDUAN <span aria-hidden="true">↗</span></a>
+      <a class="footer-status-link" href="https://chat.whatsapp.com/GzEfQkl53ZUBC9R2JF9CEf" target="_blank" rel="noreferrer">WHATSAPP <span aria-hidden="true">↗</span></a>
+    </div>
   </div>
 </footer>
 
@@ -402,7 +417,7 @@ const panePreview = document.getElementById('pane-preview');
 function renderPreview() {
   const md = document.getElementById('f-body').value.trim();
   if (typeof parseSimpleMarkdown === 'function') {
-    panePreview.innerHTML = md ? parseSimpleMarkdown(md) : '<p style="color: var(--fg-muted);">Belum ada materi untuk dipratinjau. Ketik di tab Editor Tulis.</p>';
+    panePreview.innerHTML = md ? parseSimpleMarkdown(md) : '<p style="color: var(--muted);">Belum ada materi untuk dipratinjau. Ketik di tab Editor Tulis.</p>';
   }
 }
 
@@ -510,15 +525,42 @@ document.getElementById('btn-wa-submit').addEventListener('click', () => {
   const md = generateMarkdown();
   const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || 'artikel';
 
-  // 1. Download file .md otomatis ke perangkat penulis
+  // 1. Simpan salinan draf ke database Supabase staging queue
+  const supabaseUrl = 'https://nyywfctmbdzzypiwuilt.supabase.co';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im55eXdmY3RtYmR6enlwaXd1aWx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAxNTYxMjYsImV4cCI6MjEwNTczMjEyNn0.rSE8M3hyZE-CdcDVL9Rx0NUfQddn0-tw2ltBr1wPgOQ';
+  const contact = document.getElementById('f-contact') ? document.getElementById('f-contact').value.trim() : '';
+
+  fetch(supabaseUrl + '/rest/v1/submissions', {
+    method: 'POST',
+    headers: {
+      'apikey': supabaseKey,
+      'Authorization': 'Bearer ' + supabaseKey,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=minimal'
+    },
+    body: JSON.stringify({
+      title: title,
+      author_name: author,
+      author_npm: nim,
+      author_email: contact,
+      category: category,
+      summary: summary,
+      content: md,
+      status: 'pending_review'
+    })
+  }).catch(function(err) {
+    console.warn('Supabase staging sync notice:', err);
+  });
+
+  // 2. Download file .md otomatis ke perangkat penulis
   const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = slug + '.md';
   a.click();
 
-  // 2. Buat pesan WhatsApp terstruktur yang tidak terpotong batasan URL
-  const waMsg = 'Halo Dewan Redaksi The Penguin Circle (Divisi Kemahasiswaan),%0A%0ASaya ingin mengajukan naskah artikel praktikum baru:%0A%0A*Judul:* ' + encodeURIComponent(title) + '%0A*Penulis:* ' + encodeURIComponent(author) + ' (' + encodeURIComponent(nim) + ')%0A*Kategori:* ' + encodeURIComponent(category) + '%0A*Ringkasan:* ' + encodeURIComponent(summary) + '%0A%0A_File naskah format Markdown (' + slug + '.md) telah saya unduh dan saya lampirkan bersama pesan ini untuk direview oleh tim redaksi._';
+  // 3. Buat pesan WhatsApp terstruktur yang tidak terpotong batasan URL
+  const waMsg = 'Halo Dewan Redaksi [>] KATAKATING (Divisi Kemahasiswaan),%0A%0ASaya ingin mengajukan naskah artikel praktikum baru:%0A%0A*Judul:* ' + encodeURIComponent(title) + '%0A*Penulis:* ' + encodeURIComponent(author) + ' (' + encodeURIComponent(nim) + ')%0A*Kategori:* ' + encodeURIComponent(category) + '%0A*Ringkasan:* ' + encodeURIComponent(summary) + '%0A%0A_File naskah format Markdown (' + slug + '.md) telah saya unduh dan saya lampirkan bersama pesan ini untuk direview oleh tim redaksi._';
 
   window.open('https://api.whatsapp.com/send?text=' + waMsg, '_blank');
   showToast('File ' + slug + '.md berhasil diunduh & WhatsApp terbuka!');
@@ -548,6 +590,23 @@ document.getElementById('btn-copy-md').addEventListener('click', () => {
     showToast('Format Markdown berhasil disalin ke clipboard!');
   });
 });
+
+// ── Action 4: Auto-fill Form from Student Profile (If Logged In) ──
+const checkProfInterval = setInterval(() => {
+  const auth = window.KataKatingAuth || window.ReadmeAuth;
+  if (auth && auth.profile) {
+    clearInterval(checkProfInterval);
+    const prof = auth.profile;
+    const authorInput = document.getElementById('f-author');
+    const nimInput = document.getElementById('f-nim');
+    if (authorInput && !authorInput.value && prof.full_name) {
+      authorInput.value = prof.full_name;
+    }
+    if (nimInput && !nimInput.value && prof.nim) {
+      nimInput.value = prof.nim + (prof.prodi ? ' - ' + prof.prodi + ' Boash' : '');
+    }
+  }
+}, 300);
 </script>
 
 </body>

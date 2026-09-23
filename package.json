@@ -1,0 +1,26 @@
+{
+  "name": "katakating",
+  "version": "1.0.0",
+  "description": "KataKating - Boash Knowledge Base & Lab Survival Guide - Interactive Multimedia Guide Repository",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "python3 -m http.server 4173",
+    "build": "node scripts/build-catalog.mjs",
+    "test": "node --test test/catalog.test.js",
+    "validate": "node scripts/validate-submission.mjs"
+  },
+  "keywords": [
+    "katakating",
+    "boash",
+    "knowledge-base",
+    "fsti",
+    "multimedia",
+    "guides"
+  ],
+  "author": "Mu'adz Hudzaifah & Mahasiswa Universitas Boash",
+  "license": "MIT"
+}

@@ -1,16 +1,16 @@
 ---
 id: panduan-kontribusi
-title: Panduan & Ketentuan Kontribusi Artikel Jurnal The Penguin Circle
+title: Panduan & Ketentuan Kontribusi Artikel Jurnal [>] KATAKATING
 category: Kontribusi & Panduan
 author: Divisi Kemahasiswaan HIMATRA
-date: 2026-09-21
+date: 2026-09-23
 readTime: 4 menit
-tags: ["kontribusi", "panduan", "markdown", "open-source", "himatra", "boash"]
-summary: Syarat, ketentuan akademik, format metadata frontmatter, dan tata cara mengirimkan tulisan jurnal/artikel praktikum ke The Penguin Circle via GitHub Pull Request.
+tags: ["kontribusi", "panduan", "markdown", "open-source", "himatra", "boash", "fsti"]
+summary: Syarat, ketentuan akademik, format metadata frontmatter, dan tata cara mengirimkan tulisan jurnal/artikel praktikum ke [>] KATAKATING via formulir web atau GitHub Pull Request.
 ---
 
 ## 1. Semangat Komunitas Terbuka
-The Penguin Circle (TPC) dirancang sebagai **Knowledge Hub Mahasiswa TRM Terbuka**. Setiap mahasiswa atau civitas akademika Universitas Boash dipersilakan untuk menyumbangkan tulisan artikel praktikum, tips perkuliahan, maupun dokumentasi riset tugas akhir.
+[>] KATAKATING dirancang sebagai **Knowledge Hub Mahasiswa Universitas Boash Terbuka**. Setiap mahasiswa atau civitas akademika dari seluruh program studi di Universitas Boash dipersilakan untuk menyumbangkan tulisan artikel praktikum, tips perkuliahan, maupun dokumentasi riset tugas akhir.
 
 ## 2. Syarat & Ketentuan Artikel yang Di-Acc (Diterima)
 Agar kualitas jurnal dan artikel tetap terjaga kredibilitasnya, setiap naskah yang dikirimkan wajib memenuhi 5 kriteria utama:
@@ -63,10 +63,10 @@ Sebutkan error yang sering terjadi dan bagaimana cara mengatasinya.
 
 ## 4. Tiga Jalur Pengiriman Artikel (Pilih yang Paling Mudah)
 
-Kami ingin The Penguin Circle dapat diakses oleh **seluruh mahasiswa dari segala jurusan**, bukan hanya mereka yang menguasai Git atau koding. Anda bebas memilih salah satu dari 3 opsi berikut:
+Kami ingin [>] KATAKATING dapat diakses oleh **seluruh mahasiswa dari segala jurusan di Universitas Boash**, bukan hanya mereka yang menguasai Git atau koding. Anda bebas memilih salah satu dari 3 opsi berikut:
 
 ### Opsi 1: Formulir Web Otomatis (Direkomendasikan & Paling Cepat)
-1. Buka menu **[Tulis Artikel](tulis.html)** di web The Penguin Circle.
+1. Buka menu **[Tulis Artikel](tulis.html)** di web [>] KATAKATING.
 2. Isi nama, program studi/NIM, kategori matkul, judul, ringkasan, materi praktikum, dan referensi.
 3. Klik tombol **Kirim Draft via WhatsApp Redaksi** atau **Download File Markdown (.md)**.
 4. Tim editorial kemahasiswaan akan langsung menerima dan memvalidasi artikel Anda.
@@ -78,7 +78,7 @@ Kami ingin The Penguin Circle dapat diakses oleh **seluruh mahasiswa dari segala
 
 ### Opsi 3: Jalur Open-Source (GitHub Pull Request)
 Bagi mahasiswa yang ingin membangun portofolio kontribusi open-source nyata:
-1. **Fork Repositori**: Buka repositori `https://github.com/muadzhdz/the-penguin-circle` lalu klik tombol **Fork**.
+1. **Fork Repositori**: Buka repositori `https://github.com/muadzhdz/readme` lalu klik tombol **Fork**.
 2. **Buat File Baru**: Masukkan file artikel Anda ke dalam folder `articles/` di branch baru, contoh `feat/artikel-iot-lora`.
 3. **Commit & Push**:
    ```bash
