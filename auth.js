@@ -48,6 +48,7 @@ const KataKatingAuth = {
         this.profile = null;
       }
       this.renderNav();
+      if (typeof window.refreshRecentlyAdded === 'function') window.refreshRecentlyAdded();
       if (typeof window.refreshCardInteractions === 'function') window.refreshCardInteractions();
     });
   },
@@ -119,6 +120,18 @@ const KataKatingAuth = {
       if (toggle && menu) {
         toggle.addEventListener('click', (e) => {
           e.stopPropagation();
+          const mobPanel = document.getElementById('mobile-nav-panel');
+          const mobBtn = document.getElementById('mobile-menu-btn');
+          if (mobPanel && !mobPanel.hidden) {
+            mobPanel.hidden = true;
+            if (mobBtn) {
+              mobBtn.setAttribute('aria-expanded', 'false');
+              const iconOpen = mobBtn.querySelector('.icon-menu-open');
+              const iconClose = mobBtn.querySelector('.icon-menu-close');
+              if (iconOpen) iconOpen.style.display = 'block';
+              if (iconClose) iconClose.style.display = 'none';
+            }
+          }
           menu.hidden = !menu.hidden;
         });
         document.addEventListener('click', () => {
@@ -260,7 +273,7 @@ const KataKatingAuth = {
             <input type="text" id="ob-fullname" class="form-input" value="${(this.profile && this.profile.full_name) || ''}" required>
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div class="form-row" style="margin-bottom: 0;">
             <div>
               <label class="form-label" for="ob-nim">NIM / NPM *</label>
               <input type="text" id="ob-nim" class="form-input" placeholder="Contoh: 24903460014" required>
@@ -277,7 +290,7 @@ const KataKatingAuth = {
             </div>
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div class="form-row" style="margin-bottom: 0;">
             <div>
               <label class="form-label" for="ob-fakultas">Fakultas *</label>
               <select id="ob-fakultas" class="form-select">

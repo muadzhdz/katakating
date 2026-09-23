@@ -210,9 +210,21 @@ code, pre, .font-mono {
 .market-nav {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   font-family: var(--mono);
   font-size: 12px;
+}
+
+.market-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.market-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .market-nav a {
@@ -248,6 +260,108 @@ code, pre, .font-mono {
   font-size: 10px;
   opacity: 0.65;
   margin-left: 1px;
+}
+
+/* Cyber Brutalist Mobile Menu Toggle Button */
+.mobile-menu-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: var(--panel-2);
+  border: 1px solid var(--line-strong);
+  color: var(--text);
+  cursor: pointer;
+  padding: 0;
+  border-radius: 2px;
+  transition: all 0.15s;
+}
+
+.mobile-menu-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Collapsible Mobile Navigation Panel */
+.mobile-nav-panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--panel);
+  border-bottom: 2px solid var(--accent);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.7);
+  z-index: 100;
+  animation: mobileNavIn 0.15s ease-out;
+}
+
+.mobile-nav-panel[hidden] {
+  display: none !important;
+}
+
+.mobile-nav-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 12px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mobile-nav-section-title {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: .12em;
+  margin: 6px 0 4px;
+  padding-left: 6px;
+}
+
+.mobile-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 42px;
+  padding: 8px 12px;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  color: var(--heading) !important;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+
+.mobile-nav-item:hover,
+.mobile-nav-item:active,
+.mobile-nav-item.active {
+  background: var(--code-bg);
+  border-color: var(--accent);
+  color: var(--accent) !important;
+}
+
+.mobile-nav-num {
+  color: var(--accent);
+  font-size: 11px;
+}
+
+.mobile-nav-arrow {
+  margin-left: auto;
+  opacity: 0.7;
+}
+
+.mobile-nav-divider {
+  height: 1px;
+  background: var(--line);
+  margin: 8px 0 4px;
+}
+
+@keyframes mobileNavIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .market-support-link {
@@ -1589,41 +1703,194 @@ pre.code-body {
   pointer-events: auto;
 }
 
-/* ── RESPONSIVE BREAKPOINTS ── */
-@media (max-width: 768px) {
-  .plugin-card {
-    grid-template-columns: 38px 1fr;
-    gap: 12px;
+/* ── RESPONSIVE BREAKPOINTS (ALL DEVICES) ── */
+
+/* 1. Medium Tablets (max-width: 860px) */
+@media (max-width: 860px) {
+  .market-header-inner {
+    padding: 0 14px;
   }
-  .plugin-side {
-    grid-column: 2;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    margin-top: 8px;
+  .market-nav-links {
+    gap: 6px;
   }
-  .plugin-stats {
-    flex-direction: row;
-    gap: 12px;
-    align-items: center;
+  .market-nav-links a {
+    padding: 4px 5px;
+    font-size: 11px;
+  }
+}
+
+/* 2. Mobile & Small Tablets (max-width: 680px) */
+@media (max-width: 680px) {
+  .market-header-inner {
+    padding: 0 12px;
+    height: 48px;
+  }
+  .market-nav-links {
+    display: none !important; /* Hide horizontal desktop links on mobile */
+  }
+  .mobile-menu-btn {
+    display: inline-flex !important; /* Show cyber mobile menu button */
+  }
+  .brand-badge {
+    display: none; /* Keep header brand ultra clean on small screens */
+  }
+  .market-brand-home {
+    font-size: 11px;
+  }
+  .auth-btn-login {
+    height: 30px;
+    min-height: 30px;
+    padding: 0 10px;
+    font-size: 10px;
+  }
+  .auth-user-btn {
+    height: 30px;
+    padding: 0 8px;
+    font-size: 10px;
+  }
+  .theme-toggle {
+    width: 30px;
+    height: 30px;
+  }
+  
+  /* Hero */
+  .market-hero {
+    padding: 28px 14px 20px;
+  }
+  .market-hero h1 {
+    font-size: 1.85rem;
+    line-height: 1.2;
+  }
+  .market-hero p {
+    font-size: 13px;
+    margin-bottom: 18px;
   }
   .market-hero-actions {
     flex-direction: column;
     width: 100%;
   }
-  .button {
+  .market-hero-actions .button {
     width: 100%;
     justify-content: center;
+  }
+
+  /* Catalog Controls & Search */
+  .market-catalog,
+  .recent-section {
+    padding: 0 12px;
   }
   .catalog-heading {
     flex-direction: column;
     align-items: flex-start;
-    gap: 8px;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .catalog-controls {
+    flex-direction: column;
+  }
+  .sort-control {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+    width: 100%;
+  }
+  .sort-control select {
+    width: 100%;
+  }
+  .category-bar {
+    padding: 6px 10px;
+  }
+
+  /* Cyber Cards Grid */
+  .plugin-grid {
+    grid-template-columns: 1fr;
+    padding: 10px;
+    gap: 12px;
+  }
+  .recent-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .plugin-card-title {
+    font-size: 13px;
+  }
+  .plugin-card-by {
+    max-width: 150px;
+  }
+
+  /* Footer */
+  .market-footer {
+    padding: 24px 14px;
   }
   .footer-status {
     flex-direction: column;
     align-items: flex-start;
+    gap: 12px;
+  }
+  .footer-links {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    width: 100%;
+  }
+  .footer-status-copy {
+    text-align: left;
+  }
+
+  /* Article Page */
+  .article-header {
+    padding: 20px 14px;
+  }
+  .article-header h1 {
+    font-size: 1.5rem !important;
+  }
+  .article-actions-bar {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 10px;
+  }
+  .article-actions-bar > div {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .article-content {
+    padding: 20px 14px;
+  }
+
+  /* Tulis Page */
+  .editor-toolbar {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 6px;
+  }
+  .editor-tabs {
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+}
+
+/* 3. Small Mobile (max-width: 380px) */
+@media (max-width: 380px) {
+  .market-header-inner {
+    padding: 0 8px;
+  }
+  .market-brand-home {
+    font-size: 10px;
+    letter-spacing: .02em;
+  }
+  .market-nav-actions {
+    gap: 5px;
+  }
+  .auth-btn-login {
+    padding: 0 7px;
+    font-size: 9px;
+  }
+  .plugin-card-by {
+    max-width: 120px;
+  }
+  .card-action-btn {
+    padding: 2px 5px;
+    font-size: 10px;
   }
 }
 

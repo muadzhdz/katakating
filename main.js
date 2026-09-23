@@ -430,12 +430,195 @@ function setupCardDelegation() {
   });
 }
 
+// ── Utility: HTML Escape ──
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+// ── Utility: Relative Time ──
+function formatTimeAgo(isoString) {
+  if (!isoString) return 'BARU';
+  try {
+    const date = new Date(isoString);
+    const diffMs = Date.now() - date.getTime();
+    if (diffMs < 0) return 'baru saja';
+    const diffSec = Math.floor(diffMs / 1000);
+    const diffMin = Math.floor(diffSec / 60);
+    const diffHour = Math.floor(diffMin / 60);
+    const diffDay = Math.floor(diffHour / 24);
+
+    if (diffDay > 30) return `${Math.floor(diffDay / 30)} bln lalu`;
+    if (diffDay > 0) return `${diffDay} hr lalu`;
+    if (diffHour > 0) return `${diffHour} jam lalu`;
+    if (diffMin > 0) return `${diffMin} mnt lalu`;
+    return 'baru saja';
+  } catch (e) {
+    return 'BARU';
+  }
+}
+
+// ── Recently Added Dynamic Section (FIFO Rolling Queue) ──
+async function loadRecentlyAdded() {
+  const container = document.getElementById('recent-grid');
+  if (!container) return;
+
+  const auth = window.KataKatingAuth || window.ReadmeAuth;
+  let sb = auth ? auth.client : null;
+  if (!sb && window.supabase && typeof window.supabase.createClient === 'function') {
+    const SUPABASE_URL = 'https://nyywfctmbdzzypiwuilt.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im55eXdmY3RtYmR6enlwaXd1aWx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAxNTYxMjYsImV4cCI6MjEwNTczMjEyNn0.rSE8M3hyZE-CdcDVL9Rx0NUfQddn0-tw2ltBr1wPgOQ';
+    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  }
+  if (!sb) return;
+
+  try {
+    const { data: recentGuides, error } = await sb
+      .from('guides')
+      .select('id, title, summary, author_name, category, initials, prodi_tags, views_count, created_at')
+      .order('created_at', { ascending: false })
+      .limit(3);
+
+    if (error) {
+      console.warn('Recently added query notice:', error);
+      return;
+    }
+
+    if (recentGuides && recentGuides.length > 0) {
+      container.innerHTML = recentGuides.map((g, idx) => {
+        const monogram = escapeHtml(g.initials || (g.title ? g.title.substring(0, 4).toUpperCase() : 'DOC'));
+        const title = escapeHtml(g.title || 'Untitled');
+        const summary = escapeHtml(g.summary || '');
+        const author = escapeHtml(g.author_name || 'Kontributor');
+        const category = escapeHtml(g.category || 'Panduan');
+        const timeAgo = formatTimeAgo(g.created_at);
+        const tags = Array.isArray(g.prodi_tags) && g.prodi_tags.length > 0 ? g.prodi_tags : ['guide'];
+        const tagSpans = tags.slice(0, 3).map(t => `<span class="card-tag">${escapeHtml(t)}</span>`).join('');
+        const views = g.views_count || 0;
+        const idNum = `#0${idx + 1}`;
+
+        return `
+      <!-- Recent ${idx + 1}: ${escapeHtml(g.id)} -->
+      <article class="plugin-card" data-id="${escapeHtml(g.id)}" data-cat="${escapeHtml(category.toLowerCase())}">
+        <div class="plugin-card-banner">
+          <span class="banner-monogram">${monogram}</span>
+        </div>
+        <div class="plugin-card-content">
+          <div class="plugin-card-header">
+            <h3 class="plugin-card-title">
+              <a href="article.html?id=${escapeHtml(g.id)}">${title}</a>
+            </h3>
+            <div class="plugin-card-actions">
+              <button type="button" class="card-action-btn card-btn-bookmark" data-id="${escapeHtml(g.id)}" title="Simpan artikel" aria-label="Simpan artikel">
+                <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+                <span class="card-bookmark-count">0</span>
+              </button>
+              <button type="button" class="card-action-btn card-btn-like" data-id="${escapeHtml(g.id)}" title="Sukai artikel" aria-label="Sukai artikel">
+                <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <span class="card-like-count">0</span>
+              </button>
+            </div>
+          </div>
+          <div class="plugin-card-meta-row">
+            <span class="plugin-card-by">by ${author} &bull; ${category}</span>
+            <span class="plugin-card-id" title="${timeAgo}">${idNum} &bull; ${timeAgo}</span>
+          </div>
+          <p class="plugin-card-desc">${summary}</p>
+          <div class="plugin-card-badges">
+            <span class="badge-tag-new">BARU</span>
+            <span class="badge-tag-verified">Verified</span>
+          </div>
+        </div>
+        <div class="plugin-card-bottom">
+          <div class="card-bottom-tags">
+            ${tagSpans}
+          </div>
+          <div class="card-bottom-stats">
+            <span class="card-stat-group" title="Jumlah pembaca">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span class="card-views-count" data-id="${escapeHtml(g.id)}">${views}</span>
+            </span>
+            <a href="article.html?id=${escapeHtml(g.id)}" class="card-read-action" title="Buka Jurnal" aria-label="Buka Jurnal">&gt;_</a>
+          </div>
+        </div>
+      </article>`;
+      }).join('');
+
+      // Refresh interactions after dynamic render
+      initCardInteractions();
+    }
+  } catch (err) {
+    console.warn('Recently added load error:', err);
+  }
+}
+
+// ── Mobile Navigation Toggle ──
+function initMobileNav() {
+  const toggleBtn = document.getElementById('mobile-menu-btn');
+  const panel = document.getElementById('mobile-nav-panel');
+  if (!toggleBtn || !panel) return;
+
+  const iconOpen = toggleBtn.querySelector('.icon-menu-open');
+  const iconClose = toggleBtn.querySelector('.icon-menu-close');
+
+  function toggleMenu(forceClose = false) {
+    const isExpanded = forceClose ? true : toggleBtn.getAttribute('aria-expanded') === 'true';
+    if (isExpanded) {
+      toggleBtn.setAttribute('aria-expanded', 'false');
+      panel.hidden = true;
+      if (iconOpen) iconOpen.style.display = 'block';
+      if (iconClose) iconClose.style.display = 'none';
+    } else {
+      toggleBtn.setAttribute('aria-expanded', 'true');
+      panel.hidden = false;
+      if (iconOpen) iconOpen.style.display = 'none';
+      if (iconClose) iconClose.style.display = 'block';
+    }
+  }
+
+  toggleBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const authDrop = document.getElementById('auth-user-dropdown');
+    if (authDrop) authDrop.hidden = true;
+    toggleMenu();
+  });
+
+  // Close when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!panel.hidden && !panel.contains(e.target) && !toggleBtn.contains(e.target)) {
+      toggleMenu(true);
+    }
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !panel.hidden) {
+      toggleMenu(true);
+    }
+  });
+
+  // Close when clicking any nav item in the panel
+  panel.querySelectorAll('.mobile-nav-item').forEach(item => {
+    item.addEventListener('click', () => {
+      toggleMenu(true);
+    });
+  });
+}
+
 window.refreshCardInteractions = initCardInteractions;
+window.refreshRecentlyAdded = loadRecentlyAdded;
 
 document.addEventListener('DOMContentLoaded', () => {
   initCopy();
   initSearchFilter();
   initTheme();
   setupCardDelegation();
+  initMobileNav();
+  loadRecentlyAdded();
   setTimeout(initCardInteractions, 300);
 });
