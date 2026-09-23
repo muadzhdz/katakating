@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Graf Pengetahuan (The Brain) &mdash; KATAKATING</title>
+  <meta name="description" content="The Brain: Visualisasi jejaring pengetahuan Hermes Star Map 2D Canvas berdimensi waktu radial.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300ff66' stroke-width='2'><circle cx='12' cy='12' r='3'/><path d='M12 2v4m0 12v4m-10-10h4m12 0h4'/></svg>">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="main.js" defer></script>
+  <script src="auth.js" defer></script>
+  <script src="graph.js" defer></script>
+</head>
+
+<body class="brain-body">
+
+  <!-- TOP COCKPIT HEADER -->
+  <header class="brain-header" id="site-header">
+    <div class="brain-header-left">
+      <div class="brain-brand-row">
+        <span class="brain-brand-icon" aria-hidden="true">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+        </span>
+        <span class="brain-brand-title">KATAKATING &mdash; THE BRAIN</span>
+        <span class="brain-badge-status" id="cockpit-status-badge">ONLINE</span>
+        <span class="brain-pulse-label" id="cockpit-pulse-text">pulse 10049 &middot; aktif</span>
+      </div>
+      <div class="brain-subline">
+        <span>PUBLISHED SNAPSHOT &middot; katalog terverifikasi &middot; ledger signed &middot; debt clear</span>
+        <a href="index.html#catalog" class="brain-subline-link">[baca katalog]</a>
+      </div>
+    </div>
+
+    <div class="brain-header-right">
+      <span class="brain-clock" id="brain-clock">00:00:00</span>
+      <button class="brain-top-btn" id="theme-toggle" type="button" title="Ganti Tema" aria-label="Ganti Tema">
+        <!-- SVG Injected by main.js -->
+      </button>
+      <button class="brain-top-btn" id="btn-replay-top" type="button" title="Replay Pertumbuhan Radial">[&circlearrowright; REPLAY]</button>
+      <a href="index.html" class="brain-exit-btn" title="Keluar ke Katalog">&times; close</a>
+    </div>
+  </header>
+
+  <!-- MAIN 3-COLUMN COCKPIT GRID -->
+  <main class="brain-grid" role="main">
+
+    <!-- LEFT RAIL: VITALS & METRICS -->
+    <aside class="brain-rail-left" aria-label="Metrik & Status Sistem">
+      <div class="brain-card">
+        <div class="brain-card-title">
+          <span>CONTINUITY</span>
+          <span class="brain-badge-status" style="font-size: 8.5px;">SINKRON</span>
+        </div>
+        <div class="brain-card-meta">
+          Cadangan otomatis &middot; aktif<br>
+          Integritas ledger &middot; terverifikasi<br>
+          Status runtime &middot; 0% utang graf
+        </div>
+      </div>
+
+      <div class="brain-card">
+        <div class="brain-card-title">VITALS</div>
+        <div class="brain-vitals-grid">
+          <span class="brain-vital-key">memories (artikel)</span>
+          <span class="brain-vital-val" id="vital-memories">10</span>
+          <span class="brain-vital-key">links (sinapsis)</span>
+          <span class="brain-vital-val" id="vital-links">28</span>
+          <span class="brain-vital-key">organs (rumpun)</span>
+          <span class="brain-vital-val" id="vital-organs">6</span>
+          <span class="brain-vital-key">authors (kontributor)</span>
+          <span class="brain-vital-val" id="vital-authors">4</span>
+          <span class="brain-vital-key">tags (fokus topik)</span>
+          <span class="brain-vital-val" id="vital-tags">32</span>
+        </div>
+      </div>
+
+      <div class="brain-card">
+        <div class="brain-card-title">PULSE ACTIVITY</div>
+        <div class="brain-card-meta">Aktivitas detak integrasi:</div>
+        <div class="brain-sparkline-wrap" id="brain-sparkline">
+          <!-- Injected dynamically -->
+        </div>
+      </div>
+
+      <div class="brain-card" style="flex: 1; border-bottom: 0;">
+        <div class="brain-card-title">WORKSPACES / RUMPUN</div>
+        <div class="brain-workspace-list" id="brain-workspace-list">
+          <!-- Injected dynamically -->
+        </div>
+      </div>
+    </aside>
+
+    <!-- CENTER RAIL: HERMES STAR MAP RADIAL CANVAS -->
+    <section class="brain-rail-center" aria-label="Kanvas Graf Pengetahuan">
+      <div class="brain-canvas-bar">
+        <div class="brain-canvas-bar-left">
+          <span>CORPUS-LINKED RELATIONS &middot; hover or lock to reveal type</span>
+        </div>
+        <div class="brain-canvas-bar-right">
+          <input type="text" id="brain-search" class="brain-search-box" placeholder="// cari simpul..." autocomplete="off">
+          <button type="button" class="brain-top-btn" id="btn-replay-growth" title="Replay pertumbuhan kronologis">&circlearrowright; replay growth</button>
+        </div>
+      </div>
+
+      <div class="brain-canvas-wrap" id="brain-canvas-wrapper">
+        <canvas id="brain-canvas"></canvas>
+
+        <!-- FLOATING LEGEND PILL FILTERS -->
+        <div class="brain-legend-bar" id="brain-legend-bar">
+          <button type="button" class="brain-pill active" data-kind="cortex" title="Toggle Simpul Pusat">
+            <span class="pill-dot cortex"></span>cortex
+          </button>
+          <button type="button" class="brain-pill active" data-kind="organ" title="Toggle Simpul Rumpun Keilmuan">
+            <span class="pill-dot organ"></span>organ
+          </button>
+          <button type="button" class="brain-pill active" data-kind="memory" title="Toggle Simpul Jurnal Artikel">
+            <span class="pill-dot memory"></span>memory
+          </button>
+          <button type="button" class="brain-pill active" data-kind="author" title="Toggle Simpul Kontributor Penulis">
+            <span class="pill-dot author"></span>author
+          </button>
+        </div>
+
+        <!-- CAMERA CONTROLS REMOVED: ZOOM VIA SCROLL / PINCH -->
+
+        <!-- FLOATING STATUS HUD -->
+        <div class="brain-canvas-hud" id="brain-canvas-hud">
+          MEMUAT HERMES STAR MAP...
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT RAIL: INSPECTOR & THOUGHT STREAM -->
+    <aside class="brain-rail-right" aria-label="Inspeksi Detail & Log">
+      <div class="brain-card" style="border-bottom: 1px solid var(--line);">
+        <div class="brain-card-title">INSPECTOR</div>
+        <div class="brain-inspector-body" id="brain-inspector-body">
+          <div class="brain-empty-hint">
+            Arahkan kursor ke sebuah memori untuk inspeksi &mdash; klik untuk mengunci pilihan. Setiap relasi menampilkan tipe dan konteks keterhubungannya.
+          </div>
+        </div>
+      </div>
+
+      <div class="brain-card" style="flex: 1; border-bottom: 0;">
+        <div class="brain-card-title">THOUGHT STREAM</div>
+        <div class="brain-stream-list" id="brain-stream-list">
+          <!-- Injected dynamically -->
+        </div>
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- BOTTOM FOOTER STATUS LINE -->
+  <footer class="brain-footer">
+    <div class="brain-footer-left">
+      <span class="brain-footer-tag" id="footer-status-label">[origin:verified]</span>
+      <span id="footer-status-text">Katakating Knowledge Network settled &middot; 0% idle CPU</span>
+    </div>
+    <div class="brain-footer-right">
+      <span class="desktop-shortcut">hover = inspect</span>
+      <span class="desktop-shortcut">&middot;</span>
+      <span class="desktop-shortcut">click = lock</span>
+      <span class="desktop-shortcut">&middot;</span>
+      <span class="desktop-shortcut">R = replay</span>
+      <span class="desktop-shortcut">&middot;</span>
+      <span class="desktop-shortcut">+/- = zoom</span>
+      <span class="desktop-shortcut">&middot;</span>
+      <span class="desktop-shortcut">drag = pan</span>
+      <span class="desktop-shortcut">&middot;</span>
+      <span class="desktop-shortcut">Esc = close</span>
+      <span class="mobile-shortcut" style="display: none;">tap = info &middot; drag = pan &middot; pinch = zoom</span>
+    </div>
+  </footer>
+
+</body>
+</html>
