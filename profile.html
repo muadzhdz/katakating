@@ -263,8 +263,11 @@ async function initProfilePage() {
   const profile = auth.profile || {};
 
   // Populate Identity Card
-  const avatar = profile.avatar_url || 'assets/og-images/og-logo.png';
-  document.getElementById('p-avatar').src = avatar;
+  const defaultAvatar = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2322c55e' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='8' r='4'/%3E%3Cpath d='M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2'/%3E%3C/svg%3E";
+  const avatar = profile.avatar_url || defaultAvatar;
+  const pAvatar = document.getElementById('p-avatar');
+  pAvatar.src = avatar;
+  pAvatar.onerror = () => { pAvatar.src = defaultAvatar; };
   document.getElementById('p-fullname').textContent = profile.full_name || user.email.split('@')[0];
   document.getElementById('p-email').textContent = user.email;
   document.getElementById('p-nim').textContent = profile.nim || '(Belum diisi)';

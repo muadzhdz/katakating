@@ -47,7 +47,6 @@ katakating/
 ├── test/
 │   └── catalog.test.js           # Unit test otomatis integritas panduan
 ├── articles/                     # Berkas dokumentasi naskah panduan (Markdown)
-├── assets/                       # Aset grafis, diagram SVG, dan identitas visual
 ├── supabase/
 │   └── migrations/               # Skema DDL PostgreSQL dan migrasi Supabase
 ├── catalog.json                  # Single Source of Truth (Katalog Master)
