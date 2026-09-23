@@ -5,12 +5,6 @@
 **Boash Knowledge Base & Lab Survival Guide**  
 *Repositori Panduan Praktikum, Tips Kuliah, dan Solusi Kendala Teknis Mahasiswa Universitas Boash*
 
-[![CI Verification](https://github.com/muadzhdz/katakating/actions/workflows/ci.yml/badge.svg)](https://github.com/muadzhdz/katakating/actions)
-[![Vercel Deployment](https://img.shields.io/badge/Deployment-katakating.vercel.app-00ff66?logo=vercel&logoColor=black)](https://katakating.vercel.app)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Architecture: Cyber Brutalist](https://img.shields.io/badge/Design-_Cyber_Brutalist-00ff66)](#)
-[![Policy: Zero-Emoji](https://img.shields.io/badge/Policy-Zero--Emoji-success)](#)
-
 </div>
 
 ---
