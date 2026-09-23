@@ -50,11 +50,17 @@
     </div>
 
     <nav class="market-nav" aria-label="Main navigation">
-      <a class="market-support-link" href="https://chat.whatsapp.com/GzEfQkl53ZUBC9R2JF9CEf" target="_blank" rel="noreferrer" aria-label="Saluran WhatsApp"><span class="market-support-dot" aria-hidden="true"></span>Saluran WA ↗</a>
-      <a class="active" href="#catalog" aria-label="Semua Jurnal">Semua<span class="market-nav-detail">&nbsp;Jurnal</span></a>
-      <a href="tulis.html" aria-label="Tulis Artikel">Tulis<span class="market-nav-detail">&nbsp;Artikel</span></a>
-      <a href="article.html?id=panduan-kontribusi">Panduan</a>
-      <a href="https://github.com/muadzhdz/katakating" target="_blank" rel="noreferrer" aria-label="GitHub Repo">GitHub<span aria-hidden="true">&nbsp;↗</span></a>
+      <a class="active" href="#catalog" aria-label="Semua Jurnal">Semua Jurnal</a>
+      <a href="tulis.html" aria-label="Tulis Artikel">Tulis Artikel</a>
+      <a href="article.html?id=panduan-kontribusi" aria-label="Panduan Kontribusi">Panduan</a>
+      <a class="market-icon-link" href="https://chat.whatsapp.com/GzEfQkl53ZUBC9R2JF9CEf" target="_blank" rel="noreferrer" title="Saluran WhatsApp" aria-label="Saluran WhatsApp">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        <span class="nav-ext-arrow">↗</span>
+      </a>
+      <a class="market-icon-link" href="https://github.com/muadzhdz/katakating" target="_blank" rel="noreferrer" title="Repositori GitHub" aria-label="Repositori GitHub">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+        <span class="nav-ext-arrow">↗</span>
+      </a>
       <div id="auth-nav-container" class="auth-nav-slot"></div>
       <button class="square-action" id="theme-toggle" type="button" aria-label="Ganti Tema">
         <!-- SVG Injected by main.js -->
@@ -90,58 +96,154 @@
     <div id="recent-grid" class="recent-grid" aria-label="Recently added journals">
       
       <!-- Recent 1: WSL2 -->
-      <a class="recent-card" href="article.html?id=setup-wsl2-ubuntu-webdev">
-        <div>
-          <div class="recent-card-top">
-            <div class="plugin-icon">WSL</div>
-            <div>
-              <h3>Setup Lengkap WSL2 Ubuntu 24.04</h3>
-              <span class="status-badge">Web & Tooling</span>
+      <article class="plugin-card" data-id="setup-wsl2-ubuntu-webdev" data-cat="Web & Tooling linux wsl2 ubuntu webdev">
+        <div class="plugin-card-banner">
+          <span class="banner-monogram">WSL</span>
+        </div>
+        <div class="plugin-card-content">
+          <div class="plugin-card-header">
+            <h3 class="plugin-card-title">
+              <a href="article.html?id=setup-wsl2-ubuntu-webdev">Setup Lengkap WSL2 Ubuntu 24.04 untuk Web Development</a>
+            </h3>
+            <div class="plugin-card-actions">
+              <button type="button" class="card-action-btn card-btn-bookmark" data-id="setup-wsl2-ubuntu-webdev" title="Simpan artikel" aria-label="Simpan artikel">
+                <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+                <span class="card-bookmark-count">0</span>
+              </button>
+              <button type="button" class="card-action-btn card-btn-like" data-id="setup-wsl2-ubuntu-webdev" title="Sukai artikel" aria-label="Sukai artikel">
+                <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <span class="card-like-count">0</span>
+              </button>
             </div>
           </div>
-          <p>Panduan instalasi dan konfigurasi native Linux kernel di Windows menggunakan WSL2 untuk kebutuhan praktikum web.</p>
+          <div class="plugin-card-meta-row">
+            <span class="plugin-card-by">by @muadzhdz &bull; Web &amp; Tooling</span>
+            <span class="plugin-card-id">#01</span>
+          </div>
+          <p class="plugin-card-desc">Panduan instalasi dan konfigurasi native Linux kernel di Windows menggunakan WSL2 untuk kebutuhan praktikum web, lengkap dengan NVM, PHP, dan VS Code integration.</p>
+          <div class="plugin-card-badges">
+            <span class="badge-tag-new">TERUJI</span>
+            <span class="badge-tag-verified">Verified</span>
+          </div>
         </div>
-        <div class="recent-card-bottom">
-          <span>oleh Mu'adz Hudzaifah</span>
-          <span>6 menit baca</span>
+        <div class="plugin-card-bottom">
+          <div class="card-bottom-tags">
+            <span class="card-tag">linux</span>
+            <span class="card-tag">wsl2</span>
+            <span class="card-tag">ubuntu</span>
+          </div>
+          <div class="card-bottom-stats">
+            <span class="card-stat-group" title="Jumlah pembaca">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span class="card-views-count" data-id="setup-wsl2-ubuntu-webdev">156</span>
+            </span>
+            <span class="card-stat-group" title="Waktu baca">
+              <span class="card-read-time">6m</span>
+            </span>
+            <a href="article.html?id=setup-wsl2-ubuntu-webdev" class="card-read-action" title="Buka Jurnal" aria-label="Buka Jurnal">&gt;_</a>
+          </div>
         </div>
-      </a>
+      </article>
 
       <!-- Recent 2: Format Margin -->
-      <a class="recent-card" href="article.html?id=format-margin-laporan-4433">
-        <div>
-          <div class="recent-card-top">
-            <div class="plugin-icon">4433</div>
-            <div>
-              <h3>Standar Baku Format Margin 4-4-3-3</h3>
-              <span class="status-badge">Akademik</span>
+      <article class="plugin-card" data-id="format-margin-laporan-4433" data-cat="Akademik & Laporan word margin skripsi boash">
+        <div class="plugin-card-banner">
+          <span class="banner-monogram">4433</span>
+        </div>
+        <div class="plugin-card-content">
+          <div class="plugin-card-header">
+            <h3 class="plugin-card-title">
+              <a href="article.html?id=format-margin-laporan-4433">Standar Baku Format Margin 4-4-3-3 Laporan &amp; Skripsi</a>
+            </h3>
+            <div class="plugin-card-actions">
+              <button type="button" class="card-action-btn card-btn-bookmark" data-id="format-margin-laporan-4433" title="Simpan artikel" aria-label="Simpan artikel">
+                <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+                <span class="card-bookmark-count">0</span>
+              </button>
+              <button type="button" class="card-action-btn card-btn-like" data-id="format-margin-laporan-4433" title="Sukai artikel" aria-label="Sukai artikel">
+                <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <span class="card-like-count">0</span>
+              </button>
             </div>
           </div>
-          <p>Tata letak layout dokumen akademik Universitas Boash. Aturan margin 4-4-3-3, section break, dan struktur bab.</p>
+          <div class="plugin-card-meta-row">
+            <span class="plugin-card-by">by @kemahasiswaan &bull; Akademik &amp; Laporan</span>
+            <span class="plugin-card-id">#02</span>
+          </div>
+          <p class="plugin-card-desc">Tata letak layout dokumen akademik Universitas Boash. Aturan margin 4-4-3-3, section break, dan struktur bab.</p>
+          <div class="plugin-card-badges">
+            <span class="badge-tag-verified">RESMI</span>
+            <span class="badge-tag-official">Pedoman</span>
+          </div>
         </div>
-        <div class="recent-card-bottom">
-          <span>oleh Divisi Kemahasiswaan</span>
-          <span>5 menit baca</span>
+        <div class="plugin-card-bottom">
+          <div class="card-bottom-tags">
+            <span class="card-tag">format</span>
+            <span class="card-tag">margin</span>
+            <span class="card-tag">skripsi</span>
+          </div>
+          <div class="card-bottom-stats">
+            <span class="card-stat-group" title="Jumlah pembaca">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span class="card-views-count" data-id="format-margin-laporan-4433">312</span>
+            </span>
+            <span class="card-stat-group" title="Waktu baca">
+              <span class="card-read-time">5m</span>
+            </span>
+            <a href="article.html?id=format-margin-laporan-4433" class="card-read-action" title="Buka Jurnal" aria-label="Buka Jurnal">&gt;_</a>
+          </div>
         </div>
-      </a>
+      </article>
 
       <!-- Recent 3: Cisco VLAN -->
-      <a class="recent-card" href="article.html?id=jaringan-routing-vlan-cisco">
-        <div>
-          <div class="recent-card-top">
-            <div class="plugin-icon">NET</div>
-            <div>
-              <h3>Inter-VLAN Routing & Trunking Cisco</h3>
-              <span class="status-badge">Jaringan</span>
+      <article class="plugin-card" data-id="jaringan-routing-vlan-cisco" data-cat="Jaringan Komputer cisco vlan switch packet-tracer routing">
+        <div class="plugin-card-banner">
+          <span class="banner-monogram">NET</span>
+        </div>
+        <div class="plugin-card-content">
+          <div class="plugin-card-header">
+            <h3 class="plugin-card-title">
+              <a href="article.html?id=jaringan-routing-vlan-cisco">Konfigurasi Inter-VLAN Routing &amp; Trunking Cisco Packet Tracer</a>
+            </h3>
+            <div class="plugin-card-actions">
+              <button type="button" class="card-action-btn card-btn-bookmark" data-id="jaringan-routing-vlan-cisco" title="Simpan artikel" aria-label="Simpan artikel">
+                <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+                <span class="card-bookmark-count">0</span>
+              </button>
+              <button type="button" class="card-action-btn card-btn-like" data-id="jaringan-routing-vlan-cisco" title="Sukai artikel" aria-label="Sukai artikel">
+                <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <span class="card-like-count">0</span>
+              </button>
             </div>
           </div>
-          <p>Tutorial konfigurasi switch layer-2 dan router on-a-stick untuk memisahkan segmentasi traffic lab praktikum.</p>
+          <div class="plugin-card-meta-row">
+            <span class="plugin-card-by">by @muadzhdz &bull; Jaringan &amp; Infrastruktur</span>
+            <span class="plugin-card-id">#03</span>
+          </div>
+          <p class="plugin-card-desc">Tutorial konfigurasi switch layer-2 dan router on-a-stick untuk memisahkan segmentasi traffic lab praktikum.</p>
+          <div class="plugin-card-badges">
+            <span class="badge-tag-new">PRAKTIKUM</span>
+            <span class="badge-tag-official">Lab Guide</span>
+          </div>
         </div>
-        <div class="recent-card-bottom">
-          <span>oleh Mu'adz Hudzaifah</span>
-          <span>7 menit baca</span>
+        <div class="plugin-card-bottom">
+          <div class="card-bottom-tags">
+            <span class="card-tag">cisco</span>
+            <span class="card-tag">vlan</span>
+            <span class="card-tag">routing</span>
+          </div>
+          <div class="card-bottom-stats">
+            <span class="card-stat-group" title="Jumlah pembaca">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span class="card-views-count" data-id="jaringan-routing-vlan-cisco">98</span>
+            </span>
+            <span class="card-stat-group" title="Waktu baca">
+              <span class="card-read-time">7m</span>
+            </span>
+            <a href="article.html?id=jaringan-routing-vlan-cisco" class="card-read-action" title="Buka Jurnal" aria-label="Buka Jurnal">&gt;_</a>
+          </div>
         </div>
-      </a>
+      </article>
 
     </div>
   </section>
@@ -166,6 +268,9 @@
           <label class="sr-only" for="search-input">Cari artikel atau topik</label>
           <input id="search-input" name="journal-search" type="text" placeholder="Cari artikel, tag:linux, text:nginx, atau @author…" maxlength="160" autocomplete="off" spellcheck="false">
         </div>
+        <button type="button" id="search-clear-btn" class="search-clear-btn" aria-label="Hapus pencarian" hidden>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
         <kbd id="search-shortcut">/</kbd>
       </div>
       <label class="sort-control">
@@ -196,303 +301,506 @@
       <button id="clear-filters" type="button">Reset</button>
     </div>
 
-    <!-- CONNECTED CARD GRID (BRUTALIST GRID) -->
+    <!-- CONNECTED CARD GRID (OMARCHY CYBER BRUTALIST STYLE) -->
     <div id="plugin-grid" class="plugin-grid market-plugin-grid">
 
       <!-- Card 1: WSL2 -->
-      <article class="plugin-card" data-cat="Web & Tooling linux wsl2 ubuntu webdev">
-        <a class="plugin-card-link" href="article.html?id=setup-wsl2-ubuntu-webdev" aria-label="Buka artikel Setup WSL2"></a>
-        <div class="plugin-icon">WSL</div>
-        <div class="plugin-main">
-          <div class="plugin-title-line">
-            <h3>Setup Lengkap WSL2 Ubuntu 24.04 untuk Web Development</h3>
-            <span class="status-badge">Web & Tooling</span>
+      <article class="plugin-card" data-id="setup-wsl2-ubuntu-webdev" data-cat="Web & Tooling linux wsl2 ubuntu webdev">
+        <div class="plugin-card-banner">
+          <span class="banner-monogram">WSL</span>
+        </div>
+        <div class="plugin-card-content">
+          <div class="plugin-card-header">
+            <h3 class="plugin-card-title">
+              <a href="article.html?id=setup-wsl2-ubuntu-webdev">Setup Lengkap WSL2 Ubuntu 24.04 untuk Web Development</a>
+            </h3>
+            <div class="plugin-card-actions">
+              <button type="button" class="card-action-btn card-btn-bookmark" data-id="setup-wsl2-ubuntu-webdev" title="Simpan artikel" aria-label="Simpan artikel">
+                <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+                <span class="card-bookmark-count">0</span>
+              </button>
+              <button type="button" class="card-action-btn card-btn-like" data-id="setup-wsl2-ubuntu-webdev" title="Sukai artikel" aria-label="Sukai artikel">
+                <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <span class="card-like-count">0</span>
+              </button>
+            </div>
           </div>
-          <div class="plugin-author">oleh Mu'adz Hudzaifah &bull; 2026-09-21</div>
-          <p class="plugin-description">Panduan instalasi dan konfigurasi native Linux kernel di Windows menggunakan WSL2 untuk kebutuhan praktikum web, lengkap dengan NVM, PHP, dan VS Code integration.</p>
-          <div class="plugin-tags">
-            <span class="tag">linux</span>
-            <span class="tag">wsl2</span>
-            <span class="tag">ubuntu</span>
-            <span class="tag">nodejs</span>
+          <div class="plugin-card-meta-row">
+            <span class="plugin-card-by">by @muadzhdz &bull; Web &amp; Tooling</span>
+            <span class="plugin-card-id">#01</span>
+          </div>
+          <p class="plugin-card-desc">Panduan instalasi dan konfigurasi native Linux kernel di Windows menggunakan WSL2 untuk kebutuhan praktikum web, lengkap dengan NVM, PHP, dan VS Code integration.</p>
+          <div class="plugin-card-badges">
+            <span class="badge-tag-new">TERUJI</span>
+            <span class="badge-tag-verified">Verified</span>
           </div>
         </div>
-        <div class="plugin-side">
-          <div class="plugin-stats">
-            <div>BACA<b>6 menit</b></div>
-            <div>STATUS<b>Teruji</b></div>
+        <div class="plugin-card-bottom">
+          <div class="card-bottom-tags">
+            <span class="card-tag">linux</span>
+            <span class="card-tag">wsl2</span>
+            <span class="card-tag">ubuntu</span>
           </div>
-          <span class="card-install">
-            <span class="command-glyph"></span>
-            BACA JURNAL
-          </span>
+          <div class="card-bottom-stats">
+            <span class="card-stat-group" title="Jumlah pembaca">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span class="card-views-count" data-id="setup-wsl2-ubuntu-webdev">156</span>
+            </span>
+            <span class="card-stat-group" title="Waktu baca">
+              <span class="card-read-time">6m</span>
+            </span>
+            <a href="article.html?id=setup-wsl2-ubuntu-webdev" class="card-read-action" title="Buka Jurnal" aria-label="Buka Jurnal">&gt;_</a>
+          </div>
         </div>
       </article>
 
       <!-- Card 2: 4-4-3-3 -->
-      <article class="plugin-card" data-cat="Akademik & Laporan word margin skripsi boash">
-        <a class="plugin-card-link" href="article.html?id=format-margin-laporan-4433" aria-label="Buka artikel Format Margin 4-4-3-3"></a>
-        <div class="plugin-icon">4433</div>
-        <div class="plugin-main">
-          <div class="plugin-title-line">
-            <h3>Standar Baku Format Margin Laporan Praktikum & TA (4-4-3-3)</h3>
-            <span class="status-badge">Akademik & Laporan</span>
+      <article class="plugin-card" data-id="format-margin-laporan-4433" data-cat="Akademik & Laporan word margin skripsi boash">
+        <div class="plugin-card-banner">
+          <span class="banner-monogram">4433</span>
+        </div>
+        <div class="plugin-card-content">
+          <div class="plugin-card-header">
+            <h3 class="plugin-card-title">
+              <a href="article.html?id=format-margin-laporan-4433">Standar Baku Format Margin Laporan Praktikum &amp; TA (4-4-3-3)</a>
+            </h3>
+            <div class="plugin-card-actions">
+              <button type="button" class="card-action-btn card-btn-bookmark" data-id="format-margin-laporan-4433" title="Simpan artikel" aria-label="Simpan artikel">
+                <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+                <span class="card-bookmark-count">0</span>
+              </button>
+              <button type="button" class="card-action-btn card-btn-like" data-id="format-margin-laporan-4433" title="Sukai artikel" aria-label="Sukai artikel">
+                <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <span class="card-like-count">0</span>
+              </button>
+            </div>
           </div>
-          <div class="plugin-author">oleh Divisi Kemahasiswaan HIMATRA &bull; 2026-09-21</div>
-          <p class="plugin-description">Panduan tata letak layout dokumen akademik Universitas Boash. Aturan margin 4-4-3-3, pemisahan nomor romawi dengan angka arab via section break, dan struktur baku bab.</p>
-          <div class="plugin-tags">
-            <span class="tag">akademik</span>
-            <span class="tag">laporan</span>
-            <span class="tag">margin</span>
-            <span class="tag">skripsi</span>
+          <div class="plugin-card-meta-row">
+            <span class="plugin-card-by">by @himatra &bull; Akademik &amp; Laporan</span>
+            <span class="plugin-card-id">#02</span>
+          </div>
+          <p class="plugin-card-desc">Panduan tata letak layout dokumen akademik Universitas Boash. Aturan margin 4-4-3-3, pemisahan nomor romawi dengan angka arab via section break, dan struktur baku bab.</p>
+          <div class="plugin-card-badges">
+            <span class="badge-tag-new">BAKU</span>
+            <span class="badge-tag-verified">Verified</span>
           </div>
         </div>
-        <div class="plugin-side">
-          <div class="plugin-stats">
-            <div>BACA<b>5 menit</b></div>
-            <div>STATUS<b>Baku</b></div>
+        <div class="plugin-card-bottom">
+          <div class="card-bottom-tags">
+            <span class="card-tag">akademik</span>
+            <span class="card-tag">margin</span>
+            <span class="card-tag">laporan</span>
           </div>
-          <span class="card-install">
-            <span class="command-glyph"></span>
-            BACA JURNAL
-          </span>
+          <div class="card-bottom-stats">
+            <span class="card-stat-group" title="Jumlah pembaca">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span class="card-views-count" data-id="format-margin-laporan-4433">248</span>
+            </span>
+            <span class="card-stat-group" title="Waktu baca">
+              <span class="card-read-time">5m</span>
+            </span>
+            <a href="article.html?id=format-margin-laporan-4433" class="card-read-action" title="Buka Jurnal" aria-label="Buka Jurnal">&gt;_</a>
+          </div>
         </div>
       </article>
 
       <!-- Card 3: Cisco VLAN -->
-      <article class="plugin-card" data-cat="Jaringan Komputer cisco vlan routing networking">
-        <a class="plugin-card-link" href="article.html?id=jaringan-routing-vlan-cisco" aria-label="Buka artikel Cisco Inter-VLAN"></a>
-        <div class="plugin-icon">NET</div>
-        <div class="plugin-main">
-          <div class="plugin-title-line">
-            <h3>Konfigurasi Inter-VLAN Routing & Trunking pada Cisco Packet Tracer</h3>
-            <span class="status-badge">Jaringan Komputer</span>
+      <article class="plugin-card" data-id="jaringan-routing-vlan-cisco" data-cat="Jaringan Komputer cisco vlan routing networking">
+        <div class="plugin-card-banner">
+          <span class="banner-monogram">NET</span>
+        </div>
+        <div class="plugin-card-content">
+          <div class="plugin-card-header">
+            <h3 class="plugin-card-title">
+              <a href="article.html?id=jaringan-routing-vlan-cisco">Konfigurasi Inter-VLAN Routing &amp; Trunking pada Cisco Packet Tracer</a>
+            </h3>
+            <div class="plugin-card-actions">
+              <button type="button" class="card-action-btn card-btn-bookmark" data-id="jaringan-routing-vlan-cisco" title="Simpan artikel" aria-label="Simpan artikel">
+                <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+                <span class="card-bookmark-count">0</span>
+              </button>
+              <button type="button" class="card-action-btn card-btn-like" data-id="jaringan-routing-vlan-cisco" title="Sukai artikel" aria-label="Sukai artikel">
+                <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <span class="card-like-count">0</span>
+              </button>
+            </div>
           </div>
-          <div class="plugin-author">oleh Mu'adz Hudzaifah &bull; 2026-09-21</div>
-          <p class="plugin-description">Tutorial konfigurasi jaringan switch layer-2 dan router on-a-stick untuk memisahkan segmentasi traffic mahasiswa dan dosen di lab praktikum.</p>
-          <div class="plugin-tags">
-            <span class="tag">jaringan</span>
-            <span class="tag">cisco</span>
-            <span class="tag">vlan</span>
-            <span class="tag">routing</span>
+          <div class="plugin-card-meta-row">
+            <span class="plugin-card-by">by @muadzhdz &bull; Jaringan Komputer</span>
+            <span class="plugin-card-id">#03</span>
+          </div>
+          <p class="plugin-card-desc">Tutorial konfigurasi jaringan switch layer-2 dan router on-a-stick untuk memisahkan segmentasi traffic mahasiswa dan dosen di lab praktikum.</p>
+          <div class="plugin-card-badges">
+            <span class="badge-tag-new">TERUJI</span>
+            <span class="badge-tag-verified">Verified</span>
           </div>
         </div>
-        <div class="plugin-side">
-          <div class="plugin-stats">
-            <div>BACA<b>7 menit</b></div>
-            <div>STATUS<b>Teruji</b></div>
+        <div class="plugin-card-bottom">
+          <div class="card-bottom-tags">
+            <span class="card-tag">cisco</span>
+            <span class="card-tag">vlan</span>
+            <span class="card-tag">routing</span>
           </div>
-          <span class="card-install">
-            <span class="command-glyph"></span>
-            BACA JURNAL
-          </span>
+          <div class="card-bottom-stats">
+            <span class="card-stat-group" title="Jumlah pembaca">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span class="card-views-count" data-id="jaringan-routing-vlan-cisco">114</span>
+            </span>
+            <span class="card-stat-group" title="Waktu baca">
+              <span class="card-read-time">7m</span>
+            </span>
+            <a href="article.html?id=jaringan-routing-vlan-cisco" class="card-read-action" title="Buka Jurnal" aria-label="Buka Jurnal">&gt;_</a>
+          </div>
         </div>
       </article>
 
       <!-- Card 4: Normalisasi DB -->
-      <article class="plugin-card" data-cat="Basis Data database sql normalisasi mysql">
-        <a class="plugin-card-link" href="article.html?id=basis-data-relasional-normalisasi" aria-label="Buka artikel Normalisasi Database"></a>
-        <div class="plugin-icon">SQL</div>
-        <div class="plugin-main">
-          <div class="plugin-title-line">
-            <h3>Panduan Praktis Normalisasi Basis Data (1NF, 2NF, 3NF)</h3>
-            <span class="status-badge">Basis Data</span>
+      <article class="plugin-card" data-id="basis-data-relasional-normalisasi" data-cat="Basis Data database sql normalisasi mysql">
+        <div class="plugin-card-banner">
+          <span class="banner-monogram">SQL</span>
+        </div>
+        <div class="plugin-card-content">
+          <div class="plugin-card-header">
+            <h3 class="plugin-card-title">
+              <a href="article.html?id=basis-data-relasional-normalisasi">Panduan Praktis Normalisasi Basis Data (1NF, 2NF, 3NF)</a>
+            </h3>
+            <div class="plugin-card-actions">
+              <button type="button" class="card-action-btn card-btn-bookmark" data-id="basis-data-relasional-normalisasi" title="Simpan artikel" aria-label="Simpan artikel">
+                <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+                <span class="card-bookmark-count">0</span>
+              </button>
+              <button type="button" class="card-action-btn card-btn-like" data-id="basis-data-relasional-normalisasi" title="Sukai artikel" aria-label="Sukai artikel">
+                <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <span class="card-like-count">0</span>
+              </button>
+            </div>
           </div>
-          <div class="plugin-author">oleh Divisi Kemahasiswaan HIMATRA &bull; 2026-09-21</div>
-          <p class="plugin-description">Memahami teknik dekomposisi tabel anomali menjadi bentuk normal 1NF, 2NF, dan 3NF pada studi kasus sistem akademik kampus.</p>
-          <div class="plugin-tags">
-            <span class="tag">database</span>
-            <span class="tag">sql</span>
-            <span class="tag">normalisasi</span>
+          <div class="plugin-card-meta-row">
+            <span class="plugin-card-by">by @himatra &bull; Basis Data</span>
+            <span class="plugin-card-id">#04</span>
+          </div>
+          <p class="plugin-card-desc">Memahami teknik dekomposisi tabel anomali menjadi bentuk normal 1NF, 2NF, dan 3NF pada studi kasus sistem akademik kampus.</p>
+          <div class="plugin-card-badges">
+            <span class="badge-tag-new">TERUJI</span>
+            <span class="badge-tag-verified">Verified</span>
           </div>
         </div>
-        <div class="plugin-side">
-          <div class="plugin-stats">
-            <div>BACA<b>6 menit</b></div>
-            <div>STATUS<b>Teruji</b></div>
+        <div class="plugin-card-bottom">
+          <div class="card-bottom-tags">
+            <span class="card-tag">database</span>
+            <span class="card-tag">sql</span>
+            <span class="card-tag">normalisasi</span>
           </div>
-          <span class="card-install">
-            <span class="command-glyph"></span>
-            BACA JURNAL
-          </span>
+          <div class="card-bottom-stats">
+            <span class="card-stat-group" title="Jumlah pembaca">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span class="card-views-count" data-id="basis-data-relasional-normalisasi">130</span>
+            </span>
+            <span class="card-stat-group" title="Waktu baca">
+              <span class="card-read-time">6m</span>
+            </span>
+            <a href="article.html?id=basis-data-relasional-normalisasi" class="card-read-action" title="Buka Jurnal" aria-label="Buka Jurnal">&gt;_</a>
+          </div>
         </div>
       </article>
 
       <!-- Card 5: Algoritma -->
-      <article class="plugin-card" data-cat="Algoritma & Pemrograman algoritma struktur-data python stack queue">
-        <a class="plugin-card-link" href="article.html?id=algoritma-struktur-data-dasar" aria-label="Buka artikel Struktur Data"></a>
-        <div class="plugin-icon">ALGO</div>
-        <div class="plugin-main">
-          <div class="plugin-title-line">
-            <h3>Implementasi Struktur Data Stack & Queue pada Praktikum Pemrograman</h3>
-            <span class="status-badge">Algoritma</span>
+      <article class="plugin-card" data-id="algoritma-struktur-data-dasar" data-cat="Algoritma & Pemrograman algoritma struktur-data python stack queue">
+        <div class="plugin-card-banner">
+          <span class="banner-monogram">ALGO</span>
+        </div>
+        <div class="plugin-card-content">
+          <div class="plugin-card-header">
+            <h3 class="plugin-card-title">
+              <a href="article.html?id=algoritma-struktur-data-dasar">Implementasi Struktur Data Stack &amp; Queue pada Praktikum Pemrograman</a>
+            </h3>
+            <div class="plugin-card-actions">
+              <button type="button" class="card-action-btn card-btn-bookmark" data-id="algoritma-struktur-data-dasar" title="Simpan artikel" aria-label="Simpan artikel">
+                <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+                <span class="card-bookmark-count">0</span>
+              </button>
+              <button type="button" class="card-action-btn card-btn-like" data-id="algoritma-struktur-data-dasar" title="Sukai artikel" aria-label="Sukai artikel">
+                <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <span class="card-like-count">0</span>
+              </button>
+            </div>
           </div>
-          <div class="plugin-author">oleh Mu'adz Hudzaifah &bull; 2026-09-21</div>
-          <p class="plugin-description">Memahami logika LIFO (Last In First Out) dan FIFO (First In First Out) dengan implementasi Python murni serta analisis kompleksitas waktu O(1).</p>
-          <div class="plugin-tags">
-            <span class="tag">python</span>
-            <span class="tag">stack</span>
-            <span class="tag">queue</span>
-            <span class="tag">algoritma</span>
+          <div class="plugin-card-meta-row">
+            <span class="plugin-card-by">by @muadzhdz &bull; Algoritma &amp; Pemrograman</span>
+            <span class="plugin-card-id">#05</span>
+          </div>
+          <p class="plugin-card-desc">Memahami logika LIFO (Last In First Out) dan FIFO (First In First Out) dengan implementasi Python murni serta analisis kompleksitas waktu O(1).</p>
+          <div class="plugin-card-badges">
+            <span class="badge-tag-new">TERUJI</span>
+            <span class="badge-tag-verified">Verified</span>
           </div>
         </div>
-        <div class="plugin-side">
-          <div class="plugin-stats">
-            <div>BACA<b>6 menit</b></div>
-            <div>STATUS<b>Teruji</b></div>
+        <div class="plugin-card-bottom">
+          <div class="card-bottom-tags">
+            <span class="card-tag">python</span>
+            <span class="card-tag">stack</span>
+            <span class="card-tag">queue</span>
           </div>
-          <span class="card-install">
-            <span class="command-glyph"></span>
-            BACA JURNAL
-          </span>
+          <div class="card-bottom-stats">
+            <span class="card-stat-group" title="Jumlah pembaca">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span class="card-views-count" data-id="algoritma-struktur-data-dasar">98</span>
+            </span>
+            <span class="card-stat-group" title="Waktu baca">
+              <span class="card-read-time">6m</span>
+            </span>
+            <a href="article.html?id=algoritma-struktur-data-dasar" class="card-read-action" title="Buka Jurnal" aria-label="Buka Jurnal">&gt;_</a>
+          </div>
         </div>
       </article>
 
       <!-- Card 6: Wokwi IoT -->
-      <article class="plugin-card" data-cat="IoT & Embedded iot esp32 mqtt wokwi hivemq">
-        <a class="plugin-card-link" href="article.html?id=wokwi-esp32-mqtt-hivemq" aria-label="Buka artikel IoT ESP32 MQTT"></a>
-        <div class="plugin-icon">IOT</div>
-        <div class="plugin-main">
-          <div class="plugin-title-line">
-            <h3>Simulasi Telemetri ESP32 & MQTT HiveMQ di Browser (Tanpa Alat Fisik)</h3>
-            <span class="status-badge">IoT & Embedded</span>
+      <article class="plugin-card" data-id="wokwi-esp32-mqtt-hivemq" data-cat="IoT & Embedded iot esp32 mqtt wokwi hivemq">
+        <div class="plugin-card-banner">
+          <span class="banner-monogram">IOT</span>
+        </div>
+        <div class="plugin-card-content">
+          <div class="plugin-card-header">
+            <h3 class="plugin-card-title">
+              <a href="article.html?id=wokwi-esp32-mqtt-hivemq">Simulasi Telemetri ESP32 &amp; MQTT HiveMQ di Browser (Tanpa Alat Fisik)</a>
+            </h3>
+            <div class="plugin-card-actions">
+              <button type="button" class="card-action-btn card-btn-bookmark" data-id="wokwi-esp32-mqtt-hivemq" title="Simpan artikel" aria-label="Simpan artikel">
+                <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+                <span class="card-bookmark-count">0</span>
+              </button>
+              <button type="button" class="card-action-btn card-btn-like" data-id="wokwi-esp32-mqtt-hivemq" title="Sukai artikel" aria-label="Sukai artikel">
+                <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <span class="card-like-count">0</span>
+              </button>
+            </div>
           </div>
-          <div class="plugin-author">oleh Mu'adz Hudzaifah &bull; 2026-09-21</div>
-          <p class="plugin-description">Tutorial membuat simulasi monitoring sensor suhu virtual di Wokwi dan mempublikasikan data telemetry real-time ke broker publik MQTT tanpa membeli modul hardware.</p>
-          <div class="plugin-tags">
-            <span class="tag">esp32</span>
-            <span class="tag">mqtt</span>
-            <span class="tag">wokwi</span>
-            <span class="tag">arduino</span>
+          <div class="plugin-card-meta-row">
+            <span class="plugin-card-by">by @muadzhdz &bull; IoT &amp; Embedded</span>
+            <span class="plugin-card-id">#06</span>
+          </div>
+          <p class="plugin-card-desc">Tutorial membuat simulasi monitoring sensor suhu virtual di Wokwi dan mempublikasikan data telemetry real-time ke broker publik MQTT tanpa membeli modul hardware.</p>
+          <div class="plugin-card-badges">
+            <span class="badge-tag-new">TERUJI</span>
+            <span class="badge-tag-verified">Verified</span>
           </div>
         </div>
-        <div class="plugin-side">
-          <div class="plugin-stats">
-            <div>BACA<b>6 menit</b></div>
-            <div>STATUS<b>Teruji</b></div>
+        <div class="plugin-card-bottom">
+          <div class="card-bottom-tags">
+            <span class="card-tag">esp32</span>
+            <span class="card-tag">mqtt</span>
+            <span class="card-tag">wokwi</span>
           </div>
-          <span class="card-install">
-            <span class="command-glyph"></span>
-            BACA JURNAL
-          </span>
+          <div class="card-bottom-stats">
+            <span class="card-stat-group" title="Jumlah pembaca">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span class="card-views-count" data-id="wokwi-esp32-mqtt-hivemq">85</span>
+            </span>
+            <span class="card-stat-group" title="Waktu baca">
+              <span class="card-read-time">6m</span>
+            </span>
+            <a href="article.html?id=wokwi-esp32-mqtt-hivemq" class="card-read-action" title="Buka Jurnal" aria-label="Buka Jurnal">&gt;_</a>
+          </div>
         </div>
       </article>
 
       <!-- Card 7: Git Workflow -->
-      <article class="plugin-card" data-cat="Git & DevOps git github detached-head conflict devops">
-        <a class="plugin-card-link" href="article.html?id=git-workflow-conflict-detached-head" aria-label="Buka artikel Git Conflict"></a>
-        <div class="plugin-icon">GIT</div>
-        <div class="plugin-main">
-          <div class="plugin-title-line">
-            <h3>Mengatasi Detached HEAD & Merge Conflict pada Git Kolaboratif</h3>
-            <span class="status-badge">Git & DevOps</span>
+      <article class="plugin-card" data-id="git-workflow-conflict-detached-head" data-cat="Git & DevOps git github detached-head conflict devops">
+        <div class="plugin-card-banner">
+          <span class="banner-monogram">GIT</span>
+        </div>
+        <div class="plugin-card-content">
+          <div class="plugin-card-header">
+            <h3 class="plugin-card-title">
+              <a href="article.html?id=git-workflow-conflict-detached-head">Mengatasi Detached HEAD &amp; Merge Conflict pada Git Kolaboratif</a>
+            </h3>
+            <div class="plugin-card-actions">
+              <button type="button" class="card-action-btn card-btn-bookmark" data-id="git-workflow-conflict-detached-head" title="Simpan artikel" aria-label="Simpan artikel">
+                <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+                <span class="card-bookmark-count">0</span>
+              </button>
+              <button type="button" class="card-action-btn card-btn-like" data-id="git-workflow-conflict-detached-head" title="Sukai artikel" aria-label="Sukai artikel">
+                <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <span class="card-like-count">0</span>
+              </button>
+            </div>
           </div>
-          <div class="plugin-author">oleh Mu'adz Hudzaifah &bull; 2026-09-21</div>
-          <p class="plugin-description">Panduan pemecahan masalah (troubleshooting) ketika commit tersangkut di detached HEAD atau branch lokal bentrok dengan commit rekan kelompok di repository GitHub.</p>
-          <div class="plugin-tags">
-            <span class="tag">git</span>
-            <span class="tag">github</span>
-            <span class="tag">conflict</span>
-            <span class="tag">devops</span>
+          <div class="plugin-card-meta-row">
+            <span class="plugin-card-by">by @muadzhdz &bull; Git &amp; DevOps</span>
+            <span class="plugin-card-id">#07</span>
+          </div>
+          <p class="plugin-card-desc">Panduan pemecahan masalah (troubleshooting) ketika commit tersangkut di detached HEAD atau branch lokal bentrok dengan commit rekan kelompok di repository GitHub.</p>
+          <div class="plugin-card-badges">
+            <span class="badge-tag-new">TERUJI</span>
+            <span class="badge-tag-verified">Verified</span>
           </div>
         </div>
-        <div class="plugin-side">
-          <div class="plugin-stats">
-            <div>BACA<b>5 menit</b></div>
-            <div>STATUS<b>Teruji</b></div>
+        <div class="plugin-card-bottom">
+          <div class="card-bottom-tags">
+            <span class="card-tag">git</span>
+            <span class="card-tag">github</span>
+            <span class="card-tag">conflict</span>
           </div>
-          <span class="card-install">
-            <span class="command-glyph"></span>
-            BACA JURNAL
-          </span>
+          <div class="card-bottom-stats">
+            <span class="card-stat-group" title="Jumlah pembaca">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span class="card-views-count" data-id="git-workflow-conflict-detached-head">92</span>
+            </span>
+            <span class="card-stat-group" title="Waktu baca">
+              <span class="card-read-time">5m</span>
+            </span>
+            <a href="article.html?id=git-workflow-conflict-detached-head" class="card-read-action" title="Buka Jurnal" aria-label="Buka Jurnal">&gt;_</a>
+          </div>
         </div>
       </article>
 
       <!-- Card 8: Blender to Unity -->
-      <article class="plugin-card" data-cat="Game & Multimedia blender unity 3d gamedev fbx multimedia">
-        <a class="plugin-card-link" href="article.html?id=blender-to-unity-pipeline" aria-label="Buka artikel Blender to Unity"></a>
-        <div class="plugin-icon">3D</div>
-        <div class="plugin-main">
-          <div class="plugin-title-line">
-            <h3>Pipeline Export Aset 3D Blender ke Unity 2022 LTS (Fix Skala & Rotasi)</h3>
-            <span class="status-badge">Game & Multimedia</span>
+      <article class="plugin-card" data-id="blender-to-unity-pipeline" data-cat="Game & Multimedia blender unity 3d gamedev fbx multimedia">
+        <div class="plugin-card-banner">
+          <span class="banner-monogram">3D</span>
+        </div>
+        <div class="plugin-card-content">
+          <div class="plugin-card-header">
+            <h3 class="plugin-card-title">
+              <a href="article.html?id=blender-to-unity-pipeline">Pipeline Export Aset 3D Blender ke Unity (Fix Skala &amp; Rotasi)</a>
+            </h3>
+            <div class="plugin-card-actions">
+              <button type="button" class="card-action-btn card-btn-bookmark" data-id="blender-to-unity-pipeline" title="Simpan artikel" aria-label="Simpan artikel">
+                <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+                <span class="card-bookmark-count">0</span>
+              </button>
+              <button type="button" class="card-action-btn card-btn-like" data-id="blender-to-unity-pipeline" title="Sukai artikel" aria-label="Sukai artikel">
+                <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <span class="card-like-count">0</span>
+              </button>
+            </div>
           </div>
-          <div class="plugin-author">oleh Divisi Kemahasiswaan HIMATRA &bull; 2026-09-21</div>
-          <p class="plugin-description">Panduan export FBX dari Blender 4.x ke engine Unity agar model tidak miring rotasi -90 derajat pada sumbu X dan skala objek proporsional 1:1.</p>
-          <div class="plugin-tags">
-            <span class="tag">blender</span>
-            <span class="tag">unity</span>
-            <span class="tag">3d</span>
-            <span class="tag">fbx</span>
+          <div class="plugin-card-meta-row">
+            <span class="plugin-card-by">by @himatra &bull; Game &amp; Multimedia</span>
+            <span class="plugin-card-id">#08</span>
+          </div>
+          <p class="plugin-card-desc">Panduan export FBX dari Blender 4.x ke engine Unity agar model tidak miring rotasi -90 derajat pada sumbu X dan skala objek proporsional 1:1.</p>
+          <div class="plugin-card-badges">
+            <span class="badge-tag-new">TERUJI</span>
+            <span class="badge-tag-verified">Verified</span>
           </div>
         </div>
-        <div class="plugin-side">
-          <div class="plugin-stats">
-            <div>BACA<b>5 menit</b></div>
-            <div>STATUS<b>Teruji</b></div>
+        <div class="plugin-card-bottom">
+          <div class="card-bottom-tags">
+            <span class="card-tag">blender</span>
+            <span class="card-tag">unity</span>
+            <span class="card-tag">3d</span>
           </div>
-          <span class="card-install">
-            <span class="command-glyph"></span>
-            BACA JURNAL
-          </span>
+          <div class="card-bottom-stats">
+            <span class="card-stat-group" title="Jumlah pembaca">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span class="card-views-count" data-id="blender-to-unity-pipeline">78</span>
+            </span>
+            <span class="card-stat-group" title="Waktu baca">
+              <span class="card-read-time">5m</span>
+            </span>
+            <a href="article.html?id=blender-to-unity-pipeline" class="card-read-action" title="Buka Jurnal" aria-label="Buka Jurnal">&gt;_</a>
+          </div>
         </div>
       </article>
 
       <!-- Card 9: MDLC Metodologi -->
-      <article class="plugin-card" data-cat="Metodologi Penelitian mdlc skripsi metodologi multimedia luther-sutopo">
-        <a class="plugin-card-link" href="article.html?id=metodologi-mdlc-multimedia" aria-label="Buka artikel Metodologi MDLC"></a>
-        <div class="plugin-icon">MDLC</div>
-        <div class="plugin-main">
-          <div class="plugin-title-line">
-            <h3>Penerapan Metodologi MDLC (Luther-Sutopo) pada Skripsi Multimedia</h3>
-            <span class="status-badge">Metodologi</span>
+      <article class="plugin-card" data-id="metodologi-mdlc-multimedia" data-cat="Metodologi Penelitian mdlc skripsi metodologi multimedia luther-sutopo">
+        <div class="plugin-card-banner">
+          <span class="banner-monogram">MDLC</span>
+        </div>
+        <div class="plugin-card-content">
+          <div class="plugin-card-header">
+            <h3 class="plugin-card-title">
+              <a href="article.html?id=metodologi-mdlc-multimedia">Penerapan Metodologi MDLC (Luther-Sutopo) pada Skripsi Multimedia</a>
+            </h3>
+            <div class="plugin-card-actions">
+              <button type="button" class="card-action-btn card-btn-bookmark" data-id="metodologi-mdlc-multimedia" title="Simpan artikel" aria-label="Simpan artikel">
+                <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+                <span class="card-bookmark-count">0</span>
+              </button>
+              <button type="button" class="card-action-btn card-btn-like" data-id="metodologi-mdlc-multimedia" title="Sukai artikel" aria-label="Sukai artikel">
+                <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <span class="card-like-count">0</span>
+              </button>
+            </div>
           </div>
-          <div class="plugin-author">oleh Divisi Kemahasiswaan HIMATRA &bull; 2026-09-21</div>
-          <p class="plugin-description">Penjelasan komprehensif 6 tahapan siklus Multimedia Development Life Cycle (Concept, Design, Material, Assembly, Testing, Distribution) yang diakui penguji sidang.</p>
-          <div class="plugin-tags">
-            <span class="tag">mdlc</span>
-            <span class="tag">skripsi</span>
-            <span class="tag">metodologi</span>
+          <div class="plugin-card-meta-row">
+            <span class="plugin-card-by">by @himatra &bull; Metodologi Penelitian</span>
+            <span class="plugin-card-id">#09</span>
+          </div>
+          <p class="plugin-card-desc">Penjelasan komprehensif 6 tahapan siklus Multimedia Development Life Cycle (Concept, Design, Material, Assembly, Testing, Distribution) yang diakui penguji sidang.</p>
+          <div class="plugin-card-badges">
+            <span class="badge-tag-new">BAKU</span>
+            <span class="badge-tag-verified">Verified</span>
           </div>
         </div>
-        <div class="plugin-side">
-          <div class="plugin-stats">
-            <div>BACA<b>6 menit</b></div>
-            <div>STATUS<b>Baku</b></div>
+        <div class="plugin-card-bottom">
+          <div class="card-bottom-tags">
+            <span class="card-tag">mdlc</span>
+            <span class="card-tag">skripsi</span>
+            <span class="card-tag">riset</span>
           </div>
-          <span class="card-install">
-            <span class="command-glyph"></span>
-            BACA JURNAL
-          </span>
+          <div class="card-bottom-stats">
+            <span class="card-stat-group" title="Jumlah pembaca">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span class="card-views-count" data-id="metodologi-mdlc-multimedia">64</span>
+            </span>
+            <span class="card-stat-group" title="Waktu baca">
+              <span class="card-read-time">6m</span>
+            </span>
+            <a href="article.html?id=metodologi-mdlc-multimedia" class="card-read-action" title="Buka Jurnal" aria-label="Buka Jurnal">&gt;_</a>
+          </div>
         </div>
       </article>
 
       <!-- Card 10: Panduan Kontribusi -->
-      <article class="plugin-card" data-cat="Kontribusi & Panduan kontribusi panduan markdown open-source">
-        <a class="plugin-card-link" href="article.html?id=panduan-kontribusi" aria-label="Buka Panduan Kontribusi"></a>
-        <div class="plugin-icon">DOC</div>
-        <div class="plugin-main">
-          <div class="plugin-title-line">
-            <h3>Panduan & Ketentuan Kontribusi Artikel Jurnal KATAKATING</h3>
-            <span class="status-badge">Panduan</span>
+      <article class="plugin-card" data-id="panduan-kontribusi" data-cat="Kontribusi & Panduan kontribusi panduan markdown open-source">
+        <div class="plugin-card-banner">
+          <span class="banner-monogram">DOC</span>
+        </div>
+        <div class="plugin-card-content">
+          <div class="plugin-card-header">
+            <h3 class="plugin-card-title">
+              <a href="article.html?id=panduan-kontribusi">Panduan &amp; Ketentuan Kontribusi Artikel Jurnal KATAKATING</a>
+            </h3>
+            <div class="plugin-card-actions">
+              <button type="button" class="card-action-btn card-btn-bookmark" data-id="panduan-kontribusi" title="Simpan artikel" aria-label="Simpan artikel">
+                <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+                <span class="card-bookmark-count">0</span>
+              </button>
+              <button type="button" class="card-action-btn card-btn-like" data-id="panduan-kontribusi" title="Sukai artikel" aria-label="Sukai artikel">
+                <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <span class="card-like-count">0</span>
+              </button>
+            </div>
           </div>
-          <div class="plugin-author">oleh Divisi Kemahasiswaan HIMATRA &bull; 2026-09-21</div>
-          <p class="plugin-description">Syarat, ketentuan akademik, format metadata frontmatter, dan 3 opsi tata cara mengirimkan tulisan jurnal praktikum (Form Web, WhatsApp, atau GitHub PR).</p>
-          <div class="plugin-tags">
-            <span class="tag">kontribusi</span>
-            <span class="tag">markdown</span>
-            <span class="tag">open-source</span>
+          <div class="plugin-card-meta-row">
+            <span class="plugin-card-by">by @himatra &bull; Kontribusi &amp; Panduan</span>
+            <span class="plugin-card-id">#10</span>
+          </div>
+          <p class="plugin-card-desc">Syarat, ketentuan akademik, format metadata frontmatter, dan 3 opsi tata cara mengirimkan tulisan jurnal praktikum (Form Web, WhatsApp, atau GitHub PR).</p>
+          <div class="plugin-card-badges">
+            <span class="badge-tag-new">PANDUAN</span>
+            <span class="badge-tag-verified">Verified</span>
           </div>
         </div>
-        <div class="plugin-side">
-          <div class="plugin-stats">
-            <div>BACA<b>4 menit</b></div>
-            <div>STATUS<b>Baku</b></div>
+        <div class="plugin-card-bottom">
+          <div class="card-bottom-tags">
+            <span class="card-tag">kontribusi</span>
+            <span class="card-tag">gitops</span>
+            <span class="card-tag">boash</span>
           </div>
-          <span class="card-install">
-            <span class="command-glyph"></span>
-            BACA JURNAL
-          </span>
+          <div class="card-bottom-stats">
+            <span class="card-stat-group" title="Jumlah pembaca">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span class="card-views-count" data-id="panduan-kontribusi">190</span>
+            </span>
+            <span class="card-stat-group" title="Waktu baca">
+              <span class="card-read-time">4m</span>
+            </span>
+            <a href="article.html?id=panduan-kontribusi" class="card-read-action" title="Buka Jurnal" aria-label="Buka Jurnal">&gt;_</a>
+          </div>
         </div>
       </article>
 

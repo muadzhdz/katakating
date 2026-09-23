@@ -48,6 +48,7 @@ const KataKatingAuth = {
         this.profile = null;
       }
       this.renderNav();
+      if (typeof window.refreshCardInteractions === 'function') window.refreshCardInteractions();
     });
   },
 

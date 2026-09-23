@@ -44,6 +44,7 @@ function initCopy() {
 // ── Live Search, Filtering, and Sorting (KataKating Catalog) ──
 function initSearchFilter() {
   const input = document.getElementById('search-input');
+  const searchClearBtn = document.getElementById('search-clear-btn');
   const chips = document.querySelectorAll('.category-chip, .filter-pill');
   const clearFiltersBtn = document.getElementById('clear-filters') || document.getElementById('empty-reset');
   const countEl = document.getElementById('plugin-count');
@@ -51,11 +52,17 @@ function initSearchFilter() {
   const emptyState = document.getElementById('empty-state') || document.getElementById('search-empty');
   const grid = document.getElementById('plugin-grid');
 
-  let cards = Array.from(document.querySelectorAll('.plugin-card, .article-card'));
+  let cards = grid ? Array.from(grid.querySelectorAll('.plugin-card, .article-card')) : Array.from(document.querySelectorAll('.plugin-card, .article-card'));
   if (!cards.length) return;
 
   let activeCat = 'all';
   let query = '';
+
+  function updateClearBtn() {
+    if (searchClearBtn) {
+      searchClearBtn.hidden = !(input && input.value.trim().length > 0);
+    }
+  }
 
   function apply() {
     let visibleCount = 0;
@@ -103,7 +110,7 @@ function initSearchFilter() {
     });
 
     currentCards.forEach(c => grid.appendChild(c));
-    cards = Array.from(document.querySelectorAll('.plugin-card, .article-card'));
+    cards = grid ? Array.from(grid.querySelectorAll('.plugin-card, .article-card')) : Array.from(document.querySelectorAll('.plugin-card, .article-card'));
   }
 
   if (sortSelect) {
@@ -138,8 +145,19 @@ function initSearchFilter() {
   if (input) {
     input.addEventListener('input', (e) => {
       query = e.target.value.trim().toLowerCase();
+      updateClearBtn();
       apply();
     });
+
+    if (searchClearBtn) {
+      searchClearBtn.addEventListener('click', () => {
+        input.value = '';
+        query = '';
+        updateClearBtn();
+        apply();
+        input.focus();
+      });
+    }
 
     window.addEventListener('keydown', (e) => {
       // Ctrl+K or / to focus search
@@ -150,12 +168,14 @@ function initSearchFilter() {
       } else if (e.key === 'Escape' && document.activeElement === input) {
         input.value = '';
         query = '';
+        updateClearBtn();
         apply();
         input.blur();
       }
     });
   }
 
+  updateClearBtn();
   apply();
 }
 
@@ -260,8 +280,162 @@ function parseSimpleMarkdown(md) {
   return clean;
 }
 
+// ── Interactive Card Actions (Likes, Bookmarks, Real-Time Stats) ──
+async function initCardInteractions() {
+  const cards = document.querySelectorAll('.plugin-card[data-id]');
+  if (!cards.length) return;
+
+  const auth = window.KataKatingAuth || window.ReadmeAuth;
+  const sb = auth ? auth.client : null;
+
+  if (sb) {
+    try {
+      const user = auth ? auth.user : null;
+
+      // 1. Fetch user's own likes
+      if (user) {
+        const { data: userLikes } = await sb.from('guide_likes').select('guide_id').eq('user_id', user.id);
+        if (userLikes) {
+          userLikes.forEach(l => {
+            document.querySelectorAll(`.card-btn-like[data-id="${l.guide_id}"]`).forEach(btn => {
+              btn.classList.add('active-heart');
+            });
+          });
+        }
+
+        // 2. Fetch user's own bookmarks
+        const { data: userBookmarks } = await sb.from('bookmarks').select('guide_id').eq('user_id', user.id);
+        if (userBookmarks) {
+          userBookmarks.forEach(b => {
+            document.querySelectorAll(`.card-btn-bookmark[data-id="${b.guide_id}"]`).forEach(btn => {
+              btn.classList.add('active-bookmark');
+              btn.classList.add('active-star');
+            });
+          });
+        }
+      }
+
+      // 3. Fetch aggregate counts for likes
+      const { data: allLikes } = await sb.from('guide_likes').select('guide_id');
+      if (allLikes) {
+        const likeCounts = {};
+        allLikes.forEach(l => { likeCounts[l.guide_id] = (likeCounts[l.guide_id] || 0) + 1; });
+        Object.entries(likeCounts).forEach(([gid, cnt]) => {
+          document.querySelectorAll(`.card-btn-like[data-id="${gid}"] .card-like-count`).forEach(el => {
+            el.textContent = cnt;
+          });
+        });
+      }
+
+      // 4. Fetch aggregate counts for bookmarks
+      const { data: allBookmarks } = await sb.from('bookmarks').select('guide_id');
+      if (allBookmarks) {
+        const bookmarkCounts = {};
+        allBookmarks.forEach(b => { bookmarkCounts[b.guide_id] = (bookmarkCounts[b.guide_id] || 0) + 1; });
+        Object.entries(bookmarkCounts).forEach(([gid, cnt]) => {
+          document.querySelectorAll(`.card-btn-bookmark[data-id="${gid}"] .card-bookmark-count`).forEach(el => {
+            el.textContent = cnt;
+          });
+        });
+      }
+    } catch (err) {
+      console.warn('Card interactions load notice:', err);
+    }
+  }
+}
+
+// Global click delegation for card action buttons
+let cardClickDelegated = false;
+function setupCardDelegation() {
+  if (cardClickDelegated) return;
+  cardClickDelegated = true;
+
+  document.addEventListener('click', async (e) => {
+    const btnLike = e.target.closest('.card-btn-like');
+    const btnBookmark = e.target.closest('.card-btn-bookmark');
+    const auth = window.KataKatingAuth || window.ReadmeAuth;
+    const sb = auth ? auth.client : null;
+
+    if (btnLike) {
+      e.preventDefault();
+      e.stopPropagation();
+      const articleId = btnLike.getAttribute('data-id');
+      const user = auth ? auth.user : null;
+      if (!user) {
+        showToast('Masuk dengan GitHub atau Google untuk menyukai artikel');
+        if (auth && auth.openLoginModal) auth.openLoginModal();
+        return;
+      }
+
+      const isLiked = btnLike.classList.contains('active-heart');
+      const countEl = btnLike.querySelector('.card-like-count');
+      let count = parseInt(countEl ? countEl.textContent : '0', 10) || 0;
+      const nextCount = isLiked ? Math.max(0, count - 1) : count + 1;
+
+      document.querySelectorAll(`.card-btn-like[data-id="${articleId}"]`).forEach(btn => {
+        if (isLiked) {
+          btn.classList.remove('active-heart');
+        } else {
+          btn.classList.add('active-heart');
+        }
+        const c = btn.querySelector('.card-like-count');
+        if (c) c.textContent = nextCount;
+      });
+
+      if (isLiked) {
+        showToast('Batal menyukai artikel');
+        if (sb) await sb.from('guide_likes').delete().eq('guide_id', articleId).eq('user_id', user.id);
+      } else {
+        showToast('Artikel disukai!');
+        if (sb) await sb.from('guide_likes').insert({ guide_id: articleId, user_id: user.id });
+      }
+    }
+
+    if (btnBookmark) {
+      e.preventDefault();
+      e.stopPropagation();
+      const articleId = btnBookmark.getAttribute('data-id');
+      const user = auth ? auth.user : null;
+      if (!user) {
+        showToast('Masuk dengan GitHub atau Google untuk menyimpan artikel');
+        if (auth && auth.openLoginModal) auth.openLoginModal();
+        return;
+      }
+
+      const isSaved = btnBookmark.classList.contains('active-bookmark') || btnBookmark.classList.contains('active-star');
+      const countEl = btnBookmark.querySelector('.card-bookmark-count');
+      let count = parseInt(countEl ? countEl.textContent : '0', 10) || 0;
+      const nextCount = isSaved ? Math.max(0, count - 1) : count + 1;
+
+      document.querySelectorAll(`.card-btn-bookmark[data-id="${articleId}"]`).forEach(btn => {
+        if (isSaved) {
+          btn.classList.remove('active-bookmark');
+          btn.classList.remove('active-star');
+        } else {
+          btn.classList.add('active-bookmark');
+          btn.classList.add('active-star');
+        }
+        const c = btn.querySelector('.card-bookmark-count');
+        if (c) c.textContent = nextCount;
+      });
+
+      if (isSaved) {
+        showToast('Artikel dihapus dari simpanan');
+        if (sb) await sb.from('bookmarks').delete().eq('guide_id', articleId).eq('user_id', user.id);
+      } else {
+        showToast('Artikel disimpan ke daftar bacaan!');
+        if (sb) await sb.from('bookmarks').insert({ guide_id: articleId, user_id: user.id });
+      }
+    }
+  });
+}
+
+window.refreshCardInteractions = initCardInteractions;
+
 document.addEventListener('DOMContentLoaded', () => {
   initCopy();
   initSearchFilter();
   initTheme();
+  setupCardDelegation();
+  setTimeout(initCardInteractions, 300);
 });
