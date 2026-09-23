@@ -5,7 +5,7 @@ category: Kontribusi & Panduan
 author: Divisi Kemahasiswaan HIMATRA
 date: 2026-09-23
 readTime: 4 menit
-tags: ["kontribusi", "panduan", "markdown", "open-source", "himatra", "boash", "fsti"]
+tags: ["kontribusi", "panduan", "markdown", "open-source", "himatra", "boash", "kampus"]
 summary: Syarat, ketentuan akademik, format metadata frontmatter, dan tata cara mengirimkan tulisan jurnal/artikel praktikum ke KATAKATING via formulir web atau GitHub Pull Request.
 ---
 

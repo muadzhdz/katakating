@@ -11,15 +11,15 @@
 
 ## Gambaran Umum
 
-`KATAKATING` adalah platform web repositori basis pengetahuan terbuka yang dirancang untuk memecahkan masalah transfer pengetahuan perkuliahan di lingkungan **Fakultas Sains Teknologi dan Informasi (FSTI) serta seluruh sivitas akademika Universitas Boash**.
+`KATAKATING` adalah platform web repositori basis pengetahuan terbuka yang dirancang untuk memfasilitasi transfer pengetahuan perkuliahan, panduan praktikum, dan solusi kendala teknis bagi **seluruh mahasiswa di seluruh fakultas dan program studi Universitas Boash**.
 
-Platform ini dibangun dengan estetika **Cyber Brutalist** (palet Cyber Emerald `#00ff66`, deep OLED `#000000`, connected 1px border grid, dan tipografi monospaced) serta menerapkan sistem **Matrix Filtering** untuk menjembatani program studi serumpun (TRM, Informatika, Mekatronika, Sistem Informasi, Sistem Rekayasa Komputer, dan Otomotif).
+Platform ini dibangun dengan estetika **Cyber Brutalist** (palet Cyber Emerald `#00ff66`, deep OLED `#000000`, connected 1px border grid, dan tipografi monospaced) serta menerapkan sistem **Matrix Filtering** yang fleksibel untuk mempermudah navigasi panduan lintas fakultas, program studi, dan tingkat semester.
 
 ---
 
 ## Fitur Utama
 
-- **Matrix Filtering Multi-Prodi:** Navigasi materi lintas program studi tanpa sekat kaku; menyaring panduan berdasarkan rumpun keilmuan dan tingkat semester (Semester 1 s.d. 8).
+- **Matrix Filtering Multi-Prodi:** Navigasi materi lintas fakultas dan program studi tanpa sekat kaku; menyaring panduan berdasarkan bidang keilmuan dan tingkat semester (Semester 1 s.d. 8).
 - **1-Click Command & Code Copy:** Tombol penyalinan perintah terminal (Linux/Bash/PowerShell) dan potongan kode dengan umpan balik visual instan.
 - **Micro-Learning Video Walkthroughs:** Integrasi klip video demonstrasi teknis (1–3 menit) pada artikel panduan yang memerlukan tahapan visual.
 - **Infografis & Diagram Alur Vektor:** Diagram arsitektur dan skema rangkaian praktikum yang tajam dan responsif.
@@ -85,7 +85,7 @@ npm run build
 
 ## Alur Kontribusi Naskah Panduan
 
-1. **Jalur Web Publik:** Akses halaman `tulis.html`, isi rincian naskah, kategori rumpun, dan tag prodi, lalu kirim naskah ke antrean kurasi.
+1. **Jalur Web Publik:** Akses halaman `tulis.html`, isi rincian naskah, kategori bidang ilmu, dan fakultas/prodi, lalu kirim naskah ke antrean kurasi.
 2. **Jalur GitOps:** Buka Issue baru menggunakan template [Submit a Practical Guide](.github/ISSUE_TEMPLATE/submit-guide.yml). Tim kurator akan memeriksa validitas teknis naskah sebelum diintegrasikan ke `catalog.json`.
 
 ---
