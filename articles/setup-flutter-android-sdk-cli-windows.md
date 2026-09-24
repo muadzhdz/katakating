@@ -1,4 +1,4 @@
----
+﻿---
 id: setup-flutter-android-sdk-cli-windows
 title: Panduan Lengkap Install Flutter & Android SDK Headless via Terminal di Windows (Tanpa Android Studio)
 category: Web & Tooling
@@ -12,14 +12,13 @@ summary: Panduan instalasi Flutter SDK dan Android Command-Line Tools (cmdline-t
 <img src="assets/flutter_terminal_setup.jpg" alt="Implementasi Flutter CLI & ADB di Windows Terminal" style="width:100%; border-radius: 6px; border: 1px solid var(--line-strong); margin: 18px 0;" />
 
 ## 1. Tujuan & Latar Belakang
-Dalam praktikum rekayasa perangkat lunak mobile, keterbatasan spesifikasi laptop mahasiswa sering kali menjadi kendala utama. Instalasi standar Android Studio dengan emulator grafis dapat menghabiskan ruang penyimpanan lebih dari 15–20 GB serta memakan konsumsi RAM di atas 6–8 GB hanya untuk menjalankan IDE.
+Dalam praktikum rekayasa perangkat lunak mobile, keterbatasan spesifikasi laptop mahasiswa sering kali menjadi kendala utama. Instalasi standar Android Studio dengan emulator grafis dapat menghabiskan ruang penyimpanan lebih dari 15â€“20 GB serta memakan konsumsi RAM di atas 6â€“8 GB hanya untuk menjalankan IDE.
 
 Panduan ini mendokumentasikan pendekatan **Headless Command-Line Interface (CLI)** murni di Windows 10/11. Dengan metode ini:
 * Kita hanya memasang **Flutter SDK** dan **Android Command-line Tools** resmi dari Google.
-* Ruang disk yang digunakan terpangkas drastis (hanya ~3–4 GB).
+* Ruang disk yang digunakan terpangkas drastis (hanya ~3â€“4 GB).
 * Perintah diagnostik `flutter doctor`, pengelola paket `adb`, serta workflow `flutter run` dan `flutter build apk` dapat dijalankan secepat kilat langsung dari PowerShell atau Windows Terminal, dengan teks editor ringan seperti VS Code atau Neovim.
 
----
 
 ## 2. Prasyarat Sistem & Persiapan Tooling
 
@@ -41,13 +40,11 @@ winget --version
 > Remove-Item "$env:TEMP\winget.msixbundle" -Force
 > ```
 
----
 
 ## 3. Langkah Instalasi Step-by-Step via PowerShell
 
 > Buka **Windows Terminal** atau **PowerShell** dengan hak akses Administrator (**Run as Administrator**) untuk kelancaran eksekusi perintah di bawah.
 
----
 
 ### 3.1. Pasang Git [BISA DI-SKIP JIKA SUDAH TERPASANG]
 
@@ -66,7 +63,6 @@ winget install --id Git.Git -e --source winget --accept-source-agreements --acce
 > **Checkpoint Keberhasilan:**
 > Buka jendela terminal baru, ketik `git --version`. Output harus menampilkan versi Git yang terpasang.
 
----
 
 ### 3.2. Pasang OpenJDK (Java Development Kit)
 Flutter dan Android build toolchain membutuhkan Java Virtual Machine (disarankan JDK 17 LTS atau versi Microsoft OpenJDK):
@@ -78,7 +74,6 @@ winget install --id Microsoft.OpenJDK.17 -e --source winget --accept-source-agre
 > **Checkpoint Keberhasilan:**
 > Ketik `java -version`. Output harus menampilkan informasi runtime Java OpenJDK.
 
----
 
 ### 3.3. Clone Flutter SDK & Registrasi PATH
 Hindari menaruh Flutter di direktori dengan proteksi hak akses khusus seperti `C:\Program Files\`. Tempatkan pada folder khusus pengembangan seperti `C:\src\flutter`.
@@ -110,7 +105,6 @@ flutter --version
 > **Checkpoint Keberhasilan:**
 > Perintah `flutter --version` menampilkan nomor versi Flutter channel stable dan Dart SDK.
 
----
 
 ### 3.4. Pasang Android Platform-Tools (ADB & Fastboot)
 Untuk mendapatkan perintah `adb` resmi secara instan tanpa mengunduh seluruh Android Studio yang berat:
@@ -131,7 +125,6 @@ Remove-Item $zipAdb -Force
 & "C:\Android\android-sdk\platform-tools\adb.exe" version
 ```
 
----
 
 ### 3.5. Pasang Android Command-Line Tools (`cmdline-tools`)
 `cmdline-tools` menyediakan utilitas vital `sdkmanager` untuk mengunduh Android Build-Tools, Platforms, dan menyetujui lisensi SDK.
@@ -159,7 +152,6 @@ if (Test-Path "$cmdDir\cmdline-tools") {
 & "$cmdDir\latest\bin\sdkmanager.bat" --version
 ```
 
----
 
 ### 3.6. Konfigurasi Environment Variables Permanen
 Konfigurasikan variabel `ANDROID_HOME`, `JAVA_HOME`, serta gabungkan seluruh folder bin ke variabel `PATH`:
@@ -191,7 +183,6 @@ Write-Host "[OK] Konfigurasi Environment Variables selesai!" -ForegroundColor Gr
 > $env:Path = "C:\src\flutter\bin;C:\Android\android-sdk\cmdline-tools\latest\bin;C:\Android\android-sdk\platform-tools;$env:Path"
 > ```
 
----
 
 ### 3.7. Unduh Komponen Android API & Setujui Lisensi
 Jalankan `sdkmanager` untuk memasang platform target (API 34 dan 36) beserta build-tools, lalu setujui seluruh perjanjian lisensi Google:
@@ -213,7 +204,6 @@ flutter config --android-sdk "C:\Android\android-sdk"
 flutter doctor --android-licenses
 ```
 
----
 
 ## 4. Verifikasi Akhir: Diagnostik `flutter doctor`
 
@@ -224,27 +214,26 @@ flutter doctor -v
 
 Hasil verifikasi yang tampil di terminal:
 ```text
-[✓] Flutter (Channel stable, 3.47.5, on Microsoft Windows [Version 10.0.26200.8037], locale en-ID)
-    • Flutter version 3.47.5 on channel stable at C:\src\flutter
-    • Dart version 3.13.4, DevTools version 2.60.0
+[âœ“] Flutter (Channel stable, 3.47.5, on Microsoft Windows [Version 10.0.26200.8037], locale en-ID)
+    â€¢ Flutter version 3.47.5 on channel stable at C:\src\flutter
+    â€¢ Dart version 3.13.4, DevTools version 2.60.0
 
-[✓] Windows Version (Windows 11 or higher, 25H2)
+[âœ“] Windows Version (Windows 11 or higher, 25H2)
 
-[✓] Android toolchain - develop for Android devices (Android SDK version 36.0.0)
-    • Android SDK at C:\Android\android-sdk
-    • Platform android-36, build-tools 36.0.0
-    • ANDROID_HOME = C:\Android\android-sdk
-    • Java binary at: C:\Program Files\Microsoft\jdk-25.0.4.101-hotspot\bin\java.exe
-    • All Android licenses accepted.
+[âœ“] Android toolchain - develop for Android devices (Android SDK version 36.0.0)
+    â€¢ Android SDK at C:\Android\android-sdk
+    â€¢ Platform android-36, build-tools 36.0.0
+    â€¢ ANDROID_HOME = C:\Android\android-sdk
+    â€¢ Java binary at: C:\Program Files\Microsoft\jdk-25.0.4.101-hotspot\bin\java.exe
+    â€¢ All Android licenses accepted.
 
-[✓] Chrome - develop for the web
-[✓] Connected device (3 available)
-[✓] Network resources
+[âœ“] Chrome - develop for the web
+[âœ“] Connected device (3 available)
+[âœ“] Network resources
 
-• No issues found!
+â€¢ No issues found!
 ```
 
----
 
 ## 5. Ensiklopedia Lengkap Perintah Flutter CLI
 
@@ -419,17 +408,15 @@ flutter logs
 flutter attach
 ```
 
----
 
 ## 6. Troubleshooting: Solusi Lengkap Semua Masalah & Bug `flutter doctor`
 
----
 
 ### Masalah 1: `cmdline-tools component is missing` pada flutter doctor
 * **Gejala:** 
   ```text
   [!] Android toolchain
-      ✗ cmdline-tools component is missing
+      âœ— cmdline-tools component is missing
       Run `path/to/sdkmanager --install "cmdline-tools;latest"`
   ```
 * **Penyebab:** Folder commandlinetools hasil ekstraksi tidak berada pada subfolder bernama `latest`.
@@ -441,7 +428,6 @@ flutter attach
   Rename-Item -Path "C:\Android\android-sdk\cmdline-tools\cmdline-tools" -NewName "latest"
   ```
 
----
 
 ### Masalah 2: Error `Could not determine SDK root` saat mengeksekusi sdkmanager
 * **Gejala:** Saat menjalankan `sdkmanager --version`, muncul pesan error:
@@ -449,7 +435,6 @@ flutter attach
 * **Penyebab:** Google mewajibkan `sdkmanager` diletakkan di dalam path bertingkat `<ANDROID_HOME>/cmdline-tools/<version>/bin`. Jika dijalankan langsung dari `cmdline-tools/bin`, ia tidak mengenali lokasi root SDK.
 * **Solusi:** Pindahkan ke struktur `cmdline-tools/latest/bin` dan pastikan environment variable `ANDROID_HOME` telah diset ke `C:\Android\android-sdk`.
 
----
 
 ### Masalah 3: `Android license status unknown` atau `Some Android licenses not accepted`
 * **Gejala:**
@@ -465,7 +450,6 @@ flutter attach
   flutter doctor --android-licenses
   ```
 
----
 
 ### Masalah 4: `No valid Android SDK platforms found in platforms. Directory was empty`
 * **Gejala:** Flutter mengenali folder Android SDK, namun folder `platforms` masih kosong.
@@ -476,24 +460,22 @@ flutter attach
   sdkmanager "platforms;android-34" "platforms;android-36"
   ```
 
----
 
 ### Masalah 5: `Flutter requires Android SDK 36 and the Android BuildTools 28.0.3`
 * **Gejala:** Flutter meminta versi Android API yang lebih tinggi dari yang telah terpasang.
-* **Penyebab:** Flutter versi 3.47+ mensyaratkan target compile minimum Android 14/15/16 (API 34–36).
+* **Penyebab:** Flutter versi 3.47+ mensyaratkan target compile minimum Android 14/15/16 (API 34â€“36).
 * **Solusi:**
   Pasang build-tools dan platforms versi yang diminta:
   ```powershell
   sdkmanager "platforms;android-36" "build-tools;36.0.0"
   ```
 
----
 
 ### Masalah 6: Tanda silang merah pada `Visual Studio - develop Windows apps`
 * **Gejala:**
   ```text
-  [✗] Visual Studio - develop Windows apps
-      ✗ Visual Studio not installed; this is necessary to develop Windows apps.
+  [âœ—] Visual Studio - develop Windows apps
+      âœ— Visual Studio not installed; this is necessary to develop Windows apps.
   ```
 * **Penyebab:** Flutter secara bawaan mendukung pembuatan software Windows Desktop (`.exe`), yang memerlukan Visual Studio C++ Compiler.
 * **Solusi:**
@@ -504,7 +486,6 @@ flutter attach
     ```
   * Jika di kemudian hari Anda memang ingin membuat aplikasi desktop Windows, pasang workload "Desktop development with C++" dari Visual Studio Community installer.
 
----
 
 ### Masalah 7: `JAVA_HOME is not set` atau JDK Versi Konflik
 * **Gejala:** Gradle atau Flutter mengeluh tidak menemukan compiler Java.
@@ -516,7 +497,6 @@ flutter attach
   flutter config --jdk-dir "C:\Program Files\Microsoft\jdk-17"
   ```
 
----
 
 ### Masalah 8: Error PowerShell ExecutionPolicy (`File cannot be loaded because running scripts is disabled`)
 * **Gejala:** Script `.ps1` atau utilitas CLI gagal dieksekusi di terminal PowerShell.
@@ -527,7 +507,6 @@ flutter attach
   Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned -Force
   ```
 
----
 
 ### Masalah 9: `adb : The term 'adb' is not recognized`
 * **Penyebab:** Folder `C:\Android\android-sdk\platform-tools` belum terdaftar di environment variable `PATH`.
@@ -539,7 +518,6 @@ flutter attach
   ```
   Tutup dan buka kembali jendela terminal PowerShell.
 
----
 
 ### Masalah 10: Git Long Path Issue pada Windows (`Filename too long`)
 * **Gejala:** Saat checkout repository Flutter atau paket pub yang dalam, muncul error:
@@ -551,7 +529,6 @@ flutter attach
   git config --system core.longpaths true
   ```
 
----
 
 ## 7. Referensi & Bacaan Lanjutan
 Untuk memperdalam pemahaman dan memantau rilis pembaruan komponen, silakan merujuk pada dokumentasi resmi berikut:

@@ -6,6 +6,7 @@
     "author": "Mu'adz Hudzaifah",
     "date": "2026-09-24",
     "readTime": "12 menit",
+    "initials": "FLUT",
     "tags": ["flutter", "dart", "android", "sdk", "adb", "windows", "terminal", "cli"],
     "summary": "Panduan instalasi Flutter SDK dan Android Command-Line Tools (cmdline-tools & adb) secara headless murni via terminal PowerShell di Windows tanpa perlu menginstal Android Studio yang memakan puluhan gigabyte.",
     "file": "setup-flutter-android-sdk-cli-windows.md"

@@ -245,6 +245,7 @@ function parseSimpleMarkdown(md) {
   clean = clean.replace(/^### (.*$)/gim, '<h3 style="font-size: 1.1rem; font-weight: 600; color: var(--heading); margin: 24px 0 8px;">$1</h3>');
   clean = clean.replace(/^## (.*$)/gim, '<h2 style="font-size: 1.35rem; font-weight: 700; color: var(--heading); margin: 32px 0 12px; border-bottom: 1px solid var(--line); padding-bottom: 6px;">$1</h2>');
   clean = clean.replace(/^# (.*$)/gim, '<h1 style="font-size: 1.6rem; font-weight: 700; color: var(--heading); margin: 24px 0 12px;">$1</h1>');
+  clean = clean.replace(/^---$/gim, '<hr style="border: 0; border-top: 1px solid var(--line); margin: 28px 0;">');
 
   clean = clean.replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>');
   clean = clean.replace(/\*(.*?)\*/gim, '<em>$1</em>');
@@ -268,7 +269,7 @@ function parseSimpleMarkdown(md) {
   clean = clean.split('\n\n').map(chunk => {
     chunk = chunk.trim();
     if (!chunk) return '';
-    if (chunk.startsWith('<h') || chunk.startsWith('<li') || chunk.startsWith('<table') || chunk.startsWith('<block') || chunk.startsWith('__CODE_BLOCK_')) {
+    if (chunk.startsWith('<h') || chunk.startsWith('<li') || chunk.startsWith('<table') || chunk.startsWith('<block') || chunk.startsWith('<hr') || chunk.startsWith('__CODE_BLOCK_')) {
       return chunk;
     }
     return `<p style="margin-bottom: 14px; line-height: 1.65; color: var(--text); font-size: 14px;">${chunk.replace(/\n/g, '<br>')}</p>`;
@@ -479,26 +480,79 @@ async function loadRecentlyAdded() {
   const container = document.getElementById('recent-grid');
   if (!container) return;
 
-  const auth = window.KataKatingAuth || window.ReadmeAuth;
-  let sb = auth ? auth.client : null;
-  if (!sb && window.supabase && typeof window.supabase.createClient === 'function') {
-    const SUPABASE_URL = 'https://nyywfctmbdzzypiwuilt.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im55eXdmY3RtYmR6enlwaXd1aWx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAxNTYxMjYsImV4cCI6MjEwNTczMjEyNn0.rSE8M3hyZE-CdcDVL9Rx0NUfQddn0-tw2ltBr1wPgOQ';
-    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  }
-  if (!sb) return;
-
   try {
-    const { data: recentGuides, error } = await sb
-      .from('guides')
-      .select('id, title, summary, author_name, category, initials, prodi_tags, views_count, created_at')
-      .order('created_at', { ascending: false })
-      .limit(3);
-
-    if (error) {
-      console.warn('Recently added query notice:', error);
-      return;
+    // 1. Fetch static curated articles from articles.json
+    let localArticles = [];
+    try {
+      const res = await fetch('articles/articles.json');
+      if (res.ok) {
+        localArticles = await res.json();
+      }
+    } catch (e) {
+      console.warn('Could not fetch local articles.json:', e);
     }
+
+    // 2. Fetch Supabase articles
+    let dbGuides = [];
+    const auth = window.KataKatingAuth || window.ReadmeAuth;
+    let sb = auth ? auth.client : null;
+    if (!sb && window.supabase && typeof window.supabase.createClient === 'function') {
+      const SUPABASE_URL = 'https://nyywfctmbdzzypiwuilt.supabase.co';
+      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im55eXdmY3RtYmR6enlwaXd1aWx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAxNTYxMjYsImV4cCI6MjEwNTczMjEyNn0.rSE8M3hyZE-CdcDVL9Rx0NUfQddn0-tw2ltBr1wPgOQ';
+      sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
+
+    if (sb) {
+      try {
+        const { data, error } = await sb
+          .from('guides')
+          .select('id, title, summary, author_name, category, initials, prodi_tags, views_count, created_at')
+          .order('created_at', { ascending: false });
+        if (!error && Array.isArray(data)) {
+          dbGuides = data;
+        }
+      } catch (err) {
+        console.warn('Recently added Supabase query notice:', err);
+      }
+    }
+
+    // 3. Merge: Seed with localArticles (authoritative file repository)
+    const mergedMap = new Map();
+
+    localArticles.forEach(item => {
+      mergedMap.set(item.id, {
+        id: item.id,
+        title: item.title,
+        summary: item.summary,
+        author_name: item.author || 'Kontributor',
+        category: item.category || 'Panduan',
+        initials: item.initials || (item.title ? item.title.substring(0, 4).toUpperCase() : 'DOC'),
+        prodi_tags: item.tags || item.prodi_tags || ['guide'],
+        views_count: item.views || 1,
+        created_at: item.date ? (item.date.includes('T') ? item.date : item.date + 'T12:00:00Z') : new Date().toISOString()
+      });
+    });
+
+    // Merge Supabase entries (update stats or add database-only submissions)
+    dbGuides.forEach(g => {
+      if (mergedMap.has(g.id)) {
+        const existing = mergedMap.get(g.id);
+        if (g.views_count) existing.views_count = g.views_count;
+        if (g.created_at) existing.created_at = g.created_at;
+        if (g.initials) existing.initials = g.initials;
+      } else {
+        mergedMap.set(g.id, g);
+      }
+    });
+
+    // 4. Sort descending: newest created_at / date first!
+    const allGuides = Array.from(mergedMap.values()).sort((a, b) => {
+      const timeA = new Date(a.created_at || 0).getTime();
+      const timeB = new Date(b.created_at || 0).getTime();
+      return timeB - timeA;
+    });
+
+    const recentGuides = allGuides.slice(0, 3);
 
     if (recentGuides && recentGuides.length > 0) {
       container.innerHTML = recentGuides.map((g, idx) => {
