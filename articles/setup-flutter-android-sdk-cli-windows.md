@@ -1,4 +1,4 @@
-﻿---
+---
 id: setup-flutter-android-sdk-cli-windows
 title: Panduan Lengkap Install Flutter & Android SDK Headless via Terminal di Windows (Tanpa Android Studio)
 category: Web & Tooling
@@ -6,10 +6,8 @@ author: Mu'adz Hudzaifah
 date: 2026-09-24
 readTime: 12 menit
 tags: ["flutter", "dart", "android", "sdk", "adb", "windows", "terminal", "cli", "sdkmanager"]
-summary: Panduan instalasi Flutter SDK dan Android Command-Line Tools (cmdline-tools & adb) secara headless murni via terminal PowerShell di Windows tanpa perlu menginstal Android Studio yang memakan puluhan gigabyte. Dilengkapi ensiklopedia perintah CLI Flutter, mitigasi semua error flutter doctor, serta screenshot implementasi teruji.
+summary: Panduan instalasi Flutter SDK dan Android Command-Line Tools (cmdline-tools & adb) secara headless murni via terminal PowerShell di Windows tanpa perlu menginstal Android Studio yang memakan puluhan gigabyte. Dilengkapi ensiklopedia perintah CLI Flutter serta inventaris pemecahan masalah teruji.
 ---
-
-<img src="assets/flutter_terminal_setup.jpg" alt="Implementasi Flutter CLI & ADB di Windows Terminal" style="width:100%; border-radius: 6px; border: 1px solid var(--line-strong); margin: 18px 0;" />
 
 ## 1. Tujuan & Latar Belakang
 Dalam praktikum rekayasa perangkat lunak mobile, keterbatasan spesifikasi laptop mahasiswa sering kali menjadi kendala utama. Instalasi standar Android Studio dengan emulator grafis dapat menghabiskan ruang penyimpanan lebih dari 15â€“20 GB serta memakan konsumsi RAM di atas 6â€“8 GB hanya untuk menjalankan IDE.
