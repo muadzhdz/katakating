@@ -634,6 +634,7 @@ async function loadLikes(sb, userId) {
         return `
           <div class="profile-article-item">
             <div class="profile-article-info">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap;">
                 <span class="status-badge" style="color: #f87171; border-color: rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.08); font-size: 10px;">[DISUKAI]</span>
                 <span class="status-badge">// ${escapeHtml(meta.category || 'PANDUAN').toUpperCase()}</span>
               </div>
@@ -641,7 +642,7 @@ async function loadLikes(sb, userId) {
               ${meta.summary ? `<p class="profile-article-summary">${escapeHtml(meta.summary)}</p>` : ''}
             </div>
             <div class="profile-article-action">
-              <a href="article.html?id=${escapeHtml(meta.id)}" class="button" style="min-height: 28px; font-size: 11px; padding: 0 12px;">
+              <a href="article.html?id=${escapeHtml(meta.id)}" class="button market-primary" style="min-height: 28px; font-size: 11px; padding: 0 12px;">
                 Buka ↗
               </a>
             </div>

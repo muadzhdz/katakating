@@ -1121,6 +1121,9 @@ html.light .plugin-card-banner,
 }
 
 .status-badge {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
   padding: 2px 7px;
   font-family: var(--mono);
   font-size: 10px;
