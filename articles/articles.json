@@ -1,5 +1,16 @@
 [
   {
+    "id": "setup-flutter-android-sdk-cli-windows",
+    "title": "Panduan Lengkap Install Flutter & Android SDK Headless via Terminal di Windows (Tanpa Android Studio)",
+    "category": "Web & Tooling",
+    "author": "Mu'adz Hudzaifah",
+    "date": "2026-09-24",
+    "readTime": "12 menit",
+    "tags": ["flutter", "dart", "android", "sdk", "adb", "windows", "terminal", "cli"],
+    "summary": "Panduan instalasi Flutter SDK dan Android Command-Line Tools (cmdline-tools & adb) secara headless murni via terminal PowerShell di Windows tanpa perlu menginstal Android Studio yang memakan puluhan gigabyte.",
+    "file": "setup-flutter-android-sdk-cli-windows.md"
+  },
+  {
     "id": "setup-wsl2-ubuntu-webdev",
     "title": "Setup Lengkap WSL2 Ubuntu 24.04 untuk Web Development",
     "category": "Web & Tooling",
