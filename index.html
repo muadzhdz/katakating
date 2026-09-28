@@ -3,30 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="KATAKATING — Portal Jurnal & Panduan Praktikum Mahasiswa Universitas Boash. Template Laporan 4-4-3-3, Jaringan, Web, Basis Data, Algoritma, IoT, dan Multimedia.">
-  <meta name="keywords" content="KATAKATING, KataKating, Universitas Boash, Mahasiswa Boash, Jurnal Praktikum, Format Laporan 4-4-3-3, Cisco VLAN, Normalisasi Database, Wokwi IoT, MDLC">
-  <meta name="author" content="Divisi Kemahasiswaan HIMATRA">
+  <meta name="description" content="KATAKATING — Portal Catatan Praktikum & Panduan Belajar Mahasiswa Universitas Boash. Template Laporan 4-4-3-3, Jaringan, Web, Basis Data, Algoritma, IoT, dan Multimedia.">
+  <meta name="keywords" content="KATAKATING, KataKating, Universitas Boash, Mahasiswa Boash, Catatan Praktikum, Panduan Belajar, Format Laporan 4-4-3-3, Cisco VLAN, Normalisasi Database, Wokwi IoT, MDLC">
+  <meta name="author" content="KATAKATING">
   <link rel="canonical" href="https://katakating.vercel.app/">
   <meta name="theme-color" content="#000000">
 
   <!-- Open Graph -->
   <meta property="og:title" content="KATAKATING | Boash Knowledge Hub">
-  <meta property="og:description" content="Pusat jurnal praktikum mandiri, template laporan 4-4-3-3, dan dokumentasi akademik mahasiswa Universitas Boash.">
+  <meta property="og:description" content="Pusat catatan praktikum mandiri, panduan belajar, template laporan 4-4-3-3, dan dokumentasi mahasiswa Universitas Boash.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://katakating.vercel.app/">
   <meta property="og:site_name" content="KATAKATING">
 
-  <title>KATAKATING — Boash Tech Journal & Knowledge Hub</title>
+  <title>KATAKATING — Boash Student Notes & Knowledge Hub</title>
 
   <!-- Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=2.2">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="main.js" defer></script>
-  <script src="auth.js" defer></script>
+  <script src="main.js?v=2.2" defer></script>
+  <script src="auth.js?v=2.2" defer></script>
 </head>
 
 <body>
@@ -51,15 +51,11 @@
 
     <nav class="market-nav" aria-label="Main navigation">
       <div class="market-nav-links">
-        <a class="active nav-link-main" href="#catalog" aria-label="Semua Jurnal">Semua Jurnal</a>
-        <a href="tulis.html" class="nav-link-tulis" aria-label="Tulis Artikel">Tulis Artikel</a>
-        <a href="article.html?id=panduan-kontribusi" class="nav-link-panduan" aria-label="Panduan Kontribusi">Panduan</a>
+        <a class="active nav-link-main" href="#catalog" aria-label="Semua Catatan">Semua Catatan</a>
+        <a href="upload.html" class="nav-link-upload" aria-label="Upload Catatan">Upload</a>
+        <a href="notes.html?id=panduan-kontribusi" class="nav-link-panduan" aria-label="Panduan Kontribusi">Panduan</a>
         <a class="market-icon-link" href="graph.html" title="Graf Pengetahuan (The Brain)" aria-label="Graf Pengetahuan (The Brain)">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><path d="M12 8v4"/><path d="m7.5 16.5 2.5-3.5"/><path d="m16.5 16.5-2.5-3.5"/></svg>
-        </a>
-        <a class="market-icon-link" href="https://chat.whatsapp.com/GzEfQkl53ZUBC9R2JF9CEf" target="_blank" rel="noreferrer" title="Saluran WhatsApp" aria-label="Saluran WhatsApp">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-          <span class="nav-ext-arrow">↗</span>
         </a>
         <a class="market-icon-link" href="https://github.com/muadzhdz/katakating" target="_blank" rel="noreferrer" title="Repositori GitHub" aria-label="Repositori GitHub">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
@@ -92,13 +88,13 @@
       <div class="mobile-nav-section-title">// NAVIGASI REPOSITORI</div>
       <a href="index.html#catalog" class="mobile-nav-item">
         <span class="mobile-nav-num">[01]</span>
-        <span class="mobile-nav-label">Semua Jurnal</span>
+        <span class="mobile-nav-label">Semua Catatan</span>
       </a>
-      <a href="tulis.html" class="mobile-nav-item">
+      <a href="upload.html" class="mobile-nav-item">
         <span class="mobile-nav-num">[02]</span>
-        <span class="mobile-nav-label">Tulis Artikel</span>
+        <span class="mobile-nav-label">Upload Catatan</span>
       </a>
-      <a href="article.html?id=panduan-kontribusi" class="mobile-nav-item">
+      <a href="notes.html?id=panduan-kontribusi" class="mobile-nav-item">
         <span class="mobile-nav-num">[03]</span>
         <span class="mobile-nav-label">Panduan Kontribusi</span>
       </a>
@@ -108,11 +104,6 @@
       </a>
       <div class="mobile-nav-divider"></div>
       <div class="mobile-nav-section-title">// TAUTAN EKSTERNAL</div>
-      <a href="https://chat.whatsapp.com/GzEfQkl53ZUBC9R2JF9CEf" target="_blank" rel="noreferrer" class="mobile-nav-item mobile-nav-ext">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-        <span>Saluran Komunitas WhatsApp</span>
-        <span class="mobile-nav-arrow">↗</span>
-      </a>
       <a href="https://github.com/muadzhdz/katakating" target="_blank" rel="noreferrer" class="mobile-nav-item mobile-nav-ext">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
         <span>Repositori GitHub</span>
@@ -127,15 +118,13 @@
   <!-- KATAKATING HERO -->
   <section class="market-hero">
     <div class="market-hero-copy">
-      <div class="page-eyebrow">COMMUNITY REGISTRY // UNIVERSITAS BOASH</div>
-      <h1>discover boash tech journals</h1>
+      <div class="page-eyebrow">DIREKTORI MAHASISWA // UNIVERSITAS BOASH</div>
+      <h1>eksplorasi catatan mahasiswa boash</h1>
       <p>
-        Dokumentasi praktikum teruji, catatan mata kuliah, dan panduan akademik lintas fakultas dan program studi Universitas Boash. Dibangun dan dikurasi secara terbuka tanpa bloat.
+        Dokumentasi praktikum teruji, rangkuman mata kuliah, dan panduan belajar bersama mahasiswa Universitas Boash. Dibangun dan dikurasi secara terbuka tanpa bloat.
       </p>
       <div class="market-hero-actions">
-        <a class="button market-primary" href="#catalog">Jelajahi Jurnal <span aria-hidden="true">→</span></a>
-        <a class="button" href="tulis.html">Tulis Artikel <span aria-hidden="true">→</span></a>
-        <a class="button publish-primary" href="https://chat.whatsapp.com/GzEfQkl53ZUBC9R2JF9CEf" target="_blank" rel="noreferrer">Saluran Komunitas <span aria-hidden="true">→</span></a>
+        <a class="button market-primary" href="#catalog">Jelajahi Catatan <span aria-hidden="true">→</span></a>
       </div>
     </div>
   </section>
@@ -143,10 +132,10 @@
   <!-- RECENTLY ADDED SECTION -->
   <section class="recent-section" id="recent-section" aria-labelledby="recent-title">
     <div class="market-section-head">
-      <h2 id="recent-title">RECENTLY ADDED</h2>
+      <h2 id="recent-title">BARU DITAMBAHKAN</h2>
       <a href="#catalog">lihat semua →</a>
     </div>
-    <div id="recent-grid" class="recent-grid" aria-label="Recently added journals">
+    <div id="recent-grid" class="recent-grid" aria-label="Catatan baru ditambahkan">
       
       <!-- Recent 0: Flutter SDK Headless -->
       <article class="plugin-card" data-id="setup-flutter-android-sdk-cli-windows" data-cat="Web & Tooling flutter dart android sdk adb windows">
@@ -156,14 +145,14 @@
         <div class="plugin-card-content">
           <div class="plugin-card-header">
             <h3 class="plugin-card-title">
-              <a href="article.html?id=setup-flutter-android-sdk-cli-windows">Panduan Lengkap Install Flutter &amp; Android SDK Headless via Terminal di Windows</a>
+              <a href="notes.html?id=setup-flutter-android-sdk-cli-windows">Panduan Lengkap Install Flutter &amp; Android SDK Headless via Terminal di Windows</a>
             </h3>
             <div class="plugin-card-actions">
-              <button type="button" class="card-action-btn card-btn-bookmark" data-id="setup-flutter-android-sdk-cli-windows" title="Simpan artikel" aria-label="Simpan artikel">
+              <button type="button" class="card-action-btn card-btn-bookmark" data-id="setup-flutter-android-sdk-cli-windows" title="Simpan catatan" aria-label="Simpan catatan">
                 <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
                 <span class="card-bookmark-count">0</span>
               </button>
-              <button type="button" class="card-action-btn card-btn-like" data-id="setup-flutter-android-sdk-cli-windows" title="Sukai artikel" aria-label="Sukai artikel">
+              <button type="button" class="card-action-btn card-btn-like" data-id="setup-flutter-android-sdk-cli-windows" title="Sukai catatan" aria-label="Sukai catatan">
                 <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                 <span class="card-like-count">0</span>
               </button>
@@ -193,7 +182,7 @@
             <span class="card-stat-group" title="Waktu baca">
               <span class="card-read-time">12m</span>
             </span>
-            <a href="article.html?id=setup-flutter-android-sdk-cli-windows" class="card-read-action" title="Buka Jurnal" aria-label="Buka Jurnal">&gt;_</a>
+            <a href="notes.html?id=setup-flutter-android-sdk-cli-windows" class="card-read-action" title="Buka Catatan" aria-label="Buka Catatan"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
           </div>
         </div>
       </article>
@@ -206,14 +195,14 @@
         <div class="plugin-card-content">
           <div class="plugin-card-header">
             <h3 class="plugin-card-title">
-              <a href="article.html?id=setup-wsl2-ubuntu-webdev">Setup Lengkap WSL2 Ubuntu 24.04 untuk Web Development</a>
+              <a href="notes.html?id=setup-wsl2-ubuntu-webdev">Setup Lengkap WSL2 Ubuntu 24.04 untuk Web Development</a>
             </h3>
             <div class="plugin-card-actions">
-              <button type="button" class="card-action-btn card-btn-bookmark" data-id="setup-wsl2-ubuntu-webdev" title="Simpan artikel" aria-label="Simpan artikel">
+              <button type="button" class="card-action-btn card-btn-bookmark" data-id="setup-wsl2-ubuntu-webdev" title="Simpan catatan" aria-label="Simpan catatan">
                 <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
                 <span class="card-bookmark-count">0</span>
               </button>
-              <button type="button" class="card-action-btn card-btn-like" data-id="setup-wsl2-ubuntu-webdev" title="Sukai artikel" aria-label="Sukai artikel">
+              <button type="button" class="card-action-btn card-btn-like" data-id="setup-wsl2-ubuntu-webdev" title="Sukai catatan" aria-label="Sukai catatan">
                 <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                 <span class="card-like-count">0</span>
               </button>
@@ -243,7 +232,7 @@
             <span class="card-stat-group" title="Waktu baca">
               <span class="card-read-time">6m</span>
             </span>
-            <a href="article.html?id=setup-wsl2-ubuntu-webdev" class="card-read-action" title="Buka Jurnal" aria-label="Buka Jurnal">&gt;_</a>
+            <a href="notes.html?id=setup-wsl2-ubuntu-webdev" class="card-read-action" title="Buka Catatan" aria-label="Buka Catatan"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
           </div>
         </div>
       </article>
@@ -256,14 +245,14 @@
         <div class="plugin-card-content">
           <div class="plugin-card-header">
             <h3 class="plugin-card-title">
-              <a href="article.html?id=format-margin-laporan-4433">Standar Baku Format Margin 4-4-3-3 Laporan &amp; Skripsi</a>
+              <a href="notes.html?id=format-margin-laporan-4433">Standar Baku Format Margin 4-4-3-3 Laporan &amp; Skripsi</a>
             </h3>
             <div class="plugin-card-actions">
-              <button type="button" class="card-action-btn card-btn-bookmark" data-id="format-margin-laporan-4433" title="Simpan artikel" aria-label="Simpan artikel">
+              <button type="button" class="card-action-btn card-btn-bookmark" data-id="format-margin-laporan-4433" title="Simpan catatan" aria-label="Simpan catatan">
                 <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
                 <span class="card-bookmark-count">0</span>
               </button>
-              <button type="button" class="card-action-btn card-btn-like" data-id="format-margin-laporan-4433" title="Sukai artikel" aria-label="Sukai artikel">
+              <button type="button" class="card-action-btn card-btn-like" data-id="format-margin-laporan-4433" title="Sukai catatan" aria-label="Sukai catatan">
                 <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                 <span class="card-like-count">0</span>
               </button>
@@ -293,7 +282,7 @@
             <span class="card-stat-group" title="Waktu baca">
               <span class="card-read-time">5m</span>
             </span>
-            <a href="article.html?id=format-margin-laporan-4433" class="card-read-action" title="Buka Jurnal" aria-label="Buka Jurnal">&gt;_</a>
+            <a href="notes.html?id=format-margin-laporan-4433" class="card-read-action" title="Buka Catatan" aria-label="Buka Catatan"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
           </div>
         </div>
       </article>
@@ -306,14 +295,14 @@
         <div class="plugin-card-content">
           <div class="plugin-card-header">
             <h3 class="plugin-card-title">
-              <a href="article.html?id=jaringan-routing-vlan-cisco">Konfigurasi Inter-VLAN Routing &amp; Trunking Cisco Packet Tracer</a>
+              <a href="notes.html?id=jaringan-routing-vlan-cisco">Konfigurasi Inter-VLAN Routing &amp; Trunking Cisco Packet Tracer</a>
             </h3>
             <div class="plugin-card-actions">
-              <button type="button" class="card-action-btn card-btn-bookmark" data-id="jaringan-routing-vlan-cisco" title="Simpan artikel" aria-label="Simpan artikel">
+              <button type="button" class="card-action-btn card-btn-bookmark" data-id="jaringan-routing-vlan-cisco" title="Simpan catatan" aria-label="Simpan catatan">
                 <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
                 <span class="card-bookmark-count">0</span>
               </button>
-              <button type="button" class="card-action-btn card-btn-like" data-id="jaringan-routing-vlan-cisco" title="Sukai artikel" aria-label="Sukai artikel">
+              <button type="button" class="card-action-btn card-btn-like" data-id="jaringan-routing-vlan-cisco" title="Sukai catatan" aria-label="Sukai catatan">
                 <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                 <span class="card-like-count">0</span>
               </button>
@@ -343,7 +332,7 @@
             <span class="card-stat-group" title="Waktu baca">
               <span class="card-read-time">7m</span>
             </span>
-            <a href="article.html?id=jaringan-routing-vlan-cisco" class="card-read-action" title="Buka Jurnal" aria-label="Buka Jurnal">&gt;_</a>
+            <a href="notes.html?id=jaringan-routing-vlan-cisco" class="card-read-action" title="Buka Catatan" aria-label="Buka Catatan"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
           </div>
         </div>
       </article>
@@ -355,36 +344,50 @@
   <section class="market-catalog" id="catalog" aria-labelledby="catalog-title" tabindex="-1">
     <div class="catalog-heading">
       <div>
-        <span class="page-eyebrow">REGISTRY</span>
-        <h2 id="catalog-title">browse all journals</h2>
+        <span class="page-eyebrow">DIREKTORI MAHASISWA</span>
+        <h2 id="catalog-title">jelajahi semua catatan</h2>
       </div>
       <div class="catalog-heading-side">
-        <p><span id="plugin-count">11</span> <span id="plugin-count-label">panduan praktikum</span></p>
+        <p><span id="plugin-count">11</span> <span id="plugin-count-label">catatan praktikum</span></p>
       </div>
     </div>
 
     <!-- SEARCH & CONTROLS -->
     <div class="catalog-controls">
       <div class="market-search">
+        <label class="sr-only" for="search-input">Cari catatan atau topik</label>
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
-        <div style="flex: 1; min-width: 0;">
-          <label class="sr-only" for="search-input">Cari artikel atau topik</label>
-          <input id="search-input" name="journal-search" type="text" placeholder="Cari artikel, tag:linux, text:nginx, atau @author…" maxlength="160" autocomplete="off" spellcheck="false">
-        </div>
+        <input id="search-input" name="journal-search" type="text" placeholder="Cari catatan, topik, atau tag…" maxlength="160" autocomplete="off" spellcheck="false">
         <button type="button" id="search-clear-btn" class="search-clear-btn" aria-label="Hapus pencarian" hidden>
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
         <kbd id="search-shortcut">/</kbd>
       </div>
-      <label class="sort-control">
-        <span class="sr-only">Urutkan jurnal</span>
-        <select id="sort-select">
+      <div class="sort-control cyber-select-wrap" id="sort-select-wrap">
+        <button type="button" class="cyber-select-trigger" id="sort-select-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Urutkan catatan">
+          <span class="cyber-select-label" id="sort-select-label">TERBARU DITAMBAHKAN</span>
+          <svg class="cyber-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 10 4 4 4-4"/></svg>
+        </button>
+        <div class="cyber-select-menu" id="sort-select-menu" role="listbox" hidden>
+          <div class="cyber-select-option selected" role="option" data-value="recent" aria-selected="true">
+            <span>Terbaru Ditambahkan</span>
+            <span class="cyber-select-check">✓</span>
+          </div>
+          <div class="cyber-select-option" role="option" data-value="title" aria-selected="false">
+            <span>Judul (A–Z)</span>
+            <span class="cyber-select-check">✓</span>
+          </div>
+          <div class="cyber-select-option" role="option" data-value="category" aria-selected="false">
+            <span>Berdasarkan Kategori</span>
+            <span class="cyber-select-check">✓</span>
+          </div>
+        </div>
+        <select id="sort-select" class="cyber-select-native" tabindex="-1" aria-hidden="true">
           <option value="recent">Terbaru Ditambahkan</option>
           <option value="title">Judul (A–Z)</option>
           <option value="category">Berdasarkan Kategori</option>
         </select>
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 10 4 4 4-4"/></svg>
-      </label>
+      </div>
     </div>
 
     <!-- CATEGORY BAR -->
@@ -415,14 +418,14 @@
         <div class="plugin-card-content">
           <div class="plugin-card-header">
             <h3 class="plugin-card-title">
-              <a href="article.html?id=setup-flutter-android-sdk-cli-windows">Panduan Lengkap Install Flutter &amp; Android SDK Headless via Terminal di Windows</a>
+              <a href="notes.html?id=setup-flutter-android-sdk-cli-windows">Panduan Lengkap Install Flutter &amp; Android SDK Headless via Terminal di Windows</a>
             </h3>
             <div class="plugin-card-actions">
-              <button type="button" class="card-action-btn card-btn-bookmark" data-id="setup-flutter-android-sdk-cli-windows" title="Simpan artikel" aria-label="Simpan artikel">
+              <button type="button" class="card-action-btn card-btn-bookmark" data-id="setup-flutter-android-sdk-cli-windows" title="Simpan catatan" aria-label="Simpan catatan">
                 <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
                 <span class="card-bookmark-count">0</span>
               </button>
-              <button type="button" class="card-action-btn card-btn-like" data-id="setup-flutter-android-sdk-cli-windows" title="Sukai artikel" aria-label="Sukai artikel">
+              <button type="button" class="card-action-btn card-btn-like" data-id="setup-flutter-android-sdk-cli-windows" title="Sukai catatan" aria-label="Sukai catatan">
                 <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                 <span class="card-like-count">0</span>
               </button>
@@ -452,7 +455,7 @@
             <span class="card-stat-group" title="Waktu baca">
               <span class="card-read-time">12m</span>
             </span>
-            <a href="article.html?id=setup-flutter-android-sdk-cli-windows" class="card-read-action" title="Buka Jurnal" aria-label="Buka Jurnal">&gt;_</a>
+            <a href="notes.html?id=setup-flutter-android-sdk-cli-windows" class="card-read-action" title="Buka Catatan" aria-label="Buka Catatan"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
           </div>
         </div>
       </article>
@@ -465,14 +468,14 @@
         <div class="plugin-card-content">
           <div class="plugin-card-header">
             <h3 class="plugin-card-title">
-              <a href="article.html?id=setup-wsl2-ubuntu-webdev">Setup Lengkap WSL2 Ubuntu 24.04 untuk Web Development</a>
+              <a href="notes.html?id=setup-wsl2-ubuntu-webdev">Setup Lengkap WSL2 Ubuntu 24.04 untuk Web Development</a>
             </h3>
             <div class="plugin-card-actions">
-              <button type="button" class="card-action-btn card-btn-bookmark" data-id="setup-wsl2-ubuntu-webdev" title="Simpan artikel" aria-label="Simpan artikel">
+              <button type="button" class="card-action-btn card-btn-bookmark" data-id="setup-wsl2-ubuntu-webdev" title="Simpan catatan" aria-label="Simpan catatan">
                 <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
                 <span class="card-bookmark-count">0</span>
               </button>
-              <button type="button" class="card-action-btn card-btn-like" data-id="setup-wsl2-ubuntu-webdev" title="Sukai artikel" aria-label="Sukai artikel">
+              <button type="button" class="card-action-btn card-btn-like" data-id="setup-wsl2-ubuntu-webdev" title="Sukai catatan" aria-label="Sukai catatan">
                 <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                 <span class="card-like-count">0</span>
               </button>
@@ -502,7 +505,7 @@
             <span class="card-stat-group" title="Waktu baca">
               <span class="card-read-time">6m</span>
             </span>
-            <a href="article.html?id=setup-wsl2-ubuntu-webdev" class="card-read-action" title="Buka Jurnal" aria-label="Buka Jurnal">&gt;_</a>
+            <a href="notes.html?id=setup-wsl2-ubuntu-webdev" class="card-read-action" title="Buka Catatan" aria-label="Buka Catatan"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
           </div>
         </div>
       </article>
@@ -515,14 +518,14 @@
         <div class="plugin-card-content">
           <div class="plugin-card-header">
             <h3 class="plugin-card-title">
-              <a href="article.html?id=format-margin-laporan-4433">Standar Baku Format Margin Laporan Praktikum &amp; TA (4-4-3-3)</a>
+              <a href="notes.html?id=format-margin-laporan-4433">Standar Baku Format Margin Laporan Praktikum &amp; TA (4-4-3-3)</a>
             </h3>
             <div class="plugin-card-actions">
-              <button type="button" class="card-action-btn card-btn-bookmark" data-id="format-margin-laporan-4433" title="Simpan artikel" aria-label="Simpan artikel">
+              <button type="button" class="card-action-btn card-btn-bookmark" data-id="format-margin-laporan-4433" title="Simpan catatan" aria-label="Simpan catatan">
                 <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
                 <span class="card-bookmark-count">0</span>
               </button>
-              <button type="button" class="card-action-btn card-btn-like" data-id="format-margin-laporan-4433" title="Sukai artikel" aria-label="Sukai artikel">
+              <button type="button" class="card-action-btn card-btn-like" data-id="format-margin-laporan-4433" title="Sukai catatan" aria-label="Sukai catatan">
                 <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                 <span class="card-like-count">0</span>
               </button>
@@ -552,7 +555,7 @@
             <span class="card-stat-group" title="Waktu baca">
               <span class="card-read-time">5m</span>
             </span>
-            <a href="article.html?id=format-margin-laporan-4433" class="card-read-action" title="Buka Jurnal" aria-label="Buka Jurnal">&gt;_</a>
+            <a href="notes.html?id=format-margin-laporan-4433" class="card-read-action" title="Buka Catatan" aria-label="Buka Catatan"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
           </div>
         </div>
       </article>
@@ -565,14 +568,14 @@
         <div class="plugin-card-content">
           <div class="plugin-card-header">
             <h3 class="plugin-card-title">
-              <a href="article.html?id=jaringan-routing-vlan-cisco">Konfigurasi Inter-VLAN Routing &amp; Trunking pada Cisco Packet Tracer</a>
+              <a href="notes.html?id=jaringan-routing-vlan-cisco">Konfigurasi Inter-VLAN Routing &amp; Trunking pada Cisco Packet Tracer</a>
             </h3>
             <div class="plugin-card-actions">
-              <button type="button" class="card-action-btn card-btn-bookmark" data-id="jaringan-routing-vlan-cisco" title="Simpan artikel" aria-label="Simpan artikel">
+              <button type="button" class="card-action-btn card-btn-bookmark" data-id="jaringan-routing-vlan-cisco" title="Simpan catatan" aria-label="Simpan catatan">
                 <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
                 <span class="card-bookmark-count">0</span>
               </button>
-              <button type="button" class="card-action-btn card-btn-like" data-id="jaringan-routing-vlan-cisco" title="Sukai artikel" aria-label="Sukai artikel">
+              <button type="button" class="card-action-btn card-btn-like" data-id="jaringan-routing-vlan-cisco" title="Sukai catatan" aria-label="Sukai catatan">
                 <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                 <span class="card-like-count">0</span>
               </button>
@@ -602,7 +605,7 @@
             <span class="card-stat-group" title="Waktu baca">
               <span class="card-read-time">7m</span>
             </span>
-            <a href="article.html?id=jaringan-routing-vlan-cisco" class="card-read-action" title="Buka Jurnal" aria-label="Buka Jurnal">&gt;_</a>
+            <a href="notes.html?id=jaringan-routing-vlan-cisco" class="card-read-action" title="Buka Catatan" aria-label="Buka Catatan"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
           </div>
         </div>
       </article>
@@ -615,14 +618,14 @@
         <div class="plugin-card-content">
           <div class="plugin-card-header">
             <h3 class="plugin-card-title">
-              <a href="article.html?id=basis-data-relasional-normalisasi">Panduan Praktis Normalisasi Basis Data (1NF, 2NF, 3NF)</a>
+              <a href="notes.html?id=basis-data-relasional-normalisasi">Panduan Praktis Normalisasi Basis Data (1NF, 2NF, 3NF)</a>
             </h3>
             <div class="plugin-card-actions">
-              <button type="button" class="card-action-btn card-btn-bookmark" data-id="basis-data-relasional-normalisasi" title="Simpan artikel" aria-label="Simpan artikel">
+              <button type="button" class="card-action-btn card-btn-bookmark" data-id="basis-data-relasional-normalisasi" title="Simpan catatan" aria-label="Simpan catatan">
                 <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
                 <span class="card-bookmark-count">0</span>
               </button>
-              <button type="button" class="card-action-btn card-btn-like" data-id="basis-data-relasional-normalisasi" title="Sukai artikel" aria-label="Sukai artikel">
+              <button type="button" class="card-action-btn card-btn-like" data-id="basis-data-relasional-normalisasi" title="Sukai catatan" aria-label="Sukai catatan">
                 <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                 <span class="card-like-count">0</span>
               </button>
@@ -652,7 +655,7 @@
             <span class="card-stat-group" title="Waktu baca">
               <span class="card-read-time">6m</span>
             </span>
-            <a href="article.html?id=basis-data-relasional-normalisasi" class="card-read-action" title="Buka Jurnal" aria-label="Buka Jurnal">&gt;_</a>
+            <a href="notes.html?id=basis-data-relasional-normalisasi" class="card-read-action" title="Buka Catatan" aria-label="Buka Catatan"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
           </div>
         </div>
       </article>
@@ -665,14 +668,14 @@
         <div class="plugin-card-content">
           <div class="plugin-card-header">
             <h3 class="plugin-card-title">
-              <a href="article.html?id=algoritma-struktur-data-dasar">Implementasi Struktur Data Stack &amp; Queue pada Praktikum Pemrograman</a>
+              <a href="notes.html?id=algoritma-struktur-data-dasar">Implementasi Struktur Data Stack &amp; Queue pada Praktikum Pemrograman</a>
             </h3>
             <div class="plugin-card-actions">
-              <button type="button" class="card-action-btn card-btn-bookmark" data-id="algoritma-struktur-data-dasar" title="Simpan artikel" aria-label="Simpan artikel">
+              <button type="button" class="card-action-btn card-btn-bookmark" data-id="algoritma-struktur-data-dasar" title="Simpan catatan" aria-label="Simpan catatan">
                 <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
                 <span class="card-bookmark-count">0</span>
               </button>
-              <button type="button" class="card-action-btn card-btn-like" data-id="algoritma-struktur-data-dasar" title="Sukai artikel" aria-label="Sukai artikel">
+              <button type="button" class="card-action-btn card-btn-like" data-id="algoritma-struktur-data-dasar" title="Sukai catatan" aria-label="Sukai catatan">
                 <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                 <span class="card-like-count">0</span>
               </button>
@@ -702,7 +705,7 @@
             <span class="card-stat-group" title="Waktu baca">
               <span class="card-read-time">6m</span>
             </span>
-            <a href="article.html?id=algoritma-struktur-data-dasar" class="card-read-action" title="Buka Jurnal" aria-label="Buka Jurnal">&gt;_</a>
+            <a href="notes.html?id=algoritma-struktur-data-dasar" class="card-read-action" title="Buka Catatan" aria-label="Buka Catatan"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
           </div>
         </div>
       </article>
@@ -715,14 +718,14 @@
         <div class="plugin-card-content">
           <div class="plugin-card-header">
             <h3 class="plugin-card-title">
-              <a href="article.html?id=wokwi-esp32-mqtt-hivemq">Simulasi Telemetri ESP32 &amp; MQTT HiveMQ di Browser (Tanpa Alat Fisik)</a>
+              <a href="notes.html?id=wokwi-esp32-mqtt-hivemq">Simulasi Telemetri ESP32 &amp; MQTT HiveMQ di Browser (Tanpa Alat Fisik)</a>
             </h3>
             <div class="plugin-card-actions">
-              <button type="button" class="card-action-btn card-btn-bookmark" data-id="wokwi-esp32-mqtt-hivemq" title="Simpan artikel" aria-label="Simpan artikel">
+              <button type="button" class="card-action-btn card-btn-bookmark" data-id="wokwi-esp32-mqtt-hivemq" title="Simpan catatan" aria-label="Simpan catatan">
                 <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
                 <span class="card-bookmark-count">0</span>
               </button>
-              <button type="button" class="card-action-btn card-btn-like" data-id="wokwi-esp32-mqtt-hivemq" title="Sukai artikel" aria-label="Sukai artikel">
+              <button type="button" class="card-action-btn card-btn-like" data-id="wokwi-esp32-mqtt-hivemq" title="Sukai catatan" aria-label="Sukai catatan">
                 <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                 <span class="card-like-count">0</span>
               </button>
@@ -752,7 +755,7 @@
             <span class="card-stat-group" title="Waktu baca">
               <span class="card-read-time">6m</span>
             </span>
-            <a href="article.html?id=wokwi-esp32-mqtt-hivemq" class="card-read-action" title="Buka Jurnal" aria-label="Buka Jurnal">&gt;_</a>
+            <a href="notes.html?id=wokwi-esp32-mqtt-hivemq" class="card-read-action" title="Buka Catatan" aria-label="Buka Catatan"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
           </div>
         </div>
       </article>
@@ -765,14 +768,14 @@
         <div class="plugin-card-content">
           <div class="plugin-card-header">
             <h3 class="plugin-card-title">
-              <a href="article.html?id=git-workflow-conflict-detached-head">Mengatasi Detached HEAD &amp; Merge Conflict pada Git Kolaboratif</a>
+              <a href="notes.html?id=git-workflow-conflict-detached-head">Mengatasi Detached HEAD &amp; Merge Conflict pada Git Kolaboratif</a>
             </h3>
             <div class="plugin-card-actions">
-              <button type="button" class="card-action-btn card-btn-bookmark" data-id="git-workflow-conflict-detached-head" title="Simpan artikel" aria-label="Simpan artikel">
+              <button type="button" class="card-action-btn card-btn-bookmark" data-id="git-workflow-conflict-detached-head" title="Simpan catatan" aria-label="Simpan catatan">
                 <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
                 <span class="card-bookmark-count">0</span>
               </button>
-              <button type="button" class="card-action-btn card-btn-like" data-id="git-workflow-conflict-detached-head" title="Sukai artikel" aria-label="Sukai artikel">
+              <button type="button" class="card-action-btn card-btn-like" data-id="git-workflow-conflict-detached-head" title="Sukai catatan" aria-label="Sukai catatan">
                 <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                 <span class="card-like-count">0</span>
               </button>
@@ -802,7 +805,7 @@
             <span class="card-stat-group" title="Waktu baca">
               <span class="card-read-time">5m</span>
             </span>
-            <a href="article.html?id=git-workflow-conflict-detached-head" class="card-read-action" title="Buka Jurnal" aria-label="Buka Jurnal">&gt;_</a>
+            <a href="notes.html?id=git-workflow-conflict-detached-head" class="card-read-action" title="Buka Catatan" aria-label="Buka Catatan"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
           </div>
         </div>
       </article>
@@ -815,14 +818,14 @@
         <div class="plugin-card-content">
           <div class="plugin-card-header">
             <h3 class="plugin-card-title">
-              <a href="article.html?id=blender-to-unity-pipeline">Pipeline Export Aset 3D Blender ke Unity (Fix Skala &amp; Rotasi)</a>
+              <a href="notes.html?id=blender-to-unity-pipeline">Pipeline Export Aset 3D Blender ke Unity (Fix Skala &amp; Rotasi)</a>
             </h3>
             <div class="plugin-card-actions">
-              <button type="button" class="card-action-btn card-btn-bookmark" data-id="blender-to-unity-pipeline" title="Simpan artikel" aria-label="Simpan artikel">
+              <button type="button" class="card-action-btn card-btn-bookmark" data-id="blender-to-unity-pipeline" title="Simpan catatan" aria-label="Simpan catatan">
                 <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
                 <span class="card-bookmark-count">0</span>
               </button>
-              <button type="button" class="card-action-btn card-btn-like" data-id="blender-to-unity-pipeline" title="Sukai artikel" aria-label="Sukai artikel">
+              <button type="button" class="card-action-btn card-btn-like" data-id="blender-to-unity-pipeline" title="Sukai catatan" aria-label="Sukai catatan">
                 <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                 <span class="card-like-count">0</span>
               </button>
@@ -852,7 +855,7 @@
             <span class="card-stat-group" title="Waktu baca">
               <span class="card-read-time">5m</span>
             </span>
-            <a href="article.html?id=blender-to-unity-pipeline" class="card-read-action" title="Buka Jurnal" aria-label="Buka Jurnal">&gt;_</a>
+            <a href="notes.html?id=blender-to-unity-pipeline" class="card-read-action" title="Buka Catatan" aria-label="Buka Catatan"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
           </div>
         </div>
       </article>
@@ -865,14 +868,14 @@
         <div class="plugin-card-content">
           <div class="plugin-card-header">
             <h3 class="plugin-card-title">
-              <a href="article.html?id=metodologi-mdlc-multimedia">Penerapan Metodologi MDLC (Luther-Sutopo) pada Skripsi Multimedia</a>
+              <a href="notes.html?id=metodologi-mdlc-multimedia">Penerapan Metodologi MDLC (Luther-Sutopo) pada Skripsi Multimedia</a>
             </h3>
             <div class="plugin-card-actions">
-              <button type="button" class="card-action-btn card-btn-bookmark" data-id="metodologi-mdlc-multimedia" title="Simpan artikel" aria-label="Simpan artikel">
+              <button type="button" class="card-action-btn card-btn-bookmark" data-id="metodologi-mdlc-multimedia" title="Simpan catatan" aria-label="Simpan catatan">
                 <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
                 <span class="card-bookmark-count">0</span>
               </button>
-              <button type="button" class="card-action-btn card-btn-like" data-id="metodologi-mdlc-multimedia" title="Sukai artikel" aria-label="Sukai artikel">
+              <button type="button" class="card-action-btn card-btn-like" data-id="metodologi-mdlc-multimedia" title="Sukai catatan" aria-label="Sukai catatan">
                 <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                 <span class="card-like-count">0</span>
               </button>
@@ -902,7 +905,7 @@
             <span class="card-stat-group" title="Waktu baca">
               <span class="card-read-time">6m</span>
             </span>
-            <a href="article.html?id=metodologi-mdlc-multimedia" class="card-read-action" title="Buka Jurnal" aria-label="Buka Jurnal">&gt;_</a>
+            <a href="notes.html?id=metodologi-mdlc-multimedia" class="card-read-action" title="Buka Catatan" aria-label="Buka Catatan"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
           </div>
         </div>
       </article>
@@ -915,24 +918,24 @@
         <div class="plugin-card-content">
           <div class="plugin-card-header">
             <h3 class="plugin-card-title">
-              <a href="article.html?id=panduan-kontribusi">Panduan &amp; Ketentuan Kontribusi Artikel Jurnal KATAKATING</a>
+              <a href="notes.html?id=panduan-kontribusi">Panduan Berbagi Catatan &amp; Panduan di KATAKATING</a>
             </h3>
             <div class="plugin-card-actions">
-              <button type="button" class="card-action-btn card-btn-bookmark" data-id="panduan-kontribusi" title="Simpan artikel" aria-label="Simpan artikel">
+              <button type="button" class="card-action-btn card-btn-bookmark" data-id="panduan-kontribusi" title="Simpan catatan" aria-label="Simpan catatan">
                 <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
                 <span class="card-bookmark-count">0</span>
               </button>
-              <button type="button" class="card-action-btn card-btn-like" data-id="panduan-kontribusi" title="Sukai artikel" aria-label="Sukai artikel">
+              <button type="button" class="card-action-btn card-btn-like" data-id="panduan-kontribusi" title="Sukai catatan" aria-label="Sukai catatan">
                 <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                 <span class="card-like-count">0</span>
               </button>
             </div>
           </div>
           <div class="plugin-card-meta-row">
-            <span class="plugin-card-by">by @himatra &bull; Kontribusi &amp; Panduan</span>
+            <span class="plugin-card-by">by @katakating &bull; Kontribusi &amp; Panduan</span>
             <span class="plugin-card-id">#10</span>
           </div>
-          <p class="plugin-card-desc">Syarat, ketentuan akademik, format metadata frontmatter, dan 3 opsi tata cara mengirimkan tulisan jurnal praktikum (Form Web, WhatsApp, atau GitHub PR).</p>
+          <p class="plugin-card-desc">Panduan ramah mahasiswa: syarat, format template Markdown, dan tata cara mudah mengirimkan catatan ke repositori KATAKATING.</p>
           <div class="plugin-card-badges">
             <span class="badge-tag-new">PANDUAN</span>
             <span class="badge-tag-verified">Verified</span>
@@ -952,7 +955,7 @@
             <span class="card-stat-group" title="Waktu baca">
               <span class="card-read-time">4m</span>
             </span>
-            <a href="article.html?id=panduan-kontribusi" class="card-read-action" title="Buka Jurnal" aria-label="Buka Jurnal">&gt;_</a>
+            <a href="notes.html?id=panduan-kontribusi" class="card-read-action" title="Buka Catatan" aria-label="Buka Catatan"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
           </div>
         </div>
       </article>
@@ -961,23 +964,9 @@
 
     <!-- EMPTY STATE -->
     <div id="empty-state" class="empty-state" hidden>
-      <h3>Tidak ada artikel ditemukan</h3>
+      <h3>Tidak ada catatan ditemukan</h3>
       <p>Coba kata kunci pencarian lain atau klik tombol reset filter.</p>
       <button class="button" id="empty-reset" type="button">Reset Filter</button>
-    </div>
-  </section>
-
-  <!-- WHATSAPP CALLOUT BANNER -->
-  <section class="wa-banner">
-    <div class="wa-box">
-      <div>
-        <div class="page-eyebrow" style="margin-bottom: 4px;">KOMUNITAS RESMI</div>
-        <h3>Saluran Komunitas WhatsApp KATAKATING</h3>
-        <p>Kanal rilis resmi pembaruan modul praktikum, template tugas, dan koordinasi draf artikel antar mahasiswa. Satu arah, tertib, dan bebas spam.</p>
-      </div>
-      <a class="button market-primary" href="https://chat.whatsapp.com/GzEfQkl53ZUBC9R2JF9CEf" target="_blank" rel="noreferrer">
-        Gabung Saluran WA <span aria-hidden="true">→</span>
-      </a>
     </div>
   </section>
 
@@ -993,10 +982,9 @@
       <span class="footer-wordmark">UNIVERSITAS BOASH</span>
     </div>
     <div class="footer-resource-links">
-      <a class="footer-status-link" href="tulis.html">TULIS ARTIKEL <span aria-hidden="true">↗</span></a>
-      <a class="footer-status-link" href="article.html?id=panduan-kontribusi">PANDUAN <span aria-hidden="true">↗</span></a>
-      <a class="footer-status-link" href="https://github.com/muadzhdz" target="_blank" rel="noreferrer">GITHUB <span aria-hidden="true">↗</span></a>
-      <a class="footer-status-link" href="https://chat.whatsapp.com/GzEfQkl53ZUBC9R2JF9CEf" target="_blank" rel="noreferrer">WHATSAPP <span aria-hidden="true">↗</span></a>
+      <a class="footer-status-link" href="index.html">BERANDA <span aria-hidden="true">↗</span></a>
+      <a class="footer-status-link" href="notes.html?id=panduan-kontribusi">PANDUAN <span aria-hidden="true">↗</span></a>
+      <a class="footer-status-link" href="https://github.com/muadzhdz/katakating" target="_blank" rel="noreferrer">GITHUB <span aria-hidden="true">↗</span></a>
     </div>
   </div>
 </footer>

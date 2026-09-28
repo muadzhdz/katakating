@@ -52,6 +52,56 @@ function initSearchFilter() {
   const emptyState = document.getElementById('empty-state') || document.getElementById('search-empty');
   const grid = document.getElementById('plugin-grid');
 
+  // Prepend approved articles from admin moderation
+  try {
+    const approvedArticles = JSON.parse(localStorage.getItem('katakating_approved_articles') || '[]');
+    if (grid && Array.isArray(approvedArticles) && approvedArticles.length > 0) {
+      approvedArticles.forEach(item => {
+        if (!grid.querySelector(`[data-id="${item.id}"]`)) {
+          const card = document.createElement('article');
+          card.className = 'plugin-card';
+          card.setAttribute('data-id', item.id);
+          card.setAttribute('data-cat', (item.category || '').toLowerCase() + ' ' + (item.tags || []).join(' '));
+          const mono = item.title ? item.title.substring(0, 4).toUpperCase() : 'DOC';
+          card.innerHTML = `
+            <div class="plugin-card-banner">
+              <span class="banner-monogram">${escapeHtml(mono)}</span>
+            </div>
+            <div class="plugin-card-content">
+              <div class="plugin-card-header">
+                <h3 class="plugin-card-title">
+                  <a href="notes.html?id=${escapeHtml(item.id)}">${escapeHtml(item.title)}</a>
+                </h3>
+                <div class="plugin-card-actions">
+                  <button type="button" class="card-action-btn card-btn-bookmark" data-id="${escapeHtml(item.id)}" title="Simpan catatan" aria-label="Simpan catatan">
+                    <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+                    <span class="card-bookmark-count">0</span>
+                  </button>
+                  <button type="button" class="card-action-btn card-btn-like" data-id="${escapeHtml(item.id)}" title="Sukai catatan" aria-label="Sukai catatan">
+                    <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                    <span class="card-like-count">0</span>
+                  </button>
+                </div>
+              </div>
+              <div class="plugin-card-meta-row">
+                <span class="plugin-card-by">by @${escapeHtml(item.author || 'mahasiswa')} &bull; ${escapeHtml(item.category || 'Praktikum')}</span>
+                <span class="plugin-card-id">#NEW</span>
+              </div>
+              <p class="plugin-card-desc">${escapeHtml(item.summary || '')}</p>
+              <div class="plugin-card-badges">
+                <span class="badge-tag-new">TERUJI</span>
+                <span class="badge-tag-verified">Verified</span>
+              </div>
+            </div>
+          `;
+          grid.prepend(card);
+        }
+      });
+    }
+  } catch (e) {
+    console.warn('Prepend approved articles notice:', e);
+  }
+
   let cards = grid ? Array.from(grid.querySelectorAll('.plugin-card, .article-card')) : Array.from(document.querySelectorAll('.plugin-card, .article-card'));
   if (!cards.length) return;
 
@@ -114,6 +164,7 @@ function initSearchFilter() {
   }
 
   if (sortSelect) {
+    setupCyberSelect(sortSelect);
     sortSelect.addEventListener('change', () => {
       applySort();
       apply();
@@ -250,8 +301,15 @@ function parseSimpleMarkdown(md) {
   clean = clean.replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>');
   clean = clean.replace(/\*(.*?)\*/gim, '<em>$1</em>');
 
-  clean = clean.replace(/^\s*\d+\.\s+(.*$)/gim, '<li style="margin-left: 20px; list-style-type: decimal; margin-bottom: 4px;">$1</li>');
-  clean = clean.replace(/^\s*[\-\*]\s+(.*$)/gim, '<li style="margin-left: 20px; list-style-type: disc; margin-bottom: 4px;">$1</li>');
+  clean = clean.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (m, text, url) => {
+    const isExt = url.startsWith('http');
+    return `<a href="${url}" style="color: var(--accent); text-decoration: underline;"${isExt ? ' target="_blank" rel="noreferrer"' : ''}>${text}</a>`;
+  });
+
+  clean = clean.replace(/^\s*\d+\.\s+(.*$)/gim, '<li class="md-oli" style="margin-bottom: 4px;">$1</li>');
+  clean = clean.replace(/^\s*[\-\*]\s+(.*$)/gim, '<li class="md-uli" style="margin-bottom: 4px;">$1</li>');
+  clean = clean.replace(/((?:<li class="md-oli"[^>]*>.*?<\/li>\s*)+)/gs, '<ol style="margin: 12px 0 16px 24px; padding-left: 0; list-style-type: decimal;">$1</ol>');
+  clean = clean.replace(/((?:<li class="md-uli"[^>]*>.*?<\/li>\s*)+)/gs, '<ul style="margin: 12px 0 16px 24px; padding-left: 0; list-style-type: disc;">$1</ul>');
 
   clean = clean.replace(/\|(.+)\|/g, (match) => {
     const cells = match.split('|').slice(1, -1).map(c => c.trim());
@@ -269,7 +327,7 @@ function parseSimpleMarkdown(md) {
   clean = clean.split('\n\n').map(chunk => {
     chunk = chunk.trim();
     if (!chunk) return '';
-    if (chunk.startsWith('<h') || chunk.startsWith('<li') || chunk.startsWith('<table') || chunk.startsWith('<block') || chunk.startsWith('<hr') || chunk.startsWith('__CODE_BLOCK_')) {
+    if (chunk.startsWith('<h') || chunk.startsWith('<li') || chunk.startsWith('<ol') || chunk.startsWith('<ul') || chunk.startsWith('<table') || chunk.startsWith('<block') || chunk.startsWith('<hr') || chunk.startsWith('__CODE_BLOCK_') || chunk.startsWith('<div') || chunk.startsWith('<section')) {
       return chunk;
     }
     return `<p style="margin-bottom: 14px; line-height: 1.65; color: var(--text); font-size: 14px;">${chunk.replace(/\n/g, '<br>')}</p>`;
@@ -364,7 +422,7 @@ function setupCardDelegation() {
       const articleId = btnLike.getAttribute('data-id');
       const user = auth ? auth.user : null;
       if (!user) {
-        showToast('Masuk dengan GitHub atau Google untuk menyukai artikel');
+        showToast('Masuk dengan GitHub atau Google untuk menyukai catatan');
         if (auth && auth.openLoginModal) auth.openLoginModal();
         return;
       }
@@ -385,11 +443,11 @@ function setupCardDelegation() {
       });
 
       if (isLiked) {
-        showToast('Batal menyukai artikel');
+        showToast('Batal menyukai catatan');
         try { localStorage.removeItem('katakating_like_' + articleId); } catch(e){}
         if (sb) await sb.from('guide_likes').delete().eq('guide_id', articleId).eq('user_id', user.id);
       } else {
-        showToast('Artikel disukai!');
+        showToast('Catatan disukai!');
         try { localStorage.setItem('katakating_like_' + articleId, 'true'); } catch(e){}
         if (sb) {
           const { error } = await sb.from('guide_likes').insert({ guide_id: articleId, user_id: user.id });
@@ -404,7 +462,7 @@ function setupCardDelegation() {
       const articleId = btnBookmark.getAttribute('data-id');
       const user = auth ? auth.user : null;
       if (!user) {
-        showToast('Masuk dengan GitHub atau Google untuk menyimpan artikel');
+        showToast('Masuk dengan GitHub atau Google untuk menyimpan catatan');
         if (auth && auth.openLoginModal) auth.openLoginModal();
         return;
       }
@@ -427,15 +485,27 @@ function setupCardDelegation() {
       });
 
       if (isSaved) {
-        showToast('Artikel dihapus dari simpanan');
+        showToast('Catatan dihapus dari simpanan');
         try { localStorage.removeItem('katakating_bookmark_' + articleId); } catch(e){}
         if (sb) await sb.from('bookmarks').delete().eq('guide_id', articleId).eq('user_id', user.id);
       } else {
-        showToast('Artikel disimpan ke daftar bacaan!');
+        showToast('Catatan disimpan ke daftar bacaan!');
         try { localStorage.setItem('katakating_bookmark_' + articleId, 'true'); } catch(e){}
         if (sb) {
           const { error } = await sb.from('bookmarks').insert({ guide_id: articleId, user_id: user.id });
           if (error) console.warn('bookmarks insert notice:', error);
+        }
+      }
+    }
+
+    // 3. Whole Card Click Navigation (allows clicking anywhere on the card to read)
+    const card = e.target.closest('.plugin-card');
+    if (card && !btnLike && !btnBookmark) {
+      const link = e.target.closest('a');
+      if (!link) {
+        const articleId = card.getAttribute('data-id');
+        if (articleId) {
+          window.location.href = `notes.html?id=${encodeURIComponent(articleId)}`;
         }
       }
     }
@@ -484,12 +554,22 @@ async function loadRecentlyAdded() {
     // 1. Fetch static curated articles from articles.json
     let localArticles = [];
     try {
-      const res = await fetch('articles/articles.json');
+      const res = await fetch('notes/notes.json');
       if (res.ok) {
         localArticles = await res.json();
       }
     } catch (e) {
       console.warn('Could not fetch local articles.json:', e);
+    }
+
+    // Merge approved articles from moderation
+    try {
+      const approvedArticles = JSON.parse(localStorage.getItem('katakating_approved_articles') || '[]');
+      if (Array.isArray(approvedArticles) && approvedArticles.length > 0) {
+        localArticles = [...approvedArticles, ...localArticles];
+      }
+    } catch (e) {
+      console.warn('LocalStorage approved articles in loadRecentlyAdded notice:', e);
     }
 
     // 2. Fetch Supabase articles
@@ -507,7 +587,8 @@ async function loadRecentlyAdded() {
         const { data, error } = await sb
           .from('guides')
           .select('id, title, summary, author_name, category, initials, prodi_tags, views_count, created_at')
-          .order('created_at', { ascending: false });
+          .order('created_at', { ascending: false })
+          .limit(6);
         if (!error && Array.isArray(data)) {
           dbGuides = data;
         }
@@ -576,14 +657,14 @@ async function loadRecentlyAdded() {
         <div class="plugin-card-content">
           <div class="plugin-card-header">
             <h3 class="plugin-card-title">
-              <a href="article.html?id=${escapeHtml(g.id)}">${title}</a>
+              <a href="notes.html?id=${escapeHtml(g.id)}">${title}</a>
             </h3>
             <div class="plugin-card-actions">
-              <button type="button" class="card-action-btn card-btn-bookmark" data-id="${escapeHtml(g.id)}" title="Simpan artikel" aria-label="Simpan artikel">
+              <button type="button" class="card-action-btn card-btn-bookmark" data-id="${escapeHtml(g.id)}" title="Simpan catatan" aria-label="Simpan catatan">
                 <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
                 <span class="card-bookmark-count">0</span>
               </button>
-              <button type="button" class="card-action-btn card-btn-like" data-id="${escapeHtml(g.id)}" title="Sukai artikel" aria-label="Sukai artikel">
+              <button type="button" class="card-action-btn card-btn-like" data-id="${escapeHtml(g.id)}" title="Sukai catatan" aria-label="Sukai catatan">
                 <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                 <span class="card-like-count">0</span>
               </button>
@@ -608,7 +689,7 @@ async function loadRecentlyAdded() {
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
               <span class="card-views-count" data-id="${escapeHtml(g.id)}">${views}</span>
             </span>
-            <a href="article.html?id=${escapeHtml(g.id)}" class="card-read-action" title="Buka Jurnal" aria-label="Buka Jurnal">&gt;_</a>
+            <a href="notes.html?id=${escapeHtml(g.id)}" class="card-read-action" title="Buka Catatan" aria-label="Buka Catatan"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
           </div>
         </div>
       </article>`;
@@ -675,6 +756,217 @@ function initMobileNav() {
   });
 }
 
+// ── Cyber Select Dropdown System (Zero Blue, 100% Cyber Emerald) ──
+function setupCyberSelect(selectEl) {
+  if (!selectEl || selectEl.dataset.cyberSelectInit) return;
+  selectEl.dataset.cyberSelectInit = 'true';
+
+  const existingWrap = selectEl.closest('.cyber-select-wrap');
+  if (existingWrap) {
+    const trigger = existingWrap.querySelector('.cyber-select-trigger');
+    const menu = existingWrap.querySelector('.cyber-select-menu');
+    const label = existingWrap.querySelector('.cyber-select-label');
+    const options = existingWrap.querySelectorAll('.cyber-select-option');
+
+    function syncActive() {
+      const curVal = selectEl.value;
+      options.forEach(opt => {
+        const isMatch = opt.getAttribute('data-value') === curVal;
+        opt.classList.toggle('selected', isMatch);
+        opt.setAttribute('aria-selected', String(isMatch));
+        if (isMatch && label) {
+          label.textContent = (opt.querySelector('span')?.textContent || opt.textContent).trim();
+        }
+      });
+    }
+
+    if (trigger && menu) {
+      trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = trigger.getAttribute('aria-expanded') === 'true';
+        document.querySelectorAll('.cyber-select-trigger[aria-expanded="true"]').forEach(b => {
+          if (b !== trigger) {
+            b.setAttribute('aria-expanded', 'false');
+            const m = b.parentElement.querySelector('.cyber-select-menu');
+            if (m) m.hidden = true;
+          }
+        });
+        trigger.setAttribute('aria-expanded', String(!isOpen));
+        menu.hidden = isOpen;
+      });
+
+      options.forEach(opt => {
+        opt.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const val = opt.getAttribute('data-value');
+          selectEl.value = val;
+          syncActive();
+          trigger.setAttribute('aria-expanded', 'false');
+          menu.hidden = true;
+          selectEl.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+      });
+
+      selectEl.addEventListener('change', syncActive);
+
+      document.addEventListener('click', (e) => {
+        if (!existingWrap.contains(e.target)) {
+          trigger.setAttribute('aria-expanded', 'false');
+          menu.hidden = true;
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && trigger.getAttribute('aria-expanded') === 'true') {
+          trigger.setAttribute('aria-expanded', 'false');
+          menu.hidden = true;
+          trigger.focus();
+        }
+      });
+      return;
+    }
+  }
+
+  // Dynamic wrap for standard <select class="form-select">
+  const wrap = document.createElement('div');
+  wrap.className = 'cyber-select-wrap form-cyber-select';
+  if (selectEl.id) wrap.id = 'wrap-' + selectEl.id;
+
+  selectEl.parentNode.insertBefore(wrap, selectEl);
+  wrap.appendChild(selectEl);
+  selectEl.classList.add('cyber-select-native');
+
+  const trigger = document.createElement('button');
+  trigger.type = 'button';
+  trigger.className = 'cyber-select-trigger';
+  trigger.setAttribute('aria-haspopup', 'listbox');
+  trigger.setAttribute('aria-expanded', 'false');
+
+  const label = document.createElement('span');
+  label.className = 'cyber-select-label';
+
+  const chevron = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  chevron.setAttribute('class', 'cyber-select-chevron');
+  chevron.setAttribute('viewBox', '0 0 24 24');
+  chevron.setAttribute('aria-hidden', 'true');
+  chevron.innerHTML = '<path d="m8 10 4 4 4-4"/>';
+
+  trigger.appendChild(label);
+  trigger.appendChild(chevron);
+  wrap.appendChild(trigger);
+
+  const menu = document.createElement('div');
+  menu.className = 'cyber-select-menu';
+  menu.setAttribute('role', 'listbox');
+  menu.hidden = true;
+  wrap.appendChild(menu);
+
+  function syncOptions() {
+    menu.innerHTML = '';
+    const selected = selectEl.options[selectEl.selectedIndex] || selectEl.options[0];
+    label.textContent = selected ? selected.textContent : '';
+
+    Array.from(selectEl.options).forEach((opt, idx) => {
+      const item = document.createElement('div');
+      item.className = 'cyber-select-option' + (idx === selectEl.selectedIndex ? ' selected' : '');
+      item.setAttribute('role', 'option');
+      item.setAttribute('data-value', opt.value);
+      if (opt.disabled) item.classList.add('disabled');
+
+      const spanText = document.createElement('span');
+      spanText.textContent = opt.textContent;
+
+      const spanCheck = document.createElement('span');
+      spanCheck.className = 'cyber-select-check';
+      spanCheck.textContent = '✓';
+
+      item.appendChild(spanText);
+      item.appendChild(spanCheck);
+
+      item.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (opt.disabled) return;
+        selectEl.selectedIndex = idx;
+        selectEl.value = opt.value;
+        label.textContent = opt.textContent;
+        menu.querySelectorAll('.cyber-select-option').forEach(o => o.classList.remove('selected'));
+        item.classList.add('selected');
+        trigger.setAttribute('aria-expanded', 'false');
+        menu.hidden = true;
+        selectEl.dispatchEvent(new Event('change', { bubbles: true }));
+        selectEl.dispatchEvent(new Event('input', { bubbles: true }));
+      });
+
+      menu.appendChild(item);
+    });
+  }
+
+  function syncSelected() {
+    const selected = selectEl.options[selectEl.selectedIndex];
+    if (selected) {
+      label.textContent = selected.textContent;
+      menu.querySelectorAll('.cyber-select-option').forEach((o, i) => {
+        o.classList.toggle('selected', i === selectEl.selectedIndex);
+      });
+    }
+  }
+
+  // Intercept programmatic assignment of selectEl.value
+  const protoDesc = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value');
+  if (protoDesc) {
+    Object.defineProperty(selectEl, 'value', {
+      get() {
+        return protoDesc.get.call(this);
+      },
+      set(val) {
+        protoDesc.set.call(this, val);
+        syncSelected();
+      }
+    });
+  }
+
+  trigger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = trigger.getAttribute('aria-expanded') === 'true';
+    document.querySelectorAll('.cyber-select-trigger[aria-expanded="true"]').forEach(b => {
+      if (b !== trigger) {
+        b.setAttribute('aria-expanded', 'false');
+        const m = b.parentElement.querySelector('.cyber-select-menu');
+        if (m) m.hidden = true;
+      }
+    });
+    trigger.setAttribute('aria-expanded', String(!isOpen));
+    menu.hidden = isOpen;
+  });
+
+  selectEl.addEventListener('change', syncSelected);
+
+  document.addEventListener('click', (e) => {
+    if (!wrap.contains(e.target)) {
+      trigger.setAttribute('aria-expanded', 'false');
+      menu.hidden = true;
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && trigger.getAttribute('aria-expanded') === 'true') {
+      trigger.setAttribute('aria-expanded', 'false');
+      menu.hidden = true;
+      trigger.focus();
+    }
+  });
+
+  // Watch for option changes dynamically
+  const observer = new MutationObserver(() => {
+    syncOptions();
+  });
+  observer.observe(selectEl, { childList: true, subtree: true });
+
+  syncOptions();
+  selectEl.refreshCyberSelect = syncOptions;
+}
+
+window.setupCyberSelect = setupCyberSelect;
 window.refreshCardInteractions = initCardInteractions;
 window.refreshRecentlyAdded = loadRecentlyAdded;
 
@@ -686,4 +978,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initMobileNav();
   loadRecentlyAdded();
   setTimeout(initCardInteractions, 300);
+  document.querySelectorAll('select.form-select, select#sort-select').forEach(setupCyberSelect);
 });

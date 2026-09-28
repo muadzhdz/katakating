@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#000000">
+  <title>Profil Administrator — KATAKATING</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="main.js" defer></script>
+  <script src="auth.js" defer></script>
+
+  <style>
+    .admin-profile-layout { max-width: 860px; width: 100%; margin: 0 auto; padding: 36px 20px 80px; box-sizing: border-box; overflow-x: hidden; }
+    .admin-profile-header { display: flex; align-items: center; gap: 20px; padding: 24px; background: var(--panel); border: 1px solid var(--line-strong); margin-bottom: 28px; box-sizing: border-box; width: 100%; }
+    .admin-profile-avatar { width: 64px; height: 64px; background: var(--accent); color: #000; font-family: var(--mono); font-size: 24px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .admin-profile-info h1 { font-size: 18px; font-weight: 700; color: var(--heading); margin: 0 0 4px; word-break: break-word; }
+    .admin-profile-info p  { font-family: var(--mono); font-size: 12px; color: var(--muted); margin: 0 0 8px; word-break: break-all; }
+    .admin-profile-badges  { display: flex; gap: 6px; flex-wrap: wrap; }
+    .admin-stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 28px; width: 100%; box-sizing: border-box; }
+    .ap-stat { padding: 16px 18px; background: var(--panel); border: 1px solid var(--line); text-align: center; box-sizing: border-box; }
+    .ap-stat-value { font-family: var(--mono); font-size: 28px; font-weight: 700; line-height: 1.1; margin-bottom: 4px; }
+    .ap-stat-label { font-family: var(--mono); font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+    .ap-stat.stat-pending  .ap-stat-value { color: #f59e0b; }
+    .ap-stat.stat-approved .ap-stat-value { color: var(--accent); }
+    .ap-stat.stat-rejected .ap-stat-value { color: #ef4444; }
+    .ap-section-title { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--sidebar-heading); border-bottom: 1px solid var(--line); padding-bottom: 8px; margin-bottom: 14px; }
+    .ap-activity-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; width: 100%; box-sizing: border-box; }
+    .ap-activity-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--panel); border: 1px solid var(--line); transition: border-color 0.15s; min-width: 0; width: 100%; box-sizing: border-box; }
+    .ap-activity-item:hover { border-color: var(--line-strong); }
+    .ap-activity-status { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: .08em; padding: 3px 8px; flex-shrink: 0; }
+    .status-approved { background: rgba(0,255,102,0.1); color: var(--accent); border: 1px solid var(--accent); }
+    .status-rejected { background: rgba(239,68,68,0.1); color: #ef4444; border: 1px solid #ef4444; }
+    .status-pending  { background: rgba(245,158,11,0.1); color: #f59e0b; border: 1px solid #f59e0b; }
+    .ap-activity-title { flex: 1; min-width: 0; font-size: 13px; font-weight: 500; color: var(--heading); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ap-activity-meta { font-family: var(--mono); font-size: 11px; color: var(--muted); flex-shrink: 0; }
+    .ap-empty { padding: 32px 20px; text-align: center; font-family: var(--mono); font-size: 12px; color: var(--muted); border: 1px dashed var(--line); box-sizing: border-box; }
+    .ap-action-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 24px; }
+    @media (max-width: 768px) {
+      .admin-profile-layout { padding: 20px 14px 60px; }
+      .admin-stat-row { grid-template-columns: 1fr; gap: 8px; }
+      .admin-profile-header { flex-direction: column; align-items: flex-start; gap: 14px; padding: 18px; }
+      .ap-activity-item { flex-wrap: wrap; gap: 6px; padding: 10px 12px; }
+      .ap-activity-meta { width: 100%; text-align: right; font-size: 10px; }
+      .ap-action-row { flex-direction: column; }
+      .ap-action-row .button { width: 100%; text-align: center; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div id="toast" role="status" aria-live="polite">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+  <span id="toast-msg">Tindakan berhasil</span>
+</div>
+
+<!-- HEADER -->
+<header class="market-header" id="site-header">
+  <div class="market-header-inner">
+    <div class="market-brand">
+      <a class="market-brand-home" href="index.html" aria-label="[>] KATAKATING home">
+        <span class="brand-title">[>] KATAKATING</span>
+        <span class="brand-badge">KNOWLEDGE HUB</span>
+        <span class="admin-header-badge">ADMIN</span>
+      </a>
+    </div>
+    <nav class="market-nav" aria-label="Main navigation">
+      <div class="market-nav-links">
+        <a href="index.html#catalog" aria-label="Semua Catatan">Semua Catatan</a>
+        <a href="upload.html" class="nav-link-upload" aria-label="Upload Catatan">Upload</a>
+        <a href="notes.html?id=panduan-kontribusi" aria-label="Panduan">Panduan</a>
+        <a id="nav-admin-link" href="admin.html" aria-label="Panel Admin">Panel Admin</a>
+        <a class="market-icon-link" href="graph.html" title="Graf Pengetahuan (The Brain)" aria-label="Graf Pengetahuan (The Brain)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><path d="M12 8v4"/><path d="m7.5 16.5 2.5-3.5"/><path d="m16.5 16.5-2.5-3.5"/></svg>
+        </a>
+        <a class="market-icon-link" href="https://github.com/muadzhdz/katakating" target="_blank" rel="noreferrer" title="Repositori GitHub" aria-label="Repositori GitHub">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+          <span class="nav-ext-arrow">↗</span>
+        </a>
+      </div>
+      <div class="market-nav-actions">
+        <div id="auth-nav-container" class="auth-nav-slot"></div>
+        <button class="square-action" id="theme-toggle" type="button" aria-label="Ganti Tema"></button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" type="button" aria-label="Buka menu navigasi" aria-expanded="false" aria-controls="mobile-nav-panel">
+          <svg class="icon-menu-open" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          <svg class="icon-menu-close" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display: none;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+    </nav>
+  </div>
+  <div class="mobile-nav-panel" id="mobile-nav-panel" hidden>
+    <div class="mobile-nav-inner">
+      <div class="mobile-nav-section-title">// NAVIGASI REPOSITORI</div>
+      <a href="index.html#catalog" class="mobile-nav-item"><span class="mobile-nav-num">[01]</span><span class="mobile-nav-label">Semua Catatan</span></a>
+      <a href="upload.html" class="mobile-nav-item"><span class="mobile-nav-num">[02]</span><span class="mobile-nav-label">Upload Catatan</span></a>
+      <a href="notes.html?id=panduan-kontribusi" class="mobile-nav-item"><span class="mobile-nav-num">[03]</span><span class="mobile-nav-label">Panduan</span></a>
+      <a href="graph.html" class="mobile-nav-item"><span class="mobile-nav-num">[04]</span><span class="mobile-nav-label">Graf Pengetahuan (The Brain)</span></a>
+      <a href="admin.html" id="mobile-nav-admin-link" class="mobile-nav-item"><span class="mobile-nav-num">[05]</span><span class="mobile-nav-label">Panel Admin</span></a>
+      <div class="mobile-nav-divider"></div>
+      <div class="mobile-nav-section-title">// TAUTAN EKSTERNAL</div>
+      <a href="https://github.com/muadzhdz/katakating" target="_blank" rel="noreferrer" class="mobile-nav-item mobile-nav-ext">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+        <span>Repositori GitHub</span><span class="mobile-nav-arrow">↗</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="admin-profile-layout" id="admin-profile-main" style="display:none;">
+
+  <div class="admin-profile-header">
+    <div class="admin-profile-avatar" id="ap-avatar">A</div>
+    <div class="admin-profile-info">
+      <h1 id="ap-name">Administrator</h1>
+      <p id="ap-email">katakating@gmail.com</p>
+      <div class="admin-profile-badges">
+        <span class="admin-header-badge">ADMIN</span>
+        <span class="admin-header-badge" style="border-color: var(--muted); color: var(--muted);">KATAKATING</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="ap-section-title">Statistik Moderasi</div>
+  <div class="admin-stat-row">
+    <div class="ap-stat stat-pending">
+      <div class="ap-stat-value" id="ap-stat-pending">0</div>
+      <div class="ap-stat-label">Menunggu Review</div>
+    </div>
+    <div class="ap-stat stat-approved">
+      <div class="ap-stat-value" id="ap-stat-approved">0</div>
+      <div class="ap-stat-label">Disetujui</div>
+    </div>
+    <div class="ap-stat stat-rejected">
+      <div class="ap-stat-value" id="ap-stat-rejected">0</div>
+      <div class="ap-stat-label">Ditolak</div>
+    </div>
+  </div>
+
+  <div class="ap-section-title">Riwayat Aktivitas Moderasi</div>
+  <div class="ap-activity-list" id="ap-activity-list">
+    <div class="ap-empty">Belum ada aktivitas moderasi tercatat.</div>
+  </div>
+
+  <div class="ap-action-row">
+    <a href="admin.html" class="button market-primary">Buka Panel Admin</a>
+    <button type="button" class="button" id="ap-logout-btn" style="border-color: #ef4444; color: #ef4444;">Keluar (Logout)</button>
+  </div>
+
+</main>
+
+<div id="ap-denied" style="display:none; max-width:400px; margin:80px auto; padding:32px 24px; background:var(--panel); border:1px solid #ef4444; text-align:center;">
+  <span class="admin-header-badge" style="display:inline-block; margin-bottom:12px;">AKSES DITOLAK</span>
+  <p style="font-size:13px; color:var(--muted); margin-bottom:20px;">Halaman ini hanya untuk administrator KATAKATING.</p>
+  <a href="admin.html" class="button market-primary">Login Admin</a>
+</div>
+
+<script>
+(function() {
+  function escapeHtml(str) {
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function timeAgo(dateStr) {
+    if (!dateStr) return '';
+    const diff = Date.now() - new Date(dateStr).getTime();
+    const mins = Math.floor(diff / 60000);
+    if (mins < 1) return 'baru saja';
+    if (mins < 60) return mins + ' menit lalu';
+    const hrs = Math.floor(mins / 60);
+    if (hrs < 24) return hrs + ' jam lalu';
+    return Math.floor(hrs / 24) + ' hari lalu';
+  }
+  function statusLabel(s) {
+    if (s === 'approved') return 'DISETUJUI';
+    if (s === 'rejected') return 'DITOLAK';
+    return 'PENDING';
+  }
+  function init() {
+    const adminSess = JSON.parse(localStorage.getItem('katakating_admin_session') || 'null');
+    if (!adminSess || adminSess.email !== 'katakating@gmail.com') {
+      document.getElementById('ap-denied').style.display = 'block';
+      return;
+    }
+    document.getElementById('admin-profile-main').style.display = 'block';
+    const name = adminSess.full_name || 'Administrator KATAKATING';
+    document.getElementById('ap-name').textContent = name;
+    document.getElementById('ap-email').textContent = adminSess.email;
+    document.getElementById('ap-avatar').textContent = (name.charAt(0) || 'A').toUpperCase();
+
+    const subs = JSON.parse(localStorage.getItem('katakating_submissions') || '[]');
+    document.getElementById('ap-stat-pending').textContent  = subs.filter(s => s.status === 'pending_review').length;
+    document.getElementById('ap-stat-approved').textContent = subs.filter(s => s.status === 'approved').length;
+    document.getElementById('ap-stat-rejected').textContent = subs.filter(s => s.status === 'rejected').length;
+
+    const actioned = subs
+      .filter(s => s.status === 'approved' || s.status === 'rejected')
+      .sort((a, b) => new Date(b.updatedAt || b.submittedAt || 0) - new Date(a.updatedAt || a.submittedAt || 0));
+    const pending = subs
+      .filter(s => s.status === 'pending_review')
+      .sort((a, b) => new Date(b.submittedAt || 0) - new Date(a.submittedAt || 0));
+
+    const listEl = document.getElementById('ap-activity-list');
+    let html = '';
+
+    if (actioned.length === 0 && pending.length === 0) {
+      html = '<div class="ap-empty">Belum ada aktivitas moderasi tercatat.</div>';
+    } else {
+      if (actioned.length > 0) {
+        html += actioned.map(item => `
+          <div class="ap-activity-item">
+            <span class="ap-activity-status ${item.status === 'approved' ? 'status-approved' : 'status-rejected'}">${statusLabel(item.status)}</span>
+            <span class="ap-activity-title" title="${escapeHtml(item.title || item.id)}">${escapeHtml(item.title || item.id)}</span>
+            <span class="ap-activity-meta">${timeAgo(item.updatedAt || item.submittedAt)}</span>
+          </div>`).join('');
+      }
+      if (pending.length > 0) {
+        html += `<div class="ap-section-title" style="margin-top:20px;">Menunggu Tindakan</div>`;
+        html += pending.map(item => `
+          <div class="ap-activity-item">
+            <span class="ap-activity-status status-pending">PENDING</span>
+            <span class="ap-activity-title" title="${escapeHtml(item.title || item.id)}">${escapeHtml(item.title || item.id)}</span>
+            <span class="ap-activity-meta">${timeAgo(item.submittedAt)}</span>
+          </div>`).join('');
+      }
+    }
+    listEl.innerHTML = html;
+
+    document.getElementById('ap-logout-btn').addEventListener('click', function() {
+      localStorage.removeItem('katakating_admin_session');
+      window.location.href = 'index.html';
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+
+</body>
+</html>

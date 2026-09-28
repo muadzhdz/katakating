@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#000000">
+  <title>Panel Moderasi Catatan — KATAKATING</title>
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css?v=2.3">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="main.js?v=2.3" defer></script>
+  <script src="auth.js?v=2.3" defer></script>
+</head>
+
+<body>
+
+<!-- TOAST -->
+<div id="toast" role="status" aria-live="polite">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="20 6 9 17 4 12"></polyline>
+  </svg>
+  <span id="toast-msg">Tindakan berhasil</span>
+</div>
+
+<!-- KATAKATING HEADER -->
+<header class="market-header" id="site-header">
+  <div class="market-header-inner">
+    <div class="market-brand">
+      <a class="market-brand-home" href="index.html" aria-label="[>] KATAKATING home">
+        <span class="brand-title">[>] KATAKATING</span>
+        <span class="brand-badge">KNOWLEDGE HUB</span>
+        <span class="admin-header-badge">ADMIN</span>
+      </a>
+    </div>
+
+    <nav class="market-nav" aria-label="Main navigation">
+      <div class="market-nav-links">
+        <a href="index.html#catalog" aria-label="Semua Catatan">Semua Catatan</a>
+        <a href="upload.html" class="nav-link-upload" aria-label="Upload Catatan">Upload</a>
+        <a href="notes.html?id=panduan-kontribusi" aria-label="Panduan Kontribusi">Panduan</a>
+        <a class="active" id="nav-admin-link" href="admin.html" aria-label="Panel Admin">Panel Admin</a>
+        <a class="market-icon-link" href="graph.html" title="Graf Pengetahuan (The Brain)" aria-label="Graf Pengetahuan (The Brain)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><path d="M12 8v4"/><path d="m7.5 16.5 2.5-3.5"/><path d="m16.5 16.5-2.5-3.5"/></svg>
+        </a>
+        <a class="market-icon-link" href="https://github.com/muadzhdz/katakating" target="_blank" rel="noreferrer" title="Repositori GitHub" aria-label="Repositori GitHub">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+          <span class="nav-ext-arrow">↗</span>
+        </a>
+      </div>
+      <div class="market-nav-actions">
+
+        <div id="auth-nav-container" class="auth-nav-slot"></div>
+        <button class="square-action" id="theme-toggle" type="button" aria-label="Ganti Tema">
+          <!-- SVG Injected by main.js -->
+        </button>
+        <button class="mobile-menu-btn" id="mobile-menu-btn" type="button" aria-label="Buka menu navigasi" aria-expanded="false" aria-controls="mobile-nav-panel">
+          <svg class="icon-menu-open" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+          <svg class="icon-menu-close" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display: none;">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </nav>
+  </div>
+
+  <!-- COLLAPSIBLE MOBILE NAV PANEL -->
+  <div class="mobile-nav-panel" id="mobile-nav-panel" hidden>
+    <div class="mobile-nav-inner">
+      <div class="mobile-nav-section-title">// NAVIGASI REPOSITORI</div>
+      <a href="index.html#catalog" class="mobile-nav-item">
+        <span class="mobile-nav-num">[01]</span>
+        <span class="mobile-nav-label">Semua Catatan</span>
+      </a>
+      <a href="upload.html" class="mobile-nav-item">
+        <span class="mobile-nav-num">[02]</span>
+        <span class="mobile-nav-label">Upload Catatan</span>
+      </a>
+      <a href="notes.html?id=panduan-kontribusi" class="mobile-nav-item">
+        <span class="mobile-nav-num">[03]</span>
+        <span class="mobile-nav-label">Panduan Kontribusi</span>
+      </a>
+      <a href="graph.html" class="mobile-nav-item">
+        <span class="mobile-nav-num">[04]</span>
+        <span class="mobile-nav-label">Graf Pengetahuan (The Brain)</span>
+      </a>
+      <a href="admin.html" class="mobile-nav-item active" id="mobile-nav-admin-link">
+        <span class="mobile-nav-num">[05]</span>
+        <span class="mobile-nav-label">Panel Admin</span>
+      </a>
+      <div class="mobile-nav-divider"></div>
+      <div class="mobile-nav-section-title">// TAUTAN EKSTERNAL</div>
+      <a href="https://github.com/muadzhdz/katakating" target="_blank" rel="noreferrer" class="mobile-nav-item mobile-nav-ext">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+        <span>Repositori GitHub</span>
+        <span class="mobile-nav-arrow">↗</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main class="write-layout">
+
+  <!-- ADMIN AUTH GATE (TAMPIL JIKA BELUM LOGIN ADMIN) -->
+  <div id="admin-login-gate" style="display: none; max-width: 440px; margin: 60px auto 100px; padding: 32px 28px; background: var(--panel); border: 1px solid var(--line-strong); border-radius: 6px; box-shadow: 0 12px 36px rgba(0,0,0,0.45);">
+    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+      <span class="admin-header-badge">RESTRICTED ACCESS</span>
+      <span style="font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.05em;">ADMIN ONLY</span>
+    </div>
+    <h2 style="font-size: 20px; font-weight: 700; color: var(--heading); margin: 0 0 8px; letter-spacing: -0.01em;">
+      Autentikasi Administrator
+    </h2>
+    <p style="font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 24px;">
+      Halaman ini dikhususkan bagi administrator KATAKATING untuk memoderasi naskah yang diajukan oleh mahasiswa.
+    </p>
+
+    <form id="admin-gate-form" onsubmit="return false;" style="display: flex; flex-direction: column; gap: 14px;">
+      <div style="text-align: left;">
+        <label for="gate-admin-email" style="display: block; font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 6px; text-transform: uppercase;">
+          Email / Username Admin:
+        </label>
+        <input type="text" id="gate-admin-email" class="form-input" placeholder="Masukkan email atau username" style="width: 100%; font-size: 13px; padding: 8px 12px; font-family: var(--mono);" required autocomplete="username">
+      </div>
+      <div style="text-align: left;">
+        <label for="gate-admin-pass" style="display: block; font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 6px; text-transform: uppercase;">
+          Kata Sandi Admin:
+        </label>
+        <input type="password" id="gate-admin-pass" class="form-input" placeholder="Masukkan kata sandi..." style="width: 100%; font-size: 13px; padding: 8px 12px;" required autocomplete="current-password">
+      </div>
+      <button type="submit" id="btn-gate-login" class="button market-primary" style="width: 100%; justify-content: center; min-height: 38px; font-weight: 700; margin-top: 6px;">
+        Masuk sebagai Admin
+      </button>
+      <div id="gate-error-msg" style="display: none; font-family: var(--mono); font-size: 12px; color: #ef4444; padding: 8px 10px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 4px; text-align: center;"></div>
+    </form>
+  </div>
+
+  <!-- DASHBOARD VIEW (TAMPIL HANYA SETELAH TERAUTENTIKASI ADMIN) -->
+  <div id="admin-dashboard-view" style="display: none;">
+    <!-- DASHBOARD TOP HEADER -->
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; margin-bottom: 28px;">
+      <div>
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+          <span class="admin-header-badge">INTERNAL ADMIN</span>
+          <span style="font-family: var(--mono); font-size: 12px; color: var(--muted);">KATAKATING NOTES DESK</span>
+        </div>
+        <h1 style="font-size: 24px; font-weight: 700; color: var(--heading); margin: 0; letter-spacing: -0.02em;">
+          Panel Moderasi Catatan Mahasiswa
+        </h1>
+        <p style="font-size: 13px; color: var(--muted); margin-top: 4px; max-width: 680px;">
+          Periksa orisinalitas, validitas format, dan kualitas naskah catatan praktikum serta rangkuman sebelum dipublikasikan ke portal publik KATAKATING.
+        </p>
+      </div>
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <button type="button" class="button" id="btn-sync-queue">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+          Sinkronkan Antrean
+        </button>
+        <button type="button" class="button" id="btn-admin-logout" style="border-color: rgba(239, 68, 68, 0.4); color: #ef4444;" title="Keluar dari sesi admin">
+          Keluar Admin
+        </button>
+      </div>
+    </div>
+
+    <!-- STATS CARDS -->
+    <div class="admin-stats-grid">
+      <div class="admin-stat-card stat-accent">
+        <div class="admin-stat-label">Total Pengajuan</div>
+        <div class="admin-stat-value" id="stat-total">0</div>
+      </div>
+      <div class="admin-stat-card stat-pending">
+        <div class="admin-stat-label">Menunggu Review</div>
+        <div class="admin-stat-value" id="stat-pending">0</div>
+      </div>
+      <div class="admin-stat-card stat-approved">
+        <div class="admin-stat-label">Disetujui / Terbit</div>
+        <div class="admin-stat-value" id="stat-approved">0</div>
+      </div>
+      <div class="admin-stat-card stat-rejected">
+        <div class="admin-stat-label">Naskah Ditolak</div>
+        <div class="admin-stat-value" id="stat-rejected">0</div>
+      </div>
+    </div>
+
+    <!-- FILTER & SEARCH BAR -->
+    <div class="admin-filter-bar">
+      <div class="admin-filter-pills" id="admin-filter-group">
+        <button type="button" class="admin-filter-pill active" data-filter="all">Semua Naskah</button>
+        <button type="button" class="admin-filter-pill" data-filter="pending_review">Menunggu Review</button>
+        <button type="button" class="admin-filter-pill" data-filter="approved">Disetujui</button>
+        <button type="button" class="admin-filter-pill" data-filter="rejected">Ditolak</button>
+      </div>
+      <div>
+        <input type="text" id="admin-search" class="form-input" placeholder="Cari judul, nama, atau NIM..." style="width: 260px; font-size: 12px; padding: 6px 12px;">
+      </div>
+    </div>
+
+    <!-- SUBMISSIONS TABLE -->
+    <div class="admin-table-wrapper">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>ID Tiket</th>
+            <th>Judul Dokumen</th>
+            <th>Penulis & NIM</th>
+            <th>Kategori</th>
+            <th>Tanggal</th>
+            <th>Status</th>
+            <th style="text-align: right;">Aksi Kurasi</th>
+          </tr>
+        </thead>
+        <tbody id="admin-table-body">
+          <tr>
+            <td colspan="7" style="text-align: center; color: var(--muted); padding: 40px;">
+              Memuat antrean naskah dari basis data...
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+
+<!-- REVIEW & DETAIL MODAL -->
+<div id="review-modal" class="modal-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000; align-items: center; justify-content: center; padding: 20px;">
+  <div style="background: var(--panel); border: 1px solid var(--line-strong); max-width: 760px; width: 100%; max-height: 90vh; display: flex; flex-direction: column; border-radius: 6px; box-shadow: 0 10px 40px rgba(0,0,0,0.8);">
+    
+    <!-- Modal Header -->
+    <div style="padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center;">
+      <div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span class="admin-id-badge" id="modal-sub-id">SUB-XXXX</span>
+          <span class="admin-status-badge status-pending" id="modal-sub-status">PENDING</span>
+        </div>
+        <h3 id="modal-sub-title" style="font-size: 16px; font-weight: 600; color: var(--heading); margin-top: 6px;">Judul Dokumen</h3>
+      </div>
+      <button type="button" id="modal-close-x" class="button" style="padding: 4px 8px; font-size: 12px;">✕</button>
+    </div>
+
+    <!-- Modal Scrollable Body -->
+    <div style="padding: 20px; overflow-y: auto; flex: 1;">
+      <!-- Author & Metadata Row -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; padding: 12px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 4px; margin-bottom: 16px; font-size: 12px;">
+        <div>
+          <span style="color: var(--muted); display: block;">Penulis</span>
+          <strong id="modal-sub-author" style="color: var(--heading);">-</strong>
+        </div>
+        <div>
+          <span style="color: var(--muted); display: block;">NIM / NPM</span>
+          <strong id="modal-sub-nim" style="color: var(--heading); font-family: var(--mono);">-</strong>
+        </div>
+        <div>
+          <span style="color: var(--muted); display: block;">Email / Kontak</span>
+          <strong id="modal-sub-contact" style="color: var(--heading);">-</strong>
+        </div>
+        <div>
+          <span style="color: var(--muted); display: block;">Kategori Bidang</span>
+          <strong id="modal-sub-category" style="color: var(--accent);">-</strong>
+        </div>
+        <div>
+          <span style="color: var(--muted); display: block;">Tanggal Pengajuan</span>
+          <strong id="modal-sub-date" style="color: var(--heading); font-family: var(--mono);">-</strong>
+        </div>
+      </div>
+
+      <!-- Ringkasan / Abstrak -->
+      <div style="margin-bottom: 16px;">
+        <span style="font-family: var(--mono); font-size: 11px; text-transform: uppercase; color: var(--muted); letter-spacing: .05em;">Ringkasan / Abstrak:</span>
+        <p id="modal-sub-summary" style="font-size: 13px; color: var(--text); background: var(--panel-2); padding: 10px 12px; border: 1px solid var(--line); border-radius: 3px; margin-top: 6px;">-</p>
+      </div>
+
+      <!-- Ekstrak Dokumen -->
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-family: var(--mono); font-size: 11px; text-transform: uppercase; color: var(--muted); letter-spacing: .05em;">Isi / Ekstrak Dokumen Naskah:</span>
+          <span id="modal-sub-length" style="font-family: var(--mono); font-size: 11px; color: var(--muted);">0 karakter</span>
+        </div>
+        <div class="admin-preview-content" id="modal-sub-content">
+          Memuat naskah...
+        </div>
+      </div>
+
+      <!-- Catatan Redaksi -->
+      <div style="margin-top: 16px;">
+        <label for="modal-admin-notes" style="font-family: var(--mono); font-size: 11px; text-transform: uppercase; color: var(--muted); letter-spacing: .05em; display: block; margin-bottom: 6px;">
+          Catatan Verifikator / Alasan Penolakan:
+        </label>
+        <textarea id="modal-admin-notes" class="form-input" rows="2" placeholder="Catatan internal atau alasan jika naskah ditolak..." style="width: 100%; font-size: 12px; font-family: var(--mono);"></textarea>
+      </div>
+    </div>
+
+    <!-- Modal Footer Actions -->
+    <div style="padding: 14px 20px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; background: var(--panel-2);">
+      <button type="button" class="button" id="modal-btn-delete" style="color: #ef4444; border-color: rgba(239,68,68,0.3);">
+        Hapus Naskah
+      </button>
+      <div style="display: flex; gap: 8px;">
+        <button type="button" class="admin-btn admin-btn-reject" id="modal-btn-reject" style="padding: 6px 14px; font-size: 12px;">
+          Tolak Naskah
+        </button>
+        <button type="button" class="admin-btn admin-btn-approve" id="modal-btn-approve" style="padding: 6px 14px; font-size: 12px;">
+          Setujui & Publikasikan
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CYBER CONFIRM DELETE MODAL -->
+<div id="delete-confirm-modal" class="modal-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1100; align-items: center; justify-content: center; padding: 20px;">
+  <div style="background: var(--panel); border: 1px solid rgba(239, 68, 68, 0.45); max-width: 480px; width: 100%; border-radius: 6px; box-shadow: 0 10px 40px rgba(0,0,0,0.9); overflow: hidden;">
+    <!-- Header -->
+    <div style="padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; background: rgba(239, 68, 68, 0.08);">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <span style="color: #ef4444; display: flex; align-items: center;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </span>
+        <span style="font-family: var(--mono); font-size: 11.5px; font-weight: 700; color: #ef4444; letter-spacing: .08em; text-transform: uppercase;">
+          PERINGATAN SISTEM // HAPUS TIKET
+        </span>
+      </div>
+      <button type="button" id="btn-cancel-delete-x" class="button" style="padding: 2px 6px; font-size: 11px;">✕</button>
+    </div>
+    <!-- Body -->
+    <div style="padding: 20px;">
+      <p style="font-size: 13px; color: var(--text); line-height: 1.6; margin-bottom: 14px;">
+        Apakah Anda yakin ingin menghapus tiket antrean ini secara permanen? Jika naskah telah dipublikasikan di katalog publik, arsip publikasinya juga akan ditarik.
+      </p>
+      <div style="background: var(--panel-2); border: 1px solid var(--line); padding: 12px; border-radius: 4px; font-family: var(--mono); font-size: 12px;">
+        <div style="color: var(--muted); font-size: 10px; text-transform: uppercase; margin-bottom: 4px;">Tiket Terpilih</div>
+        <div style="color: var(--heading); font-weight: 600; line-height: 1.4;" id="delete-ticket-title">-</div>
+        <div style="color: #ef4444; font-size: 11px; margin-top: 6px; font-weight: 700;" id="delete-ticket-id">SUB-XXXX</div>
+      </div>
+    </div>
+    <!-- Actions -->
+    <div style="padding: 14px 20px; border-top: 1px solid var(--line); display: flex; justify-content: flex-end; gap: 10px; background: var(--panel-2);">
+      <button type="button" class="button" id="btn-cancel-delete">
+        Batal
+      </button>
+      <button type="button" class="admin-btn admin-btn-reject" id="btn-confirm-delete" style="padding: 8px 16px; font-size: 12px; font-weight: 600;">
+        Hapus Permanen
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- CYBER REJECT REASON MODAL -->
+<div id="reject-reason-modal" class="modal-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1100; align-items: center; justify-content: center; padding: 20px;">
+  <div style="background: var(--panel); border: 1px solid rgba(239, 68, 68, 0.45); max-width: 540px; width: 100%; border-radius: 6px; box-shadow: 0 10px 40px rgba(0,0,0,0.9); overflow: hidden;">
+    <!-- Header -->
+    <div style="padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; background: rgba(239, 68, 68, 0.08);">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <span style="color: #ef4444; display: flex; align-items: center;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        </span>
+        <span style="font-family: var(--mono); font-size: 11.5px; font-weight: 700; color: #ef4444; letter-spacing: .08em; text-transform: uppercase;">
+          TOLAK NASKAH // FORMULIR EVALUASI
+        </span>
+      </div>
+      <button type="button" id="btn-cancel-reject-x" class="button" style="padding: 2px 6px; font-size: 11px;">✕</button>
+    </div>
+    <!-- Body -->
+    <div style="padding: 20px;">
+      <div style="background: var(--panel-2); border: 1px solid var(--line); padding: 10px 12px; border-radius: 4px; margin-bottom: 16px; font-size: 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+          <span style="color: var(--muted); font-size: 10px; font-family: var(--mono); text-transform: uppercase;">Naskah Terpilih</span>
+          <span style="color: #ef4444; font-family: var(--mono); font-size: 11px; font-weight: 700;" id="reject-ticket-id">SUB-XXXX</span>
+        </div>
+        <div style="color: var(--heading); font-weight: 600; line-height: 1.4;" id="reject-ticket-title">-</div>
+        <div style="color: var(--muted); font-size: 11px; margin-top: 4px;" id="reject-ticket-author">Pengirim: -</div>
+      </div>
+
+      <div style="margin-bottom: 6px;">
+        <label for="reject-reason-input" style="display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; text-transform: uppercase; color: var(--text); letter-spacing: .05em; margin-bottom: 6px; font-weight: 600;">
+          <span>Alasan Penolakan <span style="color: #ef4444;">*</span></span>
+          <span style="color: #ef4444; font-weight: 600; font-size: 10px;">[WAJIB DIISI]</span>
+        </label>
+        <textarea id="reject-reason-input" class="form-input" rows="4" placeholder="Jelaskan catatan evaluasi secara spesifik agar pengirim dapat merevisi naskahnya (contoh: format margin belum 4-4-3-3, bab metodologi belum dilengkapi referensi akademik, atau sampel kode belum lolos verifikasi)..." style="width: 100%; font-size: 12.5px; font-family: var(--mono); resize: vertical; box-sizing: border-box;"></textarea>
+        <div id="reject-error-msg" style="display: none; color: #ef4444; font-size: 11px; font-family: var(--mono); margin-top: 6px;">
+          ! Alasan penolakan wajib diisi sebelum mengonfirmasi penolakan naskah.
+        </div>
+      </div>
+    </div>
+    <!-- Actions -->
+    <div style="padding: 14px 20px; border-top: 1px solid var(--line); display: flex; justify-content: flex-end; gap: 10px; background: var(--panel-2);">
+      <button type="button" class="button" id="btn-cancel-reject">
+        Batal
+      </button>
+      <button type="button" class="admin-btn admin-btn-reject" id="btn-confirm-reject" style="padding: 8px 16px; font-size: 12px; font-weight: 600;">
+        Konfirmasi Tolak Naskah
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- KATAKATING FOOTER -->
+<footer class="market-footer" id="site-footer">
+  <div class="footer-status">
+    <div class="footer-status-left">
+      <span class="status-indicator"></span>
+      <span class="status-text">KATAKATING MODERATION ENGINE ACTIVE &bull; UNIVERSITAS BOASH</span>
+    </div>
+    <div class="footer-resource-links">
+      <a class="footer-status-link" href="index.html">BERANDA <span aria-hidden="true">↗</span></a>
+      <a class="footer-status-link" href="upload.html">UPLOAD DOKUMEN <span aria-hidden="true">↗</span></a>
+      <a class="footer-status-link" href="notes.html?id=panduan-kontribusi">PANDUAN <span aria-hidden="true">↗</span></a>
+      <a class="footer-status-link" href="https://github.com/muadzhdz/katakating" target="_blank" rel="noreferrer">GITHUB <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════
+   ADMIN MODERATION ENGINE
+   ══════════════════════════════════════════════════════════════════ */
+let allSubmissions = [];
+let currentFilter = 'all';
+let currentSearch = '';
+let activeSelectedId = null;
+
+const ADMIN_SUPABASE_URL = 'https://nyywfctmbdzzypiwuilt.supabase.co';
+const ADMIN_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im55eXdmY3RtYmR6enlwaXd1aWx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAxNTYxMjYsImV4cCI6MjEwNTczMjEyNn0.rSE8M3hyZE-CdcDVL9Rx0NUfQddn0-tw2ltBr1wPgOQ';
+
+// Helper to escape HTML safely
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function formatDate(isoStr) {
+  if (!isoStr) return '-';
+  try {
+    const d = new Date(isoStr);
+    return d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+  } catch (e) {
+    return isoStr;
+  }
+}
+
+// 1. Load submissions from LocalStorage and Supabase
+async function loadSubmissions() {
+  const localList = JSON.parse(localStorage.getItem('katakating_submissions') || '[]');
+  let remoteList = [];
+
+  try {
+    const res = await fetch(ADMIN_SUPABASE_URL + '/rest/v1/submissions?select=*&order=submitted_at.desc', {
+      headers: {
+        'apikey': ADMIN_SUPABASE_ANON_KEY,
+        'Authorization': 'Bearer ' + ADMIN_SUPABASE_ANON_KEY
+      }
+    });
+    if (res.ok) {
+      remoteList = await res.json();
+    }
+  } catch (err) {
+    console.warn('Supabase fetch notice:', err);
+  }
+
+  // Merge map keyed by ID
+  const map = new Map();
+  localList.forEach(item => {
+    map.set(item.id, item);
+  });
+
+  if (Array.isArray(remoteList)) {
+    remoteList.forEach(item => {
+      const ticketId = 'SUB-' + String(item.id).slice(0, 8).toUpperCase();
+      if (!map.has(item.id) && !map.has(ticketId)) {
+        map.set(ticketId, {
+          id: ticketId,
+          db_id: item.id,
+          title: item.title,
+          author_name: item.author_name,
+          author_npm: item.author_npm,
+          author_email: item.author_email,
+          category: item.category,
+          summary: item.summary,
+          content: item.content,
+          status: item.status || 'pending_review',
+          admin_notes: item.admin_notes || '',
+          submitted_at: item.submitted_at || item.created_at || new Date().toISOString()
+        });
+      }
+    });
+  }
+
+  // If local list was empty and map is empty, provide demo starter item so user can test moderation immediately
+  if (map.size === 0) {
+    const sampleItem = {
+      id: 'SUB-DEMO1',
+      title: 'Laporan Praktikum Pemrograman Berorientasi Objek Polimorfisme Java',
+      author_name: 'Ahmad Fauzi',
+      author_npm: '24903460021',
+      author_email: 'ahmad.fauzi@student.boash.ac.id',
+      category: 'Algoritma & Pemrograman',
+      summary: 'Implementasi konsep overriding, dynamic method dispatch, dan interface dalam bahasa Java dengan studi kasus sistem perpustakaan.',
+      content: '# Laporan Praktikum PBO: Polimorfisme\n\n## 1. Tujuan Praktikum\n1. Memahami konsep polymorphism dalam OOP Java.\n2. Mengimplementasikan abstract class dan interface.\n\n## 2. Implementasi Kode\n```java\npublic interface LayananPeminjaman {\n    void pinjamBuku(String judul);\n}\n```\n\n## 3. Hasil & Analisis\nPolimorfisme memungkinkan decoupling yang bersih antara modul katalog dan modul transaksi.',
+      status: 'pending_review',
+      admin_notes: '',
+      submitted_at: new Date(Date.now() - 3600000).toISOString()
+    };
+    map.set(sampleItem.id, sampleItem);
+    localStorage.setItem('katakating_submissions', JSON.stringify([sampleItem]));
+  }
+
+  allSubmissions = Array.from(map.values());
+  updateStats();
+  renderTable();
+}
+
+// 2. Update Stats Counter
+function updateStats() {
+  const total = allSubmissions.length;
+  const pending = allSubmissions.filter(s => s.status === 'pending_review').length;
+  const approved = allSubmissions.filter(s => s.status === 'approved').length;
+  const rejected = allSubmissions.filter(s => s.status === 'rejected').length;
+
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-pending').textContent = pending;
+  document.getElementById('stat-approved').textContent = approved;
+  document.getElementById('stat-rejected').textContent = rejected;
+}
+
+// 3. Render Table
+function renderTable() {
+  const tbody = document.getElementById('admin-table-body');
+  if (!tbody) return;
+
+  let filtered = allSubmissions.filter(item => {
+    if (currentFilter !== 'all' && item.status !== currentFilter) return false;
+    if (currentSearch) {
+      const q = currentSearch.toLowerCase();
+      const matchTitle = (item.title || '').toLowerCase().includes(q);
+      const matchAuthor = (item.author_name || '').toLowerCase().includes(q);
+      const matchNim = (item.author_npm || '').toLowerCase().includes(q);
+      const matchId = (item.id || '').toLowerCase().includes(q);
+      if (!matchTitle && !matchAuthor && !matchNim && !matchId) return false;
+    }
+    return true;
+  });
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="7" style="text-align: center; color: var(--muted); padding: 48px 20px;">
+          Tidak ada naskah yang sesuai dengan kriteria filter saat ini.
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(item => {
+    let statusClass = 'status-pending';
+    let statusLabel = 'MENUNGGU REVIEW';
+    if (item.status === 'approved') {
+      statusClass = 'status-approved';
+      statusLabel = 'DISETUJUI';
+    } else if (item.status === 'rejected') {
+      statusClass = 'status-rejected';
+      statusLabel = 'DITOLAK';
+    }
+
+    return `
+      <tr>
+        <td>
+          <span class="admin-id-badge">${escapeHtml(item.id)}</span>
+        </td>
+        <td>
+          <strong style="color: var(--heading); display: block; max-width: 320px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+            ${escapeHtml(item.title)}
+          </strong>
+          <span style="font-size: 11px; color: var(--muted); display: block; max-width: 320px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+            ${escapeHtml(item.summary || '')}
+          </span>
+        </td>
+        <td>
+          <span style="color: var(--heading); font-weight: 500;">${escapeHtml(item.author_name)}</span>
+          <span style="display: block; font-size: 11px; font-family: var(--mono); color: var(--muted);">${escapeHtml(item.author_npm || '-')}</span>
+        </td>
+        <td>
+          <span style="font-size: 11.5px; color: var(--text);">${escapeHtml(item.category)}</span>
+        </td>
+        <td>
+          <span style="font-family: var(--mono); font-size: 11px; color: var(--muted);">${formatDate(item.submitted_at)}</span>
+        </td>
+        <td>
+          <span class="admin-status-badge ${statusClass}">${statusLabel}</span>
+        </td>
+        <td style="text-align: right;">
+          <div class="admin-action-btns" style="justify-content: flex-end;">
+            <button type="button" class="admin-btn btn-open-review" data-id="${escapeHtml(item.id)}">Review</button>
+            ${item.status !== 'approved' ? `<button type="button" class="admin-btn admin-btn-approve btn-quick-approve" data-id="${escapeHtml(item.id)}">Setujui</button>` : ''}
+            ${item.status !== 'rejected' ? `<button type="button" class="admin-btn admin-btn-reject btn-quick-reject" data-id="${escapeHtml(item.id)}">Tolak</button>` : ''}
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+// 4. Modal Functions
+const reviewModal = document.getElementById('review-modal');
+const modalCloseX = document.getElementById('modal-close-x');
+
+function openReview(id) {
+  const item = allSubmissions.find(s => s.id === id);
+  if (!item) return;
+  activeSelectedId = id;
+
+  document.getElementById('modal-sub-id').textContent = item.id;
+  document.getElementById('modal-sub-title').textContent = item.title;
+  document.getElementById('modal-sub-author').textContent = item.author_name;
+  document.getElementById('modal-sub-nim').textContent = item.author_npm || '-';
+  document.getElementById('modal-sub-contact').textContent = item.author_email || '-';
+  document.getElementById('modal-sub-category').textContent = item.category;
+  document.getElementById('modal-sub-date').textContent = formatDate(item.submitted_at);
+  document.getElementById('modal-sub-summary').textContent = item.summary || 'Tidak ada ringkasan.';
+  document.getElementById('modal-sub-content').textContent = item.content || 'Tidak ada teks dokumen.';
+  document.getElementById('modal-sub-length').textContent = (item.content || '').length + ' karakter';
+  document.getElementById('modal-admin-notes').value = item.admin_notes || '';
+
+  const statusBadge = document.getElementById('modal-sub-status');
+  if (item.status === 'approved') {
+    statusBadge.className = 'admin-status-badge status-approved';
+    statusBadge.textContent = 'DISETUJUI';
+  } else if (item.status === 'rejected') {
+    statusBadge.className = 'admin-status-badge status-rejected';
+    statusBadge.textContent = 'DITOLAK';
+  } else {
+    statusBadge.className = 'admin-status-badge status-pending';
+    statusBadge.textContent = 'MENUNGGU REVIEW';
+  }
+
+  reviewModal.style.display = 'flex';
+}
+
+function closeReview() {
+  reviewModal.style.display = 'none';
+  activeSelectedId = null;
+}
+
+modalCloseX.addEventListener('click', closeReview);
+reviewModal.addEventListener('click', (e) => {
+  if (e.target === reviewModal) closeReview();
+});
+
+// 5. Actions: Approve, Reject, Delete
+function saveSubmissionsToStorage() {
+  localStorage.setItem('katakating_submissions', JSON.stringify(allSubmissions));
+}
+
+function approveSubmission(id, notes) {
+  const item = allSubmissions.find(s => s.id === id);
+  if (!item) return;
+
+  item.status = 'approved';
+  if (notes) item.admin_notes = notes;
+  saveSubmissionsToStorage();
+
+  // Also publish to katakating_approved_articles for live catalog display!
+  const approvedList = JSON.parse(localStorage.getItem('katakating_approved_articles') || '[]');
+  const slug = item.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || item.id.toLowerCase();
+  
+  const articleRecord = {
+    id: slug,
+    ticket_id: item.id,
+    title: item.title,
+    author: item.author_name,
+    category: item.category,
+    date: new Date().toISOString().split('T')[0],
+    readTime: '3 menit',
+    tags: [item.category.toLowerCase().split(' ')[0], 'praktikum', 'mahasiswa'],
+    summary: item.summary || item.title,
+    content: item.content,
+    views: 1
+  };
+
+  // Replace or add
+  const existIdx = approvedList.findIndex(a => a.id === slug || a.ticket_id === item.id);
+  if (existIdx >= 0) approvedList[existIdx] = articleRecord;
+  else approvedList.unshift(articleRecord);
+  localStorage.setItem('katakating_approved_articles', JSON.stringify(approvedList));
+
+  updateStats();
+  renderTable();
+  if (typeof showToast === 'function') showToast('Naskah berhasil disetujui & dipublikasikan ke katalog');
+}
+
+// State for custom dialogs
+let pendingDeleteId = null;
+let pendingRejectId = null;
+
+const deleteModal = document.getElementById('delete-confirm-modal');
+const rejectModal = document.getElementById('reject-reason-modal');
+
+function openDeleteModal(id) {
+  const item = allSubmissions.find(s => s.id === id);
+  if (!item) return;
+  pendingDeleteId = id;
+  document.getElementById('delete-ticket-id').textContent = item.id;
+  document.getElementById('delete-ticket-title').textContent = item.title;
+  deleteModal.style.display = 'flex';
+}
+
+function closeDeleteModal() {
+  deleteModal.style.display = 'none';
+  pendingDeleteId = null;
+}
+
+function openRejectModal(id, initialReason = '') {
+  const item = allSubmissions.find(s => s.id === id);
+  if (!item) return;
+  pendingRejectId = id;
+  document.getElementById('reject-ticket-id').textContent = item.id;
+  document.getElementById('reject-ticket-title').textContent = item.title;
+  document.getElementById('reject-ticket-author').textContent = 'Pengirim: ' + (item.author_name || '-') + (item.author_npm ? ' (' + item.author_npm + ')' : '');
+
+  const reasonInput = document.getElementById('reject-reason-input');
+  reasonInput.value = initialReason || item.admin_notes || '';
+  document.getElementById('reject-error-msg').style.display = 'none';
+  reasonInput.style.borderColor = 'var(--line)';
+
+  rejectModal.style.display = 'flex';
+  setTimeout(() => reasonInput.focus(), 50);
+}
+
+function closeRejectModal() {
+  rejectModal.style.display = 'none';
+  pendingRejectId = null;
+}
+
+function executeDeleteSubmission(id) {
+  if (!id) return;
+  allSubmissions = allSubmissions.filter(s => s.id !== id);
+  saveSubmissionsToStorage();
+
+  const approvedList = JSON.parse(localStorage.getItem('katakating_approved_articles') || '[]');
+  const updatedApproved = approvedList.filter(a => a.ticket_id !== id);
+  localStorage.setItem('katakating_approved_articles', JSON.stringify(updatedApproved));
+
+  closeDeleteModal();
+  if (activeSelectedId === id) {
+    closeReview();
+  }
+  updateStats();
+  renderTable();
+  if (typeof showToast === 'function') showToast('Naskah ' + id + ' berhasil dihapus permanen');
+}
+
+function executeRejectSubmission(id, reason) {
+  if (!id) return;
+  const item = allSubmissions.find(s => s.id === id);
+  if (!item) return;
+
+  item.status = 'rejected';
+  item.admin_notes = reason;
+  saveSubmissionsToStorage();
+
+  const approvedList = JSON.parse(localStorage.getItem('katakating_approved_articles') || '[]');
+  const updatedApproved = approvedList.filter(a => a.ticket_id !== item.id);
+  localStorage.setItem('katakating_approved_articles', JSON.stringify(updatedApproved));
+
+  closeRejectModal();
+  if (activeSelectedId === id) {
+    closeReview();
+  }
+  updateStats();
+  renderTable();
+  if (typeof showToast === 'function') showToast('Status tiket ' + id + ' diubah menjadi ditolak');
+}
+
+// Table Event Delegation
+document.getElementById('admin-table-body').addEventListener('click', (e) => {
+  const btnReview = e.target.closest('.btn-open-review');
+  if (btnReview) {
+    const id = btnReview.getAttribute('data-id');
+    openReview(id);
+    return;
+  }
+
+  const btnApprove = e.target.closest('.btn-quick-approve');
+  if (btnApprove) {
+    const id = btnApprove.getAttribute('data-id');
+    approveSubmission(id);
+    return;
+  }
+
+  const btnReject = e.target.closest('.btn-quick-reject');
+  if (btnReject) {
+    const id = btnReject.getAttribute('data-id');
+    openRejectModal(id);
+    return;
+  }
+});
+
+// Review Modal Buttons
+document.getElementById('modal-btn-approve').addEventListener('click', () => {
+  if (!activeSelectedId) return;
+  const notes = document.getElementById('modal-admin-notes').value.trim();
+  approveSubmission(activeSelectedId, notes);
+  closeReview();
+});
+
+document.getElementById('modal-btn-reject').addEventListener('click', () => {
+  if (!activeSelectedId) return;
+  const notes = document.getElementById('modal-admin-notes').value.trim();
+  openRejectModal(activeSelectedId, notes);
+});
+
+document.getElementById('modal-btn-delete').addEventListener('click', () => {
+  if (!activeSelectedId) return;
+  openDeleteModal(activeSelectedId);
+});
+
+// Delete Modal Buttons
+document.getElementById('btn-cancel-delete').addEventListener('click', closeDeleteModal);
+document.getElementById('btn-cancel-delete-x').addEventListener('click', closeDeleteModal);
+document.getElementById('btn-confirm-delete').addEventListener('click', () => {
+  executeDeleteSubmission(pendingDeleteId);
+});
+
+// Reject Modal Buttons
+document.getElementById('btn-cancel-reject').addEventListener('click', closeRejectModal);
+document.getElementById('btn-cancel-reject-x').addEventListener('click', closeRejectModal);
+document.getElementById('btn-confirm-reject').addEventListener('click', () => {
+  const reasonInput = document.getElementById('reject-reason-input');
+  const reason = reasonInput.value.trim();
+  const errorMsg = document.getElementById('reject-error-msg');
+
+  if (!reason) {
+    errorMsg.style.display = 'block';
+    reasonInput.style.borderColor = '#ef4444';
+    reasonInput.focus();
+    return;
+  }
+
+  executeRejectSubmission(pendingRejectId, reason);
+});
+
+// Outside modal click & Escape handlers
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    if (deleteModal.style.display === 'flex') closeDeleteModal();
+    else if (rejectModal.style.display === 'flex') closeRejectModal();
+    else if (reviewModal.style.display === 'flex') closeReview();
+  }
+});
+
+deleteModal.addEventListener('click', (e) => {
+  if (e.target === deleteModal) closeDeleteModal();
+});
+
+rejectModal.addEventListener('click', (e) => {
+  if (e.target === rejectModal) closeRejectModal();
+});
+
+// Filter & Search Handlers
+document.getElementById('admin-filter-group').addEventListener('click', (e) => {
+  const pill = e.target.closest('.admin-filter-pill');
+  if (!pill) return;
+  document.querySelectorAll('.admin-filter-pill').forEach(p => p.classList.remove('active'));
+  pill.classList.add('active');
+  currentFilter = pill.getAttribute('data-filter') || 'all';
+  renderTable();
+});
+
+document.getElementById('admin-search').addEventListener('input', (e) => {
+  currentSearch = e.target.value.trim();
+  renderTable();
+});
+
+document.getElementById('btn-sync-queue').addEventListener('click', () => {
+  loadSubmissions();
+  if (typeof showToast === 'function') showToast('Antrean disinkronkan');
+});
+
+// Admin Auth Gate Controller
+function checkAdminAuth() {
+  const gateEl = document.getElementById('admin-login-gate');
+  const dashEl = document.getElementById('admin-dashboard-view');
+  if (!gateEl || !dashEl) return false;
+
+  let isAdmin = false;
+  try {
+    const adminSess = JSON.parse(localStorage.getItem('katakating_admin_session') || 'null');
+    if (adminSess && adminSess.email === 'katakating@gmail.com') {
+      isAdmin = true;
+    }
+  } catch (e) {
+    isAdmin = false;
+  }
+
+  if (isAdmin) {
+    gateEl.style.display = 'none';
+    dashEl.style.display = 'block';
+    loadSubmissions();
+    // Ensure avatar dropdown is rendered (handles race with auth.js defer)
+    if (typeof window.KataKatingAuth !== 'undefined' && typeof window.KataKatingAuth.renderNav === 'function') {
+      window.KataKatingAuth.renderNav();
+    }
+    return true;
+  } else {
+    gateEl.style.display = 'block';
+    dashEl.style.display = 'none';
+    return false;
+  }
+}
+window.checkAdminAuth = checkAdminAuth;
+
+const gateForm = document.getElementById('admin-gate-form');
+if (gateForm) {
+  gateForm.addEventListener('submit', async () => {
+    const email = document.getElementById('gate-admin-email').value;
+    const pass = document.getElementById('gate-admin-pass').value;
+    const errMsg = document.getElementById('gate-error-msg');
+
+    if (typeof KataKatingAuth !== 'undefined' && typeof KataKatingAuth.signInWithEmailPassword === 'function') {
+      const res = await KataKatingAuth.signInWithEmailPassword(email, pass, true);
+      if (res && res.success) {
+        if (errMsg) errMsg.style.display = 'none';
+        checkAdminAuth();
+      } else {
+        if (errMsg) {
+          errMsg.textContent = res?.error || 'Kredensial admin tidak valid. Silakan periksa kembali.';
+          errMsg.style.display = 'block';
+        }
+      }
+    } else {
+      if (errMsg) {
+        errMsg.textContent = 'Modul autentikasi belum siap. Silakan muat ulang halaman.';
+        errMsg.style.display = 'block';
+      }
+    }
+  });
+}
+
+const btnAdminLogout = document.getElementById('btn-admin-logout');
+if (btnAdminLogout) {
+  btnAdminLogout.addEventListener('click', async () => {
+    if (typeof KataKatingAuth !== 'undefined' && typeof KataKatingAuth.signOut === 'function') {
+      await KataKatingAuth.signOut();
+    } else {
+      localStorage.removeItem('katakating_admin_session');
+      checkAdminAuth();
+      if (typeof showToast === 'function') showToast('Anda telah keluar dari sesi admin');
+    }
+  });
+}
+
+// Init on DOM ready
+document.addEventListener('DOMContentLoaded', () => {
+  checkAdminAuth();
+});
+</script>
+
+</body>
+</html>

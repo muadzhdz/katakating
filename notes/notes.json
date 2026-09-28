@@ -112,13 +112,13 @@
   },
   {
     "id": "panduan-kontribusi",
-    "title": "Panduan & Ketentuan Kontribusi Artikel Jurnal KATAKATING",
+    "title": "Panduan Berbagi Catatan & Panduan di KATAKATING",
     "category": "Kontribusi & Panduan",
-    "author": "Divisi Kemahasiswaan HIMATRA",
-    "date": "2026-09-23",
-    "readTime": "4 menit",
-    "tags": ["kontribusi", "panduan", "markdown", "open-source", "himatra", "boash"],
-    "summary": "Syarat, ketentuan akademik, format metadata frontmatter, dan tata cara mengirimkan tulisan jurnal/artikel praktikum ke KATAKATING via formulir web atau GitHub Pull Request.",
+    "author": "Tim KATAKATING",
+    "date": "2026-09-27",
+    "readTime": "2 menit",
+    "tags": ["panduan", "kontribusi", "mahasiswa", "boash", "catatan", "praktikum"],
+    "summary": "Panduan sederhana bagi mahasiswa untuk berbagi catatan kuliah, rangkuman materi, dan panduan praktikum di KATAKATING.",
     "file": "panduan-kontribusi.md"
   }
 ]

@@ -174,57 +174,251 @@
     return true;
   }
 
-  // ── 3. Data Loading & Graph Construction ──
+  // ── 3. Embedded Fallback Notes Repository & Real-Time Clock ──
+  var FALLBACK_NOTES = [
+    {
+      id: 'setup-flutter-android-sdk-cli-windows',
+      title: 'Panduan Lengkap Install Flutter & Android SDK Headless via Terminal di Windows (Tanpa Android Studio)',
+      category: 'Web & Tooling',
+      author: "Mu'adz Hudzaifah",
+      date: '2026-09-24',
+      readTime: '12 menit',
+      initials: 'FLUT',
+      tags: ['flutter', 'dart', 'android', 'sdk', 'adb', 'windows', 'terminal', 'cli'],
+      summary: 'Panduan instalasi Flutter SDK dan Android Command-Line Tools (cmdline-tools & adb) secara headless murni via terminal PowerShell di Windows tanpa perlu menginstal Android Studio yang memakan puluhan gigabyte.',
+      file: 'setup-flutter-android-sdk-cli-windows.md'
+    },
+    {
+      id: 'setup-wsl2-ubuntu-webdev',
+      title: 'Setup Lengkap WSL2 Ubuntu 24.04 untuk Web Development',
+      category: 'Web & Tooling',
+      author: "Mu'adz Hudzaifah",
+      date: '2026-09-21',
+      readTime: '6 menit',
+      tags: ['linux', 'wsl2', 'ubuntu', 'webdev', 'nodejs', 'php'],
+      summary: 'Panduan instalasi dan konfigurasi native Linux kernel di Windows menggunakan WSL2 untuk kebutuhan praktikum web, lengkap dengan NVM, PHP, dan VS Code integration.',
+      file: 'setup-wsl2-ubuntu-webdev.md'
+    },
+    {
+      id: 'format-margin-laporan-4433',
+      title: 'Standar Baku Format Margin Laporan Praktikum & TA (4-4-3-3)',
+      category: 'Akademik & Laporan',
+      author: 'Divisi Kemahasiswaan HIMATRA',
+      date: '2026-09-21',
+      readTime: '5 menit',
+      tags: ['akademik', 'laporan', 'word', 'margin', 'skripsi', 'boash'],
+      summary: 'Panduan tata letak layout dokumen akademik Universitas Boash. Aturan margin 4-4-3-3, pemisahan nomor romawi dengan angka arab via section break, dan struktur baku bab.',
+      file: 'format-margin-laporan-4433.md'
+    },
+    {
+      id: 'jaringan-routing-vlan-cisco',
+      title: 'Konfigurasi Inter-VLAN Routing & Trunking pada Cisco Packet Tracer',
+      category: 'Jaringan Komputer',
+      author: "Mu'adz Hudzaifah",
+      date: '2026-09-21',
+      readTime: '7 menit',
+      tags: ['jaringan', 'cisco', 'vlan', 'routing', 'packet-tracer', 'networking'],
+      summary: 'Tutorial konfigurasi jaringan switch layer-2 dan router on-a-stick untuk memisahkan segmentasi traffic mahasiswa dan dosen di lab praktikum.',
+      file: 'jaringan-routing-vlan-cisco.md'
+    },
+    {
+      id: 'basis-data-relasional-normalisasi',
+      title: 'Panduan Praktis Normalisasi Basis Data (1NF, 2NF, 3NF)',
+      category: 'Basis Data',
+      author: 'Divisi Kemahasiswaan HIMATRA',
+      date: '2026-09-21',
+      readTime: '6 menit',
+      tags: ['database', 'sql', 'normalisasi', 'mysql', 'basis-data'],
+      summary: 'Memahami teknik dekomposisi tabel anomali menjadi bentuk normal 1NF, 2NF, dan 3NF pada studi kasus sistem akademik kampus.',
+      file: 'basis-data-relasional-normalisasi.md'
+    },
+    {
+      id: 'algoritma-struktur-data-dasar',
+      title: 'Implementasi Struktur Data Stack & Queue pada Praktikum Pemrograman',
+      category: 'Algoritma & Pemrograman',
+      author: "Mu'adz Hudzaifah",
+      date: '2026-09-21',
+      readTime: '6 menit',
+      tags: ['algoritma', 'struktur-data', 'python', 'stack', 'queue'],
+      summary: 'Memahami logika LIFO (Last In First Out) dan FIFO (First In First Out) dengan implementasi Python murni serta analisis kompleksitas waktu O(1).',
+      file: 'algoritma-struktur-data-dasar.md'
+    },
+    {
+      id: 'wokwi-esp32-mqtt-hivemq',
+      title: 'Simulasi Telemetri ESP32 & MQTT HiveMQ di Browser (Tanpa Alat Fisik)',
+      category: 'IoT & Embedded',
+      author: "Mu'adz Hudzaifah",
+      date: '2026-09-21',
+      readTime: '6 menit',
+      tags: ['iot', 'esp32', 'mqtt', 'wokwi', 'hivemq', 'arduino'],
+      summary: 'Tutorial membuat simulasi monitoring sensor suhu virtual di Wokwi dan mempublikasikan data telemetry real-time ke broker publik MQTT tanpa membeli modul hardware.',
+      file: 'wokwi-esp32-mqtt-hivemq.md'
+    },
+    {
+      id: 'git-workflow-conflict-detached-head',
+      title: 'Mengatasi Detached HEAD & Merge Conflict pada Git Kolaboratif',
+      category: 'Git & DevOps',
+      author: "Mu'adz Hudzaifah",
+      date: '2026-09-21',
+      readTime: '5 menit',
+      tags: ['git', 'github', 'detached-head', 'conflict', 'devops'],
+      summary: 'Panduan pemecahan masalah (troubleshooting) ketika commit tersangkut di detached HEAD atau branch lokal bentrok dengan commit rekan kelompok di repository GitHub.',
+      file: 'git-workflow-conflict-detached-head.md'
+    },
+    {
+      id: 'blender-to-unity-pipeline',
+      title: 'Pipeline Export Aset 3D Blender ke Unity 2022 LTS (Fix Skala & Rotasi)',
+      category: 'Game & Multimedia',
+      author: 'Divisi Kemahasiswaan HIMATRA',
+      date: '2026-09-21',
+      readTime: '5 menit',
+      tags: ['blender', 'unity', '3d', 'gamedev', 'fbx', 'multimedia'],
+      summary: 'Panduan export FBX dari Blender 4.x ke engine Unity agar model tidak miring rotasi -90 derajat pada sumbu X dan skala objek proporsional 1:1.',
+      file: 'blender-to-unity-pipeline.md'
+    },
+    {
+      id: 'metodologi-mdlc-multimedia',
+      title: 'Penerapan Metodologi MDLC (Luther-Sutopo) pada Skripsi Multimedia',
+      category: 'Metodologi Penelitian',
+      author: 'Divisi Kemahasiswaan HIMATRA',
+      date: '2026-09-21',
+      readTime: '6 menit',
+      tags: ['mdlc', 'skripsi', 'metodologi', 'multimedia', 'luther-sutopo', 'tugas-akhir'],
+      summary: 'Penjelasan komprehensif 6 tahapan siklus Multimedia Development Life Cycle (Concept, Design, Material, Assembly, Testing, Distribution) yang diakui penguji sidang.',
+      file: 'metodologi-mdlc-multimedia.md'
+    },
+    {
+      id: 'panduan-kontribusi',
+      title: 'Panduan Berbagi Catatan & Panduan di KATAKATING',
+      category: 'Kontribusi & Panduan',
+      author: 'Tim KATAKATING',
+      date: '2026-09-27',
+      readTime: '2 menit',
+      tags: ['panduan', 'kontribusi', 'mahasiswa', 'boash', 'catatan', 'praktikum'],
+      summary: 'Panduan sederhana bagi mahasiswa untuk berbagi catatan kuliah, rangkuman materi, dan panduan praktikum di KATAKATING.',
+      file: 'panduan-kontribusi.md'
+    }
+  ];
+
+  // Independent Real-Time Cockpit Clock
+  function updateClock() {
+    var clockEl = document.getElementById('brain-clock');
+    if (clockEl) {
+      var d = new Date();
+      var hh = String(d.getHours()).padStart(2, '0');
+      var mm = String(d.getMinutes()).padStart(2, '0');
+      var ss = String(d.getSeconds()).padStart(2, '0');
+      clockEl.textContent = hh + ':' + mm + ':' + ss;
+    }
+  }
+
+  function initClock() {
+    updateClock();
+    if (!window._brainClockTimer) {
+      window._brainClockTimer = setInterval(updateClock, 1000);
+    }
+  }
+
+  // Trigger clock immediately without waiting for network or DOM completion
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initClock);
+  } else {
+    initClock();
+  }
+
+  // ── 4. Resilient Data Loading & Graph Construction ──
   async function loadData() {
+    initClock();
+
+    // 1. Fetch static curated notes or fallback
     try {
-      var res = await fetch('articles/articles.json');
-      if (!res.ok) throw new Error('Gagal memuat catalog artikel');
-      rawArticles = await res.json();
-
-      var auth = window.KataKatingAuth || window.ReadmeAuth;
-      var sb = auth ? auth.client : null;
-      if (sb) {
-        try {
-          var dbRes = await sb
-            .from('guides')
-            .select('*')
-            .eq('status', 'published')
-            .order('created_at', { ascending: false });
-
-          var dbGuides = dbRes.data;
-          if (dbGuides && dbGuides.length > 0) {
-            var existingSlugs = new Set(rawArticles.map(function(a) { return a.id; }));
-            dbGuides.forEach(function(g) {
-              if (!existingSlugs.has(g.slug)) {
-                rawArticles.push({
-                  id: g.slug,
-                  title: g.title,
-                  category: g.category || 'Sains & Teknologi',
-                  author: g.author || 'Mahasiswa Boash',
-                  date: g.created_at ? g.created_at.slice(0, 10) : '2026-09-20',
-                  excerpt: g.summary || g.excerpt || '',
-                  readTime: (g.reading_time || 5) + ' mnt',
-                  tags: Array.isArray(g.tags) ? g.tags : ['jurnal']
-                });
-              }
-            });
-          }
-        } catch (dbErr) {
-          console.warn('[>] Supabase guides fallback:', dbErr.message);
-        }
+      var res = await fetch('notes/notes.json?v=' + Date.now());
+      if (res.ok) {
+        rawArticles = await res.json();
+      } else {
+        console.warn('[>] Failed to fetch notes/notes.json (status ' + res.status + '), fallback to embedded notes');
+        rawArticles = JSON.parse(JSON.stringify(FALLBACK_NOTES));
       }
+    } catch (fetchErr) {
+      console.warn('[>] Fetch error on notes/notes.json, fallback to embedded notes:', fetchErr.message);
+      rawArticles = JSON.parse(JSON.stringify(FALLBACK_NOTES));
+    }
 
+    if (!Array.isArray(rawArticles) || rawArticles.length === 0) {
+      rawArticles = JSON.parse(JSON.stringify(FALLBACK_NOTES));
+    }
+
+    // 2. Prepend approved articles from admin moderation (localStorage)
+    try {
+      var approvedArticles = JSON.parse(localStorage.getItem('katakating_approved_articles') || '[]');
+      if (Array.isArray(approvedArticles) && approvedArticles.length > 0) {
+        var existingIds = new Set(rawArticles.map(function(a) { return a.id; }));
+        approvedArticles.forEach(function(item) {
+          if (!existingIds.has(item.id)) {
+            rawArticles.unshift({
+              id: item.id,
+              title: item.title,
+              category: item.category || 'Kontribusi Mahasiswa',
+              author: item.author || 'Mahasiswa Boash',
+              date: item.date || new Date().toISOString().slice(0, 10),
+              excerpt: item.summary || item.excerpt || '',
+              readTime: item.readTime || '5 menit',
+              tags: Array.isArray(item.tags) ? item.tags : ['catatan']
+            });
+            existingIds.add(item.id);
+          }
+        });
+      }
+    } catch (storageErr) {
+      console.warn('[>] LocalStorage approved notes notice:', storageErr);
+    }
+
+    // 3. Merge Supabase published guides
+    var auth = window.KataKatingAuth || window.ReadmeAuth;
+    var sb = auth ? auth.client : null;
+    if (sb) {
+      try {
+        var dbRes = await sb
+          .from('guides')
+          .select('id, title, summary, author_name, category, prodi_tags, created_at')
+          .order('created_at', { ascending: false });
+
+        var dbGuides = dbRes.data;
+        if (dbGuides && dbGuides.length > 0) {
+          var existingSlugs = new Set(rawArticles.map(function(a) { return a.id; }));
+          dbGuides.forEach(function(g) {
+            if (!existingSlugs.has(g.id)) {
+              rawArticles.push({
+                id: g.id,
+                title: g.title,
+                category: g.category || 'Sains & Teknologi',
+                author: g.author_name || 'Mahasiswa Boash',
+                date: g.created_at ? g.created_at.slice(0, 10) : '2026-09-20',
+                excerpt: g.summary || '',
+                readTime: '5 menit',
+                tags: Array.isArray(g.prodi_tags) ? g.prodi_tags : ['catatan']
+              });
+              existingSlugs.add(g.id);
+            }
+          });
+        }
+      } catch (dbErr) {
+        console.warn('[>] Supabase guides fetch notice:', dbErr.message);
+      }
+    }
+
+    // 4. Construct graph & start interactive render loop
+    try {
       buildGraph();
       initCockpitUI();
       resizeCanvas();
       syncGraph(L.width, L.height);
       triggerBloom();
       startLoop();
-
     } catch (err) {
-      console.error('[>] Error loading graph data:', err);
+      console.error('[>] Error during graph construction/loop start:', err);
       var hud = document.getElementById('brain-canvas-hud');
-      if (hud) hud.textContent = 'GAGAL MEMUAT DATA: ' + err.message;
+      if (hud) hud.textContent = 'WARNING: ' + err.message;
     }
   }
 
@@ -1439,18 +1633,7 @@
     canvas = document.getElementById('brain-canvas');
     if (canvas) ctx = canvas.getContext('2d');
 
-    // Live Clock
-    function updateClock() {
-      var clockEl = document.getElementById('brain-clock');
-      if (clockEl) {
-        var d = new Date();
-        var hh = String(d.getHours()).padStart(2, '0');
-        var mm = String(d.getMinutes()).padStart(2, '0');
-        var ss = String(d.getSeconds()).padStart(2, '0');
-        clockEl.textContent = hh + ':' + mm + ':' + ss;
-      }
-    }
-    setInterval(updateClock, 1000);
+    // Live Clock Refresh
     updateClock();
 
     // Vitals Rail
@@ -1584,7 +1767,7 @@
 
     var readBtnHtml = '';
     if (node.t === 'memory' && node.slug) {
-      readBtnHtml = '<a href="article.html?id=' + encodeURIComponent(node.slug) + '" class="brain-read-btn">[ BACA JURNAL LENGKAP &nearr; ]</a>';
+      readBtnHtml = '<a href="notes.html?id=' + encodeURIComponent(node.slug) + '" class="brain-read-btn">[ BACA JURNAL LENGKAP &nearr; ]</a>';
     }
 
     body.innerHTML = '' +
@@ -1606,6 +1789,10 @@
   }
 
   // ── 11. Boot Initialization ──
-  document.addEventListener('DOMContentLoaded', loadData);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadData);
+  } else {
+    loadData();
+  }
 
 })();

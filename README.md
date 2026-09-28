@@ -21,9 +21,9 @@ Platform ini dibangun dengan estetika **Cyber Brutalist** (palet Cyber Emerald `
 
 - **Matrix Filtering Multi-Prodi:** Navigasi materi lintas fakultas dan program studi tanpa sekat kaku; menyaring panduan berdasarkan bidang keilmuan dan tingkat semester (Semester 1 s.d. 8).
 - **1-Click Command & Code Copy:** Tombol penyalinan perintah terminal (Linux/Bash/PowerShell) dan potongan kode dengan umpan balik visual instan.
-- **Micro-Learning Video Walkthroughs:** Integrasi klip video demonstrasi teknis (1–3 menit) pada artikel panduan yang memerlukan tahapan visual.
+- **Micro-Learning Video Walkthroughs:** Integrasi klip video demonstrasi teknis (1–3 menit) pada catatan panduan yang memerlukan tahapan visual.
 - **Infografis & Diagram Alur Vektor:** Diagram arsitektur dan skema rangkaian praktikum yang tajam dan responsif.
-- **Dual Submission Pipeline:** Mahasiswa dapat mengirimkan naskah tips secara instan via web form (`tulis.html`) terhubung ke basis data Supabase PostgreSQL, maupun melalui GitHub Issue template.
+- **Dual Submission Pipeline:** Mahasiswa dapat mengunggah naskah dokumen praktikum (.docx, .pdf, .md) via portal (`upload.html`) terhubung ke basis data Supabase PostgreSQL, maupun melalui GitHub Issue template.
 
 ---
 
@@ -40,15 +40,17 @@ katakating/
 │   └── build-catalog.mjs         # Verifikator & compiler data catalog.json
 ├── test/
 │   └── catalog.test.js           # Unit test otomatis integritas panduan
-├── articles/                     # Berkas dokumentasi naskah panduan (Markdown)
+├── notes/                        # Berkas dokumentasi naskah panduan (Markdown)
 ├── supabase/
 │   └── migrations/               # Skema DDL PostgreSQL dan migrasi Supabase
 ├── catalog.json                  # Single Source of Truth (Katalog Master)
 ├── index.html                    # Katalog Web Utama KATAKATING
-├── article.html                  # Antarmuka Reader Mode Panduan
-├── tulis.html                    # Formulir Pengajuan Panduan Mahasiswa
+├── notes.html                    # Antarmuka Reader Mode Catatan
+├── upload.html                   # Portal Unggah Dokumen Tugas & Praktikum
+├── admin.html                    # Panel Moderasi & Review Naskah Redaksi
 ├── style.css                     # Desain Sistem Cyber Emerald
 ├── main.js                       # Logika Pencarian, Filter Multi-Prodi, & Copy Code
+├── auth.js                       # Autentikasi Pengguna & Supabase Client
 ├── package.json                  # Konfigurasi Node.js Module & Testing
 └── README.md                     # Dokumentasi Resmi Proyek
 ```
@@ -85,7 +87,7 @@ npm run build
 
 ## Alur Kontribusi Naskah Panduan
 
-1. **Jalur Web Publik:** Akses halaman `tulis.html`, isi rincian naskah, kategori bidang ilmu, dan fakultas/prodi, lalu kirim naskah ke antrean kurasi.
+1. **Jalur Web Publik:** Masuk ke akun Anda dan akses halaman `upload.html` untuk mengunggah naskah dokumen (.docx, .pdf, .md) yang langsung masuk ke antrean kurasi panel redaksi.
 2. **Jalur GitOps:** Buka Issue baru menggunakan template [Submit a Practical Guide](.github/ISSUE_TEMPLATE/submit-guide.yml). Tim kurator akan memeriksa validitas teknis naskah sebelum diintegrasikan ke `catalog.json`.
 
 ---

@@ -6,11 +6,11 @@
   <title>Graf Pengetahuan (The Brain) &mdash; KATAKATING</title>
   <meta name="description" content="The Brain: Visualisasi jejaring pengetahuan Hermes Star Map 2D Canvas berdimensi waktu radial.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300ff66' stroke-width='2'><circle cx='12' cy='12' r='3'/><path d='M12 2v4m0 12v4m-10-10h4m12 0h4'/></svg>">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=2.2">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="main.js" defer></script>
-  <script src="auth.js" defer></script>
-  <script src="graph.js" defer></script>
+  <script src="main.js?v=2.2" defer></script>
+  <script src="auth.js?v=2.2" defer></script>
+  <script src="graph.js?v=2.2" defer></script>
 </head>
 
 <body class="brain-body">
@@ -62,7 +62,7 @@
       <div class="brain-card">
         <div class="brain-card-title">VITALS</div>
         <div class="brain-vitals-grid">
-          <span class="brain-vital-key">memories (artikel)</span>
+          <span class="brain-vital-key">memories (catatan)</span>
           <span class="brain-vital-val" id="vital-memories">10</span>
           <span class="brain-vital-key">links (sinapsis)</span>
           <span class="brain-vital-val" id="vital-links">28</span>
@@ -114,7 +114,7 @@
           <button type="button" class="brain-pill active" data-kind="organ" title="Toggle Simpul Rumpun Keilmuan">
             <span class="pill-dot organ"></span>organ
           </button>
-          <button type="button" class="brain-pill active" data-kind="memory" title="Toggle Simpul Jurnal Artikel">
+          <button type="button" class="brain-pill active" data-kind="memory" title="Toggle Simpul Catatan">
             <span class="pill-dot memory"></span>memory
           </button>
           <button type="button" class="brain-pill active" data-kind="author" title="Toggle Simpul Kontributor Penulis">
