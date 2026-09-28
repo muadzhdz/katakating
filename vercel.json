@@ -41,7 +41,7 @@
   ],
   "rewrites": [
     {
-      "source": "/notes/:slug",
+      "source": "/note/:slug",
       "destination": "/notes.html?id=:slug"
     },
     {

@@ -201,7 +201,14 @@
 // Load Article Data on Page Init
 async function loadArticle() {
   const urlParams = new URLSearchParams(window.location.search);
-  const articleId = urlParams.get('id') || 'setup-wsl2-ubuntu-webdev';
+  let articleId = urlParams.get('id');
+  if (!articleId) {
+    const pathParts = window.location.pathname.split('/').filter(Boolean);
+    if (pathParts.length >= 2 && (pathParts[0] === 'note' || pathParts[0] === 'article')) {
+      articleId = pathParts[1];
+    }
+  }
+  if (!articleId) articleId = 'setup-wsl2-ubuntu-webdev';
 
   try {
     // 1. Fetch metadata catalog
