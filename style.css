@@ -1,55 +1,86 @@
 /* ══════════════════════════════════════════════════════════════════
-   [>] README — CYBER EMERALD DESIGN SYSTEM
-   Designed for Universitas Boash
-   Dark-first, connected 1px borders, high-density hacker ergonomics.
+   KATAKATING DESIGN SYSTEM v2 — Linear-inspired Palette
+   Dark-first, monochrome, precise. No neon. No cyber. No green.
+   Same variable names — zero breakage downstream.
    ══════════════════════════════════════════════════════════════════ */
 
 :root {
   color-scheme: dark;
-  --bg: #000000;
-  --panel: #070c08;
-  --panel-2: #0e1710;
-  --line: #18281c;
-  --line-strong: #27402f;
-  --line-soft: #101c13;
-  --code-bg: #030704;
-  --text: #d8e5dc;
-  --muted: #8ea896;
-  --faint: #526958;
-  --accent: #00ff66;
-  --accent-dim: rgba(0, 255, 102, 0.08);
-  --accent-contrast: #000000;
-  --stable: #4ade80;
-  --updated: #f59e0b;
-  --syntax-string: #9ece6a;
-  --sidebar-heading: #748c7c;
-  --heading: #f0f7f2;
-  --mono: "JetBrains Mono", "JetBrainsMono Nerd Font", ui-monospace, monospace;
-  --sans: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* ── Backgrounds ─────────────────────────────────────────────── */
+  --bg:       #0a0a0a;
+  --panel:    #111111;
+  --panel-2:  #1a1a1a;
+  --line:     rgba(255,255,255,0.07);
+  --line-strong: rgba(255,255,255,0.13);
+  --line-soft:   rgba(255,255,255,0.04);
+  --code-bg:  #111111;
+
+  /* ── Text ────────────────────────────────────────────────────── */
+  --heading:  #f0f0f0;
+  --text:     #d4d4d4;
+  --muted:    #888888;
+  --faint:    #444444;
+  --sidebar-heading: #555555;
+
+  /* ── Accent — white in dark (Linear "invert" style) ─────────── */
+  --accent:          #ffffff;
+  --accent-dim:      rgba(255,255,255,0.07);
+  --accent-contrast: #0a0a0a;
+
+  /* ── Status — neutral tones, no bright green ────────────────── */
+  --stable:  #a0a0a0;   /* was green — now neutral muted */
+  --updated: #f5a623;
+  --syntax-string: #a0a0a0;
+
+  /* ── Typography ──────────────────────────────────────────────── */
+  /* Linear uses Inter exclusively — no JetBrains */
+  --mono: ui-monospace, "SF Mono", "Cascadia Code", "Fira Code", monospace;
+  --sans: "Inter", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* ── Radius — Linear uses subtle rounding (6-8px for cards) ─── */
+  --radius-sm:   4px;
+  --radius:      6px;   /* default — buttons, inputs, badges */
+  --radius-md:   8px;   /* cards, panels, dropdowns */
+  --radius-lg:  10px;   /* modals, large cards */
+  --radius-full: 9999px; /* pills */
+
+  /* ── Transitions — Linear easing ────────────────────────────── */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --t-fast: 120ms;
+  --t-base: 200ms;
+  --t-slow: 350ms;
+
   --max-w: 1200px;
 }
 
 :root[data-theme="light"], html.light {
   color-scheme: light;
-  --bg: #f4f6f4;
-  --panel: #e8ede9;
-  --panel-2: #ffffff;
-  --line: #c5cdc6;
-  --line-strong: #a1aea3;
-  --line-soft: #dbe1dc;
-  --code-bg: #ffffff;
-  --text: #111a14;
-  --muted: #4e5f53;
-  --faint: #6e8073;
-  --accent: #15803d;
-  --accent-dim: rgba(21, 128, 61, 0.08);
+
+  --bg:       #ffffff;
+  --panel:    #f5f5f5;
+  --panel-2:  #ebebeb;
+  --line:     rgba(0,0,0,0.08);
+  --line-strong: rgba(0,0,0,0.14);
+  --line-soft:   rgba(0,0,0,0.04);
+  --code-bg:  #f5f5f5;
+
+  --heading:  #111111;
+  --text:     #333333;
+  --muted:    #666666;
+  --faint:    #aaaaaa;
+  --sidebar-heading: #999999;
+
+  --accent:          #111111;
+  --accent-dim:      rgba(0,0,0,0.06);
   --accent-contrast: #ffffff;
-  --stable: #166534;
-  --updated: #b45309;
-  --syntax-string: #15803d;
-  --sidebar-heading: #4e5f53;
-  --heading: #0a110c;
+
+  --stable:  #666666;
+  --updated: #d97706;
+  --syntax-string: #666666;
 }
+
 
 /* ── BASE RESETS ── */
 *, *::before, *::after {
@@ -257,7 +288,7 @@ code, pre, .font-mono {
   letter-spacing: .05em;
   text-transform: uppercase;
   color: var(--heading);
-  transition: color 0.15s;
+  transition: color var(--t-fast) var(--ease-out);
 }
 
 .market-brand-home:hover {
@@ -298,7 +329,7 @@ code, pre, .font-mono {
   align-items: center;
   color: var(--muted);
   padding: 4px 6px;
-  transition: color 0.15s;
+  transition: color var(--t-fast) var(--ease-out);
 }
 
 .market-nav a:hover {
@@ -315,7 +346,7 @@ code, pre, .font-mono {
   gap: 3px;
   color: var(--muted) !important;
   padding: 4px 6px;
-  transition: color 0.15s;
+  transition: color var(--t-fast) var(--ease-out);
 }
 
 .market-icon-link:hover {
@@ -340,8 +371,8 @@ code, pre, .font-mono {
   color: var(--text);
   cursor: pointer;
   padding: 0;
-  border-radius: 2px;
-  transition: all 0.15s;
+  border-radius: var(--radius-sm);
+  transition: all var(--t-fast) var(--ease-out);
   -webkit-tap-highlight-color: transparent !important;
   outline: none;
 }
@@ -369,7 +400,7 @@ code, pre, .font-mono {
   border-bottom: 2px solid var(--accent);
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.7);
   z-index: 100;
-  animation: mobileNavIn 0.15s ease-out;
+  animation: mobileNavIn var(--t-fast) var(--ease-out);
 }
 
 .mobile-nav-panel[hidden] {
@@ -408,7 +439,7 @@ code, pre, .font-mono {
   font-size: 12px;
   font-weight: 600;
   text-decoration: none;
-  transition: all 0.15s;
+  transition: all var(--t-fast) var(--ease-out);
 }
 
 .mobile-nav-item:hover,
@@ -471,7 +502,7 @@ code, pre, .font-mono {
   border: 1px solid var(--line);
   background: var(--panel-2);
   color: var(--text);
-  transition: all 0.15s;
+  transition: all var(--t-fast) var(--ease-out);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent !important;
   outline: none;
@@ -546,7 +577,7 @@ code, pre, .font-mono {
   letter-spacing: .08em;
   text-transform: uppercase;
   color: var(--text);
-  transition: all 0.15s;
+  transition: all var(--t-fast) var(--ease-out);
   -webkit-tap-highlight-color: transparent !important;
   outline: none;
   user-select: none;
@@ -575,9 +606,10 @@ code, pre, .font-mono {
 }
 
 .button.market-primary:hover {
-  background: #34d399;
-  border-color: #34d399;
-  color: #000000;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-contrast);
+  opacity: 0.88;
   -webkit-tap-highlight-color: transparent !important;
 }
 
@@ -622,7 +654,7 @@ code, pre, .font-mono {
   font-family: var(--mono);
   font-size: 11px;
   color: var(--muted);
-  transition: color 0.15s;
+  transition: color var(--t-fast) var(--ease-out);
 }
 
 .market-section-head a:hover {
@@ -643,7 +675,7 @@ code, pre, .font-mono {
   border: 1px solid var(--line);
   background: var(--panel);
   padding: 16px 18px;
-  transition: all 0.15s;
+  transition: all var(--t-fast) var(--ease-out);
 }
 
 .recent-card:hover {
@@ -801,7 +833,7 @@ code, pre, .font-mono {
   cursor: pointer;
   padding: 0;
   margin-left: 4px;
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   transition: color 0.15s, background 0.15s;
 }
 
@@ -893,8 +925,8 @@ code, pre, .font-mono {
   z-index: 120;
   margin-top: 1px;
   padding: 4px 0;
-  border-radius: 2px;
-  animation: cyberSelectFadeIn 0.12s ease-out;
+  border-radius: var(--radius-sm);
+  animation: cyberSelectFadeIn var(--t-fast) var(--ease-out);
 }
 
 @keyframes cyberSelectFadeIn {
@@ -970,22 +1002,22 @@ html.light .cyber-select-option:hover,
 html.light .cyber-select-option:hover span,
 :root[data-theme="light"] .cyber-select-option:hover,
 :root[data-theme="light"] .cyber-select-option:hover span {
-  background: #f1f5f9;
-  color: #059669 !important;
+  background: var(--panel-2);
+  color: var(--accent) !important;
 }
 html.light .cyber-select-option.selected,
 html.light .cyber-select-option.selected span,
 :root[data-theme="light"] .cyber-select-option.selected,
 :root[data-theme="light"] .cyber-select-option.selected span {
-  background: rgba(5, 150, 105, 0.12) !important;
-  color: #059669 !important;
+  background: var(--accent-dim) !important;
+  color: var(--accent) !important;
 }
 
 /* Form selects enhancement */
 .cyber-select-wrap.form-cyber-select {
   height: 40px;
   border: 1px solid var(--line-strong);
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   background: var(--code-bg);
   width: 100%;
 }
@@ -1057,7 +1089,7 @@ html.light .cyber-select-option.selected span,
   font-family: var(--mono);
   font-size: 11px;
   white-space: nowrap;
-  transition: all 0.15s;
+  transition: all var(--t-fast) var(--ease-out);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent !important;
   outline: none;
@@ -1097,7 +1129,7 @@ html.light .cyber-select-option.selected span,
   -webkit-tap-highlight-color: transparent !important;
   outline: none;
   flex-shrink: 0;
-  transition: color 0.15s;
+  transition: color var(--t-fast) var(--ease-out);
 }
 
 #clear-filters:hover {
@@ -1219,7 +1251,7 @@ html.light .plugin-card-banner,
 
 .plugin-card-title a {
   color: inherit;
-  transition: color 0.15s;
+  transition: color var(--t-fast) var(--ease-out);
 }
 
 .plugin-card-title a:hover {
@@ -1248,9 +1280,9 @@ html.light .plugin-card-banner,
   font-size: 11px;
   font-weight: 600;
   line-height: 1;
-  transition: all 0.15s;
+  transition: all var(--t-fast) var(--ease-out);
   cursor: pointer;
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   -webkit-tap-highlight-color: transparent !important;
   outline: none;
 }
@@ -1428,7 +1460,7 @@ html.light .plugin-card-banner,
   font-family: var(--mono);
   font-size: 11px;
   font-weight: 700;
-  transition: all 0.15s;
+  transition: all var(--t-fast) var(--ease-out);
 }
 
 .card-read-action svg {
@@ -1510,7 +1542,7 @@ html.light .plugin-card-banner,
   font-weight: 600;
   letter-spacing: .05em;
   text-transform: uppercase;
-  transition: all 0.15s;
+  transition: all var(--t-fast) var(--ease-out);
 }
 
 .plugin-card:hover .card-install {
@@ -1623,7 +1655,7 @@ html.light .plugin-card-banner,
 
 .breadcrumbs a {
   color: var(--muted);
-  transition: color 0.15s;
+  transition: color var(--t-fast) var(--ease-out);
 }
 
 .breadcrumbs a:hover {
@@ -1764,7 +1796,7 @@ html.light .plugin-card-banner,
   font-weight: 600;
   letter-spacing: .06em;
   text-transform: uppercase;
-  transition: all 0.15s;
+  transition: all var(--t-fast) var(--ease-out);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent !important;
   outline: none;
@@ -1951,7 +1983,7 @@ pre.code-body {
   font-size: 0.72rem;
   font-family: var(--mono);
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all var(--t-fast) var(--ease-out);
   -webkit-tap-highlight-color: transparent !important;
   outline: none;
 }
@@ -1985,7 +2017,7 @@ pre.code-body {
   color: var(--muted);
   padding: 4px 10px;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all var(--t-fast) var(--ease-out);
   -webkit-tap-highlight-color: transparent !important;
   outline: none;
 }
@@ -2086,7 +2118,7 @@ pre.code-body {
 .footer-status-link {
   color: var(--muted);
   letter-spacing: .05em;
-  transition: color 0.15s;
+  transition: color var(--t-fast) var(--ease-out);
 }
 
 .footer-status-link:hover {
@@ -2124,7 +2156,7 @@ pre.code-body {
   transform: translateY(60px);
   opacity: 0;
   pointer-events: none;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all var(--t-base) var(--ease-out);
 }
 
 #toast.show {
@@ -2390,7 +2422,7 @@ pre.code-body {
   font-family: var(--mono);
   font-size: 11px;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all var(--t-fast) var(--ease-out);
   -webkit-tap-highlight-color: transparent !important;
   outline: none;
 }
@@ -2411,7 +2443,7 @@ pre.code-body {
 .auth-nav-avatar {
   width: 18px;
   height: 18px;
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   object-fit: cover;
   border: 1px solid var(--line);
 }
@@ -2550,10 +2582,10 @@ pre.code-body {
   max-width: 400px;
   background: #000000;
   border: 1px solid #1a1a1a;
-  border-radius: 4px;
+  border-radius: var(--radius);
   padding: 26px 24px 22px;
   box-shadow: 0 24px 48px rgba(0, 0, 0, 0.95), 0 0 0 1px #111111;
-  animation: modalIn 0.15s ease-out;
+  animation: modalIn var(--t-fast) var(--ease-out);
 }
 
 @keyframes modalIn {
@@ -2582,7 +2614,7 @@ pre.code-body {
   color: var(--muted);
   cursor: pointer;
   padding: 4px;
-  border-radius: 4px;
+  border-radius: var(--radius);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2635,7 +2667,7 @@ pre.code-body {
   justify-content: center;
   gap: 12px;
   padding: 0 16px;
-  border-radius: 4px;
+  border-radius: var(--radius);
   font-family: var(--sans);
   font-size: 13.5px;
   font-weight: 500;
@@ -2719,7 +2751,7 @@ svg[data-icon="brand"] * {
   background: #080808;
   border: 1px solid #1f1f1f;
   color: #f0f6fc;
-  border-radius: 4px;
+  border-radius: var(--radius);
   cursor: pointer;
   transition: all 0.15s ease;
   -webkit-tap-highlight-color: transparent !important;
@@ -2836,7 +2868,7 @@ html.light .auth-modal-footer,
   text-decoration: none;
   margin-bottom: 4px;
   line-height: 1.4;
-  transition: color 0.15s;
+  transition: color var(--t-fast) var(--ease-out);
 }
 
 .profile-article-title:hover {
@@ -2998,7 +3030,7 @@ html.light .auth-modal-footer,
   font-size: 9px;
   font-weight: 700;
   padding: 1px 5px;
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   background: rgba(34, 197, 94, 0.15);
   color: #22c55e;
   border: 1px solid rgba(34, 197, 94, 0.35);
@@ -3051,7 +3083,7 @@ html.light .auth-modal-footer,
   font-weight: 600;
   padding: 4px 8px;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all var(--t-fast) var(--ease-out);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -3083,7 +3115,7 @@ html.light .auth-modal-footer,
   padding: 4px 10px;
   display: inline-flex;
   align-items: center;
-  transition: all 0.15s;
+  transition: all var(--t-fast) var(--ease-out);
 }
 
 .brain-exit-btn:hover {
@@ -3301,7 +3333,7 @@ html.light .auth-modal-footer,
   background: rgba(0, 0, 0, 0.65);
   border: 1px solid var(--line);
   padding: 3px 6px;
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   backdrop-filter: blur(4px);
 }
 
@@ -3730,7 +3762,7 @@ html.light .pill-dot.cortex,
   background: var(--panel);
   padding: 32px 20px;
   text-align: center;
-  transition: all 0.2s ease;
+  transition: all var(--t-base) var(--ease-out);
   cursor: pointer;
   margin-bottom: 28px;
   position: relative;
@@ -3850,7 +3882,7 @@ html.light .pill-dot.cortex,
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--t-base) var(--ease-out);
   text-align: center;
   display: flex;
   align-items: center;
@@ -4021,7 +4053,7 @@ html.light .pill-dot.cortex,
   font-weight: 600;
   padding: 4px 8px;
   cursor: pointer;
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   transition: all 0.15s ease;
 }
 
@@ -4252,7 +4284,7 @@ html.light .pill-dot.cortex,
   color: var(--accent);
   border: 1px solid var(--line-strong);
   padding: 4px 6px;
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   letter-spacing: .05em;
 }
 
@@ -4297,7 +4329,7 @@ html.light .pill-dot.cortex,
   background: rgba(0, 255, 102, 0.12);
   color: var(--accent);
   border: 1px solid var(--accent);
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
 }
 
 .admin-stats-grid {
@@ -4310,7 +4342,7 @@ html.light .pill-dot.cortex,
 .admin-stat-card {
   background: var(--panel);
   border: 1px solid var(--line-strong);
-  border-radius: 4px;
+  border-radius: var(--radius);
   padding: 16px 20px;
   position: relative;
   overflow: hidden;
@@ -4381,7 +4413,7 @@ html.light .pill-dot.cortex,
   border: 1px solid var(--line);
   color: var(--muted);
   padding: 6px 14px;
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   font-family: var(--mono);
   font-size: 12px;
   cursor: pointer;
@@ -4408,7 +4440,7 @@ html.light .pill-dot.cortex,
 .admin-table-wrapper {
   background: var(--panel);
   border: 1px solid var(--line-strong);
-  border-radius: 4px;
+  border-radius: var(--radius);
   overflow-x: auto;
 }
 
@@ -4452,7 +4484,7 @@ html.light .pill-dot.cortex,
   padding: 2px 6px;
   background: var(--code-bg);
   border: 1px solid var(--line);
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   color: var(--accent);
 }
 
@@ -4462,7 +4494,7 @@ html.light .pill-dot.cortex,
   font-size: 10px;
   text-transform: uppercase;
   padding: 3px 8px;
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   font-weight: 600;
   letter-spacing: .04em;
 }
@@ -4495,7 +4527,7 @@ html.light .pill-dot.cortex,
   padding: 5px 10px;
   font-size: 11px;
   font-family: var(--mono);
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   border: 1px solid var(--line-strong);
   background: var(--panel-2);
@@ -4549,7 +4581,7 @@ html.light .pill-dot.cortex,
   padding: 16px;
   background: var(--code-bg);
   border: 1px solid var(--line);
-  border-radius: 4px;
+  border-radius: var(--radius);
   font-family: var(--mono);
   font-size: 12px;
   line-height: 1.6;
