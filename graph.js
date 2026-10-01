@@ -124,22 +124,22 @@
     return {
       light: light,
       bg: light ? '#ffffff' : '#0e1011',
-      fg: light ? '#0f172a' : '#e5e7eb',
+      fg: light ? '#111111' : '#d4d4d4',
       muted: light ? '#64748b' : '#9ca3af',
       line: light ? 'rgba(0, 0, 0, 0.08)' : 'rgba(255, 255, 255, 0.06)',
       ringLine: light ? 'rgba(0, 0, 0, 0.07)' : 'rgba(255, 255, 255, 0.045)',
       ringText: light ? 'rgba(15, 23, 42, 0.35)' : 'rgba(255, 255, 255, 0.22)',
       
       // Cyber Terminal Accent: 100% Emerald Green in Light Mode, Neon Green in Dark Mode
-      accent: light ? '#16a34a' : '#00ff66',
-      accentGlow: light ? 'rgba(22, 163, 74, 0.50)' : 'rgba(0, 255, 102, 0.60)',
+      accent: light ? '#111111' : '#ffffff',
+      accentGlow: light ? 'rgba(0, 0, 0, 0.25)' : 'rgba(255, 255, 255, 0.35)',
       
       // Option A: Pure Monochrome Base (White in Dark Mode, Deep Slate in Light Mode)
-      nodeBase: light ? '#0f172a' : '#ffffff',
+      nodeBase: light ? '#111111' : '#ffffff',
       nodeAura: light ? 'rgba(15, 23, 42, ' : 'rgba(255, 255, 255, ',
       
       edgeIdle: light ? 'rgba(15, 23, 42, 0.085)' : 'rgba(255, 255, 255, 0.075)',
-      edgeActive: light ? '#16a34a' : '#00ff66',
+      edgeActive: light ? '#111111' : '#ffffff',
       edgeDimmed: light ? 'rgba(0, 0, 0, 0.025)' : 'rgba(255, 255, 255, 0.02)'
     };
   }
@@ -1071,9 +1071,9 @@
         // Multi-layer nebula aura (Pure monochrome, or accent if active)
         var gradCore = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, radCore * 3.8);
         if (isCoreEff) {
-          gradCore.addColorStop(0, pal.light ? 'rgba(22, 163, 74, 0.95)' : 'rgba(0, 255, 102, 0.95)');
-          gradCore.addColorStop(0.25, pal.light ? 'rgba(22, 163, 74, 0.45)' : 'rgba(0, 255, 102, 0.5)');
-          gradCore.addColorStop(0.6, pal.light ? 'rgba(22, 163, 74, 0.12)' : 'rgba(0, 255, 102, 0.18)');
+          gradCore.addColorStop(0, pal.light ? 'rgba(0, 0, 0, 0.85)' : 'rgba(255, 255, 255, 0.95)');
+          gradCore.addColorStop(0.25, pal.light ? 'rgba(0, 0, 0, 0.3)' : 'rgba(255, 255, 255, 0.3)');
+          gradCore.addColorStop(0.6, pal.light ? 'rgba(0, 0, 0, 0.08)' : 'rgba(255, 255, 255, 0.08)');
         } else {
           gradCore.addColorStop(0, pal.nodeAura + '0.95)');
           gradCore.addColorStop(0.25, pal.nodeAura + '0.40)');
@@ -1089,8 +1089,8 @@
         var waveFrac = (L.phase * 0.35) % 1.0;
         var waveR = radCore + waveFrac * 36;
         var waveAlpha = (1.0 - waveFrac) * (pal.light ? 0.35 : 0.55);
-        ctx.strokeStyle = isCoreEff ? 
-          (pal.light ? 'rgba(22, 163, 74, ' + waveAlpha + ')' : 'rgba(0, 255, 102, ' + waveAlpha + ')') :
+        ctx.strokeStyle = isCoreEff ?
+          (pal.light ? 'rgba(0, 0, 0, ' + waveAlpha + ')' : 'rgba(255, 255, 255, ' + waveAlpha + ')') :
           (pal.nodeAura + waveAlpha + ')');
         ctx.lineWidth = 1.2;
         ctx.beginPath();
@@ -1109,7 +1109,7 @@
         var gOrgan = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r * 3.0);
         if (isOrgEff) {
           gOrgan.addColorStop(0, pal.accentGlow);
-          gOrgan.addColorStop(0.35, pal.light ? 'rgba(22, 163, 74, 0.2)' : 'rgba(0, 255, 102, 0.25)');
+          gOrgan.addColorStop(0.35, pal.light ? 'rgba(0, 0, 0, 0.12)' : 'rgba(255, 255, 255, 0.15)');
         } else {
           var a0 = dimmed ? 0.12 : (pal.light ? 0.35 : 0.65);
           var a1 = dimmed ? 0.03 : (pal.light ? 0.10 : 0.20);
@@ -1140,7 +1140,7 @@
         var gAuth = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r * 2.8);
         if (isAuthEff) {
           gAuth.addColorStop(0, pal.accentGlow);
-          gAuth.addColorStop(0.35, pal.light ? 'rgba(22, 163, 74, 0.18)' : 'rgba(0, 255, 102, 0.22)');
+          gAuth.addColorStop(0.35, pal.light ? 'rgba(0, 0, 0, 0.1)' : 'rgba(255, 255, 255, 0.12)');
         } else {
           var a0A = dimmed ? 0.10 : (pal.light ? 0.30 : 0.60);
           var a1A = dimmed ? 0.02 : (pal.light ? 0.08 : 0.18);
@@ -1168,7 +1168,7 @@
         var gMem = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r * 2.6);
         if (isMemEff) {
           gMem.addColorStop(0, pal.accentGlow);
-          gMem.addColorStop(0.35, pal.light ? 'rgba(22, 163, 74, 0.18)' : 'rgba(0, 255, 102, 0.22)');
+          gMem.addColorStop(0.35, pal.light ? 'rgba(0, 0, 0, 0.1)' : 'rgba(255, 255, 255, 0.12)');
         } else {
           var a0M = dimmed ? 0.10 : (pal.light ? 0.30 : 0.60);
           var a1M = dimmed ? 0.02 : (pal.light ? 0.08 : 0.18);
@@ -1285,7 +1285,7 @@
         ctx.fillStyle = pal.light ? 'rgba(255, 255, 255, 0.92)' : 'rgba(14, 16, 17, 0.88)';
         ctx.fillRect(chosen.left - 2, chosen.top - 1, labelWidth + 4, labelHeight + 2);
 
-        ctx.fillStyle = pal.light ? (item.effective ? '#16a34a' : '#0f172a') : (item.effective ? '#00ff66' : '#e5e7eb');
+        ctx.fillStyle = pal.light ? (item.effective ? '#111111' : '#111111') : (item.effective ? '#ffffff' : '#d4d4d4');
         ctx.fillText(label, chosen.x, chosen.y);
       }
 

@@ -960,7 +960,7 @@ code, pre, .font-mono {
 
 .cyber-select-option.selected,
 .cyber-select-option.selected span {
-  background: rgba(0, 255, 102, 0.12) !important; /* CYBER EMERALD HIGHLIGHT */
+  background: var(--accent-dim) !important
   color: var(--accent) !important; /* GREEN ON SELECTED */
   font-weight: 700;
 }
@@ -1213,14 +1213,14 @@ html.light .plugin-card-banner,
   font-weight: 800;
   color: var(--heading);
   letter-spacing: .08em;
-  text-shadow: 0 0 16px rgba(0, 255, 102, 0.25);
-  transition: transform 0.2s, color 0.2s;
+  text-shadow: none;
+  transition: transform var(--t-base) var(--ease-out), color var(--t-base) var(--ease-out);
   user-select: none;
 }
 
 .plugin-card:hover .banner-monogram {
   color: var(--accent);
-  transform: scale(1.1);
+  transform: scale(1.08);
 }
 
 /* 2. Main Content Area */
@@ -1394,8 +1394,8 @@ html.light .plugin-card-banner,
   letter-spacing: .05em;
   padding: 1px 6px;
   color: var(--accent);
-  background: rgba(0, 255, 102, 0.08);
-  border: 1px solid rgba(0, 255, 102, 0.3);
+  background: var(--accent-dim);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .badge-tag-verified {
@@ -1497,7 +1497,7 @@ html.light .plugin-card-banner,
   letter-spacing: .04em;
   text-transform: uppercase;
   border: 1px solid var(--accent);
-  background: rgba(0, 255, 102, 0.1);
+  background: var(--accent-dim);
   color: var(--accent);
 }
 
@@ -2788,13 +2788,13 @@ html.light .auth-modal-card,
 :root[data-theme="light"] .auth-modal-card {
   background: #ffffff;
   border-color: #d1d5db;
-  color: #0f172a;
+  color: var(--heading);
   box-shadow: 0 20px 48px rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
 }
 
 html.light .auth-modal-title,
 :root[data-theme="light"] .auth-modal-title {
-  color: #0f172a !important;
+  color: var(--heading) !important;
 }
 
 html.light .auth-modal-desc,
@@ -2809,7 +2809,7 @@ html.light .auth-modal-close,
 
 html.light .auth-modal-close:hover,
 :root[data-theme="light"] .auth-modal-close:hover {
-  color: #0f172a !important;
+  color: var(--heading) !important;
   background: rgba(0, 0, 0, 0.06);
 }
 
@@ -2819,7 +2819,7 @@ html.light .oauth-btn,
 :root[data-theme="light"] .oauth-btn {
   background: #f8fafc !important;
   border-color: #cbd5e1 !important;
-  color: #0f172a !important;
+  color: var(--heading) !important;
 }
 
 html.light .auth-provider-btn:hover,
@@ -3582,7 +3582,7 @@ html.light .auth-modal-footer,
 html.light .brain-body,
 :root[data-theme="light"] .brain-body {
   background: #f8fafc;
-  color: #0f172a;
+  color: var(--heading);
 }
 
 html.light .brain-header,
@@ -3623,9 +3623,9 @@ html.light .brain-canvas-hud,
 }
 
 html.light .pill-dot,
-:root[data-theme="light"] .pill-dot { background: #0f172a; }
+:root[data-theme="light"] .pill-dot { background: var(--heading); }
 html.light .pill-dot.cortex,
-:root[data-theme="light"] .pill-dot.cortex { background: #0f172a; box-shadow: 0 0 4px rgba(15, 23, 42, 0.4); }
+:root[data-theme="light"] .pill-dot.cortex { background: var(--heading); box-shadow: 0 0 4px rgba(15, 23, 42, 0.4); }
 
 /* ── Comprehensive Responsive Cockpit Breakpoints ── */
 
@@ -3772,7 +3772,7 @@ html.light .pill-dot.cortex,
 .submission-dropzone.dragover {
   border-color: var(--accent);
   background: var(--panel-2);
-  box-shadow: 0 0 24px rgba(0, 255, 102, 0.08);
+  box-shadow: 0 0 24px var(--accent-dim);
 }
 
 .dropzone-icon {
@@ -3845,7 +3845,7 @@ html.light .pill-dot.cortex,
   max-width: 540px;
   background: var(--panel);
   border: 1px solid var(--accent);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.8), 0 0 24px rgba(0, 255, 102, 0.15);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.8), 0 0 24px rgba(255, 255, 255, 0.06);
   padding: 28px 24px;
   position: relative;
   animation: mobileNavIn 0.2s ease-out;
@@ -3903,7 +3903,7 @@ html.light .pill-dot.cortex,
   background: var(--panel-2);
   color: var(--accent);
   border-color: var(--accent);
-  box-shadow: 0 0 16px rgba(0, 255, 102, 0.08);
+  box-shadow: 0 0 16px var(--accent-dim);
 }
 
 .submission-mode-tab:hover:not(.active) {
@@ -3946,7 +3946,7 @@ html.light .pill-dot.cortex,
 .file-ready-badge {
   font-size: 11px;
   font-family: var(--mono);
-  background: rgba(0, 255, 102, 0.12);
+  background: var(--accent-dim);
   color: var(--accent);
   padding: 3px 8px;
   border: 1px solid var(--accent);
@@ -4326,7 +4326,7 @@ html.light .pill-dot.cortex,
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: .08em;
-  background: rgba(0, 255, 102, 0.12);
+  background: var(--accent-dim);
   color: var(--accent);
   border: 1px solid var(--accent);
   border-radius: var(--radius-sm);
