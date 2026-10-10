@@ -472,6 +472,18 @@ async function loadSubmissions() {
     console.warn('Supabase fetch notice:', err);
   }
 
+  // Purge any obsolete demo starter item from storage
+  localList = localList.filter(item => item.id !== 'SUB-DEMO1' && item.author_name !== 'Ahmad Fauzi');
+  localStorage.setItem('katakating_submissions', JSON.stringify(localList));
+
+  try {
+    let approved = JSON.parse(localStorage.getItem('katakating_approved_articles') || '[]');
+    const cleaned = approved.filter(a => a.ticket_id !== 'SUB-DEMO1' && a.author !== 'Ahmad Fauzi');
+    if (cleaned.length !== approved.length) {
+      localStorage.setItem('katakating_approved_articles', JSON.stringify(cleaned));
+    }
+  } catch (e) {}
+
   // Merge map keyed by ID
   const map = new Map();
   localList.forEach(item => {
@@ -498,25 +510,6 @@ async function loadSubmissions() {
         });
       }
     });
-  }
-
-  // If local list was empty and map is empty, provide demo starter item so user can test moderation immediately
-  if (map.size === 0) {
-    const sampleItem = {
-      id: 'SUB-DEMO1',
-      title: 'Laporan Praktikum Pemrograman Berorientasi Objek Polimorfisme Java',
-      author_name: 'Ahmad Fauzi',
-      author_npm: '24903460021',
-      author_email: 'ahmad.fauzi@student.boash.ac.id',
-      category: 'Algoritma & Pemrograman',
-      summary: 'Implementasi konsep overriding, dynamic method dispatch, dan interface dalam bahasa Java dengan studi kasus sistem perpustakaan.',
-      content: '# Laporan Praktikum PBO: Polimorfisme\n\n## 1. Tujuan Praktikum\n1. Memahami konsep polymorphism dalam OOP Java.\n2. Mengimplementasikan abstract class dan interface.\n\n## 2. Implementasi Kode\n```java\npublic interface LayananPeminjaman {\n    void pinjamBuku(String judul);\n}\n```\n\n## 3. Hasil & Analisis\nPolimorfisme memungkinkan decoupling yang bersih antara modul katalog dan modul transaksi.',
-      status: 'pending_review',
-      admin_notes: '',
-      submitted_at: new Date(Date.now() - 3600000).toISOString()
-    };
-    map.set(sampleItem.id, sampleItem);
-    localStorage.setItem('katakating_submissions', JSON.stringify([sampleItem]));
   }
 
   allSubmissions = Array.from(map.values());

@@ -217,9 +217,12 @@ async function loadArticle() {
 
     // Check approved articles from admin moderation in localStorage
     try {
-      const approvedArticles = JSON.parse(localStorage.getItem('katakating_approved_articles') || '[]');
-      if (Array.isArray(approvedArticles) && approvedArticles.length > 0) {
-        catalog = [...approvedArticles, ...catalog];
+      let approvedArticles = JSON.parse(localStorage.getItem('katakating_approved_articles') || '[]');
+      if (Array.isArray(approvedArticles)) {
+        approvedArticles = approvedArticles.filter(a => a.ticket_id !== 'SUB-DEMO1' && a.author !== 'Ahmad Fauzi');
+        if (approvedArticles.length > 0) {
+          catalog = [...approvedArticles, ...catalog];
+        }
       }
     } catch (e) {
       console.warn('LocalStorage approved articles notice:', e);

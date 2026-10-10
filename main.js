@@ -54,7 +54,10 @@ function initSearchFilter() {
 
   // Prepend approved articles from admin moderation
   try {
-    const approvedArticles = JSON.parse(localStorage.getItem('katakating_approved_articles') || '[]');
+    let approvedArticles = JSON.parse(localStorage.getItem('katakating_approved_articles') || '[]');
+    if (Array.isArray(approvedArticles)) {
+      approvedArticles = approvedArticles.filter(a => a.ticket_id !== 'SUB-DEMO1' && a.author !== 'Ahmad Fauzi');
+    }
     if (grid && Array.isArray(approvedArticles) && approvedArticles.length > 0) {
       approvedArticles.forEach(item => {
         if (!grid.querySelector(`[data-id="${item.id}"]`)) {
@@ -564,7 +567,10 @@ async function loadRecentlyAdded() {
 
     // Merge approved articles from moderation
     try {
-      const approvedArticles = JSON.parse(localStorage.getItem('katakating_approved_articles') || '[]');
+      let approvedArticles = JSON.parse(localStorage.getItem('katakating_approved_articles') || '[]');
+      if (Array.isArray(approvedArticles)) {
+        approvedArticles = approvedArticles.filter(a => a.ticket_id !== 'SUB-DEMO1' && a.author !== 'Ahmad Fauzi');
+      }
       if (Array.isArray(approvedArticles) && approvedArticles.length > 0) {
         localArticles = [...approvedArticles, ...localArticles];
       }
