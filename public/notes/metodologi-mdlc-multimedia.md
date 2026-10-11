@@ -2,7 +2,7 @@
 id: metodologi-mdlc-multimedia
 title: Penerapan Metodologi MDLC (Luther-Sutopo) pada Skripsi Multimedia
 category: Metodologi Penelitian
-author: Divisi Kemahasiswaan HIMATRA
+author: Tim KataKating
 date: 2026-09-21
 readTime: 6 menit
 tags: ["mdlc", "skripsi", "metodologi", "multimedia", "luther-sutopo", "tugas-akhir"]

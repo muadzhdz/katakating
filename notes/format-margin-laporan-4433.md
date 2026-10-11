@@ -2,7 +2,7 @@
 id: format-margin-laporan-4433
 title: Standar Baku Format Margin Laporan Praktikum & TA (4-4-3-3)
 category: Akademik & Laporan
-author: Divisi Kemahasiswaan HIMATRA
+author: Tim KataKating
 date: 2026-09-21
 readTime: 5 menit
 tags: ["akademik", "laporan", "word", "margin", "skripsi", "boash"]

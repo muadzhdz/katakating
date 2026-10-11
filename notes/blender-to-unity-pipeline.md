@@ -2,7 +2,7 @@
 id: blender-to-unity-pipeline
 title: Pipeline Export Aset 3D Blender ke Unity 2022 LTS (Fix Skala & Rotasi)
 category: Game & Multimedia
-author: Divisi Kemahasiswaan HIMATRA
+author: Tim KataKating
 date: 2026-09-21
 readTime: 5 menit
 tags: ["blender", "unity", "3d", "gamedev", "fbx", "multimedia"]

@@ -64,7 +64,7 @@ const KataKatingAuth = {
           full_name: 'Dewan Redaksi KATAKATING',
           role: 'admin',
           nim: 'REDAKSI-01',
-          prodi: 'Dewan Redaksi HIMATRA'
+          prodi: 'Tim KataKating'
         };
         return true;
       }

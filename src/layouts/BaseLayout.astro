@@ -2,9 +2,7 @@
 // src/layouts/BaseLayout.astro
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import SettingsModal from '../components/SettingsModal.astro';
 import ShareModal from '../components/ShareModal.astro';
-import RequestDrawer from '../components/RequestDrawer.astro';
 
 interface Props {
   title?: string;
@@ -31,13 +29,13 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}
 ---
 
 <!DOCTYPE html>
-<html lang="id" data-theme="vantablack" data-font="sans" data-size="normal">
+<html lang="id" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content={description} />
   <meta name="keywords" content={keywords} />
-  <meta name="author" content="KATAKATING & Mahasiswa Universitas Boash" />
+  <meta name="author" content="Mu'adz Hudzaifah & Tim KataKating" />
   <link rel="canonical" href={canonicalUrl} />
   <meta name="theme-color" content="#090a0d" />
 
@@ -59,40 +57,34 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}
 
   <title>{title}</title>
 
-  <!-- Typography Preconnect & Google Fonts (Omarchy Suite) -->
+  <!-- Typography Preconnect & Google Fonts (Inter + JetBrains Mono) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Plus+Jakarta+Sans:ital,wght@0,400..700;1,400..700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="alternate icon" href="/favicon.ico" />
-  <link rel="stylesheet" href="/style.css?v=3.1" />
+  <link rel="stylesheet" href="/style.css?v=3.2" />
 
-  <!-- Silent Theme & Preferences Bootstrapper (No FOUC) -->
+  <!-- Silent Clean Theme Bootstrapper (No FOUC) -->
   <script is:inline>
     (function() {
       try {
-        var t = localStorage.getItem('katakating_theme') || localStorage.getItem('omarchy_theme') || 'vantablack';
-        var f = localStorage.getItem('katakating_font') || 'sans';
-        var s = localStorage.getItem('katakating_size') || 'normal';
-        
-        document.documentElement.setAttribute('data-theme', t);
-        document.documentElement.setAttribute('data-font', f);
-        document.documentElement.setAttribute('data-size', s);
-        
-        var lightThemes = ['flexoki-light', 'light', 'catppuccin-latte', 'gruvbox-light', 'rose-pine-dawn'];
-        if (lightThemes.indexOf(t) !== -1) {
+        var t = localStorage.getItem('katakating_theme') || 'dark';
+        if (t === 'light') {
           document.documentElement.classList.add('light');
+          document.documentElement.setAttribute('data-theme', 'light');
         } else {
           document.documentElement.classList.remove('light');
+          document.documentElement.setAttribute('data-theme', 'dark');
         }
       } catch (e) {}
     })();
   </script>
 
   <script is:inline src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script is:inline src="/main.js?v=3.0" defer></script>
-  <script is:inline src="/auth.js?v=3.0" defer></script>
+  <script is:inline src="/main.js?v=3.2" defer></script>
+  <script is:inline src="/auth.js?v=3.2" defer></script>
 </head>
 
 <body>
@@ -112,13 +104,7 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}
 
   <Footer />
 
-  <!-- Universal Preferences Modal -->
-  <SettingsModal />
-
   <!-- Social Media & IG Story Share Modal -->
   <ShareModal />
-
-  <!-- Community Tutorial Request Board -->
-  <RequestDrawer />
 </body>
 </html>

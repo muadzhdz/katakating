@@ -2,84 +2,19 @@
 // src/components/Footer.astro
 ---
 
-<footer class="market-footer">
-  <div class="market-footer-inner">
-    <!-- BRAND & STATUS -->
-    <div class="market-footer-brand">
-      <div class="brand-title">
-        <span style="display: inline-block; width: 8px; height: 16px; background: var(--accent); border-radius: 2px;"></span>
-        <span>[>] KATAKATING</span>
-      </div>
-      <p>
-        Portal catatan praktikum mandiri, panduan lab survival, template laporan 4-4-3-3, dan repositori terbuka mahasiswa Universitas Boash.
-      </p>
-
-      <div class="footer-status-pill">
-        <span class="footer-pulse-dot"></span>
-        <span>SEMUA SISTEM AKTIF // FAST SSG</span>
-      </div>
+<footer class="market-footer" id="site-footer">
+  <div class="footer-status">
+    <a class="footer-status-link footer-maintainer" href="/">
+      TIM KATAKATING
+    </a>
+    <div class="footer-status-copy">
+      <span class="footer-wordmark">UNIVERSITAS BOASH</span>
     </div>
-
-    <!-- COLUMN 1: REPOSITORY NAVIGATION -->
-    <div class="market-footer-col">
-      <span class="footer-col-title">// NAVIGASI UTAMA</span>
-      <a href="/#catalog">Semua Catatan</a>
-      <a href="/upload">Unggah Catatan Baru</a>
-      <a href="/graph">Graf Pengetahuan (The Brain)</a>
-      <a href="javascript:void(0)" onclick="window.openRequestDrawer && window.openRequestDrawer()">Request Materi Lab</a>
-      <a href="/profile">Kartu Identitas Mahasiswa</a>
-    </div>
-
-    <!-- COLUMN 2: CAMPUS STANDARDS & LAB GUIDES -->
-    <div class="market-footer-col">
-      <span class="footer-col-title">// STANDAR KAMPUS</span>
-      <a href="/note/format-margin-laporan-4433">Format Margin Laporan 4-4-3-3</a>
-      <a href="/note/setup-wsl2-ubuntu-webdev">Setup WSL2 Ubuntu Webdev</a>
-      <a href="/note/jaringan-routing-vlan-cisco">VLAN &amp; Routing Cisco Packet Tracer</a>
-      <a href="/note/wokwi-esp32-mqtt-hivemq">Simulasi IoT ESP32 &amp; MQTT</a>
-      <a href="/note/panduan-kontribusi">Panduan Kontribusi Penulis</a>
-      <a href="https://github.com/muadzhdz/katakating" target="_blank" rel="noreferrer">
-        Repositori GitHub <span class="ext-arrow">↗</span>
-      </a>
-    </div>
-
-    <!-- COLUMN 3: SHORTCUTS & INTERACTION -->
-    <div class="market-footer-col">
-      <span class="footer-col-title">// SHORTCUT TERMINAL</span>
-      <div class="footer-shortcuts-card">
-        <div class="footer-shortcut-item">
-          <span>Cari Catatan</span>
-          <kbd class="footer-kbd">/</kbd>
-        </div>
-        <div class="footer-shortcut-item">
-          <span>Ganti Tema / Font</span>
-          <kbd class="footer-kbd">T</kbd>
-        </div>
-        <div class="footer-shortcut-item">
-          <span>Request Topik</span>
-          <kbd class="footer-kbd">R</kbd>
-        </div>
-        <div class="footer-shortcut-item">
-          <span>Graf Cockpit</span>
-          <kbd class="footer-kbd">G</kbd>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- FOOTER BOTTOM -->
-  <div class="market-footer-bottom">
-    <div>
-      <span>KATAKATING v3.0 // Dikelola oleh <b>Mu'adz Hudzaifah</b> &amp; Mahasiswa Universitas Boash</span>
-    </div>
-    <div style="display: flex; align-items: center; gap: 16px;">
-      <span>Zero Bloat • Astro Static • Linear Design</span>
-      <button type="button" class="footer-back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" aria-label="Kembali ke atas halaman">
-        <span>Kembali ke Atas</span>
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="18 15 12 9 6 15"></polyline>
-        </svg>
-      </button>
+    <div class="footer-resource-links">
+      <a class="footer-status-link" href="/#catalog">BERANDA <span aria-hidden="true">↗</span></a>
+      <a class="footer-status-link" href="/upload">UPLOAD <span aria-hidden="true">↗</span></a>
+      <a class="footer-status-link" href="/note/panduan-kontribusi">PANDUAN <span aria-hidden="true">↗</span></a>
+      <a class="footer-status-link" href="https://github.com/muadzhdz/katakating" target="_blank" rel="noreferrer">GITHUB <span aria-hidden="true">↗</span></a>
     </div>
   </div>
 </footer>

@@ -34,8 +34,7 @@
   --syntax-string: #a0a0a0;
 
   /* ── Typography ──────────────────────────────────────────────── */
-  /* Linear uses Inter exclusively — no JetBrains */
-  --mono: ui-monospace, "SF Mono", "Cascadia Code", "Fira Code", monospace;
+  --mono: 'JetBrains Mono', ui-monospace, "SF Mono", "Cascadia Code", monospace;
   --sans: "Inter", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
   /* ── Radius — Linear uses subtle rounding (6-8px for cards) ─── */
@@ -1127,8 +1126,8 @@ code, pre, .font-mono {
   outline: 0;
   background: transparent;
   color: var(--text);
-  font-family: inherit;
-  font-size: 14px;
+  font-family: 'JetBrains Mono', var(--mono), monospace;
+  font-size: 13px;
   line-height: normal;
   padding: 0;
   margin: 0;
@@ -1147,6 +1146,8 @@ code, pre, .font-mono {
 
 .market-search input::placeholder {
   color: var(--muted);
+  font-family: 'JetBrains Mono', var(--mono), monospace;
+  font-size: 13px;
 }
 
 .market-search kbd {
@@ -2436,14 +2437,13 @@ pre.code-body {
   color: var(--text);
 }
 
-/* ── COMPREHENSIVE OMARCHY & LINEAR MARKET FOOTER ────────────────── */
+/* ── MINIMALIST STATUS BAR FOOTER ───────────────────────────────── */
 .market-footer {
-  margin-top: 80px;
+  margin-top: auto;
   border-top: 1px solid var(--line-strong);
   background: var(--panel);
   position: relative;
-  overflow: hidden;
-  padding: 56px 24px 28px;
+  padding: 24px 20px;
 }
 
 .market-footer::before {
@@ -2454,210 +2454,78 @@ pre.code-body {
   right: 0;
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--accent), transparent);
-  opacity: 0.25;
+  opacity: 0.15;
 }
 
-.market-footer-inner {
+.footer-status {
   max-width: var(--max-w);
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1.8fr 1fr 1fr 1.2fr;
-  gap: 36px 48px;
-  padding-bottom: 48px;
-  border-bottom: 1px solid var(--line);
-}
-
-.market-footer-brand {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.market-footer-brand .brand-title {
-  font-family: var(--mono);
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--heading);
-  letter-spacing: 0.05em;
   display: flex;
   align-items: center;
-  gap: 8px;
-}
-
-.market-footer-brand p {
-  font-size: 13px;
-  color: var(--muted);
-  line-height: 1.6;
-  max-width: 340px;
-  margin: 0;
-}
-
-.footer-status-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--panel-2);
-  border: 1px solid var(--line);
-  padding: 5px 12px;
-  border-radius: var(--radius-full);
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
   font-family: var(--mono);
   font-size: 11px;
-  color: var(--text);
-  width: fit-content;
-  margin-top: 6px;
+  box-sizing: border-box;
 }
 
-.footer-pulse-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #22c55e;
-  box-shadow: 0 0 8px #22c55e;
-  animation: pulseStatus 2s infinite ease-in-out;
-}
-
-@keyframes pulseStatus {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.85); }
-}
-
-.market-footer-col {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.footer-col-title {
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--heading);
-  margin-bottom: 6px;
-}
-
-.market-footer-col a {
-  font-size: 13px;
+.footer-status-link {
   color: var(--muted);
   text-decoration: none;
-  transition: all var(--t-fast) var(--ease-out);
-  width: fit-content;
+  letter-spacing: 0.05em;
+  transition: color var(--t-fast) var(--ease-out);
   display: inline-flex;
   align-items: center;
   gap: 4px;
 }
 
-.market-footer-col a:hover {
+.footer-status-link:hover {
   color: var(--accent);
-  transform: translateX(2px);
 }
 
-.market-footer-col a .ext-arrow {
-  font-family: var(--mono);
-  font-size: 10px;
-  color: var(--faint);
-}
-
-.footer-shortcuts-card {
-  background: var(--panel-2);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 14px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.footer-shortcut-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-family: var(--mono);
-  font-size: 11.5px;
-  color: var(--muted);
-}
-
-.footer-kbd {
-  background: var(--bg);
-  border: 1px solid var(--line-strong);
-  border-radius: 4px;
-  padding: 2px 6px;
-  font-size: 10.5px;
-  font-weight: 600;
+.footer-maintainer {
+  font-weight: 700;
   color: var(--heading);
-}
-
-.market-footer-bottom {
-  max-width: var(--max-w);
-  margin: 0 auto;
-  padding-top: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 14px;
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--muted);
-}
-
-.market-footer-bottom a {
-  color: var(--muted);
-  text-decoration: none;
+  letter-spacing: 0.08em;
   transition: color var(--t-fast) var(--ease-out);
 }
 
-.market-footer-bottom a:hover {
+.footer-maintainer:hover {
   color: var(--accent);
 }
 
-.footer-back-to-top {
-  background: var(--panel-2);
-  border: 1px solid var(--line);
-  color: var(--muted);
-  border-radius: var(--radius);
-  padding: 6px 12px;
-  font-family: var(--mono);
-  font-size: 11px;
-  cursor: pointer;
-  display: inline-flex;
+.footer-status-copy {
+  display: flex;
   align-items: center;
-  gap: 6px;
-  transition: all var(--t-fast) var(--ease-out);
+  gap: 8px;
 }
 
-.footer-back-to-top:hover {
-  color: var(--accent);
-  border-color: var(--line-strong);
-  background: var(--panel);
+.footer-wordmark {
+  color: var(--muted);
+  font-weight: 600;
+  letter-spacing: 0.08em;
 }
 
-@media (max-width: 900px) {
-  .market-footer-inner {
-    grid-template-columns: 1fr 1fr;
-    gap: 32px;
-  }
-  .market-footer-brand {
-    grid-column: span 2;
-  }
+.footer-resource-links {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .market-footer {
-    padding: 36px 16px 20px;
+    padding: 20px 16px;
   }
-  .market-footer-inner {
-    grid-template-columns: 1fr;
-    gap: 28px;
-  }
-  .market-footer-brand {
-    grid-column: span 1;
-  }
-  .market-footer-bottom {
+  .footer-status {
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
+    gap: 14px;
+  }
+  .footer-resource-links {
+    gap: 14px;
+    width: 100%;
   }
 }
 
@@ -2787,7 +2655,8 @@ pre.code-body {
   }
   .market-search input {
     height: 100%;
-    font-size: 14px;
+    font-family: 'JetBrains Mono', var(--mono), monospace;
+    font-size: 13px;
     line-height: normal;
   }
   .market-search kbd {

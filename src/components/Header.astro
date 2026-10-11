@@ -19,10 +19,6 @@ const { currentPath = '/' } = Astro.props;
       <div class="market-nav-links">
         <a class={currentPath === '/' ? 'active nav-link-main' : 'nav-link-main'} href="/#catalog" aria-label="Semua Catatan">Semua Catatan</a>
         <a class={currentPath === '/upload' ? 'active nav-link-upload' : 'nav-link-upload'} href="/upload" aria-label="Upload Catatan">Upload</a>
-        <button type="button" class="nav-link-request" id="header-open-request-btn" aria-label="Minta Materi">
-          <span>Minta Materi</span>
-          <span style="font-family: var(--mono); font-size: 10px; background: var(--accent-dim); color: var(--accent); padding: 1px 5px; border-radius: 4px; border: 1px solid var(--line);">REQ</span>
-        </button>
         <a class={currentPath.includes('/note/panduan-kontribusi') ? 'active nav-link-panduan' : 'nav-link-panduan'} href="/note/panduan-kontribusi" aria-label="Panduan Kontribusi">Panduan</a>
         <a class={currentPath === '/graph' ? 'active market-icon-link' : 'market-icon-link'} href="/graph" title="Graf Pengetahuan (The Brain)" aria-label="Graf Pengetahuan (The Brain)">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><path d="M12 8v4"/><path d="m7.5 16.5 2.5-3.5"/><path d="m16.5 16.5-2.5-3.5"/></svg>
@@ -36,17 +32,8 @@ const { currentPath = '/' } = Astro.props;
       <div class="market-nav-actions">
         <div id="auth-nav-container" class="auth-nav-slot"></div>
         
-        <!-- Settings / Theme Center Button -->
-        <button class="square-action" id="settings-toggle-btn" type="button" aria-label="Pengaturan Tampilan (Tema &amp; Font)" title="Pengaturan Tampilan (Tema &amp; Font)">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="3"></circle>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-          </svg>
-        </button>
-
-        <!-- Quick Theme Toggle Button (Silent) -->
-        <button class="square-action" id="theme-toggle" type="button" aria-label="Ganti Tema Cepat" title="Ganti Mode Terang/Gelap">
-          <!-- Injected by main.js updateThemeIcon -->
+        <!-- Clean Theme Toggle (Silent) -->
+        <button class="square-action" id="theme-toggle" type="button" aria-label="Ganti Mode Gelap/Terang" title="Ganti Mode Gelap/Terang">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
           </svg>
@@ -70,7 +57,7 @@ const { currentPath = '/' } = Astro.props;
   <!-- COLLAPSIBLE MOBILE NAV PANEL -->
   <div class="mobile-nav-panel" id="mobile-nav-panel" hidden>
     <div class="mobile-nav-inner">
-      <div class="mobile-nav-section-title">// NAVIGASI UTAMA</div>
+      <div class="mobile-nav-section-title">// NAVIGASI REPOSITORI</div>
       <a href="/#catalog" class="mobile-nav-item">
         <span class="mobile-nav-num">[01]</span>
         <span class="mobile-nav-label">Semua Catatan</span>
@@ -79,22 +66,14 @@ const { currentPath = '/' } = Astro.props;
         <span class="mobile-nav-num">[02]</span>
         <span class="mobile-nav-label">Upload Catatan</span>
       </a>
-      <button type="button" class="mobile-nav-item" id="mobile-open-request-btn" style="background: none; border: none; width: 100%; text-align: left; cursor: pointer;">
-        <span class="mobile-nav-num">[03]</span>
-        <span class="mobile-nav-label">Minta Materi (Wishlist)</span>
-      </button>
       <a href="/note/panduan-kontribusi" class="mobile-nav-item">
-        <span class="mobile-nav-num">[04]</span>
+        <span class="mobile-nav-num">[03]</span>
         <span class="mobile-nav-label">Panduan Kontribusi</span>
       </a>
       <a href="/graph" class="mobile-nav-item">
-        <span class="mobile-nav-num">[05]</span>
+        <span class="mobile-nav-num">[04]</span>
         <span class="mobile-nav-label">Graf Pengetahuan (The Brain)</span>
       </a>
-      <button type="button" class="mobile-nav-item" id="mobile-open-settings-btn" style="background: none; border: none; width: 100%; text-align: left; cursor: pointer;">
-        <span class="mobile-nav-num">[06]</span>
-        <span class="mobile-nav-label">Pengaturan Tampilan (Tema &amp; Huruf)</span>
-      </button>
       <div class="mobile-nav-divider"></div>
       <div class="mobile-nav-section-title">// TAUTAN EKSTERNAL</div>
       <a href="https://github.com/muadzhdz/katakating" target="_blank" rel="noreferrer" class="mobile-nav-item mobile-nav-ext">
@@ -105,47 +84,3 @@ const { currentPath = '/' } = Astro.props;
     </div>
   </div>
 </header>
-
-<style>
-.nav-link-request {
-  background: transparent;
-  border: none;
-  color: var(--text);
-  font-size: 13px;
-  font-weight: 500;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  padding: 6px 10px;
-  border-radius: var(--radius);
-  transition: all var(--t-fast) var(--ease-out);
-}
-.nav-link-request:hover {
-  background: var(--line-soft);
-  color: var(--heading);
-}
-</style>
-
-<script is:inline>
-(function() {
-  const reqBtn = document.getElementById('header-open-request-btn');
-  const mobReqBtn = document.getElementById('mobile-open-request-btn');
-  const settingsBtn = document.getElementById('settings-toggle-btn');
-  const mobSettingsBtn = document.getElementById('mobile-open-settings-btn');
-
-  if (reqBtn) reqBtn.addEventListener('click', () => { if (window.openRequestDrawer) window.openRequestDrawer(); });
-  if (mobReqBtn) mobReqBtn.addEventListener('click', () => { 
-    const p = document.getElementById('mobile-nav-panel');
-    if (p) p.hidden = true;
-    if (window.openRequestDrawer) window.openRequestDrawer(); 
-  });
-
-  if (settingsBtn) settingsBtn.addEventListener('click', () => { if (window.openSettingsModal) window.openSettingsModal(); });
-  if (mobSettingsBtn) mobSettingsBtn.addEventListener('click', () => {
-    const p = document.getElementById('mobile-nav-panel');
-    if (p) p.hidden = true;
-    if (window.openSettingsModal) window.openSettingsModal();
-  });
-})();
-</script>

@@ -94,7 +94,7 @@ npm run build
 
 ## Tim Pengembang (Proyek Multimedia TRM 2026/2027)
 
-- **Mu'adz Hudzaifah (NPM: 24903460014):** Lead Systems Architect & Fullstack Developer / Ketua Divisi Kemahasiswaan HIMATRA.
+- **Mu'adz Hudzaifah (NPM: 24903460014):** Lead Systems Architect & Fullstack Developer.
 - **Ardi Haryanto (NPM: 24903460043):** UI/UX & Interactive Media Designer.
 - **Muhammad Bariq (NPM: 24903460055):** Multimedia Content Producer & Video Editor.
 - **Dosen Pengampu & Pembimbing:** Khadijah, S.Kom., M.Kom.

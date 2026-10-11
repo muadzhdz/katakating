@@ -2,7 +2,7 @@
 id: basis-data-relasional-normalisasi
 title: Panduan Praktis Normalisasi Basis Data (1NF, 2NF, 3NF)
 category: Basis Data
-author: Divisi Kemahasiswaan HIMATRA
+author: Tim KataKating
 date: 2026-09-21
 readTime: 6 menit
 tags: ["database", "sql", "normalisasi", "mysql", "basis-data"]

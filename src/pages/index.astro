@@ -43,11 +43,8 @@ const categories = [
       <p>
         Dokumentasi praktikum teruji, rangkuman mata kuliah, dan panduan belajar bersama mahasiswa Universitas Boash. Dibangun dan dikurasi secara terbuka tanpa bloat.
       </p>
-      <div class="market-hero-actions" style="display: flex; gap: 10px; flex-wrap: wrap;">
+      <div class="market-hero-actions">
         <a class="button market-primary" href="#catalog">Jelajahi Catatan <span aria-hidden="true">&rarr;</span></a>
-        <button type="button" class="button" id="hero-req-btn" style="background: var(--panel); border: 1px solid var(--line); color: var(--heading);">
-          Minta Materi Baru ↗
-        </button>
       </div>
     </div>
   </section>
@@ -78,17 +75,6 @@ const categories = [
         <h2 id="catalog-title">jelajahi semua catatan</h2>
       </div>
       <div class="catalog-heading-side">
-        <!-- Desktop View Mode Switcher ala plugins.omarchy.org -->
-        <div class="catalog-view-mode" role="group" aria-label="Mode Tampilan Katalog">
-          <button type="button" class="view-mode-btn active" id="view-mode-cards" data-view="cards" aria-pressed="true">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="7" x="3" y="3" rx="1"></rect><rect width="7" height="7" x="14" y="3" rx="1"></rect><rect width="7" height="7" x="14" y="14" rx="1"></rect><rect width="7" height="7" x="3" y="14" rx="1"></rect></svg>
-            Cards
-          </button>
-          <button type="button" class="view-mode-btn" id="view-mode-compact" data-view="compact" aria-pressed="false">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" x2="21" y1="6" y2="6"></line><line x1="3" x2="21" y1="12" y2="12"></line><line x1="3" x2="21" y1="18" y2="18"></line></svg>
-            Ringkas
-          </button>
-        </div>
         <p><span id="plugin-count">{notes.length}</span> <span id="plugin-count-label">catatan praktikum</span></p>
       </div>
     </div>
@@ -102,7 +88,6 @@ const categories = [
         <button type="button" id="search-clear-btn" class="search-clear-btn" aria-label="Hapus pencarian" hidden>
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
-        <kbd id="search-shortcut">/</kbd>
       </div>
 
       <div class="sort-control cyber-select-wrap" id="sort-select-wrap">
@@ -211,30 +196,7 @@ const categories = [
   initCardSlider('recent-grid', 'recentDots', '.plugin-card');
   initCardSlider('plugin-grid', 'catalogDots', '.plugin-card');
 
-  // ── 2. Desktop View Mode Switcher (Cards vs Compact Table) ──
-  const btnCards = document.getElementById('view-mode-cards');
-  const btnCompact = document.getElementById('view-mode-compact');
-  const pluginGrid = document.getElementById('plugin-grid');
-
-  if (btnCards && btnCompact && pluginGrid) {
-    btnCards.addEventListener('click', () => {
-      btnCards.classList.add('active');
-      btnCards.setAttribute('aria-pressed', 'true');
-      btnCompact.classList.remove('active');
-      btnCompact.setAttribute('aria-pressed', 'false');
-      pluginGrid.classList.remove('view-compact');
-    });
-
-    btnCompact.addEventListener('click', () => {
-      btnCompact.classList.add('active');
-      btnCompact.setAttribute('aria-pressed', 'true');
-      btnCards.classList.remove('active');
-      btnCards.setAttribute('aria-pressed', 'false');
-      pluginGrid.classList.add('view-compact');
-    });
-  }
-
-  // ── 3. Share Button Event Delegation ──
+  // ── 2. Share Button Event Delegation ──
   document.addEventListener('click', (e) => {
     const shareBtn = e.target.closest('.card-btn-share');
     if (!shareBtn) return;
@@ -263,13 +225,5 @@ const categories = [
       }
     }
   });
-
-  // Hero Request CTA button
-  const heroReqBtn = document.getElementById('hero-req-btn');
-  if (heroReqBtn) {
-    heroReqBtn.addEventListener('click', () => {
-      if (window.openRequestDrawer) window.openRequestDrawer();
-    });
-  }
 })();
 </script>
