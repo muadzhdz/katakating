@@ -67,19 +67,21 @@ const noteUrl = `/note/${note.id}`;
 
     <p class="plugin-card-desc">{note.summary}</p>
 
-    <div class="plugin-card-badges">
-      <span class="badge-tag-new">TERUJI</span>
-      <span class="badge-tag-verified">Verified</span>
-    </div>
+    {note.tags && note.tags.length > 0 && (
+      <div class="plugin-card-tags">
+        {note.tags.slice(0, 3).map((tag) => (
+          <span class="card-tag">{tag}</span>
+        ))}
+      </div>
+    )}
   </div>
 
   <div class="plugin-card-bottom">
-    <div class="card-bottom-tags">
-      {note.tags.slice(0, 3).map((tag) => (
-        <span class="card-tag">{tag}</span>
-      ))}
-    </div>
-    <div class="card-bottom-stats">
+    <div class="card-bottom-left">
+      <span class="card-stat-group" title="Waktu baca">
+        <span class="card-read-time">{note.readTime}</span>
+      </span>
+      <span class="card-stat-sep">&bull;</span>
       <span class="card-stat-group" title="Jumlah pembaca">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
@@ -87,10 +89,10 @@ const noteUrl = `/note/${note.id}`;
         </svg>
         <span class="card-views-count" data-id={note.id}>0</span>
       </span>
-      <span class="card-stat-group" title="Waktu baca">
-        <span class="card-read-time">{note.readTime}</span>
-      </span>
+    </div>
+    <div class="card-bottom-stats">
       <a href={noteUrl} class="card-read-action" title="Buka Catatan" aria-label="Buka Catatan">
+        <span>Buka</span>
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <line x1="7" y1="17" x2="17" y2="7"></line>
           <polyline points="7 7 17 7 17 17"></polyline>

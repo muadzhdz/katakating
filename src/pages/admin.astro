@@ -4,42 +4,29 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout
-  title="Panel Moderasi Admin — KATAKATING"
+  title="Panel Moderasi"
   description="Panel kurasi dan moderasi naskah catatan praktikum mahasiswa Universitas Boash."
   currentPath="/admin"
 >
   <main class="write-layout">
 
   <!-- ADMIN AUTH GATE (TAMPIL JIKA BELUM LOGIN ADMIN) -->
-  <div id="admin-login-gate" style="display: none; max-width: 440px; margin: 60px auto 100px; padding: 32px 28px; background: var(--panel); border: 1px solid var(--line-strong); border-radius: 6px; box-shadow: 0 12px 36px rgba(0,0,0,0.45);">
-    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
-      <span class="admin-header-badge">RESTRICTED ACCESS</span>
-      <span style="font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.05em;">ADMIN ONLY</span>
-    </div>
-    <h2 style="font-size: 20px; font-weight: 700; color: var(--heading); margin: 0 0 8px; letter-spacing: -0.01em;">
+  <div id="admin-login-gate" style="display: none; max-width: 400px; margin: 60px auto 100px; padding: 32px 28px; background: var(--panel); border: 1px solid var(--line-strong); border-radius: var(--radius); box-shadow: 0 12px 36px rgba(0,0,0,0.45);">
+    <h2 style="font-size: 18px; font-weight: 700; color: var(--heading); margin: 0 0 20px; letter-spacing: -0.01em; text-align: center;">
       Autentikasi Administrator
     </h2>
-    <p style="font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 24px;">
-      Halaman ini dikhususkan bagi administrator KATAKATING untuk memoderasi naskah yang diajukan oleh mahasiswa.
-    </p>
 
-    <form id="admin-gate-form" onsubmit="return false;" style="display: flex; flex-direction: column; gap: 14px;">
-      <div style="text-align: left;">
-        <label for="gate-admin-email" style="display: block; font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 6px; text-transform: uppercase;">
-          Email / Username Admin:
-        </label>
-        <input type="text" id="gate-admin-email" class="form-input" placeholder="Masukkan email atau username" style="width: 100%; font-size: 13px; padding: 8px 12px; font-family: var(--mono);" required autocomplete="username">
+    <form id="admin-gate-form" onsubmit="return false;" style="display: flex; flex-direction: column; gap: 12px;">
+      <div>
+        <input type="text" id="gate-admin-email" class="form-input" placeholder="Email" style="width: 100%; font-size: 13px; padding: 10px 14px; font-family: var(--mono);" required autocomplete="username">
       </div>
-      <div style="text-align: left;">
-        <label for="gate-admin-pass" style="display: block; font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 6px; text-transform: uppercase;">
-          Kata Sandi Admin:
-        </label>
-        <input type="password" id="gate-admin-pass" class="form-input" placeholder="Masukkan kata sandi..." style="width: 100%; font-size: 13px; padding: 8px 12px;" required autocomplete="current-password">
+      <div>
+        <input type="password" id="gate-admin-pass" class="form-input" placeholder="Kata Sandi" style="width: 100%; font-size: 13px; padding: 10px 14px;" required autocomplete="current-password">
       </div>
-      <button type="submit" id="btn-gate-login" class="button market-primary" style="width: 100%; justify-content: center; min-height: 38px; font-weight: 700; margin-top: 6px;">
-        Masuk sebagai Admin
+      <button type="submit" id="btn-gate-login" class="button market-primary" style="width: 100%; justify-content: center; min-height: 40px; font-size: 13px; font-weight: 700; margin-top: 4px;">
+        MASUK &rarr;
       </button>
-      <div id="gate-error-msg" style="display: none; font-family: var(--mono); font-size: 12px; color: #ef4444; padding: 8px 10px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 4px; text-align: center;"></div>
+      <div id="gate-error-msg" style="display: none; font-family: var(--mono); font-size: 12px; color: #ef4444; padding: 8px 10px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: var(--radius); text-align: center;"></div>
     </form>
   </div>
 
@@ -48,24 +35,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <!-- DASHBOARD TOP HEADER -->
     <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; margin-bottom: 28px;">
       <div>
-        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
-          <span class="admin-header-badge">INTERNAL ADMIN</span>
-          <span style="font-family: var(--mono); font-size: 12px; color: var(--muted);">KATAKATING NOTES DESK</span>
+        <div style="margin-bottom: 6px;">
+          <span style="font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--accent); letter-spacing: 0.08em;">// PANEL MODERASI</span>
         </div>
         <h1 style="font-size: 24px; font-weight: 700; color: var(--heading); margin: 0; letter-spacing: -0.02em;">
-          Panel Moderasi Catatan Mahasiswa
+          Moderasi Catatan Mahasiswa
         </h1>
         <p style="font-size: 13px; color: var(--muted); margin-top: 4px; max-width: 680px;">
-          Periksa orisinalitas, validitas format, dan kualitas naskah catatan praktikum serta rangkuman sebelum dipublikasikan ke portal publik KATAKATING.
+          Kurasi dan validasi naskah catatan praktikum sebelum dipublikasikan ke katalog publik.
         </p>
       </div>
       <div style="display: flex; gap: 10px; align-items: center;">
         <button type="button" class="button" id="btn-sync-queue">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
           Sinkronkan Antrean
-        </button>
-        <button type="button" class="button" id="btn-admin-logout" style="border-color: rgba(239, 68, 68, 0.4); color: #ef4444;" title="Keluar dari sesi admin">
-          Keluar Admin
         </button>
       </div>
     </div>
@@ -131,7 +114,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </main>
   <!-- REVIEW & DETAIL MODAL -->
 <div id="review-modal" class="modal-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000; align-items: center; justify-content: center; padding: 20px;">
-  <div style="background: var(--panel); border: 1px solid var(--line-strong); max-width: 760px; width: 100%; max-height: 90vh; display: flex; flex-direction: column; border-radius: 6px; box-shadow: 0 10px 40px rgba(0,0,0,0.8);">
+  <div style="background: var(--panel); border: 1px solid var(--line-strong); max-width: 760px; width: 100%; max-height: 90vh; display: flex; flex-direction: column; border-radius: var(--radius); box-shadow: 0 10px 40px rgba(0,0,0,0.8);">
     
     <!-- Modal Header -->
     <div style="padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center;">
@@ -142,13 +125,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </div>
         <h3 id="modal-sub-title" style="font-size: 16px; font-weight: 600; color: var(--heading); margin-top: 6px;">Judul Dokumen</h3>
       </div>
-      <button type="button" id="modal-close-x" class="button" style="padding: 4px 8px; font-size: 12px;">✕</button>
+      <button type="button" id="modal-close-x" class="button" style="padding: 4px 8px; font-size: 12px;">&times;</button>
     </div>
 
     <!-- Modal Scrollable Body -->
     <div style="padding: 20px; overflow-y: auto; flex: 1;">
       <!-- Author & Metadata Row -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; padding: 12px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 4px; margin-bottom: 16px; font-size: 12px;">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; padding: 12px; background: var(--panel-2); border: 1px solid var(--line); border-radius: var(--radius); margin-bottom: 16px; font-size: 12px;">
         <div>
           <span style="color: var(--muted); display: block;">Penulis</span>
           <strong id="modal-sub-author" style="color: var(--heading);">-</strong>
@@ -174,7 +157,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <!-- Ringkasan / Abstrak -->
       <div style="margin-bottom: 16px;">
         <span style="font-family: var(--mono); font-size: 11px; text-transform: uppercase; color: var(--muted); letter-spacing: .05em;">Ringkasan / Abstrak:</span>
-        <p id="modal-sub-summary" style="font-size: 13px; color: var(--text); background: var(--panel-2); padding: 10px 12px; border: 1px solid var(--line); border-radius: 3px; margin-top: 6px;">-</p>
+        <p id="modal-sub-summary" style="font-size: 13px; color: var(--text); background: var(--panel-2); padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--radius); margin-top: 6px;">-</p>
       </div>
 
       <!-- Ekstrak Dokumen -->
@@ -217,7 +200,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <!-- CYBER CONFIRM DELETE MODAL -->
 <div id="delete-confirm-modal" class="modal-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1100; align-items: center; justify-content: center; padding: 20px;">
-  <div style="background: var(--panel); border: 1px solid rgba(239, 68, 68, 0.45); max-width: 480px; width: 100%; border-radius: 6px; box-shadow: 0 10px 40px rgba(0,0,0,0.9); overflow: hidden;">
+  <div style="background: var(--panel); border: 1px solid rgba(239, 68, 68, 0.45); max-width: 480px; width: 100%; border-radius: var(--radius); box-shadow: 0 10px 40px rgba(0,0,0,0.9); overflow: hidden;">
     <!-- Header -->
     <div style="padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; background: rgba(239, 68, 68, 0.08);">
       <div style="display: flex; align-items: center; gap: 10px;">
@@ -228,14 +211,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           PERINGATAN SISTEM // HAPUS TIKET
         </span>
       </div>
-      <button type="button" id="btn-cancel-delete-x" class="button" style="padding: 2px 6px; font-size: 11px;">✕</button>
+      <button type="button" id="btn-cancel-delete-x" class="button" style="padding: 2px 6px; font-size: 11px;">&times;</button>
     </div>
     <!-- Body -->
     <div style="padding: 20px;">
       <p style="font-size: 13px; color: var(--text); line-height: 1.6; margin-bottom: 14px;">
         Apakah Anda yakin ingin menghapus tiket antrean ini secara permanen? Jika naskah telah dipublikasikan di katalog publik, arsip publikasinya juga akan ditarik.
       </p>
-      <div style="background: var(--panel-2); border: 1px solid var(--line); padding: 12px; border-radius: 4px; font-family: var(--mono); font-size: 12px;">
+      <div style="background: var(--panel-2); border: 1px solid var(--line); padding: 12px; border-radius: var(--radius); font-family: var(--mono); font-size: 12px;">
         <div style="color: var(--muted); font-size: 10px; text-transform: uppercase; margin-bottom: 4px;">Tiket Terpilih</div>
         <div style="color: var(--heading); font-weight: 600; line-height: 1.4;" id="delete-ticket-title">-</div>
         <div style="color: #ef4444; font-size: 11px; margin-top: 6px; font-weight: 700;" id="delete-ticket-id">SUB-XXXX</div>
@@ -255,7 +238,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <!-- CYBER REJECT REASON MODAL -->
 <div id="reject-reason-modal" class="modal-overlay" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1100; align-items: center; justify-content: center; padding: 20px;">
-  <div style="background: var(--panel); border: 1px solid rgba(239, 68, 68, 0.45); max-width: 540px; width: 100%; border-radius: 6px; box-shadow: 0 10px 40px rgba(0,0,0,0.9); overflow: hidden;">
+  <div style="background: var(--panel); border: 1px solid rgba(239, 68, 68, 0.45); max-width: 540px; width: 100%; border-radius: var(--radius); box-shadow: 0 10px 40px rgba(0,0,0,0.9); overflow: hidden;">
     <!-- Header -->
     <div style="padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; background: rgba(239, 68, 68, 0.08);">
       <div style="display: flex; align-items: center; gap: 10px;">
@@ -266,11 +249,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           TOLAK NASKAH // FORMULIR EVALUASI
         </span>
       </div>
-      <button type="button" id="btn-cancel-reject-x" class="button" style="padding: 2px 6px; font-size: 11px;">✕</button>
+      <button type="button" id="btn-cancel-reject-x" class="button" style="padding: 2px 6px; font-size: 11px;">&times;</button>
     </div>
     <!-- Body -->
     <div style="padding: 20px;">
-      <div style="background: var(--panel-2); border: 1px solid var(--line); padding: 10px 12px; border-radius: 4px; margin-bottom: 16px; font-size: 12px;">
+      <div style="background: var(--panel-2); border: 1px solid var(--line); padding: 10px 12px; border-radius: var(--radius); margin-bottom: 16px; font-size: 12px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
           <span style="color: var(--muted); font-size: 10px; font-family: var(--mono); text-transform: uppercase;">Naskah Terpilih</span>
           <span style="color: #ef4444; font-family: var(--mono); font-size: 11px; font-weight: 700;" id="reject-ticket-id">SUB-XXXX</span>
@@ -338,7 +321,7 @@ function formatDate(isoStr) {
 
 // 1. Load submissions from LocalStorage and Supabase
 async function loadSubmissions() {
-  const localList = JSON.parse(localStorage.getItem('katakating_submissions') || '[]');
+  let localList = JSON.parse(localStorage.getItem('katakating_submissions') || '[]');
   let remoteList = [];
 
   try {
@@ -829,9 +812,11 @@ if (gateForm) {
 
 const btnAdminLogout = document.getElementById('btn-admin-logout');
 if (btnAdminLogout) {
-  btnAdminLogout.addEventListener('click', async () => {
-    if (typeof KataKatingAuth !== 'undefined' && typeof KataKatingAuth.signOut === 'function') {
-      await KataKatingAuth.signOut();
+  btnAdminLogout.addEventListener('click', () => {
+    if (typeof KataKatingAuth !== 'undefined' && typeof KataKatingAuth.openLogoutModal === 'function') {
+      KataKatingAuth.openLogoutModal();
+    } else if (typeof KataKatingAuth !== 'undefined' && typeof KataKatingAuth.signOut === 'function') {
+      KataKatingAuth.signOut();
     } else {
       localStorage.removeItem('katakating_admin_session');
       checkAdminAuth();

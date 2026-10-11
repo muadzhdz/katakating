@@ -50,21 +50,25 @@ const KataKatingAuth = {
     try {
       const adminSess = JSON.parse(localStorage.getItem('katakating_admin_session') || 'null');
       if (adminSess && adminSess.email === 'katakating@gmail.com') {
+        if (adminSess.full_name && adminSess.full_name.includes('Dewan Redaksi')) {
+          adminSess.full_name = 'Admin KataKating';
+          try { localStorage.setItem('katakating_admin_session', JSON.stringify(adminSess)); } catch (e) {}
+        }
         this.user = {
           id: 'admin-katakating',
           email: 'katakating@gmail.com',
           user_metadata: {
-            full_name: 'Dewan Redaksi KATAKATING',
+            full_name: 'Admin KataKating',
             role: 'admin'
           }
         };
         this.profile = {
           id: 'admin-katakating',
           email: 'katakating@gmail.com',
-          full_name: 'Dewan Redaksi KATAKATING',
+          full_name: 'Admin KataKating',
           role: 'admin',
-          nim: 'REDAKSI-01',
-          prodi: 'Tim KataKating'
+          nim: 'ADMIN-01',
+          prodi: 'Pengelola KataKating'
         };
         return true;
       }
@@ -197,6 +201,12 @@ const KataKatingAuth = {
       const ghUser = meta.user_name || this.user.identities?.find(i => i.provider === 'github')?.identity_data?.user_name || '';
 
       if (data) {
+        if (data.email === 'katakating@gmail.com' || (data.full_name && data.full_name.includes('Dewan'))) {
+          data.full_name = 'Admin KataKating';
+          if (sbClient) {
+            sbClient.from('profiles').update({ full_name: 'Admin KataKating' }).eq('id', this.user.id).then(() => {});
+          }
+        }
         this.profile = data;
         let needsUpdate = false;
         const updates = {};
@@ -222,7 +232,7 @@ const KataKatingAuth = {
         const newProf = {
           id: this.user.id,
           email: this.user.email,
-          full_name: fullName,
+          full_name: this.user.email === 'katakating@gmail.com' ? 'Admin KataKating' : fullName,
           avatar_url: detectedAvatar,
           github_username: ghUser
         };
@@ -246,13 +256,17 @@ const KataKatingAuth = {
       this.user.id === 'admin-katakating'
     );
 
-    const name = (this.profile && this.profile.full_name) ||
+    let name = (this.profile && this.profile.full_name) ||
                  (this.user && (this.user.user_metadata?.full_name || this.user.user_metadata?.name || this.user.email.split('@')[0])) ||
                  '';
+    if (isAdmin || name.includes('Dewan')) {
+      name = 'Admin KataKating';
+    }
     const avatar = (this.profile && this.profile.avatar_url) ||
                    (this.user && (this.user.user_metadata?.avatar_url || this.user.user_metadata?.picture)) ||
                    '';
-    const initial = (name.charAt(0) || (this.user && this.user.email ? this.user.email.charAt(0) : 'U')).toUpperCase();
+    const initial = isAdmin ? 'A' : (name.charAt(0) || (this.user && this.user.email ? this.user.email.charAt(0) : 'U')).toUpperCase();
+    const shortName = isAdmin ? 'Admin' : (name.split(' ')[0] || 'User');
 
     // Idempotency fingerprint prevents destroying DOM when state has not changed (eliminates flicker)
     const renderKey = this.user
@@ -265,8 +279,7 @@ const KataKatingAuth = {
     container.dataset.renderedKey = renderKey;
 
     if (this.user) {
-      const profileUrl = isAdmin ? 'admin-profile.html' : 'profile.html';
-      const shortName = name.split(' ')[0] || 'User';
+      const profileUrl = isAdmin ? '/admin-profile' : '/profile';
 
       container.innerHTML = `
         <div class="auth-user-dropdown-wrap">
@@ -279,17 +292,48 @@ const KataKatingAuth = {
           </button>
           <div class="auth-dropdown-menu" id="auth-dropdown-menu" hidden>
             <div class="auth-dropdown-header">
-              <strong>${name}</strong>
-              <span>${this.user.email}</span>
+              <div class="auth-dropdown-role ${isAdmin ? 'role-admin' : 'role-user'}">
+                ${isAdmin ? '// ADMIN KATAKATING' : '// MAHASISWA BOASH'}
+              </div>
+              <strong class="auth-dropdown-name">${name}</strong>
+              <span class="auth-dropdown-email">${this.user.email}</span>
             </div>
-            <hr class="auth-dropdown-divider">
-            <a href="upload.html" class="auth-dropdown-item">Upload Catatan</a>
-            <a href="${profileUrl}" class="auth-dropdown-item">Profil Saya</a>
-            <hr class="auth-dropdown-divider">
-            <button type="button" class="auth-dropdown-item auth-logout-btn" id="btn-auth-logout">Keluar (Logout)</button>
+            <div class="auth-dropdown-divider"></div>
+            ${isAdmin ? `
+              <a href="/admin" class="auth-dropdown-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <span>Panel Moderasi</span>
+              </a>
+              <a href="/admin-profile" class="auth-dropdown-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span>Profil Saya</span>
+              </a>
+              <a href="/upload" class="auth-dropdown-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <span>Upload Catatan</span>
+              </a>
+            ` : `
+              <a href="/profile" class="auth-dropdown-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span>Profil & Arsip Saya</span>
+              </a>
+              <a href="/upload" class="auth-dropdown-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <span>Upload Catatan</span>
+              </a>
+            `}
+            <div class="auth-dropdown-divider"></div>
+            <button type="button" class="auth-dropdown-item auth-logout-btn" id="btn-auth-logout">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              <span>Keluar</span>
+            </button>
           </div>
         </div>
       `;
+
+      // Check current route for active admin highlight
+      const p = window.location.pathname;
+      const isAdminRoute = p === '/admin' || p === '/admin/' || p.endsWith('/admin.html') || p.endsWith('admin.html') || p === '/admin-profile' || p === '/admin-profile/' || p.endsWith('admin-profile.html');
 
       // Inject Panel Admin link into desktop nav if admin
       const navLinks = document.querySelector('.market-nav-links');
@@ -298,10 +342,10 @@ const KataKatingAuth = {
         if (isAdmin && !existing) {
           const adminLink = document.createElement('a');
           adminLink.id = 'nav-admin-link';
-          adminLink.href = 'admin.html';
+          adminLink.href = '/admin';
           adminLink.setAttribute('aria-label', 'Panel Admin');
           adminLink.textContent = 'Panel Admin';
-          if (window.location.pathname.endsWith('admin.html') || window.location.pathname.endsWith('admin-profile.html')) {
+          if (isAdminRoute) {
             adminLink.classList.add('active');
           }
           const githubLink = navLinks.querySelector('.market-icon-link');
@@ -318,8 +362,8 @@ const KataKatingAuth = {
         if (isAdmin && !existingMob) {
           const mobAdminLink = document.createElement('a');
           mobAdminLink.id = 'mobile-nav-admin-link';
-          mobAdminLink.href = 'admin.html';
-          mobAdminLink.className = 'mobile-nav-item' + (window.location.pathname.endsWith('admin.html') || window.location.pathname.endsWith('admin-profile.html') ? ' active' : '');
+          mobAdminLink.href = '/admin';
+          mobAdminLink.className = 'mobile-nav-item' + (isAdminRoute ? ' active' : '');
           mobAdminLink.innerHTML = `<span class="mobile-nav-num">[04]</span><span class="mobile-nav-label">Panel Admin</span>`;
           const divider = mobInner.querySelector('.mobile-nav-divider');
           mobInner.insertBefore(mobAdminLink, divider || null);
@@ -368,8 +412,9 @@ const KataKatingAuth = {
       // Logout handler
       const btnLogout = document.getElementById('btn-auth-logout');
       if (btnLogout) {
-        btnLogout.addEventListener('click', async () => {
-          await this.signOut();
+        btnLogout.addEventListener('click', (e) => {
+          e.preventDefault();
+          this.openLogoutModal();
         });
       }
     } else {
@@ -402,6 +447,65 @@ const KataKatingAuth = {
     }
   },
 
+  // Logout Modal Trigger & Implementation
+  openLogoutModal() {
+    let modal = document.getElementById('logout-modal');
+    if (!modal) {
+      this.createLogoutModalDOM();
+      modal = document.getElementById('logout-modal');
+    }
+    if (modal) modal.hidden = false;
+  },
+
+  closeLogoutModal() {
+    const modal = document.getElementById('logout-modal');
+    if (modal) modal.hidden = true;
+  },
+
+  createLogoutModalDOM() {
+    const div = document.createElement('div');
+    div.id = 'logout-modal';
+    div.className = 'auth-modal-overlay';
+    div.hidden = true;
+    div.innerHTML = `
+      <div class="auth-modal-card" style="max-width: 360px;" role="dialog" aria-modal="true">
+        <div class="auth-modal-header" style="margin-bottom: 14px;">
+          <div class="page-eyebrow" style="margin: 0; font-size: 11px;">// KONFIRMASI KELUAR</div>
+          <button type="button" class="auth-modal-close" id="btn-close-logout" aria-label="Tutup modal">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <p style="font-size: 13.5px; color: var(--text); line-height: 1.5; margin: 0 0 20px;">
+          Apakah Anda Yakin ingin keluar?
+        </p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <button type="button" class="button" id="btn-cancel-logout" style="justify-content: center; min-height: 38px;">
+            Batal
+          </button>
+          <button type="button" class="button" id="btn-confirm-logout" style="justify-content: center; min-height: 38px; font-weight: 700; background: #ef4444; border: 1px solid #ef4444; color: #ffffff; cursor: pointer; transition: background 0.15s ease;" onmouseenter="this.style.background='#dc2626'; this.style.borderColor='#dc2626';" onmouseleave="this.style.background='#ef4444'; this.style.borderColor='#ef4444';">
+            Keluar &rarr;
+          </button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(div);
+
+    document.getElementById('btn-close-logout').addEventListener('click', () => this.closeLogoutModal());
+    document.getElementById('btn-cancel-logout').addEventListener('click', () => this.closeLogoutModal());
+    document.getElementById('btn-confirm-logout').addEventListener('click', async () => {
+      this.closeLogoutModal();
+      await this.signOut();
+    });
+    div.addEventListener('click', (e) => {
+      if (e.target === div) this.closeLogoutModal();
+    });
+  },
+
   // 4. Login Modal Trigger
   openLoginModal() {
     let modal = document.getElementById('login-modal');
@@ -423,9 +527,9 @@ const KataKatingAuth = {
     div.className = 'auth-modal-overlay';
     div.hidden = true;
     div.innerHTML = `
-      <div class="auth-modal-card" style="max-width: 440px;" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
-        <div class="auth-modal-header">
-          <span class="auth-modal-badge">[&gt;] KATAKATING // BOASH</span>
+      <div class="auth-modal-card" style="max-width: 400px;" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
+        <div class="auth-modal-header" style="margin-bottom: 20px;">
+          <div class="page-eyebrow" style="margin: 0; font-size: 11px;">// MASUK KE KATAKATING</div>
           <button type="button" class="auth-modal-close" id="btn-close-login" aria-label="Tutup modal">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -433,72 +537,43 @@ const KataKatingAuth = {
             </svg>
           </button>
         </div>
-        <h3 id="auth-modal-title" class="auth-modal-title" style="margin-bottom: 4px;">
-          Masuk ke KataKating
-        </h3>
 
-        <!-- Dual Tab Switcher -->
-        <div style="display: flex; gap: 8px; margin: 14px 0 16px; border-bottom: 1px solid var(--line); padding-bottom: 10px;">
-          <button type="button" class="admin-filter-pill active" id="tab-login-student" style="flex: 1; text-align: center;">
-            Masuk Mahasiswa
+        <!-- Primary Student OAuth Actions -->
+        <div class="auth-provider-stack">
+          <button type="button" class="auth-provider-btn auth-provider-google" id="btn-login-google">
+            <svg class="auth-provider-icon" data-icon="brand" width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+            </svg>
+            <span class="auth-provider-label">Lanjutkan dengan Google</span>
           </button>
-          <button type="button" class="admin-filter-pill" id="tab-login-editorial" style="flex: 1; text-align: center;">
-            Admin
+
+          <button type="button" class="auth-provider-btn auth-provider-github" id="btn-login-github">
+            <svg class="auth-provider-icon" data-icon="brand" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+            </svg>
+            <span class="auth-provider-label">Lanjutkan dengan GitHub</span>
           </button>
         </div>
 
-        <!-- PANEL 1: MAHASISWA (OAUTH GOOGLE & GITHUB) -->
-        <div id="panel-login-student">
-          <p class="auth-modal-desc" style="margin-bottom: 18px; text-align: left;">
-            Masuk menggunakan akun Google atau GitHub Anda untuk mengunggah naskah dokumen, menyukai panduan, dan menyimpan catatan.
-          </p>
-
-          <div class="auth-provider-stack">
-            <button type="button" class="auth-provider-btn auth-provider-google" id="btn-login-google">
-              <svg class="auth-provider-icon" data-icon="brand" width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-              </svg>
-              <span class="auth-provider-label">Lanjutkan dengan Google</span>
-            </button>
-
-            <button type="button" class="auth-provider-btn auth-provider-github" id="btn-login-github">
-              <svg class="auth-provider-icon" data-icon="brand" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
-              </svg>
-              <span class="auth-provider-label">Lanjutkan dengan GitHub</span>
-            </button>
-          </div>
+        <!-- Collapsible Discreet Admin / Editorial Access -->
+        <div class="auth-editorial-toggle-wrap">
+          <button type="button" class="auth-editorial-toggle-btn" id="btn-toggle-editorial">
+            <span>Akses Admin KataKating</span>
+            <span id="editorial-toggle-arrow">&darr;</span>
+          </button>
         </div>
 
-        <!-- PANEL 2: ADMIN -->
-        <div id="panel-login-editorial" style="display: none;">
-          <p class="auth-modal-desc" style="margin-bottom: 14px; text-align: left;">
-            Kredensial khusus administrator untuk mengurasi antrean naskah dan mempublikasikan dokumen.
-          </p>
-          <form id="form-editorial-login" onsubmit="return false;">
-            <div style="margin-bottom: 10px; text-align: left;">
-              <label for="editorial-login-email" style="display: block; font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 4px; text-transform: uppercase;">
-                Email / Username Admin:
-              </label>
-              <input type="text" id="editorial-login-email" class="form-input" placeholder="Masukkan email atau username" style="width: 100%; font-size: 12.5px; padding: 8px 12px; font-family: var(--mono);" required autocomplete="username">
-            </div>
-            <div style="margin-bottom: 16px; text-align: left;">
-              <label for="editorial-login-pass" style="display: block; font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 4px; text-transform: uppercase;">
-                Kata Sandi Admin:
-              </label>
-              <input type="password" id="editorial-login-pass" class="form-input" placeholder="Masukkan kata sandi..." style="width: 100%; font-size: 12.5px; padding: 8px 12px;" required autocomplete="current-password">
-            </div>
-            <button type="submit" id="btn-submit-editorial" class="button market-primary" style="width: 100%; justify-content: center; min-height: 38px; font-weight: 700;">
-              Masuk sebagai Admin
+        <div id="panel-login-editorial" class="auth-editorial-panel" hidden>
+          <form id="form-editorial-login" onsubmit="return false;" style="display: flex; flex-direction: column; gap: 8px;">
+            <input type="text" id="editorial-login-email" class="form-input" placeholder="Email" style="width: 100%; font-size: 12px; padding: 8px 12px; font-family: var(--mono);" required autocomplete="username">
+            <input type="password" id="editorial-login-pass" class="form-input" placeholder="Kata Sandi" style="width: 100%; font-size: 12px; padding: 8px 12px;" required autocomplete="current-password">
+            <button type="submit" id="btn-submit-editorial" class="button market-primary" style="width: 100%; justify-content: center; min-height: 36px; font-size: 12px; font-weight: 700; margin-top: 2px;">
+              MASUK &rarr;
             </button>
           </form>
-        </div>
-
-        <div class="auth-modal-footer">
-          Repositori Pengetahuan Resmi Mahasiswa &bull; Universitas Boash
         </div>
       </div>
     `;
@@ -509,25 +584,16 @@ const KataKatingAuth = {
       if (e.target === div) this.closeLoginModal();
     });
 
-    // Tab switcher
-    const tabStudent = document.getElementById('tab-login-student');
-    const tabEditorial = document.getElementById('tab-login-editorial');
-    const panelStudent = document.getElementById('panel-login-student');
+    // Accordion toggle for admin login
+    const btnToggleEditorial = document.getElementById('btn-toggle-editorial');
     const panelEditorial = document.getElementById('panel-login-editorial');
+    const arrowEditorial = document.getElementById('editorial-toggle-arrow');
 
-    if (tabStudent && tabEditorial && panelStudent && panelEditorial) {
-      tabStudent.addEventListener('click', () => {
-        tabStudent.classList.add('active');
-        tabEditorial.classList.remove('active');
-        panelStudent.style.display = 'block';
-        panelEditorial.style.display = 'none';
-      });
-
-      tabEditorial.addEventListener('click', () => {
-        tabEditorial.classList.add('active');
-        tabStudent.classList.remove('active');
-        panelEditorial.style.display = 'block';
-        panelStudent.style.display = 'none';
+    if (btnToggleEditorial && panelEditorial) {
+      btnToggleEditorial.addEventListener('click', () => {
+        const isHidden = panelEditorial.hidden;
+        panelEditorial.hidden = !isHidden;
+        if (arrowEditorial) arrowEditorial.innerHTML = isHidden ? '&uarr;' : '&darr;';
       });
     }
 
@@ -721,9 +787,11 @@ const KataKatingAuth = {
         }
 
         if (isAdmin) {
+          let adminName = (this.profile && this.profile.full_name) || data.user.user_metadata?.full_name || 'Admin KataKating';
+          if (adminName.includes('Dewan Redaksi')) adminName = 'Admin KataKating';
           localStorage.setItem('katakating_admin_session', JSON.stringify({
             email: data.user.email,
-            full_name: (this.profile && this.profile.full_name) || data.user.user_metadata?.full_name || 'Admin KATAKATING',
+            full_name: adminName,
             role: 'admin',
             authenticated_at: new Date().toISOString()
           }));
@@ -734,7 +802,8 @@ const KataKatingAuth = {
         if (typeof showToast === 'function') showToast(isAdmin ? 'Berhasil masuk sebagai Admin KATAKATING' : 'Berhasil masuk ke akun Anda');
         if (typeof updateAuthViewState === 'function') updateAuthViewState();
         if (typeof window.checkAdminAuth === 'function') window.checkAdminAuth();
-        if (window.location.pathname.endsWith('upload.html') || window.location.pathname.endsWith('admin.html')) {
+        const p = window.location.pathname;
+        if (p.includes('upload') || p.includes('admin')) {
           setTimeout(() => { window.location.reload(); }, 350);
         }
         return { success: true, role: isAdmin ? 'admin' : 'student' };
@@ -772,7 +841,7 @@ const KataKatingAuth = {
     await sbClient.auth.linkIdentity({
       provider: 'github',
       options: {
-        redirectTo: window.location.origin + '/profile.html'
+        redirectTo: window.location.origin + '/profile'
       }
     });
   },

@@ -45,7 +45,7 @@ export async function getStaticPaths() {
   renderer.heading = function({ text, depth }: { text: string; depth: number }) {
     if (depth === 2) {
       const slug = text.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
-      return `<h2 id="${slug}">${text} <a href="#${slug}" class="heading-anchor" title="Tautan bagian">#</a></h2>`;
+      return `<h2 id="${slug}">${text}</h2>`;
     }
     return `<h${depth}>${text}</h${depth}>`;
   };
@@ -100,7 +100,7 @@ const ogImageUrl = `/og/${note.id}.png`;
 ---
 
 <BaseLayout
-  title={`${note.title} — KATAKATING`}
+  title={note.title}
   description={note.summary}
   ogImage={ogImageUrl}
   ogType="article"
@@ -116,7 +116,7 @@ const ogImageUrl = `/og/${note.id}.png`;
     <nav class="breadcrumbs" aria-label="Breadcrumb">
       <a href="/">[>] Beranda</a>
       <span>/</span>
-      <a href="/#catalog">{note.category}</a>
+      <a href="/">{note.category}</a>
       <span>/</span>
       <span style="color: var(--accent); font-weight: 600;">{note.initials || 'DOC'}</span>
     </nav>
@@ -129,13 +129,14 @@ const ogImageUrl = `/og/${note.id}.png`;
       <h1 class="article-title">{note.title}</h1>
       
       <div class="article-meta">
-        <span>Kontributor: <b>{note.author}</b></span>
-        <span>&bull;</span>
-        <span>{note.date}</span>
-        <span>&bull;</span>
-        <span>{note.readTime} baca</span>
-        <span>&bull;</span>
-        <span id="article-views-counter"><b id="article-views-val">0</b> baca</span>
+        <div class="article-meta-author">Kontributor: <b>{note.author}</b></div>
+        <div class="article-meta-details">
+          <span>{note.date}</span>
+          <span class="article-meta-sep">&bull;</span>
+          <span>{note.readTime} baca</span>
+          <span class="article-meta-sep">&bull;</span>
+          <span id="article-views-counter"><b id="article-views-val">0</b> baca</span>
+        </div>
       </div>
 
       <!-- TAGS -->
@@ -146,10 +147,10 @@ const ogImageUrl = `/og/${note.id}.png`;
       </div>
 
       <!-- INTERACTION & TOOLBAR -->
-      <div class="article-actions-bar" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line);">
-        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+      <div class="article-actions-bar">
+        <div class="article-actions-group">
           <!-- Like Button -->
-          <button type="button" class="button" id="btn-like-article" data-id={note.id} style="min-height: 32px; font-size: 11px;">
+          <button type="button" class="button btn-action-item" id="btn-like-article" data-id={note.id}>
             <svg id="like-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
             </svg>
@@ -157,7 +158,7 @@ const ogImageUrl = `/og/${note.id}.png`;
           </button>
 
           <!-- Bookmark Button -->
-          <button type="button" class="button" id="btn-bookmark-article" data-id={note.id} style="min-height: 32px; font-size: 11px;">
+          <button type="button" class="button btn-action-item" id="btn-bookmark-article" data-id={note.id}>
             <svg id="bookmark-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path>
             </svg>
@@ -165,7 +166,7 @@ const ogImageUrl = `/og/${note.id}.png`;
           </button>
 
           <!-- Share Button -->
-          <button type="button" class="button" id="btn-share-article" data-id={note.id} data-title={note.title} data-summary={note.summary} style="min-height: 32px; font-size: 11px; background: var(--panel-2); border: 1px solid var(--line-strong);">
+          <button type="button" class="button btn-action-item" id="btn-share-article" data-id={note.id} data-title={note.title} data-summary={note.summary}>
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="18" cy="5" r="3"></circle>
               <circle cx="6" cy="12" r="3"></circle>
@@ -177,7 +178,7 @@ const ogImageUrl = `/og/${note.id}.png`;
           </button>
 
           <!-- Print / Offline Guide -->
-          <button type="button" class="button" onclick="window.print()" style="min-height: 32px; font-size: 11px; background: transparent; border: 1px solid var(--line);">
+          <button type="button" class="button btn-action-item" onclick="window.print()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <polyline points="6 9 6 2 18 2 18 9"></polyline>
               <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
@@ -186,98 +187,32 @@ const ogImageUrl = `/og/${note.id}.png`;
             <span>Cetak / PDF</span>
           </button>
         </div>
-
-        <!-- Quick In-Article Font Size Scaler -->
-        <div style="display: flex; align-items: center; gap: 4px; font-family: var(--mono); font-size: 11px; background: var(--panel-2); padding: 3px 6px; border-radius: var(--radius); border: 1px solid var(--line);">
-          <span style="color: var(--muted); margin-right: 4px;">Ukuran:</span>
-          <button type="button" class="font-scaler-btn" data-scale="compact" style="background: none; border: none; color: var(--muted); cursor: pointer; padding: 2px 4px; font-family: var(--mono); font-size: 11px;">A-</button>
-          <span style="color: var(--line);">|</span>
-          <button type="button" class="font-scaler-btn active" data-scale="normal" style="background: none; border: none; color: var(--heading); cursor: pointer; padding: 2px 4px; font-family: var(--mono); font-size: 11px; font-weight: 700;">A</button>
-          <span style="color: var(--line);">|</span>
-          <button type="button" class="font-scaler-btn" data-scale="large" style="background: none; border: none; color: var(--muted); cursor: pointer; padding: 2px 4px; font-family: var(--mono); font-size: 11px;">A+</button>
-        </div>
       </div>
     </header>
-
-    <!-- TL;DR SUMMARY CARD -->
-    <div class="tldr-card">
-      <div class="tldr-badge">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-        </svg>
-        <span>INTISARI 30 DETIK (TL;DR)</span>
-      </div>
-      <p style="font-size: 13.5px; color: var(--heading); font-weight: 500; margin: 0 0 8px; line-height: 1.5;">
-        {note.summary}
-      </p>
-      <ul class="tldr-list">
-        <li>Materi divalidasi dan teruji langsung di laboratorium praktikum Universitas Boash.</li>
-        <li>Format dan prosedur penulisan naskah selaras standar kurikulum akademik.</li>
-        <li>Semua langkah konfigurasi dan sintaksis kode dapat langsung disalin ke terminal.</li>
-      </ul>
-    </div>
-
-    <!-- TABLE OF CONTENTS (TOC) PILLS (IF HEADINGS EXIST) -->
-    {headings && headings.length > 0 && (
-      <div style="background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 18px; margin-bottom: 28px;">
-        <div style="font-family: var(--mono); font-size: 10.5px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
-          <span>// LOMPAT KE SUB-MATERI:</span>
-        </div>
-        <div style="display: flex; flex-wrap: wrap; gap: 6px;">
-          {headings.map(h => (
-            <a href={`#${h.slug}`} style="font-family: var(--mono); font-size: 11.5px; color: var(--text); background: var(--panel-2); border: 1px solid var(--line); padding: 4px 10px; border-radius: var(--radius); text-decoration: none; transition: all 0.15s ease;">
-              {h.text}
-            </a>
-          ))}
-        </div>
-      </div>
-    )}
 
     <!-- MAIN ARTICLE BODY (PRE-RENDERED FAST HTML) -->
     <article id="article-body" class="article-content" set:html={contentHtml} />
 
-    <!-- CHECKPOINT QUIZ (INTERACTIVE RETENTION) -->
-    <div class="checkpoint-quiz" id="checkpoint-quiz">
-      <div class="quiz-header">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.2">
-          <circle cx="12" cy="12" r="10"></circle>
-          <path d="m9 12 2 2 4-4"></path>
-        </svg>
-        <span>CHECKPOINT PEMAHAMAN // UJI CEPAT</span>
-      </div>
-      <p style="font-size: 13.5px; color: var(--heading); margin: 0 0 12px; line-height: 1.5;">
-        Setelah mempraktikkan panduan <b>{note.title}</b>, apakah langkah-langkah di atas sudah berhasil dieksekusi di workstation lu?
-      </p>
-      <div class="quiz-options">
-        <button type="button" class="quiz-opt-btn" data-answer="correct">
-          A. Berhasil 100%, konfigurasi/kode berjalan sesuai yang diharapkan di workstation saya.
-        </button>
-        <button type="button" class="quiz-opt-btn" data-answer="neutral">
-          B. Masih mengalami kendala dependensi atau error yang perlu dicari solusinya lebih lanjut.
-        </button>
-      </div>
-      <div id="quiz-feedback" style="display: none; margin-top: 14px; font-family: var(--mono); font-size: 12px; color: #4ade80; background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.25); padding: 10px 14px; border-radius: var(--radius);">
-        ✓ Catatan interaktif tersimpan! Jika butuh bantuan lebih lanjut, lu bisa menanyakan di forum lab atau request pembahasan lanjutan di tombol request.
-      </div>
-    </div>
-
-    <!-- PREV / NEXT ARTICLE NAVIGATION -->
-    <nav style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin: 36px 0; padding-top: 24px; border-top: 1px solid var(--line);">
-      {prevNote && (
-        <a href={`/note/${prevNote.id}`} style="background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; text-decoration: none; display: flex; flex-direction: column; gap: 6px; transition: all 0.2s;">
-          <span style="font-family: var(--mono); font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 4px;">
-            <span>&larr;</span> CATATAN SEBELUMNYA
-          </span>
-          <span style="font-size: 13.5px; font-weight: 700; color: var(--heading); line-height: 1.4;">{prevNote.title}</span>
+    <!-- PREV / NEXT ARTICLE NAVIGATION (SINGLE ROW) -->
+    <nav class="article-pagination-bar" aria-label="Navigasi Catatan">
+      {prevNote ? (
+        <a href={`/note/${prevNote.id}`} class="pagination-link prev" title={prevNote.title}>
+          <span>&larr;</span> CATATAN SEBELUMNYA
         </a>
+      ) : (
+        <span class="pagination-link disabled">
+          <span>&larr;</span> CATATAN SEBELUMNYA
+        </span>
       )}
-      {nextNote && (
-        <a href={`/note/${nextNote.id}`} style="background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; text-decoration: none; display: flex; flex-direction: column; gap: 6px; text-align: right; transition: all 0.2s;">
-          <span style="font-family: var(--mono); font-size: 11px; color: var(--muted); display: flex; align-items: center; justify-content: flex-end; gap: 4px;">
-            CATATAN BERIKUTNYA <span>&rarr;</span>
-          </span>
-          <span style="font-size: 13.5px; font-weight: 700; color: var(--heading); line-height: 1.4;">{nextNote.title}</span>
+      <span class="pagination-divider">|</span>
+      {nextNote ? (
+        <a href={`/note/${nextNote.id}`} class="pagination-link next" title={nextNote.title}>
+          CATATAN SELANJUTNYA <span>&rarr;</span>
         </a>
+      ) : (
+        <span class="pagination-link disabled">
+          CATATAN SELANJUTNYA <span>&rarr;</span>
+        </span>
       )}
     </nav>
   </div>
@@ -295,20 +230,7 @@ const ogImageUrl = `/og/${note.id}.png`;
     }, { passive: true });
   }
 
-  // Quick In-Article Font Scaler
-  document.querySelectorAll('.font-scaler-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const scale = btn.getAttribute('data-scale') || 'normal';
-      document.documentElement.setAttribute('data-size', scale);
-      localStorage.setItem('katakating_size', scale);
-      document.querySelectorAll('.font-scaler-btn').forEach(b => {
-        b.style.fontWeight = '500';
-        b.style.color = 'var(--muted)';
-      });
-      btn.style.fontWeight = '700';
-      btn.style.color = 'var(--heading)';
-    });
-  });
+
 
   // Global helper for copying code snippets in command panels
   window.copyCodeSnippet = function(button) {
@@ -340,32 +262,13 @@ const ogImageUrl = `/og/${note.id}.png`;
       const summary = shareBtn.getAttribute('data-summary') || '';
       const url = window.location.href;
 
-      if (navigator.share && window.innerWidth <= 768) {
-        navigator.share({
-          title: title,
-          text: `${title} — ${summary}`,
-          url: url
-        }).catch(() => {
-          if (window.openShareModal) window.openShareModal({ title, id: noteId, url, summary });
-        });
-      } else {
-        if (window.openShareModal) window.openShareModal({ title, id: noteId, url, summary });
-      }
+      if (window.openShareModal) window.openShareModal({ title, id: noteId, url, summary });
     });
   }
 
-  // Quiz checkpoint interaction
-  const quizBtns = document.querySelectorAll('.quiz-opt-btn');
-  const quizFeedback = document.getElementById('quiz-feedback');
-  quizBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      quizBtns.forEach(b => b.classList.remove('correct', 'wrong'));
-      btn.classList.add('correct');
-      if (quizFeedback) quizFeedback.style.display = 'block';
-    });
-  });
 
-  // Like & Bookmark Note Interactivity
+
+  // Like & Bookmark Note Interactivity (Pink Heart & Solid Bookmark)
   const articleId = document.getElementById('btn-like-article')?.getAttribute('data-id') || '';
   const btnLike = document.getElementById('btn-like-article');
   const btnBookmark = document.getElementById('btn-bookmark-article');
@@ -406,14 +309,20 @@ const ogImageUrl = `/og/${note.id}.png`;
     function renderUI() {
       if (btnLike && likeIcon && likeText) {
         if (isLiked) {
-          btnLike.style.borderColor = 'var(--accent)';
-          btnLike.style.color = 'var(--accent)';
-          likeIcon.setAttribute('fill', 'var(--accent)');
+          btnLike.style.borderColor = '#f43f5e';
+          btnLike.style.color = '#f43f5e';
+          btnLike.style.background = 'rgba(244, 63, 94, 0.1)';
+          likeIcon.style.color = '#f43f5e';
+          likeIcon.setAttribute('fill', '#f43f5e');
+          likeIcon.setAttribute('stroke', '#f43f5e');
           likeText.textContent = 'Disukai';
         } else {
           btnLike.style.borderColor = '';
           btnLike.style.color = '';
+          btnLike.style.background = '';
+          likeIcon.style.color = '';
           likeIcon.setAttribute('fill', 'none');
+          likeIcon.setAttribute('stroke', 'currentColor');
           likeText.textContent = 'Suka';
         }
       }
@@ -421,11 +330,15 @@ const ogImageUrl = `/og/${note.id}.png`;
         if (isBookmarked) {
           btnBookmark.style.borderColor = 'var(--accent)';
           btnBookmark.style.color = 'var(--accent)';
-          bookmarkIcon.setAttribute('fill', 'var(--accent)');
+          btnBookmark.style.background = 'rgba(255, 255, 255, 0.08)';
+          bookmarkIcon.style.color = 'var(--accent)';
+          bookmarkIcon.setAttribute('fill', 'currentColor');
           bookmarkText.textContent = 'Tersimpan';
         } else {
           btnBookmark.style.borderColor = '';
           btnBookmark.style.color = '';
+          btnBookmark.style.background = '';
+          bookmarkIcon.style.color = '';
           bookmarkIcon.setAttribute('fill', 'none');
           bookmarkText.textContent = 'Simpan';
         }
@@ -437,7 +350,6 @@ const ogImageUrl = `/og/${note.id}.png`;
       btnLike.onclick = async () => {
         const u = auth ? auth.user : null;
         if (!u) {
-          if (typeof showToast === 'function') showToast('Masuk dengan GitHub atau Google untuk menyukai catatan');
           if (auth && auth.openLoginModal) auth.openLoginModal();
           return;
         }
@@ -448,7 +360,6 @@ const ogImageUrl = `/og/${note.id}.png`;
           renderUI();
           try { localStorage.removeItem('katakating_like_' + articleId); } catch(e){}
           if (sb && isValidUuid(u.id)) await sb.from('guide_likes').delete().eq('guide_id', articleId).eq('user_id', u.id);
-          if (typeof showToast === 'function') showToast('Batal menyukai catatan');
         } else {
           isLiked = true;
           if (likeCountEl) likeCountEl.textContent = curCount + 1;
@@ -458,7 +369,6 @@ const ogImageUrl = `/og/${note.id}.png`;
             const { error } = await sb.from('guide_likes').insert({ guide_id: articleId, user_id: u.id });
             if (error) console.warn('guide_likes insert notice:', error);
           }
-          if (typeof showToast === 'function') showToast('Catatan disukai!');
         }
       };
     }
@@ -467,7 +377,6 @@ const ogImageUrl = `/og/${note.id}.png`;
       btnBookmark.onclick = async () => {
         const u = auth ? auth.user : null;
         if (!u) {
-          if (typeof showToast === 'function') showToast('Masuk dengan GitHub atau Google untuk menyimpan catatan');
           if (auth && auth.openLoginModal) auth.openLoginModal();
           return;
         }
@@ -476,7 +385,6 @@ const ogImageUrl = `/og/${note.id}.png`;
           renderUI();
           try { localStorage.removeItem('katakating_bookmark_' + articleId); } catch(e){}
           if (sb && isValidUuid(u.id)) await sb.from('bookmarks').delete().eq('guide_id', articleId).eq('user_id', u.id);
-          if (typeof showToast === 'function') showToast('Catatan dihapus dari simpanan');
         } else {
           isBookmarked = true;
           renderUI();
@@ -485,7 +393,6 @@ const ogImageUrl = `/og/${note.id}.png`;
             const { error } = await sb.from('bookmarks').insert({ guide_id: articleId, user_id: u.id });
             if (error) console.warn('bookmarks insert notice:', error);
           }
-          if (typeof showToast === 'function') showToast('Catatan disimpan ke daftar bacaan!');
         }
       };
     }

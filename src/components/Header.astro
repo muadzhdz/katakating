@@ -17,7 +17,7 @@ const { currentPath = '/' } = Astro.props;
 
     <nav class="market-nav" aria-label="Main navigation">
       <div class="market-nav-links">
-        <a class={currentPath === '/' ? 'active nav-link-main' : 'nav-link-main'} href="/#catalog" aria-label="Semua Catatan">Semua Catatan</a>
+        <a class={currentPath === '/' ? 'active nav-link-main' : 'nav-link-main'} href="/" aria-label="Semua Catatan">Semua Catatan</a>
         <a class={currentPath === '/upload' ? 'active nav-link-upload' : 'nav-link-upload'} href="/upload" aria-label="Upload Catatan">Upload</a>
         <a class={currentPath.includes('/note/panduan-kontribusi') ? 'active nav-link-panduan' : 'nav-link-panduan'} href="/note/panduan-kontribusi" aria-label="Panduan Kontribusi">Panduan</a>
         <a class={currentPath === '/graph' ? 'active market-icon-link' : 'market-icon-link'} href="/graph" title="Graf Pengetahuan (The Brain)" aria-label="Graf Pengetahuan (The Brain)">
@@ -58,7 +58,7 @@ const { currentPath = '/' } = Astro.props;
   <div class="mobile-nav-panel" id="mobile-nav-panel" hidden>
     <div class="mobile-nav-inner">
       <div class="mobile-nav-section-title">// NAVIGASI REPOSITORI</div>
-      <a href="/#catalog" class="mobile-nav-item">
+      <a href="/" class="mobile-nav-item">
         <span class="mobile-nav-num">[01]</span>
         <span class="mobile-nav-label">Semua Catatan</span>
       </a>

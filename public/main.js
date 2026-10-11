@@ -7,17 +7,11 @@ const SUN_SVG = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" str
 
 const MOON_SVG = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
 
-// ── Toast Notification ──
-let toastTimer = null;
+// ── Toast Notification Disabled ──
 function showToast(msg) {
-  const toast = document.getElementById('toast');
-  const msgEl = document.getElementById('toast-msg') || toast;
-  if (!toast) return;
-  if (msgEl !== toast) msgEl.textContent = msg;
-  else toast.textContent = msg;
-  toast.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+  // All toast popup notifications disabled per design specification.
+  // Interactive elements provide direct visual state feedback instead.
+  return;
 }
 
 // ── 1-Click Code Copy (Style) ──
@@ -33,11 +27,8 @@ function initCopy() {
     navigator.clipboard.writeText(codeEl.textContent.trim()).then(() => {
       const orig = btn.innerHTML;
       btn.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Tersalin!`;
-      showToast('Perintah disalin ke clipboard');
       setTimeout(() => { btn.innerHTML = orig; }, 1800);
-    }).catch(() => {
-      showToast('Gagal menyalin otomatis');
-    });
+    }).catch(() => {});
   });
 }
 
@@ -66,6 +57,8 @@ function initSearchFilter() {
           card.setAttribute('data-id', item.id);
           card.setAttribute('data-cat', (item.category || '').toLowerCase() + ' ' + (item.tags || []).join(' '));
           const mono = item.title ? item.title.substring(0, 4).toUpperCase() : 'DOC';
+          const noteTags = Array.isArray(item.tags) ? item.tags : (item.tags ? String(item.tags).split(',').map(t => t.trim()).filter(Boolean) : []);
+          const tagSpans = noteTags.slice(0, 3).map(t => `<span class="card-tag">${escapeHtml(t)}</span>`).join('');
           card.innerHTML = `
             <div class="plugin-card-banner">
               <span class="banner-monogram">${escapeHtml(mono)}</span>
@@ -73,7 +66,7 @@ function initSearchFilter() {
             <div class="plugin-card-content">
               <div class="plugin-card-header">
                 <h3 class="plugin-card-title">
-                  <a href="notes.html?id=${escapeHtml(item.id)}">${escapeHtml(item.title)}</a>
+                  <a href="/note/${escapeHtml(item.id)}">${escapeHtml(item.title)}</a>
                 </h3>
                 <div class="plugin-card-actions">
                   <button type="button" class="card-action-btn card-btn-bookmark" data-id="${escapeHtml(item.id)}" title="Simpan catatan" aria-label="Simpan catatan">
@@ -84,6 +77,15 @@ function initSearchFilter() {
                     <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                     <span class="card-like-count">0</span>
                   </button>
+                  <button type="button" class="card-action-btn card-btn-share" data-id="${escapeHtml(item.id)}" data-title="${escapeHtml(item.title)}" data-summary="${escapeHtml(item.summary || '')}" data-url="${window.location.origin}/note/${escapeHtml(item.id)}" title="Bagikan catatan" aria-label="Bagikan catatan">
+                    <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <circle cx="18" cy="5" r="3"></circle>
+                      <circle cx="6" cy="12" r="3"></circle>
+                      <circle cx="18" cy="19" r="3"></circle>
+                      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                      <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                    </svg>
+                  </button>
                 </div>
               </div>
               <div class="plugin-card-meta-row">
@@ -91,9 +93,24 @@ function initSearchFilter() {
                 <span class="plugin-card-id">#NEW</span>
               </div>
               <p class="plugin-card-desc">${escapeHtml(item.summary || '')}</p>
-              <div class="plugin-card-badges">
-                <span class="badge-tag-new">TERUJI</span>
-                <span class="badge-tag-verified">Verified</span>
+              ${tagSpans ? `<div class="plugin-card-tags">${tagSpans}</div>` : ''}
+            </div>
+            <div class="plugin-card-bottom">
+              <div class="card-bottom-left">
+                <span class="card-stat-group" title="Waktu baca">
+                  <span class="card-read-time">${escapeHtml(item.read_time || '5m baca')}</span>
+                </span>
+                <span class="card-stat-sep">&bull;</span>
+                <span class="card-stat-group" title="Jumlah pembaca">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <span class="card-views-count" data-id="${escapeHtml(item.id)}">0</span>
+                </span>
+              </div>
+              <div class="card-bottom-stats">
+                <a href="/note/${escapeHtml(item.id)}" class="card-read-action" title="Buka Catatan" aria-label="Buka Catatan">
+                  <span>Buka</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                </a>
               </div>
             </div>
           `;
@@ -361,7 +378,7 @@ function parseSimpleMarkdown(md) {
   });
 
   clean = clean.replace(/^>\s*(.*$)/gim, '<blockquote style="border-left: 2px solid var(--accent); padding: 8px 14px; background: var(--panel-2); margin: 14px 0; color: var(--text); font-size: 0.9em;">$1</blockquote>');
-  clean = clean.replace(/`([^`]+)`/g, (m, c) => `<code style="font-family:var(--mono);font-size:0.85em;background:var(--code-bg);border:1px solid var(--line-strong);padding:2px 5px;color:var(--accent);">${esc(c)}</code>`);
+  clean = clean.replace(/`([^`]+)`/g, (m, c) => `<code style="font-family:var(--mono);font-size:0.85em;background:var(--code-bg);border:1px solid var(--line-strong);padding:2px 5px;border-radius:var(--radius);color:var(--accent);">${esc(c)}</code>`);
 
   clean = clean.replace(/^### (.*$)/gim, '<h3 style="font-size: 1.1rem; font-weight: 600; color: var(--heading); margin: 24px 0 8px;">$1</h3>');
   clean = clean.replace(/^## (.*$)/gim, '<h2 style="font-size: 1.35rem; font-weight: 700; color: var(--heading); margin: 32px 0 12px; border-bottom: 1px solid var(--line); padding-bottom: 6px;">$1</h2>');
@@ -533,11 +550,9 @@ function setupCardDelegation() {
       });
 
       if (isLiked) {
-        showToast('Batal menyukai catatan');
         try { localStorage.removeItem('katakating_like_' + articleId); } catch(e){}
         if (sb && isValidUuid(user.id)) await sb.from('guide_likes').delete().eq('guide_id', articleId).eq('user_id', user.id);
       } else {
-        showToast('Catatan disukai!');
         try { localStorage.setItem('katakating_like_' + articleId, 'true'); } catch(e){}
         if (sb && isValidUuid(user.id)) {
           const { error } = await sb.from('guide_likes').insert({ guide_id: articleId, user_id: user.id });
@@ -552,7 +567,6 @@ function setupCardDelegation() {
       const articleId = btnBookmark.getAttribute('data-id');
       const user = auth ? auth.user : null;
       if (!user) {
-        showToast('Masuk dengan GitHub atau Google untuk menyimpan catatan');
         if (auth && auth.openLoginModal) auth.openLoginModal();
         return;
       }
@@ -575,11 +589,9 @@ function setupCardDelegation() {
       });
 
       if (isSaved) {
-        showToast('Catatan dihapus dari simpanan');
         try { localStorage.removeItem('katakating_bookmark_' + articleId); } catch(e){}
         if (sb && isValidUuid(user.id)) await sb.from('bookmarks').delete().eq('guide_id', articleId).eq('user_id', user.id);
       } else {
-        showToast('Catatan disimpan ke daftar bacaan!');
         try { localStorage.setItem('katakating_bookmark_' + articleId, 'true'); } catch(e){}
         if (sb && isValidUuid(user.id)) {
           const { error } = await sb.from('bookmarks').insert({ guide_id: articleId, user_id: user.id });
@@ -588,11 +600,28 @@ function setupCardDelegation() {
       }
     }
 
+    const btnShare = e.target.closest('.card-btn-share');
+    if (btnShare) {
+      e.preventDefault();
+      e.stopPropagation();
+      const cardEl = btnShare.closest('.plugin-card');
+      const noteId = btnShare.getAttribute('data-id') || (cardEl && cardEl.getAttribute('data-id')) || '';
+      const title = btnShare.getAttribute('data-title') || (cardEl && cardEl.querySelector('.plugin-card-title a')?.textContent?.trim()) || '';
+      const summary = btnShare.getAttribute('data-summary') || (cardEl && cardEl.querySelector('.plugin-card-desc')?.textContent?.trim()) || '';
+      const url = btnShare.getAttribute('data-url') || (window.location.origin + '/note/' + noteId);
+
+      if (window.openShareModal) {
+        window.openShareModal({ title, id: noteId, url, summary });
+      }
+      return;
+    }
+
     // 3. Whole Card Click Navigation (allows clicking anywhere on the card to read)
     const card = e.target.closest('.plugin-card');
-    if (card && !btnLike && !btnBookmark) {
+    if (card && !btnLike && !btnBookmark && !btnShare) {
       const link = e.target.closest('a');
-      if (!link) {
+      const button = e.target.closest('button');
+      if (!link && !button) {
         const articleId = card.getAttribute('data-id');
         if (articleId) {
           window.location.href = `/note/${encodeURIComponent(articleId)}`;
@@ -758,7 +787,7 @@ async function loadRecentlyAdded() {
         <div class="plugin-card-content">
           <div class="plugin-card-header">
             <h3 class="plugin-card-title">
-              <a href="notes.html?id=${escapeHtml(g.id)}">${title}</a>
+              <a href="/note/${escapeHtml(g.id)}">${title}</a>
             </h3>
             <div class="plugin-card-actions">
               <button type="button" class="card-action-btn card-btn-bookmark" data-id="${escapeHtml(g.id)}" title="Simpan catatan" aria-label="Simpan catatan">
@@ -776,21 +805,24 @@ async function loadRecentlyAdded() {
             <span class="plugin-card-id" title="${timeAgo}">${idNum} &bull; ${timeAgo}</span>
           </div>
           <p class="plugin-card-desc">${summary}</p>
-          <div class="plugin-card-badges">
-            <span class="badge-tag-new">BARU</span>
-            <span class="badge-tag-verified">Verified</span>
-          </div>
+          ${tagSpans ? `<div class="plugin-card-tags">${tagSpans}</div>` : ''}
         </div>
         <div class="plugin-card-bottom">
-          <div class="card-bottom-tags">
-            ${tagSpans}
-          </div>
-          <div class="card-bottom-stats">
+          <div class="card-bottom-left">
+            <span class="card-stat-group" title="Waktu baca">
+              <span class="card-read-time">${timeAgo}</span>
+            </span>
+            <span class="card-stat-sep">&bull;</span>
             <span class="card-stat-group" title="Jumlah pembaca">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
               <span class="card-views-count" data-id="${escapeHtml(g.id)}">${views}</span>
             </span>
-            <a href="notes.html?id=${escapeHtml(g.id)}" class="card-read-action" title="Buka Catatan" aria-label="Buka Catatan"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
+          </div>
+          <div class="card-bottom-stats">
+            <a href="/note/${escapeHtml(g.id)}" class="card-read-action" title="Buka Catatan" aria-label="Buka Catatan">
+              <span>Buka</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
           </div>
         </div>
       </article>`;

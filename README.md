@@ -1,106 +1,62 @@
-<div align="center">
-
 # KATAKATING
 
-**Boash Knowledge Base & Lab Survival Guide**  
-*Repositori Panduan Praktikum, Tips Kuliah, dan Solusi Kendala Teknis Mahasiswa Universitas Boash*
-
-</div>
+Pusat dokumentasi catatan praktikum mandiri dan panduan akademik mahasiswa Universitas Boash. Terbuka, terstruktur, dan mudah dipahami.
 
 ---
 
 ## Gambaran Umum
 
-`KATAKATING` adalah platform web repositori basis pengetahuan terbuka yang dirancang untuk memfasilitasi transfer pengetahuan perkuliahan, panduan praktikum, dan solusi kendala teknis bagi **seluruh mahasiswa di seluruh fakultas dan program studi Universitas Boash**.
-
-Platform ini dibangun dengan estetika **Cyber Brutalist** (palet Cyber Emerald `#00ff66`, deep OLED `#000000`, connected 1px border grid, dan tipografi monospaced) serta menerapkan sistem **Matrix Filtering** yang fleksibel untuk mempermudah navigasi panduan lintas fakultas, program studi, dan tingkat semester.
+KATAKATING adalah repositori naskah catatan dan panduan lab berbasis web statis (Astro) yang dirancang untuk memfasilitasi pertukaran materi perkuliahan antar mahasiswa. Mengusung filosofi desain minimalis monokromatik bergaya Omarchy dengan performa tinggi dan nol *bloatware*.
 
 ---
 
 ## Fitur Utama
 
-- **Matrix Filtering Multi-Prodi:** Navigasi materi lintas fakultas dan program studi tanpa sekat kaku; menyaring panduan berdasarkan bidang keilmuan dan tingkat semester (Semester 1 s.d. 8).
-- **1-Click Command & Code Copy:** Tombol penyalinan perintah terminal (Linux/Bash/PowerShell) dan potongan kode dengan umpan balik visual instan.
-- **Micro-Learning Video Walkthroughs:** Integrasi klip video demonstrasi teknis (1–3 menit) pada catatan panduan yang memerlukan tahapan visual.
-- **Infografis & Diagram Alur Vektor:** Diagram arsitektur dan skema rangkaian praktikum yang tajam dan responsif.
-- **Dual Submission Pipeline:** Mahasiswa dapat mengunggah naskah dokumen praktikum (.docx, .pdf, .md) via portal (`upload.html`) terhubung ke basis data Supabase PostgreSQL, maupun melalui GitHub Issue template.
+- **Katalog & Filter Rumpun Keilmuan:** Navigasi cepat catatan berdasarkan 8 kategori bidang studi (Jaringan Komputer, Web & Tooling, Basis Data, Algoritma, IoT, Game, Akademik, Git & DevOps).
+- **Konverter Multi-Format:** Ekstraksi otomatis naskah Word (.docx), PDF Digital (.pdf), Teks (.txt), dan Markdown (.md) langsung ke formulir pengajuan.
+- **Graf Pengetahuan 2D Canvas:** Visualisasi keterhubungan simpul konsep, kategori, dan kontributor menggunakan rendering Canvas performa tinggi.
+- **Panel Moderasi Kurasi:** Alur peninjauan dan persetujuan naskah mahasiswa terintegrasi dengan basis data Supabase.
+- **Template Naskah Baku:** Ketersediaan template siap pakai (DOCX, TXT, MD) berformat standar margin 4-4-3-3.
 
 ---
 
-## Struktur Repositori
+## Teknologi
 
-```text
-katakating/
-├── .github/
-│   ├── ISSUE_TEMPLATE/
-│   │   └── submit-guide.yml      # Formulir submission panduan via GitHub Issue
-│   └── workflows/
-│       └── ci.yml                # Pengujian otomatis skema katalog (node:test)
-├── scripts/
-│   └── build-catalog.mjs         # Verifikator & compiler data catalog.json
-├── test/
-│   └── catalog.test.js           # Unit test otomatis integritas panduan
-├── notes/                        # Berkas dokumentasi naskah panduan (Markdown)
-├── supabase/
-│   └── migrations/               # Skema DDL PostgreSQL dan migrasi Supabase
-├── catalog.json                  # Single Source of Truth (Katalog Master)
-├── index.html                    # Katalog Web Utama KATAKATING
-├── notes.html                    # Antarmuka Reader Mode Catatan
-├── upload.html                   # Portal Unggah Dokumen Tugas & Praktikum
-├── admin.html                    # Panel Moderasi & Review Naskah Redaksi
-├── style.css                     # Desain Sistem Cyber Emerald
-├── main.js                       # Logika Pencarian, Filter Multi-Prodi, & Copy Code
-├── auth.js                       # Autentikasi Pengguna & Supabase Client
-├── package.json                  # Konfigurasi Node.js Module & Testing
-└── README.md                     # Dokumentasi Resmi Proyek
-```
+- **Framework:** Astro 5 (Static Site Generation)
+- **Styling:** Vanilla CSS, CSS Variables, Monochrome Palette
+- **Backend / Auth:** Supabase (PostgreSQL & OAuth)
+- **Parser Dokumen:** Mammoth.js (.docx), PDF.js (.pdf), Marked.js (.md)
+- **Visualisasi:** HTML5 Canvas API
 
 ---
 
-## Pengembangan Lokal & Pengujian
+## Pengembangan Lokal
 
-### Prasyarat
-- Node.js >= 20.x
-- Python 3.x (untuk server web statis lokal)
-
-### Menjalankan Server Lokal
 ```bash
-# Menjalankan server lokal di port 4173
+# Instalasi dependensi
+npm install
+
+# Menjalankan server pengembangan
 npm run dev
 
-# Akses via peramban:
-# http://localhost:4173
-```
-
-### Menjalankan Pengujian (Testing)
-Pengujian integritas data `catalog.json` dijalankan menggunakan test runner bawaan Node.js:
-```bash
-npm test
-```
-
-### Memvalidasi Katalog
-```bash
+# Membangun versi produksi statis
 npm run build
+
+# Menjalankan preview hasil build
+npm run preview
 ```
 
 ---
 
-## Alur Kontribusi Naskah Panduan
+## Tim Pengembang
 
-1. **Jalur Web Publik:** Masuk ke akun Anda dan akses halaman `upload.html` untuk mengunggah naskah dokumen (.docx, .pdf, .md) yang langsung masuk ke antrean kurasi panel redaksi.
-2. **Jalur GitOps:** Buka Issue baru menggunakan template [Submit a Practical Guide](.github/ISSUE_TEMPLATE/submit-guide.yml). Tim kurator akan memeriksa validitas teknis naskah sebelum diintegrasikan ke `catalog.json`.
-
----
-
-## Tim Pengembang (Proyek Multimedia TRM 2026/2027)
-
-- **Mu'adz Hudzaifah (NPM: 24903460014):** Lead Systems Architect & Fullstack Developer.
-- **Ardi Haryanto (NPM: 24903460043):** UI/UX & Interactive Media Designer.
-- **Muhammad Bariq (NPM: 24903460055):** Multimedia Content Producer & Video Editor.
-- **Dosen Pengampu & Pembimbing:** Khadijah, S.Kom., M.Kom.
+- **Mu'adz Hudzaifah (NPM: 24903460014)** — Lead Systems Architect & Developer
+- **Ardi Haryanto (NPM: 24903460043)** — UI/UX & Interactive Design
+- **Muhammad Bariq (NPM: 24903460055)** — Content & Media Documentation
+- **Dosen Pembimbing:** Khadijah, S.Kom., M.Kom.
 
 ---
 
 ## Lisensi
 
-Didistribusikan di bawah lisensi [MIT](LICENSE). Terbuka untuk seluruh mahasiswa dan komunitas akademik.
+Didistribusikan di bawah lisensi [MIT](LICENSE). Terbuka untuk seluruh sivitas akademika Universitas Boash.

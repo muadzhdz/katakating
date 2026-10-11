@@ -4,13 +4,12 @@
 
 <div id="share-modal" class="share-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="share-title">
   <div class="share-modal-card">
-    <div class="share-modal-header">
-      <div style="display: flex; align-items: center; gap: 8px;">
-        <span style="display: inline-block; width: 6px; height: 14px; background: var(--accent); border-radius: 2px;"></span>
-        <h3 id="share-title" class="share-modal-title">// BAGIKAN CATATAN KE MEDSOS</h3>
-      </div>
-      <button type="button" class="square-action" id="close-share-btn" aria-label="Tutup Share" style="width: 28px; height: 28px;">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <div class="share-modal-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+      <h3 id="share-title" class="share-modal-title" style="margin: 0; font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--heading); letter-spacing: 0.05em;">
+        // BAGIKAN CATATAN
+      </h3>
+      <button type="button" class="auth-modal-close" id="close-share-btn" aria-label="Tutup modal">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="18" y1="6" x2="6" y2="18"></line>
           <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
@@ -19,41 +18,32 @@
 
     <div class="share-modal-body">
       <!-- Live OG Preview Card -->
-      <div class="share-og-preview">
+      <div class="share-og-preview" style="margin-bottom: 14px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line);">
         <img id="share-og-img" class="share-og-img" src="/og/default.png" alt="Preview Kartu Catatan" loading="lazy" />
       </div>
 
       <!-- Social Actions Grid -->
       <div class="share-buttons-grid">
-        <!-- Instagram Story Download -->
-        <a id="share-ig-btn" href="#" download class="share-action-btn share-btn-ig" target="_blank" rel="noopener noreferrer">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
-            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-            <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
-          </svg>
-          <span>Unduh Kartu Instagram Story (PNG 9:16)</span>
-        </a>
-
         <!-- WhatsApp -->
-        <a id="share-wa-btn" href="#" target="_blank" rel="noopener noreferrer" class="share-action-btn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#25D366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+        <a id="share-wa-btn" href="#" target="_blank" rel="noopener noreferrer" class="share-action-btn" title="Bagikan ke WhatsApp">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#25D366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"></path>
+            <path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"></path>
           </svg>
           <span>WhatsApp</span>
         </a>
 
         <!-- X / Twitter -->
-        <a id="share-x-btn" href="#" target="_blank" rel="noopener noreferrer" class="share-action-btn">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+        <a id="share-x-btn" href="#" target="_blank" rel="noopener noreferrer" class="share-action-btn" title="Bagikan ke X">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
           </svg>
           <span>X (Twitter)</span>
         </a>
 
         <!-- Telegram -->
-        <a id="share-tg-btn" href="#" target="_blank" rel="noopener noreferrer" class="share-action-btn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#229ED9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <a id="share-tg-btn" href="#" target="_blank" rel="noopener noreferrer" class="share-action-btn" title="Bagikan ke Telegram">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#229ED9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <line x1="22" y1="2" x2="11" y2="13"></line>
             <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
           </svg>
@@ -61,8 +51,8 @@
         </a>
 
         <!-- LinkedIn -->
-        <a id="share-in-btn" href="#" target="_blank" rel="noopener noreferrer" class="share-action-btn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0A66C2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <a id="share-in-btn" href="#" target="_blank" rel="noopener noreferrer" class="share-action-btn" title="Bagikan ke LinkedIn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0A66C2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
             <rect width="4" height="12" x="2" y="9"></rect>
             <circle cx="4" cy="4" r="2"></circle>
@@ -72,10 +62,10 @@
       </div>
 
       <!-- Copy Link Row -->
-      <label class="settings-label" style="margin-top: 14px;">SALIN TAUTAN LANGSUNG</label>
-      <div class="share-copy-row">
+      <label class="settings-label" style="margin-top: 14px; display: block; font-family: var(--mono); font-size: 10.5px; text-transform: uppercase; color: var(--muted); letter-spacing: 0.05em;">SALIN TAUTAN LANGSUNG</label>
+      <div class="share-copy-row" style="display: flex; gap: 8px; margin-top: 6px;">
         <input type="text" id="share-link-input" class="share-url-input" readonly value="" />
-        <button type="button" id="share-copy-btn" class="share-copy-btn">Salin Tautan</button>
+        <button type="button" id="share-copy-btn" class="share-copy-btn" style="min-width: 108px; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box;">Salin Tautan</button>
       </div>
     </div>
   </div>
@@ -89,7 +79,6 @@
   const linkInput = document.getElementById('share-link-input');
   const ogImg = document.getElementById('share-og-img');
 
-  const igBtn = document.getElementById('share-ig-btn');
   const waBtn = document.getElementById('share-wa-btn');
   const xBtn = document.getElementById('share-x-btn');
   const tgBtn = document.getElementById('share-tg-btn');
@@ -108,21 +97,25 @@
     if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
   });
 
+  let copyTimeout = null;
+  const CHECK_ICON_SVG = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>';
+
   if (copyBtn && linkInput) {
     copyBtn.addEventListener('click', () => {
       navigator.clipboard.writeText(linkInput.value).then(() => {
-        const orig = copyBtn.textContent;
-        copyBtn.textContent = 'Tersalin!';
-        copyBtn.style.background = '#22c55e';
-        copyBtn.style.color = '#fff';
-        setTimeout(() => {
-          copyBtn.textContent = orig;
-          copyBtn.style.background = '';
-          copyBtn.style.color = '';
+        if (copyTimeout) clearTimeout(copyTimeout);
+        copyBtn.innerHTML = CHECK_ICON_SVG;
+        copyTimeout = setTimeout(() => {
+          copyBtn.textContent = 'Salin Tautan';
         }, 2000);
       }).catch(() => {
         linkInput.select();
         document.execCommand('copy');
+        if (copyTimeout) clearTimeout(copyTimeout);
+        copyBtn.innerHTML = CHECK_ICON_SVG;
+        copyTimeout = setTimeout(() => {
+          copyBtn.textContent = 'Salin Tautan';
+        }, 2000);
       });
     });
   }
@@ -134,25 +127,23 @@
     const shareUrl = opts.url || window.location.href;
     const summary = opts.summary || 'Dokumentasi praktikum teruji mahasiswa Boash.';
 
-    linkInput.value = shareUrl;
+    if (linkInput) linkInput.value = shareUrl;
 
-    if (noteId) {
-      ogImg.src = `/og/${noteId}.png`;
-      igBtn.href = `/og/story-${noteId}.png`;
-      igBtn.setAttribute('download', `katakating-${noteId}-ig-story.png`);
-    } else {
-      ogImg.src = '/og/default.png';
-      igBtn.href = '/og/default.png';
-      igBtn.setAttribute('download', 'katakating-catatan.png');
+    if (ogImg) {
+      if (noteId) {
+        ogImg.src = `/og/${noteId}.png`;
+      } else {
+        ogImg.src = '/og/default.png';
+      }
     }
 
     const encUrl = encodeURIComponent(shareUrl);
     const encText = encodeURIComponent(`${title} — ${summary}\n\nBaca di KATAKATING: `);
 
-    waBtn.href = `https://api.whatsapp.com/send?text=${encText}${encUrl}`;
-    xBtn.href = `https://x.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encUrl}&hashtags=Katakating,UniversitasBoash`;
-    tgBtn.href = `https://t.me/share/url?url=${encUrl}&text=${encodeURIComponent(title)}`;
-    inBtn.href = `https://www.linkedin.com/sharing/share-offsite/?url=${encUrl}`;
+    if (waBtn) waBtn.href = `https://api.whatsapp.com/send?text=${encText}${encUrl}`;
+    if (xBtn) xBtn.href = `https://x.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encUrl}&hashtags=Katakating,UniversitasBoash`;
+    if (tgBtn) tgBtn.href = `https://t.me/share/url?url=${encUrl}&text=${encodeURIComponent(title)}`;
+    if (inBtn) inBtn.href = `https://www.linkedin.com/sharing/share-offsite/?url=${encUrl}`;
 
     modal.classList.add('open');
   };

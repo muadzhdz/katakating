@@ -33,17 +33,17 @@ const categories = [
 ---
 
 <BaseLayout
-  title="KATAKATING — Boash Student Notes & Knowledge Hub"
+  title="Catatan & Dokumentasi"
   description="Pusat catatan praktikum mandiri, panduan belajar bersama, template laporan 4-4-3-3, dan dokumentasi terbuka mahasiswa Universitas Boash."
   currentPath="/"
 >
   <!-- HERO SECTION -->
   <section class="market-hero">
     <div class="market-hero-copy">
-      <div class="page-eyebrow">// DIREKTORI MAHASISWA &bull; UNIVERSITAS BOASH</div>
+      <div class="page-eyebrow">// DOKUMENTASI & PANDUAN AKADEMIK</div>
       <h1>eksplorasi catatan mahasiswa boash</h1>
       <p>
-        Dokumentasi praktikum teruji, rangkuman mata kuliah, dan panduan belajar bersama mahasiswa Universitas Boash. Dibangun dan dikurasi secara terbuka tanpa bloat.
+        Pusat dokumentasi catatan praktikum mandiri dan panduan akademik mahasiswa Universitas Boash. Terbuka, terstruktur, dan mudah dipahami.
       </p>
       <div class="market-hero-actions">
         <a class="button market-primary" href="#catalog">Jelajahi Catatan <span aria-hidden="true">&rarr;</span></a>
@@ -71,10 +71,8 @@ const categories = [
 
   <!-- CATALOG SECTION -->
   <section class="market-catalog" id="catalog" aria-labelledby="catalog-title" tabindex="-1">
-    <div class="catalog-heading">
-      <div>
-        <h2 class="page-eyebrow" id="catalog-title" style="margin: 0; font-size: 11px;">// KATALOG PRAKTIKUM</h2>
-      </div>
+    <div class="market-section-head catalog-section-head">
+      <h2 id="catalog-title">SEMUA CATATAN</h2>
       <div class="catalog-heading-side">
         <p><span id="plugin-count">{notes.length}</span> <span id="plugin-count-label">catatan praktikum</span></p>
         <div class="omarchy-switcher-btns" aria-label="Navigasi Halaman Katalog">
@@ -88,55 +86,58 @@ const categories = [
       </div>
     </div>
 
-    <!-- SEARCH & CONTROLS -->
-    <div class="catalog-controls">
-      <div class="market-search">
-        <label class="sr-only" for="search-input">Cari catatan atau topik</label>
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
-        <input id="search-input" name="journal-search" type="text" placeholder="Cari catatan, topik, atau tag…" maxlength="160" autocomplete="off" spellcheck="false" />
-        <button type="button" id="search-clear-btn" class="search-clear-btn" aria-label="Hapus pencarian" hidden>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6 6 18M6 6l12 12"/></svg>
-        </button>
-      </div>
-
-      <div class="sort-control cyber-select-wrap" id="sort-select-wrap">
-        <button type="button" class="cyber-select-trigger" id="sort-select-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Urutkan catatan">
-          <span class="cyber-select-label" id="sort-select-label">TERBARU DITAMBAHKAN</span>
-          <svg class="cyber-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 10 4 4 4-4"/></svg>
-        </button>
-        <div class="cyber-select-menu" id="sort-select-menu" role="listbox" hidden>
-          <div class="cyber-select-option selected" role="option" data-value="recent" aria-selected="true">
-            <span>Terbaru Ditambahkan</span>
-            <span class="cyber-select-check">✓</span>
-          </div>
-          <div class="cyber-select-option" role="option" data-value="title" aria-selected="false">
-            <span>Judul (A–Z)</span>
-            <span class="cyber-select-check">✓</span>
-          </div>
-          <div class="cyber-select-option" role="option" data-value="category" aria-selected="false">
-            <span>Berdasarkan Kategori</span>
-            <span class="cyber-select-check">✓</span>
-          </div>
-        </div>
-        <select id="sort-select" class="cyber-select-native" tabindex="-1" aria-hidden="true">
-          <option value="recent">Terbaru Ditambahkan</option>
-          <option value="title">Judul (A–Z)</option>
-          <option value="category">Berdasarkan Kategori</option>
-        </select>
-      </div>
-    </div>
-
-    <!-- CATEGORY FILTER BAR -->
-    <div class="category-bar">
-      <span>Filter</span>
-      <div id="category-filters" class="category-list">
-        {categories.map((c, i) => (
-          <button class={`category-chip ${i === 0 ? 'active' : ''}`} data-cat={c.id}>
-            {c.label}
+    <!-- UNIFIED SEARCH & FILTER PANEL -->
+    <div class="catalog-filter-panel">
+      <!-- SEARCH & CONTROLS -->
+      <div class="catalog-controls">
+        <div class="market-search">
+          <label class="sr-only" for="search-input">Cari catatan atau topik</label>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+          <input id="search-input" name="journal-search" type="text" placeholder="Cari catatan, topik, atau tag…" maxlength="160" autocomplete="off" spellcheck="false" />
+          <button type="button" id="search-clear-btn" class="search-clear-btn" aria-label="Hapus pencarian" hidden>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6 6 18M6 6l12 12"/></svg>
           </button>
-        ))}
+        </div>
+
+        <div class="sort-control cyber-select-wrap" id="sort-select-wrap">
+          <button type="button" class="cyber-select-trigger" id="sort-select-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Urutkan catatan">
+            <span class="cyber-select-label" id="sort-select-label">TERBARU DITAMBAHKAN</span>
+            <svg class="cyber-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 10 4 4 4-4"/></svg>
+          </button>
+          <div class="cyber-select-menu" id="sort-select-menu" role="listbox" hidden>
+            <div class="cyber-select-option selected" role="option" data-value="recent" aria-selected="true">
+              <span>Terbaru Ditambahkan</span>
+              <span class="cyber-select-check">✓</span>
+            </div>
+            <div class="cyber-select-option" role="option" data-value="title" aria-selected="false">
+              <span>Judul (A–Z)</span>
+              <span class="cyber-select-check">✓</span>
+            </div>
+            <div class="cyber-select-option" role="option" data-value="category" aria-selected="false">
+              <span>Berdasarkan Kategori</span>
+              <span class="cyber-select-check">✓</span>
+            </div>
+          </div>
+          <select id="sort-select" class="cyber-select-native" tabindex="-1" aria-hidden="true">
+            <option value="recent">Terbaru Ditambahkan</option>
+            <option value="title">Judul (A–Z)</option>
+            <option value="category">Berdasarkan Kategori</option>
+          </select>
+        </div>
       </div>
-      <button id="clear-filters" type="button">Reset</button>
+
+      <!-- CATEGORY FILTER BAR -->
+      <div class="category-bar">
+        <span>Filter</span>
+        <div id="category-filters" class="category-list">
+          {categories.map((c, i) => (
+            <button class={`category-chip ${i === 0 ? 'active' : ''}`} data-cat={c.id}>
+              {c.label}
+            </button>
+          ))}
+        </div>
+        <button id="clear-filters" type="button">Reset</button>
+      </div>
     </div>
 
     <!-- CARDS GRID -->
@@ -178,7 +179,6 @@ const categories = [
       }
 
       dotsContainer.innerHTML = '';
-      const firstCardOffset = cards[0].offsetLeft;
 
       cards.forEach((card, i) => {
         const dot = document.createElement('button');
@@ -190,17 +190,12 @@ const categories = [
           e.preventDefault();
           e.stopPropagation();
 
-          let targetScroll = card.offsetLeft - firstCardOffset;
-          const maxScroll = slider.scrollWidth - slider.clientWidth;
-
-          if (i === 0) {
-            targetScroll = 0;
-          } else if (i === cards.length - 1 && maxScroll > 0) {
-            targetScroll = maxScroll;
-          }
+          const cardRect = card.getBoundingClientRect();
+          const sliderRect = slider.getBoundingClientRect();
+          const target = slider.scrollLeft + (cardRect.left - sliderRect.left) - 16;
 
           slider.scrollTo({
-            left: Math.max(0, targetScroll),
+            left: Math.max(0, target),
             behavior: 'smooth'
           });
 
@@ -215,27 +210,22 @@ const categories = [
       let scrollRaf = null;
 
       function updateActiveDot() {
-        const maxScroll = slider.scrollWidth - slider.clientWidth;
-        const currentScroll = slider.scrollLeft;
-        let activeIdx = 0;
+        const sliderRect = slider.getBoundingClientRect();
+        const snapTargetX = sliderRect.left + 16;
 
-        if (currentScroll <= 15) {
-          activeIdx = 0;
-        } else if (maxScroll > 0 && currentScroll >= maxScroll - 15) {
-          activeIdx = cards.length - 1;
-        } else {
-          let minDiff = Infinity;
-          cards.forEach((c, idx) => {
-            const target = c.offsetLeft - firstCardOffset;
-            const diff = Math.abs(target - currentScroll);
-            if (diff < minDiff) {
-              minDiff = diff;
-              activeIdx = idx;
-            }
-          });
-        }
+        let closestIdx = 0;
+        let minDiff = Infinity;
 
-        dots.forEach((d, i) => d.classList.toggle('active', i === activeIdx));
+        cards.forEach((c, idx) => {
+          const rect = c.getBoundingClientRect();
+          const diff = Math.abs(rect.left - snapTargetX);
+          if (diff < minDiff) {
+            minDiff = diff;
+            closestIdx = idx;
+          }
+        });
+
+        dots.forEach((d, i) => d.classList.toggle('active', i === closestIdx));
       }
 
       if (slider._onCardSliderScroll) {
@@ -268,22 +258,18 @@ const categories = [
       const summary = shareBtn.getAttribute('data-summary') || '';
       const url = shareBtn.getAttribute('data-url') || (window.location.origin + '/note/' + noteId);
 
-      // If mobile Web Share is available, use it!
-      if (navigator.share && window.innerWidth <= 768) {
-        navigator.share({
-          title: title,
-          text: `${title} — ${summary}`,
-          url: url
-        }).catch(() => {
-          if (window.openShareModal) {
-            window.openShareModal({ title, id: noteId, url, summary });
-          }
-        });
-      } else {
-        if (window.openShareModal) {
-          window.openShareModal({ title, id: noteId, url, summary });
-        }
+      if (window.openShareModal) {
+        window.openShareModal({ title, id: noteId, url, summary });
       }
+    });
+
+    // Smooth scroll to catalog without modifying URL hash
+    document.querySelectorAll('a[href="#catalog"]').forEach((link) => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const catalogSec = document.getElementById('catalog');
+        if (catalogSec) catalogSec.scrollIntoView({ behavior: 'smooth' });
+      });
     });
   })();
   </script>

@@ -1,21 +1,46 @@
 ---
 // src/pages/graph.astro
-import BaseLayout from '../layouts/BaseLayout.astro';
+import MobileBottomNav from '../components/MobileBottomNav.astro';
 ---
 
 <!DOCTYPE html>
-<html lang="id" data-theme="vantablack">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
+  <!-- Instant Theme Bootstrapper (Zero FOUC) -->
+  <script is:inline>
+    (function() {
+      try {
+        var t = localStorage.getItem('katakating_theme') || localStorage.getItem('omarchy_theme') || 'vantablack';
+        var lightThemes = ['flexoki-light', 'light', 'catppuccin-latte', 'gruvbox-light', 'rose-pine-dawn'];
+        var isLight = lightThemes.indexOf(t) !== -1;
+        document.documentElement.setAttribute('data-theme', t);
+        if (isLight) {
+          document.documentElement.classList.add('light');
+        } else {
+          document.documentElement.classList.remove('light');
+        }
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'vantablack');
+      }
+    })();
+  </script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Graf Pengetahuan (The Brain) &mdash; KATAKATING</title>
+  <title>Graf Pengetahuan</title>
   <meta name="description" content="The Brain: Visualisasi jejaring pengetahuan Hermes Star Map 2D Canvas berdimensi waktu radial.">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/style.css?v=3.0">
-  <script is:inline src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script is:inline src="/main.js?v=3.0" defer></script>
-  <script is:inline src="/auth.js?v=3.0" defer></script>
-  <script is:inline src="/graph.js?v=3.0" defer></script>
+
+  <!-- Typography Preconnect & Google Fonts (Inter + JetBrains Mono) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/style.css?v=3.2">
+  <script is:inline src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script is:inline src="/main.js?v=3.2" defer></script>
+  <script is:inline src="/auth.js?v=3.2" defer></script>
+  <script is:inline src="/graph.js?v=3.2" defer></script>
 </head>
 
 <body class="brain-body">
@@ -33,7 +58,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
       <div class="brain-subline">
         <span>PUBLISHED SNAPSHOT &middot; katalog terverifikasi &middot; ledger signed &middot; debt clear</span>
-        <a href="/#catalog" class="brain-subline-link">[baca katalog]</a>
+        <a href="/" class="brain-subline-link">[baca katalog]</a>
       </div>
     </div>
 
@@ -176,6 +201,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <span class="mobile-shortcut" style="display: none;">tap = info &middot; drag = pan &middot; pinch = zoom</span>
     </div>
   </footer>
+
+  <!-- Fixed Mobile Bottom App Bar -->
+  <MobileBottomNav currentPath="/graph" />
 
 </body>
 </html>

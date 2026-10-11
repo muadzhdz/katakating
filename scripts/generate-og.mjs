@@ -123,72 +123,6 @@ function createOgSvg({ title, category, author, readTime, initials, tags, summar
   </svg>`;
 }
 
-function createStorySvg({ title, category, author, readTime, initials, summary }) {
-  const titleLines = wrapText(title, 22).slice(0, 4);
-  const summaryLines = wrapText(summary, 32).slice(0, 5);
-
-  const titleSvgLines = titleLines.map((line, i) => {
-    return `<tspan x="90" dy="${i === 0 ? 0 : 72}">${escapeXml(line)}</tspan>`;
-  }).join('');
-
-  const summarySvgLines = summaryLines.map((line, i) => {
-    return `<tspan x="90" dy="${i === 0 ? 0 : 44}">${escapeXml(line)}</tspan>`;
-  }).join('');
-
-  const safeAuthor = escapeXml(author || "Mu'adz Hudzaifah");
-
-  return `<svg width="1080" height="1920" viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <pattern id="storyGrid" width="60" height="60" patternUnits="userSpaceOnUse">
-        <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1.5"/>
-      </pattern>
-    </defs>
-
-    <rect width="1080" height="1920" fill="#090a0d" />
-    <rect width="1080" height="1920" fill="url(#storyGrid)" />
-
-    <!-- Outer Card Frame -->
-    <rect x="40" y="80" width="1000" height="1760" rx="28" fill="#0d0e12" stroke="rgba(255,255,255,0.12)" stroke-width="2" />
-
-    <!-- Top Brand Header -->
-    <g transform="translate(90, 180)">
-      <text x="0" y="28" fill="#ffffff" font-size="28" font-weight="900" font-family="'JetBrains Mono', monospace">&gt;</text>
-      <text x="32" y="28" fill="#ffffff" font-size="28" font-weight="900" font-family="'JetBrains Mono', sans-serif" letter-spacing="2">KATAKATING</text>
-      <text x="32" y="64" fill="#71717a" font-size="16" font-weight="600" font-family="'JetBrains Mono', monospace" letter-spacing="1.5">// BOASH KNOWLEDGE BASE</text>
-      
-      <rect x="660" y="0" width="240" height="42" rx="6" fill="#14151a" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" />
-      <text x="780" y="27" fill="#e4e4e7" font-size="15" font-weight="800" font-family="'JetBrains Mono', monospace" text-anchor="middle">${escapeXml((category || 'PANDUAN').toUpperCase())}</text>
-    </g>
-
-    <!-- Initials Box -->
-    <g transform="translate(90, 360)">
-      <rect x="0" y="0" width="130" height="130" rx="16" fill="#14151a" stroke="rgba(255,255,255,0.2)" stroke-width="2" />
-      <text x="65" y="78" fill="#ffffff" font-size="44" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle">${escapeXml(initials || 'KK')}</text>
-    </g>
-
-    <!-- Title -->
-    <text x="90" y="610" fill="#ffffff" font-size="64" font-weight="900" font-family="system-ui, sans-serif" letter-spacing="-1">
-      ${titleSvgLines}
-    </text>
-
-    <!-- Summary Box -->
-    <rect x="80" y="980" width="920" height="340" rx="16" fill="#14151a" stroke="rgba(255,255,255,0.08)" stroke-width="1.5" />
-    <text x="120" y="1035" fill="#71717a" font-size="16" font-weight="800" font-family="'JetBrains Mono', monospace" letter-spacing="2">// INTISARI PRAKTIKUM</text>
-    <text x="120" y="1090" fill="#d4d4d8" font-size="28" font-weight="400" font-family="system-ui, sans-serif" line-height="1.6">
-      ${summarySvgLines}
-    </text>
-
-    <!-- Bottom Author & CTA -->
-    <g transform="translate(90, 1480)">
-      <text x="0" y="40" fill="#ffffff" font-size="32" font-weight="800" font-family="system-ui, sans-serif">by ${safeAuthor}</text>
-      <text x="0" y="85" fill="#71717a" font-size="20" font-weight="600" font-family="'JetBrains Mono', monospace">${escapeXml(readTime || '5m baca')} // Catatan Teruji &amp; Terkurasi</text>
-
-      <rect x="0" y="140" width="900" height="84" rx="12" fill="#ffffff" />
-      <text x="450" y="193" fill="#090a0d" font-size="22" font-weight="900" font-family="'JetBrains Mono', monospace" text-anchor="middle" letter-spacing="1">BACA LENGKAP DI KATAKATING.VERCEL.APP ↗</text>
-    </g>
-  </svg>`;
-}
-
 async function run() {
   console.log('[generate-og] Reading notes from:', notesJsonPath);
   let notes = [];
@@ -215,7 +149,7 @@ async function run() {
   fs.writeFileSync(path.join(publicOgDir, 'default.png'), defaultResvg.render().asPng());
   console.log('[generate-og] Generated default.png');
 
-  // 2. Generate OG for each note (both 1200x630 and IG Story 1080x1920)
+  // 2. Generate OG for each note (1200x630 standard metadata)
   for (const note of notes) {
     try {
       const ogSvg = createOgSvg(note);
@@ -223,12 +157,7 @@ async function run() {
       const pngPath = path.join(publicOgDir, `${note.id}.png`);
       fs.writeFileSync(pngPath, resvg.render().asPng());
 
-      const storySvg = createStorySvg(note);
-      const resvgStory = new Resvg(storySvg, { fitTo: { mode: 'width', value: 1080 } });
-      const storyPngPath = path.join(publicOgDir, `story-${note.id}.png`);
-      fs.writeFileSync(storyPngPath, resvgStory.render().asPng());
-
-      console.log(`[generate-og] Rendered: ${note.id}.png & story-${note.id}.png`);
+      console.log(`[generate-og] Rendered: ${note.id}.png`);
     } catch (err) {
       console.error(`[generate-og] Error rendering for ${note.id}:`, err.message);
     }

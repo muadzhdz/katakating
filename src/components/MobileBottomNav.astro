@@ -5,12 +5,14 @@ interface Props {
   currentPath?: string;
 }
 const { currentPath = '/' } = Astro.props;
+const isAdminRoute = currentPath === '/admin' || currentPath === '/admin-profile';
 ---
 
-<nav class="mobile-bottom-bar" aria-label="Navigasi Bawah Mobile">
-  <!-- 1. HOME -->
+<nav class="mobile-bottom-bar" aria-label="Navigasi Bawah Ponsel">
+  <!-- 1. BERANDA -->
   <a
     href="/"
+    id="tab-nav-home"
     class={`mobile-bar-item ${currentPath === '/' ? 'active' : ''}`}
     aria-label="Beranda"
   >
@@ -18,28 +20,29 @@ const { currentPath = '/' } = Astro.props;
       <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
       <polyline points="9 22 9 12 15 12 15 22"></polyline>
     </svg>
-    <span>Home</span>
+    <span>Beranda</span>
   </a>
 
-  <!-- 2. BROWSE / JELAJAHI -->
+  <!-- 2. CARI CATATAN -->
   <a
-    href="/#catalog"
-    id="mobile-btn-browse"
-    class={`mobile-bar-item ${currentPath === '/#catalog' ? 'active' : ''}`}
-    aria-label="Cari dan Jelajahi Catatan"
+    href="/"
+    id="tab-nav-catalog"
+    class="mobile-bar-item"
+    aria-label="Cari Catatan"
   >
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="11" cy="11" r="8"></circle>
       <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
     </svg>
-    <span>Browse</span>
+    <span>Cari</span>
   </a>
 
-  <!-- 3. EXPLORE / THE BRAIN GRAPH -->
+  <!-- 3. GRAF PENGETAHUAN -->
   <a
     href="/graph"
+    id="tab-nav-graph"
     class={`mobile-bar-item ${currentPath === '/graph' ? 'active' : ''}`}
-    aria-label="Graf Pengetahuan (The Brain)"
+    aria-label="Graf Pengetahuan"
   >
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="12" cy="5" r="3"></circle>
@@ -49,12 +52,13 @@ const { currentPath = '/' } = Astro.props;
       <path d="m7.5 16.5 2.5-3.5"></path>
       <path d="m16.5 16.5-2.5-3.5"></path>
     </svg>
-    <span>Explore</span>
+    <span>Graf</span>
   </a>
 
-  <!-- 4. PUBLISH / UPLOAD -->
+  <!-- 4. UNGGAH CATATAN -->
   <a
     href="/upload"
+    id="tab-nav-upload"
     class={`mobile-bar-item ${currentPath === '/upload' ? 'active' : ''}`}
     aria-label="Upload Catatan Praktikum"
   >
@@ -63,25 +67,92 @@ const { currentPath = '/' } = Astro.props;
       <line x1="12" y1="8" x2="12" y2="16"></line>
       <line x1="8" y1="12" x2="16" y2="12"></line>
     </svg>
-    <span>Publish</span>
+    <span>Upload</span>
+  </a>
+
+  <!-- 5. PANEL MODERASI ADMIN -->
+  <a
+    href="/admin"
+    id="tab-nav-panel"
+    class={`mobile-bar-item ${isAdminRoute ? 'active' : ''}`}
+    aria-label="Panel Moderasi"
+  >
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+    </svg>
+    <span>Panel</span>
   </a>
 </nav>
 
 <script is:inline>
 (function() {
-  const browseBtn = document.getElementById('mobile-btn-browse');
+  function setActive(targetEl) {
+    if (!targetEl || targetEl.classList.contains('active')) return;
+    const tabs = document.querySelectorAll('.mobile-bottom-bar .mobile-bar-item');
+    tabs.forEach(t => t.classList.remove('active'));
+    targetEl.classList.add('active');
+  }
+
+  function syncActiveTab() {
+    const path = window.location.pathname.replace(/\/$/, '') || '/';
+
+    const tabHome = document.getElementById('tab-nav-home');
+    const tabCatalog = document.getElementById('tab-nav-catalog');
+    const tabGraph = document.getElementById('tab-nav-graph');
+    const tabUpload = document.getElementById('tab-nav-upload');
+    const tabPanel = document.getElementById('tab-nav-panel');
+
+    if (path.startsWith('/admin')) {
+      setActive(tabPanel);
+    } else if (path.startsWith('/upload')) {
+      setActive(tabUpload);
+    } else if (path.startsWith('/graph')) {
+      setActive(tabGraph);
+    } else if (path === '/') {
+      const catEl = document.getElementById('catalog');
+      if (catEl && window.scrollY >= (catEl.offsetTop - 200)) {
+        setActive(tabCatalog);
+      } else {
+        setActive(tabHome);
+      }
+    }
+  }
+
+  const browseBtn = document.getElementById('tab-nav-catalog');
   if (browseBtn) {
     browseBtn.addEventListener('click', (e) => {
-      if (window.location.pathname === '/' || window.location.pathname === '') {
+      const p = window.location.pathname.replace(/\/$/, '') || '/';
+      if (p === '/') {
         e.preventDefault();
-        const searchInput = document.getElementById('search-input');
         const catalogSec = document.getElementById('catalog');
         if (catalogSec) catalogSec.scrollIntoView({ behavior: 'smooth' });
+        const searchInput = document.getElementById('search-input');
         if (searchInput) {
           setTimeout(() => searchInput.focus(), 300);
         }
+        syncActiveTab();
       }
     });
   }
+
+  const homeBtn = document.getElementById('tab-nav-home');
+  if (homeBtn) {
+    homeBtn.addEventListener('click', (e) => {
+      const p = window.location.pathname.replace(/\/$/, '') || '/';
+      if (p === '/') {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        syncActiveTab();
+      }
+    });
+  }
+
+  window.addEventListener('scroll', () => {
+    const p = window.location.pathname.replace(/\/$/, '') || '/';
+    if (p === '/') syncActiveTab();
+  }, { passive: true });
+
+  document.addEventListener('DOMContentLoaded', syncActiveTab);
+  syncActiveTab();
 })();
 </script>
