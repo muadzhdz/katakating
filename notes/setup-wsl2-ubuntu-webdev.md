@@ -4,7 +4,8 @@ title: Setup Lengkap WSL2 Ubuntu 24.04 untuk Web Development
 category: Web & Tooling
 author: Mu'adz Hudzaifah
 date: 2026-09-21
-readTime: 6 menit
+
+initials: WSL
 tags: ["linux", "wsl2", "ubuntu", "webdev", "nodejs", "php"]
 summary: Panduan instalasi dan konfigurasi native Linux kernel di Windows menggunakan WSL2 untuk kebutuhan praktikum web, lengkap dengan NVM, PHP, dan VS Code integration.
 ---

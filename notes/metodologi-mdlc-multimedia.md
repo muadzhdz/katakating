@@ -4,7 +4,8 @@ title: Penerapan Metodologi MDLC (Luther-Sutopo) pada Skripsi Multimedia
 category: Metodologi Penelitian
 author: Tim KataKating
 date: 2026-09-21
-readTime: 6 menit
+
+initials: MDLC
 tags: ["mdlc", "skripsi", "metodologi", "multimedia", "luther-sutopo", "tugas-akhir"]
 summary: Penjelasan komprehensif 6 tahapan siklus Multimedia Development Life Cycle (Concept, Design, Material, Assembly, Testing, Distribution) yang diakui penguji sidang.
 ---

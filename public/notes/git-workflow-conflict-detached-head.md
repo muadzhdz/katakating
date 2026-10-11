@@ -4,7 +4,8 @@ title: Mengatasi Detached HEAD & Merge Conflict pada Git Kolaboratif
 category: Git & Version Control
 author: Mu'adz Hudzaifah
 date: 2026-09-21
-readTime: 5 menit
+
+initials: GIT
 tags: ["git", "github", "detached-head", "conflict", "devops"]
 summary: Panduan pemecahan masalah (troubleshooting) ketika commit tersangkut di detached HEAD atau branch lokal bentrok dengan commit rekan kelompok di repository GitHub.
 ---

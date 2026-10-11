@@ -4,7 +4,8 @@ title: Standar Baku Format Margin Laporan Praktikum & TA (4-4-3-3)
 category: Akademik & Laporan
 author: Tim KataKating
 date: 2026-09-21
-readTime: 5 menit
+
+initials: 4433
 tags: ["akademik", "laporan", "word", "margin", "skripsi", "boash"]
 summary: Panduan tata letak layout dokumen akademik Universitas Boash. Aturan margin 4-4-3-3, pemisahan nomor romawi dengan angka arab via section break, dan struktur baku bab.
 ---

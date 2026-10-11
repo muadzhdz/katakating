@@ -4,7 +4,8 @@ title: Konfigurasi Inter-VLAN Routing & Trunking pada Cisco Packet Tracer
 category: Jaringan Komputer
 author: Mu'adz Hudzaifah
 date: 2026-09-21
-readTime: 7 menit
+
+initials: VLAN
 tags: ["jaringan", "cisco", "vlan", "routing", "packet-tracer", "networking"]
 summary: Tutorial konfigurasi jaringan switch layer-2 dan router on-a-stick untuk memisahkan segmentasi traffic mahasiswa dan dosen di lab praktikum.
 ---

@@ -4,7 +4,8 @@ title: Simulasi Telemetri ESP32 & MQTT HiveMQ di Browser (Tanpa Alat Fisik)
 category: IoT & Embedded
 author: Mu'adz Hudzaifah
 date: 2026-09-21
-readTime: 6 menit
+
+initials: MQTT
 tags: ["iot", "esp32", "mqtt", "wokwi", "hivemq", "arduino"]
 summary: Tutorial membuat simulasi monitoring sensor suhu virtual di Wokwi dan mempublikasikan data telemetry real-time ke broker publik MQTT tanpa membeli modul hardware.
 ---

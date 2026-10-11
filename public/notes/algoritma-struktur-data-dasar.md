@@ -4,7 +4,8 @@ title: Implementasi Struktur Data Stack & Queue pada Praktikum Pemrograman
 category: Algoritma & Struktur Data
 author: Mu'adz Hudzaifah
 date: 2026-09-21
-readTime: 6 menit
+
+initials: ALGO
 tags: ["algoritma", "struktur-data", "python", "stack", "queue"]
 summary: Memahami logika LIFO (Last In First Out) dan FIFO (First In First Out) dengan implementasi Python murni serta analisis kompleksitas waktu O(1).
 ---

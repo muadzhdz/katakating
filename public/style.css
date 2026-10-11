@@ -2520,12 +2520,22 @@ pre.code-body {
   }
   .footer-status {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: flex-start !important;
+    text-align: left !important;
     gap: 14px;
   }
   .footer-resource-links {
-    gap: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+    gap: 10px;
     width: 100%;
+  }
+  .footer-status-link {
+    justify-content: flex-start !important;
+    text-align: left !important;
   }
 }
 
@@ -4244,8 +4254,25 @@ html.light .pill-dot.cortex,
 
 @media (max-width: 640px) {
   .template-boxes-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .template-big-box {
+    padding: 12px 6px;
+    min-height: 80px;
+  }
+  .template-big-badge {
+    font-size: 9.5px;
+    padding: 2px 6px;
+    margin-bottom: 6px;
+  }
+  .template-big-label {
+    font-size: 11px;
+    line-height: 1.2;
+    margin-bottom: 2px;
+  }
+  .template-big-sub {
+    font-size: 9px;
   }
 }
 
@@ -5274,8 +5301,8 @@ html.light .pill-dot.cortex,
   .admin-layout { flex-direction: column; }
   .admin-sidebar { width: 100%; }
 
-  /* Footer: stack */
-  .footer-resource-links { flex-direction: column; gap: 8px; }
+  /* Footer: stack left-aligned */
+  .footer-resource-links { flex-direction: column; align-items: flex-start !important; text-align: left !important; gap: 8px; }
   .market-footer { padding: 16px 12px; }
 
   /* Navbar actions: hide less important icons */
@@ -6341,13 +6368,12 @@ html.light .pill-dot.cortex,
     left: 0;
     right: 0;
     height: 58px;
-    background: rgba(10, 10, 10, 0.92);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-top: 1px solid var(--line-strong);
+    background: var(--panel);
+    border-top: 1px solid var(--line);
     z-index: 999;
     padding: 4px 0 env(safe-area-inset-bottom, 0);
     box-sizing: border-box;
+    transition: background var(--t-fast) var(--ease-out), border-color var(--t-fast) var(--ease-out);
   }
 
   .mobile-bar-item {
@@ -6367,12 +6393,20 @@ html.light .pill-dot.cortex,
 
   .mobile-bar-item svg {
     stroke-width: 1.8;
-    transition: transform var(--t-fast) var(--ease-out);
+    color: var(--muted);
+    transition: transform var(--t-fast) var(--ease-out), color var(--t-fast) var(--ease-out);
   }
 
-  .mobile-bar-item:hover,
-  .mobile-bar-item.active {
+  .mobile-bar-item:hover {
     color: var(--heading);
+  }
+
+  .mobile-bar-item:hover svg {
+    color: var(--heading);
+  }
+
+  .mobile-bar-item.active {
+    color: var(--accent);
   }
 
   .mobile-bar-item.active svg {

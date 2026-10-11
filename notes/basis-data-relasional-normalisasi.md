@@ -4,7 +4,8 @@ title: Panduan Praktis Normalisasi Basis Data (1NF, 2NF, 3NF)
 category: Basis Data
 author: Tim KataKating
 date: 2026-09-21
-readTime: 6 menit
+
+initials: SQL
 tags: ["database", "sql", "normalisasi", "mysql", "basis-data"]
 summary: Memahami teknik dekomposisi tabel anomali menjadi bentuk normal 1NF, 2NF, dan 3NF pada studi kasus sistem akademik kampus.
 ---

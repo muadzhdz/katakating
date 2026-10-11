@@ -4,7 +4,8 @@ title: Pipeline Export Aset 3D Blender ke Unity 2022 LTS (Fix Skala & Rotasi)
 category: Game & Multimedia
 author: Tim KataKating
 date: 2026-09-21
-readTime: 5 menit
+
+initials: BLND
 tags: ["blender", "unity", "3d", "gamedev", "fbx", "multimedia"]
 summary: Panduan export FBX dari Blender 4.x ke engine Unity agar model tidak miring rotasi -90 derajat pada sumbu X dan skala objek proporsional 1:1.
 ---

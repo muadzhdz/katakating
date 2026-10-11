@@ -4,7 +4,8 @@ title: Panduan Berbagi Catatan & Panduan di KATAKATING
 category: Kontribusi & Panduan
 author: Tim KATAKATING
 date: 2026-09-27
-readTime: 2 menit
+
+initials: DOCS
 tags: ["panduan", "kontribusi", "mahasiswa", "boash", "catatan", "praktikum"]
 summary: Panduan sederhana untuk berbagi catatan kuliah, rangkuman materi, dan panduan praktikum di KATAKATING.
 ---

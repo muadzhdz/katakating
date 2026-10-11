@@ -174,16 +174,19 @@ const categories = [
     if (!cards.length) return;
 
     dotsContainer.innerHTML = '';
-    cards.forEach((_, i) => {
+    cards.forEach((card, i) => {
       const dot = document.createElement('button');
       dot.type = 'button';
       dot.className = `slider-dot${i === 0 ? ' active' : ''}`;
       dot.setAttribute('aria-label', `Slide ${i + 1}`);
-      dot.addEventListener('click', () => {
-        cards[i].scrollIntoView({
-          behavior: 'smooth',
-          block: 'nearest',
-          inline: 'center'
+      dot.addEventListener('click', (e) => {
+        e.preventDefault();
+        const sliderRect = slider.getBoundingClientRect();
+        const cardRect = card.getBoundingClientRect();
+        const delta = (cardRect.left + cardRect.width / 2) - (sliderRect.left + sliderRect.width / 2);
+        slider.scrollBy({
+          left: delta,
+          behavior: 'smooth'
         });
       });
       dotsContainer.appendChild(dot);
@@ -195,11 +198,13 @@ const categories = [
     slider.addEventListener('scroll', () => {
       if (scrollRaf) return;
       scrollRaf = requestAnimationFrame(() => {
+        const sliderRect = slider.getBoundingClientRect();
+        const sliderCenter = sliderRect.left + sliderRect.width / 2;
         let closest = 0;
         let best = Infinity;
-        const sliderCenter = slider.scrollLeft + slider.clientWidth / 2;
         cards.forEach((c, i) => {
-          const cardCenter = c.offsetLeft + c.offsetWidth / 2;
+          const cardRect = c.getBoundingClientRect();
+          const cardCenter = cardRect.left + cardRect.width / 2;
           const d = Math.abs(cardCenter - sliderCenter);
           if (d < best) {
             best = d;
