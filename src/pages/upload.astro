@@ -4,13 +4,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout
-  title="Upload Catatan &amp; Panduan Praktikum — KATAKATING"
-  description="Unggah catatan praktikum, laporan tugas, atau panduan mandiri mahasiswa Universitas Boash. Mendukung format Word (.docx), Notepad (.txt), dan Markdown (.md)."
+  title="Upload Catatan & Panduan Praktikum — KATAKATING"
+  description="Unggah catatan praktikum, laporan tugas, atau panduan mandiri mahasiswa Universitas Boash. Mendukung konversi otomatis Word (.docx), PDF Digital (.pdf), Teks (.txt), dan Markdown (.md)."
   currentPath="/upload"
 >
-  <div class="submission-page-wrap">
-    <!-- BREADCRUMB -->
-    <nav class="submission-breadcrumb" aria-label="Breadcrumb">
+  <main class="article-layout" style="max-width: 980px; margin: 32px auto 80px; padding: 0 20px;">
+    <!-- BREADCRUMBS -->
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
       <a href="/">Beranda</a>
       <span class="breadcrumb-sep">/</span>
       <span class="breadcrumb-current">Upload Catatan</span>
@@ -18,172 +18,186 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     <!-- PAGE HEADER -->
     <div class="submission-page-header" style="margin-bottom: 24px;">
-      <div class="page-eyebrow">// UNGGAH CATATAN &bull; UNIVERSITAS BOASH</div>
-      <h1 class="submission-page-title">Upload Catatan &amp; Panduan Praktikum</h1>
-      <p class="submission-page-subtitle">
-        Punya tugas kuliah, laporan praktikum, atau ringkasan materi? Unggah berkas dokumen Anda. Mendukung <b>Microsoft Word (.docx)</b>, <b>Teks (.txt)</b>, dan <b>Markdown (.md)</b> secara otomatis.
+      <div class="page-eyebrow">// UNGGAH CATATAN // UNIVERSITAS BOASH</div>
+      <h1 class="submission-page-title" style="font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800; color: var(--heading); margin: 6px 0 10px; letter-spacing: -0.02em;">
+        Upload Catatan &amp; Panduan Praktikum
+      </h1>
+      <p class="submission-page-subtitle" style="font-size: 13.5px; color: var(--muted); line-height: 1.6; max-width: 720px; margin: 0;">
+        Punya tugas kuliah, laporan praktikum, atau panduan mandiri? Unggah dokumen Anda. Sistem otomatis mengonversi berkas <b>Microsoft Word (.docx)</b>, <b>PDF Digital (.pdf)</b>, <b>Teks (.txt)</b>, dan <b>Markdown (.md)</b> menjadi naskah siap terbit.
       </p>
     </div>
 
-    <!-- STATE 1: AUTH GATE (SHOWN WHEN USER NOT LOGGED IN) -->
-    <section id="upload-auth-gate" class="auth-gate-box" style="margin: 24px 0 40px; max-width: 100%;">
-      <div class="page-eyebrow" style="margin-bottom: 6px;">// AUTENTIKASI DIBUTUHKAN</div>
-      <h2>Silakan Masuk Terlebih Dahulu</h2>
-      <p>
-        Untuk menjaga orisinalitas naskah dan kualitas repositori bersama, pengunggahan dokumen tugas dan laporan praktikum hanya dapat dilakukan oleh mahasiswa atau admin yang telah masuk ke akun terverifikasi.
-      </p>
-
-      <div class="auth-gate-features">
-        <div class="auth-gate-feat-item">
-          <strong>Data Terverifikasi</strong>
-          <span>Nama dan identitas otomatis terhubung ke akun Anda.</span>
-        </div>
-        <div class="auth-gate-feat-item">
-          <strong>Pantau Antrean</strong>
-          <span>Status penerbitan dokumen dapat dipantau di akun Anda.</span>
-        </div>
-        <div class="auth-gate-feat-item">
-          <strong>Bebas Spam</strong>
-          <span>Melindungi repositori dari pengajuan naskah tanpa identitas.</span>
-        </div>
+    <!-- TEMPLATE CENTER -->
+    <section class="template-center-card" aria-label="Template Dokumen">
+      <div class="template-center-header-centered">
+        <span class="template-dot"></span>
+        <span class="template-header-title">// UNDUH BERKAS TEMPLATE</span>
       </div>
 
-      <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-        <button type="button" id="btn-gate-login" class="button market-primary" style="min-height: 42px; padding: 0 24px; font-weight: 700; font-size: 13.5px;">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-          Masuk Akun Mahasiswa
-        </button>
+      <div class="template-boxes-grid">
+        <a href="/templates/template-laporan-praktikum.docx" download class="template-big-box" title="Unduh format Microsoft Word (.docx)">
+          <div class="template-big-badge">DOCX</div>
+          <div class="template-big-label">Microsoft Word</div>
+          <div class="template-big-sub">.docx dokumen</div>
+        </a>
+
+        <a href="/templates/template-laporan-praktikum.txt" download class="template-big-box" title="Unduh format Notepad Teks (.txt)">
+          <div class="template-big-badge">TXT</div>
+          <div class="template-big-label">Notepad Teks</div>
+          <div class="template-big-sub">.txt polos</div>
+        </a>
+
+        <a href="/templates/template-laporan-praktikum.md" download class="template-big-box" title="Unduh format Markdown (.md)">
+          <div class="template-big-badge">MD</div>
+          <div class="template-big-label">Markdown</div>
+          <div class="template-big-sub">.md naskah</div>
+        </a>
       </div>
     </section>
 
-    <!-- STATE 2: UPLOAD WORKFLOW (SHOWN WHEN USER IS LOGGED IN) -->
-    <section id="upload-content-panel" style="display: none;">
-      <!-- UNIVERSAL DROPZONE UNGGAH FILE (.DOCX, .TXT, .MD) -->
-      <div class="submission-dropzone" id="up-dropzone" tabindex="0" role="button" aria-label="Kotak unggah berkas catatan">
-        <input type="file" id="up-file-input" class="dropzone-file-input" accept=".md,.docx,.txt" />
-        <div class="dropzone-icon">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-            <polyline points="14 2 14 8 20 8"></polyline>
-            <line x1="12" y1="18" x2="12" y2="12"></line>
-            <polyline points="9 15 12 12 15 15"></polyline>
-          </svg>
-        </div>
-        <div class="dropzone-text">
-          <span class="dropzone-text-primary">Tarik &amp; Lepaskan Berkas Dokumen ke Sini</span>
-          <span class="dropzone-text-secondary">
-            Mendukung <b>Microsoft Word (.docx)</b>, <b>Notepad (.txt)</b>, atau <b>Markdown (.md)</b> &bull; Maks. 5 MB
-          </span>
-        </div>
-        <div class="dropzone-browse-btn" id="btn-browse-file">Pilih Berkas</div>
+    <!-- UNIVERSAL DROPZONE UNGGAH BERKAS -->
+    <div class="submission-dropzone" id="up-dropzone" tabindex="0" role="button" aria-label="Kotak unggah berkas catatan">
+      <input type="file" id="up-file-input" class="dropzone-file-input" accept=".docx,.pdf,.txt,.md" />
+      <div class="dropzone-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="12" y1="18" x2="12" y2="12"></line>
+          <polyline points="9 15 12 12 15 15"></polyline>
+        </svg>
       </div>
+      <div class="dropzone-title">Tarik &amp; Lepaskan Berkas ke Sini</div>
+      <p class="dropzone-subtitle">
+        Mendukung <b>Microsoft Word (.docx)</b>, <b>PDF Digital (.pdf)</b>, <b>Notepad (.txt)</b>, atau <b>Markdown (.md)</b> &bull; Maks. 10 MB
+      </p>
+      <div class="dropzone-browse-btn" id="btn-browse-file">Pilih Berkas dari Perangkat</div>
 
+      <!-- File Status Badge Inside Dropzone -->
       <div id="file-info-badge" class="file-loaded-badge" style="display: none;">
-        <span class="file-badge-name" id="badge-filename">catatan.docx</span>
+        <span class="file-badge-icon">✓</span>
+        <span class="file-badge-name" id="badge-filename">dokumen.docx</span>
+        <span class="file-badge-meta" id="badge-filemeta">Terkonversi Otomatis</span>
         <button type="button" class="file-badge-remove" id="btn-remove-file" aria-label="Hapus berkas">&times;</button>
       </div>
 
-      <!-- FORM METADATA & EDITOR -->
-      <form id="submission-form" class="submission-form">
-        <div class="submission-grid-2col">
-          <div class="submission-field">
-            <label class="submission-label" for="up-title">JUDUL CATATAN *</label>
-            <input type="text" id="up-title" class="submission-input" placeholder="cth: Panduan Instalasi Flutter & Android SDK" required />
-          </div>
+      <!-- Conversion Progress Indicator -->
+      <div id="conversion-progress" class="conversion-progress-box" style="display: none;">
+        <span class="conv-spinner"></span>
+        <span id="conv-msg" style="font-family: var(--mono); font-size: 11.5px; color: var(--accent);">Mengekstrak dan mengonversi isi berkas ke Markdown...</span>
+      </div>
+    </div>
 
-          <div class="submission-field">
-            <label class="submission-label" for="up-category">KATEGORI PRAKTIKUM *</label>
-            <select id="up-category" class="submission-select" required>
-              <option value="" disabled selected>Pilih Kategori...</option>
-              <option value="Jaringan Komputer">Jaringan Komputer</option>
-              <option value="Web & Tooling">Web &amp; Tooling</option>
-              <option value="Basis Data">Basis Data</option>
-              <option value="Algoritma & Pemrograman">Algoritma &amp; Pemrograman</option>
-              <option value="IoT & Embedded">IoT &amp; Embedded</option>
-              <option value="Game & Multimedia">Game &amp; Multimedia</option>
-              <option value="Akademik & Laporan">Akademik &amp; Laporan (4-4-3-3)</option>
-              <option value="Git & DevOps">Git &amp; DevOps</option>
-            </select>
-          </div>
+    <!-- METADATA FORM & EDITOR -->
+    <form id="submission-form" class="submission-form-container">
+      <div class="form-header-bar">
+        <span style="font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--heading); letter-spacing: 0.05em;">// METADATA &amp; EDITOR CATATAN</span>
+        <span style="font-family: var(--mono); font-size: 11px; color: var(--muted);">Semua field bertanda (*) wajib diisi</span>
+      </div>
+
+      <div class="submission-grid-2col">
+        <div class="form-group">
+          <label class="form-label" for="up-title">JUDUL CATATAN / PRAKTIKUM *</label>
+          <input type="text" id="up-title" class="form-input" placeholder="cth: Panduan Inter-VLAN Routing Cisco Packet Tracer" required />
+          <span class="form-helper">Judul lengkap yang deskriptif dan mudah dicari mahasiswa.</span>
         </div>
 
-        <div class="submission-grid-2col">
-          <div class="submission-field">
-            <label class="submission-label" for="up-author">NAMA PENULIS *</label>
-            <input type="text" id="up-author" class="submission-input" placeholder="Nama Lengkap Anda" required />
-          </div>
+        <div class="form-group">
+          <label class="form-label" for="up-category">KATEGORI BIDANG ILMU *</label>
+          <select id="up-category" class="form-select" required>
+            <option value="" disabled selected>Pilih Kategori...</option>
+            <option value="Jaringan Komputer">Jaringan Komputer</option>
+            <option value="Web & Tooling">Web &amp; Tooling</option>
+            <option value="Basis Data">Basis Data</option>
+            <option value="Algoritma & Pemrograman">Algoritma &amp; Pemrograman</option>
+            <option value="IoT & Embedded">IoT &amp; Embedded</option>
+            <option value="Game & Multimedia">Game &amp; Multimedia</option>
+            <option value="Akademik & Laporan">Akademik &amp; Laporan (4-4-3-3)</option>
+            <option value="Git & DevOps">Git &amp; DevOps</option>
+          </select>
+          <span class="form-helper">Pilih topik laboratorium yang paling relevan.</span>
+        </div>
+      </div>
 
-          <div class="submission-field">
-            <label class="submission-label" for="up-nim">NIM MAHASISWA *</label>
-            <input type="text" id="up-nim" class="submission-input" placeholder="cth: 24903460014" required />
-          </div>
+      <div class="submission-grid-2col">
+        <div class="form-group">
+          <label class="form-label" for="up-author">NAMA LENGKAP PENULIS *</label>
+          <input type="text" id="up-author" class="form-input" placeholder="Nama Lengkap Anda" required />
+          <span class="form-helper">Akan dicantumkan sebagai pemilik catatan.</span>
         </div>
 
-        <div class="submission-field">
-          <label class="submission-label" for="up-tags">TAGS (PISAH DENGAN KOMA)</label>
-          <input type="text" id="up-tags" class="submission-input" placeholder="cth: flutter, android, terminal, sdk" />
+        <div class="form-group">
+          <label class="form-label" for="up-nim">NIM MAHASISWA *</label>
+          <input type="text" id="up-nim" class="form-input" placeholder="cth: 24903460014" required />
+          <span class="form-helper">Nomor Induk Mahasiswa aktif Universitas Boash.</span>
         </div>
+      </div>
 
-        <div class="submission-field">
-          <label class="submission-label" for="up-summary">RINGKASAN INTISARI PRAKTIKUM *</label>
-          <textarea id="up-summary" class="submission-textarea" rows="2" placeholder="Tuliskan 1-2 kalimat ringkasan tentang catatan ini..." required></textarea>
-        </div>
+      <div class="form-group">
+        <label class="form-label" for="up-tags">TAGS (PISAHKAN DENGAN KOMA)</label>
+        <input type="text" id="up-tags" class="form-input" placeholder="cth: cisco, vlan, routing, network, lab" />
+        <span class="form-helper">Kata kunci pencarian, cth: flutter, android, terminal, database.</span>
+      </div>
 
-        <div class="submission-field">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-            <label class="submission-label" for="up-content" style="margin: 0;">ISI KANDUNGAN CATATAN *</label>
-            <span style="font-family: var(--mono); font-size: 11px; color: var(--muted);">Format Markdown Terstruktur</span>
-          </div>
-          <textarea id="up-content" class="submission-textarea" rows="12" placeholder="# Langkah 1&#10;Tuliskan catatan praktikum di sini..." required style="font-family: var(--mono); font-size: 12.5px;"></textarea>
-        </div>
+      <div class="form-group">
+        <label class="form-label" for="up-summary">RINGKASAN INTISARI PRAKTIKUM *</label>
+        <textarea id="up-summary" class="form-textarea" rows="2" placeholder="Tuliskan 1-2 kalimat ringkasan inti mengenai tujuan atau solusi dari catatan ini..." required></textarea>
+        <span class="form-helper">Muncul pada kartu katalog dan pratinjau media sosial (OG).</span>
+      </div>
 
-        <!-- LIVE PREVIEW CONTAINER -->
-        <div style="margin-top: 14px; margin-bottom: 24px;">
-          <span class="submission-label">PRATINJAU TAMPILAN (LIVE PREVIEW)</span>
-          <div id="up-preview-box" class="article-content" style="background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; max-height: 380px; overflow-y: auto;">
-            <p style="color: var(--muted);">Pratinjau isi catatan akan muncul di sini setelah file diunggah atau teks diketik.</p>
-          </div>
-        </div>
+      <!-- Hidden content field populated automatically by file converter -->
+      <input type="hidden" id="up-content" name="content" value="" />
 
-        <div style="display: flex; gap: 12px; justify-content: flex-end;">
-          <button type="submit" id="btn-submit-note" class="button market-primary" style="min-height: 42px; padding: 0 24px; font-weight: 700;">
-            Ajukan Catatan ke Antrean Moderasi &rarr;
-          </button>
-        </div>
-      </form>
-    </section>
+      <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
+        <button type="submit" id="btn-submit-note" class="button market-primary" style="min-height: 44px; padding: 0 28px; font-weight: 700; font-size: 13.5px;">
+          Ajukan Catatan ke Antrean Moderasi &rarr;
+        </button>
+      </div>
+    </form>
 
     <!-- SUBMISSION RECEIPT MODAL -->
     <div id="submission-modal" class="submission-modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="modal-title">
       <div class="submission-modal-card">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-          <span style="font-family: var(--mono); font-size: 11px; font-weight: 700; color: #4ade80;">// TIKET DIAJUKAN BERHASIL</span>
+          <span style="font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--accent); letter-spacing: 0.05em;">// TIKET PENGAJUAN BERHASIL</span>
           <button type="button" id="modal-close-btn" class="square-action" aria-label="Tutup modal" style="width: 28px; height: 28px;">&times;</button>
         </div>
-        <h2 id="modal-title" style="font-size: 18px; font-weight: 700; color: var(--heading); margin-bottom: 8px;">
+        <h2 id="modal-title" style="font-size: 20px; font-weight: 700; color: var(--heading); margin-bottom: 8px; letter-spacing: -0.01em;">
           Catatan Berhasil Diajukan!
         </h2>
-        <p style="font-size: 13px; color: var(--muted); margin-bottom: 18px; line-height: 1.5;">
-          Naskah Anda telah masuk ke sistem antrean moderasi kurasi Katakating. Simpan nomor tiket berikut untuk melacak status verifikasi.
+        <p style="font-size: 13px; color: var(--muted); margin-bottom: 20px; line-height: 1.5;">
+          Naskah Anda telah masuk ke sistem antrean kurasi Katakating. Simpan nomor tiket berikut untuk melacak status verifikasi dokumen.
         </p>
 
-        <div style="background: var(--panel-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; font-family: var(--mono); font-size: 12px; margin-bottom: 20px; line-height: 1.8;">
-          <div><strong>Nomor Tiket:</strong> <span id="modal-ticket-id" style="color: #4ade80; font-weight: 700;">-</span></div>
-          <div><strong>Waktu Pengajuan:</strong> <span id="modal-ticket-date">-</span></div>
-          <div><strong>Judul Naskah:</strong> <span id="modal-ticket-title">-</span></div>
-          <div><strong>Penulis:</strong> <span id="modal-ticket-author">-</span></div>
+        <div class="submission-ticket-box">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+            <span style="color: var(--muted);">Nomor Tiket:</span>
+            <strong id="modal-ticket-id" style="color: var(--heading); font-family: var(--mono);">-</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+            <span style="color: var(--muted);">Waktu Pengajuan:</span>
+            <span id="modal-ticket-date" style="font-family: var(--mono);">-</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+            <span style="color: var(--muted);">Judul Naskah:</span>
+            <span id="modal-ticket-title" style="max-width: 280px; text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">-</span>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: var(--muted);">Penulis:</span>
+            <span id="modal-ticket-author">-</span>
+          </div>
         </div>
 
-        <button type="button" id="modal-done-btn" class="button market-primary" style="width: 100%; min-height: 40px;">
+        <button type="button" id="modal-done-btn" class="button market-primary" style="width: 100%; min-height: 42px; font-weight: 700; margin-top: 14px;">
           Selesai &amp; Kembali ke Beranda
         </button>
       </div>
     </div>
-  </div>
-</BaseLayout>
+  </main>
 
-<!-- Mammoth.js for Word .docx conversion in browser -->
+<!-- Client-side Parsing Engines: Mammoth (.docx), PDF.js (.pdf), Marked.js (HTML Preview) -->
 <script is:inline src="https://cdn.jsdelivr.net/npm/mammoth@1.6.0/mammoth.browser.min.js"></script>
+<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script is:inline src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
 
 <script is:inline>
 (function() {
@@ -192,61 +206,46 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   const browseBtn = document.getElementById('btn-browse-file');
   const badge = document.getElementById('file-info-badge');
   const badgeName = document.getElementById('badge-filename');
+  const badgeMeta = document.getElementById('badge-filemeta');
   const removeBtn = document.getElementById('btn-remove-file');
+  const convProgress = document.getElementById('conversion-progress');
+  const convMsg = document.getElementById('conv-msg');
 
   const titleInput = document.getElementById('up-title');
+  const categorySelect = document.getElementById('up-category');
+  const authorInput = document.getElementById('up-author');
+  const nimInput = document.getElementById('up-nim');
+  const tagsInput = document.getElementById('up-tags');
+  const summaryInput = document.getElementById('up-summary');
   const contentArea = document.getElementById('up-content');
   const previewBox = document.getElementById('up-preview-box');
+
+  // Configure PDF.js worker
+  if (window.pdfjsLib) {
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  }
+
+  // Pre-fill profile info if logged in
+  try {
+    const authUser = JSON.parse(localStorage.getItem('katakating_auth_user') || 'null');
+    if (authUser) {
+      if (authorInput && !authorInput.value && authUser.name) authorInput.value = authUser.name;
+      if (nimInput && !nimInput.value && authUser.nim) nimInput.value = authUser.nim;
+    }
+  } catch (_) {}
 
   if (browseBtn && fileInput) {
     browseBtn.addEventListener('click', () => fileInput.click());
   }
 
-  function handleFile(file) {
-    if (!file) return;
-    badgeName.textContent = file.name;
-    badge.style.display = 'inline-flex';
+  function showLoading(msg) {
+    if (!convProgress) return;
+    convMsg.textContent = msg || 'Mengonversi berkas...';
+    convProgress.style.display = 'flex';
+  }
 
-    const ext = file.name.split('.').pop().toLowerCase();
-
-    // 1. Word Document (.docx)
-    if (ext === 'docx' && window.mammoth) {
-      const reader = new FileReader();
-      reader.onload = function(loadEvent) {
-        const arrayBuffer = loadEvent.target.result;
-        window.mammoth.convertToMarkdown({ arrayBuffer: arrayBuffer })
-          .then(function(result) {
-            const md = result.value || '';
-            contentArea.value = md;
-            updatePreview(md);
-
-            // Auto-detect title from first line if empty
-            if (!titleInput.value) {
-              const firstLine = md.split('\n')[0].replace(/^#+\s*/, '').trim();
-              if (firstLine) titleInput.value = firstLine;
-            }
-          })
-          .catch(function(err) {
-            alert('Gagal membaca berkas Word: ' + err.message);
-          });
-      };
-      reader.readAsArrayBuffer(file);
-    }
-    // 2. Text File (.txt) or Markdown (.md)
-    else {
-      const reader = new FileReader();
-      reader.onload = function(loadEvent) {
-        const text = loadEvent.target.result || '';
-        contentArea.value = text;
-        updatePreview(text);
-
-        if (!titleInput.value) {
-          const firstLine = text.split('\n')[0].replace(/^#+\s*/, '').trim();
-          if (firstLine) titleInput.value = firstLine;
-        }
-      };
-      reader.readAsText(file);
-    }
+  function hideLoading() {
+    if (convProgress) convProgress.style.display = 'none';
   }
 
   function updatePreview(text) {
@@ -259,16 +258,213 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   if (contentArea) {
-    contentArea.addEventListener('input', () => {
-      updatePreview(contentArea.value);
-    });
+    contentArea.addEventListener('input', () => updatePreview(contentArea.value));
+  }
+
+  // ── 1. Smart PDF-to-Markdown Parser ──
+  async function parsePdf(arrayBuffer) {
+    if (!window.pdfjsLib) throw new Error('PDF.js belum termuat di peramban.');
+    const loadingTask = window.pdfjsLib.getDocument({ data: arrayBuffer });
+    const pdf = await loadingTask.promise;
+    let fullMarkdown = '';
+    let detectedTitle = '';
+
+    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+      const page = await pdf.getPage(pageNum);
+      const textContent = await page.getTextContent();
+      const items = textContent.items;
+      if (!items || items.length === 0) continue;
+
+      let lines = [];
+      let currentLine = [];
+      let lastY = null;
+      let maxHeight = 0;
+
+      for (const item of items) {
+        if (!item.str || !item.str.trim()) continue;
+        const y = Math.round(item.transform[5]);
+        const h = Math.round(item.transform[0] || item.height || 12);
+
+        if (lastY !== null && Math.abs(y - lastY) > 5) {
+          lines.push({ str: currentLine.join(' '), y: lastY, fontSize: maxHeight });
+          currentLine = [];
+          maxHeight = 0;
+        }
+        currentLine.push(item.str.trim());
+        lastY = y;
+        maxHeight = Math.max(maxHeight, h);
+      }
+      if (currentLine.length > 0) {
+        lines.push({ str: currentLine.join(' '), y: lastY, fontSize: maxHeight });
+      }
+
+      let pageMd = '';
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].str;
+        const fs = lines[i].fontSize;
+
+        if (fs >= 18) {
+          pageMd += `\n# ${line}\n\n`;
+          if (!detectedTitle) detectedTitle = line;
+        } else if (fs >= 14 || /^(BAB\s+[IVXLCDM]+|TUJUAN|ALAT\s+DAN\s+BAHAN|LANGKAH|HASIL|KESIMPULAN)/i.test(line)) {
+          pageMd += `\n## ${line}\n\n`;
+        } else if (/^[-*•]\s+/.test(line) || /^\d+\.\s+/.test(line)) {
+          pageMd += `${line}\n`;
+        } else {
+          pageMd += `${line} `;
+          if (i < lines.length - 1 && Math.abs(lines[i].y - lines[i + 1].y) > 16) {
+            pageMd += '\n\n';
+          }
+        }
+      }
+
+      fullMarkdown += (pdf.numPages > 1 ? `\n<!-- Halaman ${pageNum} -->\n` : '') + pageMd.trim() + '\n\n';
+    }
+
+    if (!fullMarkdown.trim()) {
+      throw new Error('PDF tidak memiliki teks digital (terbaca sebagai scan gambar). Silakan unggah versi Word atau ketik di editor.');
+    }
+
+    return { markdown: fullMarkdown.trim(), title: detectedTitle };
+  }
+
+  // ── 2. Smart Plain Text Normalizer ──
+  function normalizeText(text) {
+    const rawLines = text.split(/\r?\n/);
+    const mdLines = [];
+    let detectedTitle = '';
+
+    for (const l of rawLines) {
+      const trim = l.trim();
+      if (!trim) {
+        mdLines.push('');
+        continue;
+      }
+      if (/^[=\-_]{4,}$/.test(trim)) {
+        mdLines.push('---');
+        continue;
+      }
+      if (/^(BAB\s+[IVXLCDM]+|TUJUAN|ALAT\s+DAN\s+BAHAN|LANGKAH-LANGKAH|HASIL|ANALISIS|KESIMPULAN|DAFTAR\s+PUSTAKA)/i.test(trim)) {
+        mdLines.push(`\n## ${trim}\n`);
+      } else if (/^Langkah\s+\d+:/i.test(trim)) {
+        mdLines.push(`\n### ${trim}\n`);
+      } else {
+        mdLines.push(l);
+        if (!detectedTitle && trim.length > 5 && trim.length < 90 && !trim.startsWith('#')) {
+          detectedTitle = trim;
+        }
+      }
+    }
+    return { markdown: mdLines.join('\n').trim(), title: detectedTitle };
+  }
+
+  // ── 3. Frontmatter & Markdown Parser ──
+  function parseMarkdown(md) {
+    let title = '';
+    let category = '';
+    let author = '';
+    let nim = '';
+    let tags = '';
+    let summary = '';
+    let body = md;
+
+    const fmMatch = md.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n([\s\S]*)$/);
+    if (fmMatch) {
+      const yaml = fmMatch[1];
+      body = fmMatch[2];
+
+      const getVal = (k) => {
+        const m = yaml.match(new RegExp(`^${k}:\\s*["']?(.*?)["']?\\s*$`, 'm'));
+        return m ? m[1].trim() : '';
+      };
+      title = getVal('title');
+      category = getVal('category');
+      author = getVal('author');
+      nim = getVal('nim');
+      summary = getVal('summary');
+
+      const tm = yaml.match(/^tags:\s*\[(.*?)\]/m);
+      if (tm) tags = tm[1].replace(/['"]/g, '').trim();
+      else tags = getVal('tags');
+    }
+
+    if (!title) {
+      const h1 = body.match(/^#\s+(.+)$/m);
+      if (h1) title = h1[1].trim();
+    }
+
+    return { title, category, author, nim, tags, summary, body: body.trim() };
+  }
+
+  // ── 4. Main Universal File Handler ──
+  async function handleFile(file) {
+    if (!file) return;
+    badgeName.textContent = file.name;
+    const ext = file.name.split('.').pop().toLowerCase();
+    badgeMeta.textContent = `${(file.size / 1024).toFixed(1)} KB • Memproses...`;
+    badge.style.display = 'inline-flex';
+    showLoading(`Mengonversi berkas ${ext.toUpperCase()} ke Markdown...`);
+
+    try {
+      // 1. DOCX
+      if (ext === 'docx') {
+        if (!window.mammoth) throw new Error('Mammoth.js belum selesai dimuat.');
+        const ab = await file.arrayBuffer();
+        const res = await window.mammoth.convertToMarkdown({ arrayBuffer: ab });
+        const md = res.value || '';
+        contentArea.value = md;
+        updatePreview(md);
+        badgeMeta.textContent = `${(file.size / 1024).toFixed(1)} KB • Word Terkonversi`;
+
+        if (!titleInput.value) {
+          const firstLine = md.split('\n')[0].replace(/^#+\s*/, '').trim();
+          if (firstLine) titleInput.value = firstLine;
+        }
+      }
+      // 2. PDF
+      else if (ext === 'pdf') {
+        const ab = await file.arrayBuffer();
+        const res = await parsePdf(ab);
+        contentArea.value = res.markdown;
+        updatePreview(res.markdown);
+        badgeMeta.textContent = `${(file.size / 1024).toFixed(1)} KB • PDF Teks Terekstrak`;
+        if (!titleInput.value && res.title) titleInput.value = res.title;
+      }
+      // 3. Markdown (.md)
+      else if (ext === 'md') {
+        const text = await file.text();
+        const parsed = parseMarkdown(text);
+        contentArea.value = parsed.body;
+        updatePreview(parsed.body);
+        badgeMeta.textContent = `${(file.size / 1024).toFixed(1)} KB • Markdown Siap`;
+
+        if (parsed.title) titleInput.value = parsed.title;
+        if (parsed.category && categorySelect) categorySelect.value = parsed.category;
+        if (parsed.author && authorInput) authorInput.value = parsed.author;
+        if (parsed.nim && nimInput) nimInput.value = parsed.nim;
+        if (parsed.tags && tagsInput) tagsInput.value = parsed.tags;
+        if (parsed.summary && summaryInput) summaryInput.value = parsed.summary;
+      }
+      // 4. TXT / Plain Text
+      else {
+        const text = await file.text();
+        const norm = normalizeText(text);
+        contentArea.value = norm.markdown;
+        updatePreview(norm.markdown);
+        badgeMeta.textContent = `${(file.size / 1024).toFixed(1)} KB • Teks Dirapikan`;
+        if (!titleInput.value && norm.title) titleInput.value = norm.title;
+      }
+    } catch (err) {
+      alert('Gagal memproses berkas: ' + err.message);
+      badgeMeta.textContent = 'Gagal konversi';
+    } finally {
+      hideLoading();
+    }
   }
 
   if (fileInput) {
     fileInput.addEventListener('change', (e) => {
-      if (e.target.files && e.target.files[0]) {
-        handleFile(e.target.files[0]);
-      }
+      if (e.target.files && e.target.files[0]) handleFile(e.target.files[0]);
     });
   }
 
@@ -277,15 +473,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       e.preventDefault();
       dropzone.classList.add('dragover');
     });
-    dropzone.addEventListener('dragleave', () => {
-      dropzone.classList.remove('dragover');
-    });
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
     dropzone.addEventListener('drop', (e) => {
       e.preventDefault();
       dropzone.classList.remove('dragover');
-      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-        handleFile(e.dataTransfer.files[0]);
-      }
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
     });
   }
 
@@ -296,7 +488,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     });
   }
 
-  // Submission Form Handling
+  // ── 5. Submission Form Handling ──
   const form = document.getElementById('submission-form');
   const modal = document.getElementById('submission-modal');
   const modalCloseBtn = document.getElementById('modal-close-btn');
@@ -305,11 +497,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   if (form) {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const ticketId = 'SUB-' + Date.now().toString(36).toUpperCase();
+      const ticketId = 'KTK-' + Date.now().toString(36).toUpperCase();
       const nowStr = new Date().toLocaleString('id-ID');
       const title = titleInput.value;
-      const author = document.getElementById('up-author').value;
-      const nim = document.getElementById('up-nim').value;
+      const author = authorInput.value;
+      const nim = nimInput.value;
 
       document.getElementById('modal-ticket-id').textContent = ticketId;
       document.getElementById('modal-ticket-date').textContent = nowStr;
@@ -320,12 +512,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     });
   }
 
-  function closeModal() {
-    modal.style.display = 'none';
-  }
-  if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeModal);
-  if (modalDoneBtn) modalDoneBtn.addEventListener('click', () => {
-    window.location.href = '/';
-  });
+  if (modalCloseBtn) modalCloseBtn.addEventListener('click', () => modal.style.display = 'none');
+  if (modalDoneBtn) modalDoneBtn.addEventListener('click', () => window.location.href = '/');
 })();
 </script>
+</BaseLayout>

@@ -110,6 +110,47 @@ function initSearchFilter() {
 
   let activeCat = 'all';
   let query = '';
+  let currentPage = 1;
+  const pageSize = 6;
+
+  const btnPrev = document.getElementById('btn-catalog-prev');
+  const btnNext = document.getElementById('btn-catalog-next');
+  const boxPrev = document.getElementById('page-box-prev');
+  const boxNext = document.getElementById('page-box-next');
+  const pageCounterNum = document.getElementById('page-counter-num');
+  const paginationBar = document.getElementById('omarchy-pagination');
+
+  function updatePaginationUI(totalPages) {
+    if (pageCounterNum) {
+      pageCounterNum.textContent = `${currentPage} / ${totalPages}`;
+    }
+
+    const hasPrev = currentPage > 1;
+    const hasNext = currentPage < totalPages;
+
+    if (btnPrev) btnPrev.disabled = !hasPrev;
+    if (btnNext) btnNext.disabled = !hasNext;
+    if (boxPrev) boxPrev.disabled = !hasPrev;
+    if (boxNext) boxNext.disabled = !hasNext;
+
+    if (paginationBar) {
+      paginationBar.style.display = totalPages <= 1 ? 'none' : 'grid';
+    }
+  }
+
+  function goToPage(p) {
+    currentPage = p;
+    apply(false);
+    const catalogSec = document.getElementById('catalog');
+    if (catalogSec) {
+      catalogSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  if (btnPrev) btnPrev.addEventListener('click', () => { if (currentPage > 1) goToPage(currentPage - 1); });
+  if (boxPrev) boxPrev.addEventListener('click', () => { if (currentPage > 1) goToPage(currentPage - 1); });
+  if (btnNext) btnNext.addEventListener('click', () => { goToPage(currentPage + 1); });
+  if (boxNext) boxNext.addEventListener('click', () => { goToPage(currentPage + 1); });
 
   function updateClearBtn() {
     if (searchClearBtn) {
@@ -117,8 +158,10 @@ function initSearchFilter() {
     }
   }
 
-  function apply() {
-    let visibleCount = 0;
+  function apply(resetPage = true) {
+    if (resetPage) currentPage = 1;
+
+    let matched = [];
     cards.forEach(card => {
       const cat = (card.getAttribute('data-cat') || '').toLowerCase();
       const text = card.textContent.toLowerCase();
@@ -126,21 +169,36 @@ function initSearchFilter() {
       const matchQuery = query === '' || text.includes(query);
 
       if (matchCat && matchQuery) {
+        matched.push(card);
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+
+    const totalPages = Math.max(1, Math.ceil(matched.length / pageSize));
+    if (currentPage > totalPages) currentPage = totalPages;
+
+    const startIndex = (currentPage - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+
+    matched.forEach((card, idx) => {
+      if (idx >= startIndex && idx < endIndex) {
         card.classList.remove('hidden');
-        visibleCount++;
       } else {
         card.classList.add('hidden');
       }
     });
 
     if (countEl) {
-      countEl.textContent = visibleCount;
+      countEl.textContent = matched.length;
     }
 
     if (emptyState) {
-      emptyState.hidden = visibleCount > 0;
-      if (emptyState.style) emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+      emptyState.hidden = matched.length > 0;
+      if (emptyState.style) emptyState.style.display = matched.length === 0 ? 'block' : 'none';
     }
+
+    updatePaginationUI(totalPages);
   }
 
   // Sort logic

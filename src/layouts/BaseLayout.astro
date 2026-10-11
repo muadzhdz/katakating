@@ -3,6 +3,7 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import ShareModal from '../components/ShareModal.astro';
+import MobileBottomNav from '../components/MobileBottomNav.astro';
 
 interface Props {
   title?: string;
@@ -106,5 +107,8 @@ const fullOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}
 
   <!-- Social Media & IG Story Share Modal -->
   <ShareModal />
+
+  <!-- Fixed Mobile Bottom App Bar -->
+  <MobileBottomNav currentPath={currentPath} />
 </body>
 </html>

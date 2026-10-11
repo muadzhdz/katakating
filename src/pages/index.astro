@@ -71,11 +71,18 @@ const categories = [
   <section class="market-catalog" id="catalog" aria-labelledby="catalog-title" tabindex="-1">
     <div class="catalog-heading">
       <div>
-        <span class="page-eyebrow">// KATALOG PRAKTIKUM</span>
-        <h2 id="catalog-title">jelajahi semua catatan</h2>
+        <h2 class="page-eyebrow" id="catalog-title" style="margin: 0; font-size: 11px;">// KATALOG PRAKTIKUM</h2>
       </div>
       <div class="catalog-heading-side">
         <p><span id="plugin-count">{notes.length}</span> <span id="plugin-count-label">catatan praktikum</span></p>
+        <div class="omarchy-switcher-btns" aria-label="Navigasi Halaman Katalog">
+          <button type="button" class="omarchy-arrow-btn" id="btn-catalog-prev" aria-label="Halaman Sebelumnya" title="Halaman Sebelumnya" disabled>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </button>
+          <button type="button" class="omarchy-arrow-btn" id="btn-catalog-next" aria-label="Halaman Berikutnya" title="Halaman Berikutnya">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -131,14 +138,27 @@ const categories = [
     </div>
 
     <!-- CARDS GRID -->
-    <div id="plugin-grid" class="plugin-grid market-plugin-grid mobile-slider">
+    <div id="plugin-grid" class="plugin-grid market-plugin-grid">
       {notes.map((note, idx) => (
         <NoteCard note={note} index={idx} />
       ))}
     </div>
 
-    <!-- Mobile Slider Dots Navigation for Catalog -->
-    <div class="slider-dots" id="catalogDots" aria-label="Navigasi Slider Katalog"></div>
+    <!-- OMARCHY 3-BOX PAGINATION BAR (Indonesian) -->
+    <div class="omarchy-pagination-bar" id="omarchy-pagination" aria-label="Navigasi Halaman">
+      <button type="button" class="omarchy-page-box omarchy-page-prev" id="page-box-prev" disabled>
+        <span class="omarchy-box-label">&larr; SEBELUMNYA</span>
+      </button>
+
+      <div class="omarchy-page-box omarchy-page-counter">
+        <span class="omarchy-box-label">HALAMAN</span>
+        <span class="omarchy-box-number" id="page-counter-num">1 / 2</span>
+      </div>
+
+      <button type="button" class="omarchy-page-box omarchy-page-next" id="page-box-next">
+        <span class="omarchy-box-label">SELANJUTNYA &rarr;</span>
+      </button>
+    </div>
   </section>
 </BaseLayout>
 
@@ -192,9 +212,8 @@ const categories = [
     }, { passive: true });
   }
 
-  // Initialize sliders on mobile
+  // Initialize recent cards slider on mobile
   initCardSlider('recent-grid', 'recentDots', '.plugin-card');
-  initCardSlider('plugin-grid', 'catalogDots', '.plugin-card');
 
   // ── 2. Share Button Event Delegation ──
   document.addEventListener('click', (e) => {

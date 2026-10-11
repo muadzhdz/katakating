@@ -1,0 +1,87 @@
+---
+// src/components/MobileBottomNav.astro
+// Fixed Mobile App-Style Bottom Navigation Bar (Omarchy Style)
+interface Props {
+  currentPath?: string;
+}
+const { currentPath = '/' } = Astro.props;
+---
+
+<nav class="mobile-bottom-bar" aria-label="Navigasi Bawah Mobile">
+  <!-- 1. HOME -->
+  <a
+    href="/"
+    class={`mobile-bar-item ${currentPath === '/' ? 'active' : ''}`}
+    aria-label="Beranda"
+  >
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+      <polyline points="9 22 9 12 15 12 15 22"></polyline>
+    </svg>
+    <span>Home</span>
+  </a>
+
+  <!-- 2. BROWSE / JELAJAHI -->
+  <a
+    href="/#catalog"
+    id="mobile-btn-browse"
+    class={`mobile-bar-item ${currentPath === '/#catalog' ? 'active' : ''}`}
+    aria-label="Cari dan Jelajahi Catatan"
+  >
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"></circle>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </svg>
+    <span>Browse</span>
+  </a>
+
+  <!-- 3. EXPLORE / THE BRAIN GRAPH -->
+  <a
+    href="/graph"
+    class={`mobile-bar-item ${currentPath === '/graph' ? 'active' : ''}`}
+    aria-label="Graf Pengetahuan (The Brain)"
+  >
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="5" r="3"></circle>
+      <circle cx="5" cy="19" r="3"></circle>
+      <circle cx="19" cy="19" r="3"></circle>
+      <path d="M12 8v4"></path>
+      <path d="m7.5 16.5 2.5-3.5"></path>
+      <path d="m16.5 16.5-2.5-3.5"></path>
+    </svg>
+    <span>Explore</span>
+  </a>
+
+  <!-- 4. PUBLISH / UPLOAD -->
+  <a
+    href="/upload"
+    class={`mobile-bar-item ${currentPath === '/upload' ? 'active' : ''}`}
+    aria-label="Upload Catatan Praktikum"
+  >
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="12" y1="8" x2="12" y2="16"></line>
+      <line x1="8" y1="12" x2="16" y2="12"></line>
+    </svg>
+    <span>Publish</span>
+  </a>
+</nav>
+
+<script is:inline>
+(function() {
+  const browseBtn = document.getElementById('mobile-btn-browse');
+  if (browseBtn) {
+    browseBtn.addEventListener('click', (e) => {
+      if (window.location.pathname === '/' || window.location.pathname === '') {
+        e.preventDefault();
+        const searchInput = document.getElementById('search-input');
+        const catalogSec = document.getElementById('catalog');
+        if (catalogSec) catalogSec.scrollIntoView({ behavior: 'smooth' });
+        if (searchInput) {
+          setTimeout(() => searchInput.focus(), 300);
+        }
+      }
+    });
+  }
+})();
+</script>
