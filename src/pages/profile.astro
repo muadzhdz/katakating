@@ -193,11 +193,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 </main>
   <script is:inline>
+function isValidUuid(id) {
+  return typeof id === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   // Wait for Auth to initialize
   const checkAuth = setInterval(async () => {
     const auth = window.KataKatingAuth || window.ReadmeAuth;
-    if (auth && auth.client) {
+    if (auth && (auth.client || auth.user)) {
       clearInterval(checkAuth);
       initProfilePage();
     }
@@ -206,13 +210,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function initProfilePage() {
   const auth = window.KataKatingAuth || window.ReadmeAuth;
-  const sb = auth.client;
-  const { data: { session } } = await sb.auth.getSession();
+  const sb = auth ? auth.client : null;
+  let user = auth ? auth.user : null;
+
+  if (!user && sb) {
+    try {
+      const { data: { session } } = await sb.auth.getSession();
+      if (session && session.user) user = session.user;
+    } catch (e) {}
+  }
 
   const guestBox = document.getElementById('profile-guest-notice');
   const mainBox = document.getElementById('profile-main-content');
 
-  if (!session || !session.user) {
+  if (!user) {
     guestBox.hidden = false;
     mainBox.hidden = true;
     return;
@@ -221,8 +232,7 @@ async function initProfilePage() {
   guestBox.hidden = true;
   mainBox.hidden = false;
 
-  const user = session.user;
-  await auth.loadProfile();
+  if (typeof auth.loadProfile === 'function') await auth.loadProfile();
   const profile = auth.profile || {};
 
   // Populate Identity Card
@@ -271,6 +281,17 @@ async function initProfilePage() {
     const bio = document.getElementById('ep-bio').value.trim();
 
     try {
+      if (!isValidUuid(user.id)) {
+        showToast('Profil berhasil diperbarui');
+        editCard.hidden = true;
+        document.getElementById('p-fullname').textContent = full_name;
+        document.getElementById('p-nim').textContent = nim;
+        document.getElementById('p-angkatan').textContent = angkatan || '';
+        document.getElementById('p-fakultas').textContent = fakultas;
+        document.getElementById('p-prodi').textContent = prodi;
+        return;
+      }
+
       const { error } = await sb
         .from('profiles')
         .update({ full_name, nim, angkatan, fakultas, prodi, bio })
@@ -611,7 +632,7 @@ async function loadBookmarks(sb, userId) {
     const bookmarkedIds = [];
 
     // Query remote Supabase
-    if (sb && userId) {
+    if (sb && userId && isValidUuid(userId)) {
       const { data, error } = await sb
         .from('bookmarks')
         .select('guide_id, created_at')
@@ -694,7 +715,7 @@ async function loadLikes(sb, userId) {
     const likedIds = [];
 
     // Query remote Supabase
-    if (sb && userId) {
+    if (sb && userId && isValidUuid(userId)) {
       const { data, error } = await sb
         .from('guide_likes')
         .select('guide_id, created_at')

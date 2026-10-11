@@ -5472,6 +5472,7 @@ html.light .pill-dot.cortex,
   margin: 16px 0 24px;
 }
 .slider-dot {
+  position: relative;
   width: 7px;
   height: 7px;
   border-radius: 50%;
@@ -5481,9 +5482,17 @@ html.light .pill-dot.cortex,
   padding: 0;
   transition: all 0.25s var(--ease-out);
 }
+.slider-dot::after {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: -8px;
+  right: -8px;
+  bottom: -12px;
+}
 .slider-dot.active {
-  width: 20px;
-  border-radius: 10px;
+  width: 22px;
+  border-radius: 11px;
   background: var(--accent);
 }
 
@@ -5493,6 +5502,7 @@ html.light .pill-dot.cortex,
   }
   .recent-grid,
   .plugin-grid.mobile-slider {
+    position: relative !important;
     display: flex !important;
     flex-wrap: nowrap !important;
     overflow-x: auto !important;
@@ -5513,7 +5523,7 @@ html.light .pill-dot.cortex,
   .plugin-grid.mobile-slider > .plugin-card {
     flex: 0 0 calc(100% - 44px) !important;
     max-width: 320px !important;
-    scroll-snap-align: center !important;
+    scroll-snap-align: start !important;
     margin: 0 !important;
   }
 }

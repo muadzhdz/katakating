@@ -14,7 +14,9 @@ try {
   notes = [];
 }
 
-const recentNotes = notes.slice(0, 4);
+const recentNotes = [...notes]
+  .sort((a, b) => new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime())
+  .slice(0, 4);
 
 // Categories
 const categories = [
@@ -160,94 +162,129 @@ const categories = [
       </button>
     </div>
   </section>
-</BaseLayout>
 
-<script is:inline>
-(function() {
-  // ── 1. Mobile Card Carousel Slider (Edurobotika Standard) ──
-  function initCardSlider(sliderId, dotsId, cardSelector) {
-    const slider = document.getElementById(sliderId);
-    const dotsContainer = document.getElementById(dotsId);
-    if (!slider || !dotsContainer) return;
+  <script is:inline>
+  (function() {
+    // ── 1. Mobile Card Carousel Slider (Edurobotika Standard) ──
+    function initCardSlider(sliderId, dotsId, cardSelector) {
+      const slider = document.getElementById(sliderId);
+      const dotsContainer = document.getElementById(dotsId);
+      if (!slider || !dotsContainer) return;
 
-    const cards = slider.querySelectorAll(cardSelector);
-    if (!cards.length) return;
+      const cards = slider.querySelectorAll(cardSelector);
+      if (!cards.length) {
+        dotsContainer.innerHTML = '';
+        return;
+      }
 
-    dotsContainer.innerHTML = '';
-    cards.forEach((card, i) => {
-      const dot = document.createElement('button');
-      dot.type = 'button';
-      dot.className = `slider-dot${i === 0 ? ' active' : ''}`;
-      dot.setAttribute('aria-label', `Slide ${i + 1}`);
-      dot.addEventListener('click', (e) => {
-        e.preventDefault();
-        const sliderRect = slider.getBoundingClientRect();
-        const cardRect = card.getBoundingClientRect();
-        const delta = (cardRect.left + cardRect.width / 2) - (sliderRect.left + sliderRect.width / 2);
-        slider.scrollBy({
-          left: delta,
-          behavior: 'smooth'
+      dotsContainer.innerHTML = '';
+      const firstCardOffset = cards[0].offsetLeft;
+
+      cards.forEach((card, i) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = `slider-dot${i === 0 ? ' active' : ''}`;
+        dot.setAttribute('aria-label', `Slide ${i + 1}`);
+
+        dot.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+
+          let targetScroll = card.offsetLeft - firstCardOffset;
+          const maxScroll = slider.scrollWidth - slider.clientWidth;
+
+          if (i === 0) {
+            targetScroll = 0;
+          } else if (i === cards.length - 1 && maxScroll > 0) {
+            targetScroll = maxScroll;
+          }
+
+          slider.scrollTo({
+            left: Math.max(0, targetScroll),
+            behavior: 'smooth'
+          });
+
+          const allDots = dotsContainer.querySelectorAll('.slider-dot');
+          allDots.forEach((d, idx) => d.classList.toggle('active', idx === i));
         });
+
+        dotsContainer.appendChild(dot);
       });
-      dotsContainer.appendChild(dot);
-    });
 
-    const dots = dotsContainer.querySelectorAll('.slider-dot');
-    let scrollRaf = null;
+      const dots = dotsContainer.querySelectorAll('.slider-dot');
+      let scrollRaf = null;
 
-    slider.addEventListener('scroll', () => {
-      if (scrollRaf) return;
-      scrollRaf = requestAnimationFrame(() => {
-        const sliderRect = slider.getBoundingClientRect();
-        const sliderCenter = sliderRect.left + sliderRect.width / 2;
-        let closest = 0;
-        let best = Infinity;
-        cards.forEach((c, i) => {
-          const cardRect = c.getBoundingClientRect();
-          const cardCenter = cardRect.left + cardRect.width / 2;
-          const d = Math.abs(cardCenter - sliderCenter);
-          if (d < best) {
-            best = d;
-            closest = i;
+      function updateActiveDot() {
+        const maxScroll = slider.scrollWidth - slider.clientWidth;
+        const currentScroll = slider.scrollLeft;
+        let activeIdx = 0;
+
+        if (currentScroll <= 15) {
+          activeIdx = 0;
+        } else if (maxScroll > 0 && currentScroll >= maxScroll - 15) {
+          activeIdx = cards.length - 1;
+        } else {
+          let minDiff = Infinity;
+          cards.forEach((c, idx) => {
+            const target = c.offsetLeft - firstCardOffset;
+            const diff = Math.abs(target - currentScroll);
+            if (diff < minDiff) {
+              minDiff = diff;
+              activeIdx = idx;
+            }
+          });
+        }
+
+        dots.forEach((d, i) => d.classList.toggle('active', i === activeIdx));
+      }
+
+      if (slider._onCardSliderScroll) {
+        slider.removeEventListener('scroll', slider._onCardSliderScroll);
+      }
+      slider._onCardSliderScroll = () => {
+        if (scrollRaf) return;
+        scrollRaf = requestAnimationFrame(() => {
+          updateActiveDot();
+          scrollRaf = null;
+        });
+      };
+      slider.addEventListener('scroll', slider._onCardSliderScroll, { passive: true });
+    }
+
+    window.initCardSlider = initCardSlider;
+
+    // Initialize recent cards slider on mobile
+    initCardSlider('recent-grid', 'recentDots', '.plugin-card');
+
+    // ── 2. Share Button Event Delegation ──
+    document.addEventListener('click', (e) => {
+      const shareBtn = e.target.closest('.card-btn-share');
+      if (!shareBtn) return;
+      e.preventDefault();
+      e.stopPropagation();
+
+      const title = shareBtn.getAttribute('data-title') || '';
+      const noteId = shareBtn.getAttribute('data-id') || '';
+      const summary = shareBtn.getAttribute('data-summary') || '';
+      const url = shareBtn.getAttribute('data-url') || (window.location.origin + '/note/' + noteId);
+
+      // If mobile Web Share is available, use it!
+      if (navigator.share && window.innerWidth <= 768) {
+        navigator.share({
+          title: title,
+          text: `${title} — ${summary}`,
+          url: url
+        }).catch(() => {
+          if (window.openShareModal) {
+            window.openShareModal({ title, id: noteId, url, summary });
           }
         });
-        dots.forEach((d, i) => d.classList.toggle('active', i === closest));
-        scrollRaf = null;
-      });
-    }, { passive: true });
-  }
-
-  // Initialize recent cards slider on mobile
-  initCardSlider('recent-grid', 'recentDots', '.plugin-card');
-
-  // ── 2. Share Button Event Delegation ──
-  document.addEventListener('click', (e) => {
-    const shareBtn = e.target.closest('.card-btn-share');
-    if (!shareBtn) return;
-    e.preventDefault();
-    e.stopPropagation();
-
-    const title = shareBtn.getAttribute('data-title') || '';
-    const noteId = shareBtn.getAttribute('data-id') || '';
-    const summary = shareBtn.getAttribute('data-summary') || '';
-    const url = shareBtn.getAttribute('data-url') || (window.location.origin + '/note/' + noteId);
-
-    // If mobile Web Share is available, use it!
-    if (navigator.share && window.innerWidth <= 768) {
-      navigator.share({
-        title: title,
-        text: `${title} — ${summary}`,
-        url: url
-      }).catch(() => {
+      } else {
         if (window.openShareModal) {
           window.openShareModal({ title, id: noteId, url, summary });
         }
-      });
-    } else {
-      if (window.openShareModal) {
-        window.openShareModal({ title, id: noteId, url, summary });
       }
-    }
-  });
-})();
-</script>
+    });
+  })();
+  </script>
+</BaseLayout>

@@ -411,6 +411,11 @@ function parseSimpleMarkdown(md) {
 }
 
 // ── Interactive Card Actions (Likes, Bookmarks, Real-Time Stats) ──
+// ── Card Interactions: Likes & Bookmarks Sync ──
+function isValidUuid(id) {
+  return typeof id === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+}
+
 async function initCardInteractions() {
   const cards = document.querySelectorAll('.plugin-card[data-id]');
   if (!cards.length) return;
@@ -418,12 +423,27 @@ async function initCardInteractions() {
   const auth = window.KataKatingAuth || window.ReadmeAuth;
   const sb = auth ? auth.client : null;
 
+  // 1. Sync from localStorage for immediate flicker-free display & offline/admin support
+  cards.forEach(card => {
+    const gid = card.getAttribute('data-id');
+    if (!gid) return;
+    if (localStorage.getItem('katakating_like_' + gid) || localStorage.getItem('readme_like_' + gid)) {
+      card.querySelectorAll('.card-btn-like').forEach(btn => btn.classList.add('active-heart'));
+    }
+    if (localStorage.getItem('katakating_bookmark_' + gid) || localStorage.getItem('readme_bookmark_' + gid)) {
+      card.querySelectorAll('.card-btn-bookmark').forEach(btn => {
+        btn.classList.add('active-bookmark');
+        btn.classList.add('active-star');
+      });
+    }
+  });
+
   if (sb) {
     try {
       const user = auth ? auth.user : null;
 
-      // 1. Fetch user's own likes
-      if (user) {
+      // 2. Fetch user's own likes (only if valid UUID)
+      if (user && isValidUuid(user.id)) {
         const { data: userLikes } = await sb.from('guide_likes').select('guide_id').eq('user_id', user.id);
         if (userLikes) {
           userLikes.forEach(l => {
@@ -433,7 +453,7 @@ async function initCardInteractions() {
           });
         }
 
-        // 2. Fetch user's own bookmarks
+        // 3. Fetch user's own bookmarks (only if valid UUID)
         const { data: userBookmarks } = await sb.from('bookmarks').select('guide_id').eq('user_id', user.id);
         if (userBookmarks) {
           userBookmarks.forEach(b => {
@@ -445,7 +465,7 @@ async function initCardInteractions() {
         }
       }
 
-      // 3. Fetch aggregate counts for likes
+      // 4. Fetch aggregate counts for likes
       const { data: allLikes } = await sb.from('guide_likes').select('guide_id');
       if (allLikes) {
         const likeCounts = {};
@@ -457,7 +477,7 @@ async function initCardInteractions() {
         });
       }
 
-      // 4. Fetch aggregate counts for bookmarks
+      // 5. Fetch aggregate counts for bookmarks
       const { data: allBookmarks } = await sb.from('bookmarks').select('guide_id');
       if (allBookmarks) {
         const bookmarkCounts = {};
@@ -515,11 +535,11 @@ function setupCardDelegation() {
       if (isLiked) {
         showToast('Batal menyukai catatan');
         try { localStorage.removeItem('katakating_like_' + articleId); } catch(e){}
-        if (sb) await sb.from('guide_likes').delete().eq('guide_id', articleId).eq('user_id', user.id);
+        if (sb && isValidUuid(user.id)) await sb.from('guide_likes').delete().eq('guide_id', articleId).eq('user_id', user.id);
       } else {
         showToast('Catatan disukai!');
         try { localStorage.setItem('katakating_like_' + articleId, 'true'); } catch(e){}
-        if (sb) {
+        if (sb && isValidUuid(user.id)) {
           const { error } = await sb.from('guide_likes').insert({ guide_id: articleId, user_id: user.id });
           if (error) console.warn('guide_likes insert notice:', error);
         }
@@ -557,11 +577,11 @@ function setupCardDelegation() {
       if (isSaved) {
         showToast('Catatan dihapus dari simpanan');
         try { localStorage.removeItem('katakating_bookmark_' + articleId); } catch(e){}
-        if (sb) await sb.from('bookmarks').delete().eq('guide_id', articleId).eq('user_id', user.id);
+        if (sb && isValidUuid(user.id)) await sb.from('bookmarks').delete().eq('guide_id', articleId).eq('user_id', user.id);
       } else {
         showToast('Catatan disimpan ke daftar bacaan!');
         try { localStorage.setItem('katakating_bookmark_' + articleId, 'true'); } catch(e){}
-        if (sb) {
+        if (sb && isValidUuid(user.id)) {
           const { error } = await sb.from('bookmarks').insert({ guide_id: articleId, user_id: user.id });
           if (error) console.warn('bookmarks insert notice:', error);
         }
@@ -575,7 +595,7 @@ function setupCardDelegation() {
       if (!link) {
         const articleId = card.getAttribute('data-id');
         if (articleId) {
-          window.location.href = `notes.html?id=${encodeURIComponent(articleId)}`;
+          window.location.href = `/note/${encodeURIComponent(articleId)}`;
         }
       }
     }
@@ -619,6 +639,14 @@ function formatTimeAgo(isoString) {
 async function loadRecentlyAdded() {
   const container = document.getElementById('recent-grid');
   if (!container) return;
+
+  // Preserve Astro SSG pre-rendered cards without overwriting with client-side template
+  if (container.children.length > 0) {
+    if (typeof window.initCardSlider === 'function') {
+      window.initCardSlider('recent-grid', 'recentDots', '.plugin-card');
+    }
+    return;
+  }
 
   try {
     // 1. Fetch static curated articles from articles.json

@@ -364,5 +364,134 @@ const ogImageUrl = `/og/${note.id}.png`;
       if (quizFeedback) quizFeedback.style.display = 'block';
     });
   });
+
+  // Like & Bookmark Note Interactivity
+  const articleId = document.getElementById('btn-like-article')?.getAttribute('data-id') || '';
+  const btnLike = document.getElementById('btn-like-article');
+  const btnBookmark = document.getElementById('btn-bookmark-article');
+  const likeText = document.getElementById('like-text');
+  const likeCountEl = document.getElementById('like-count');
+  const likeIcon = document.getElementById('like-icon');
+  const bookmarkText = document.getElementById('bookmark-text');
+  const bookmarkIcon = document.getElementById('bookmark-icon');
+
+  function isValidUuid(id) {
+    return typeof id === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+  }
+
+  async function syncNoteInteractions() {
+    if (!articleId) return;
+    const auth = window.KataKatingAuth || window.ReadmeAuth;
+    const sb = auth ? auth.client : null;
+    const user = auth ? auth.user : null;
+
+    let isLiked = !!(localStorage.getItem('katakating_like_' + articleId) || localStorage.getItem('readme_like_' + articleId));
+    let isBookmarked = !!(localStorage.getItem('katakating_bookmark_' + articleId) || localStorage.getItem('readme_bookmark_' + articleId));
+
+    if (sb) {
+      try {
+        const { count } = await sb.from('guide_likes').select('id', { count: 'exact', head: true }).eq('guide_id', articleId);
+        if (typeof count === 'number' && likeCountEl) likeCountEl.textContent = count;
+
+        if (user && isValidUuid(user.id)) {
+          const { data: userLike } = await sb.from('guide_likes').select('id').eq('guide_id', articleId).eq('user_id', user.id).maybeSingle();
+          if (userLike) isLiked = true;
+
+          const { data: userBookmark } = await sb.from('bookmarks').select('id').eq('guide_id', articleId).eq('user_id', user.id).maybeSingle();
+          if (userBookmark) isBookmarked = true;
+        }
+      } catch (e) {}
+    }
+
+    function renderUI() {
+      if (btnLike && likeIcon && likeText) {
+        if (isLiked) {
+          btnLike.style.borderColor = 'var(--accent)';
+          btnLike.style.color = 'var(--accent)';
+          likeIcon.setAttribute('fill', 'var(--accent)');
+          likeText.textContent = 'Disukai';
+        } else {
+          btnLike.style.borderColor = '';
+          btnLike.style.color = '';
+          likeIcon.setAttribute('fill', 'none');
+          likeText.textContent = 'Suka';
+        }
+      }
+      if (btnBookmark && bookmarkIcon && bookmarkText) {
+        if (isBookmarked) {
+          btnBookmark.style.borderColor = 'var(--accent)';
+          btnBookmark.style.color = 'var(--accent)';
+          bookmarkIcon.setAttribute('fill', 'var(--accent)');
+          bookmarkText.textContent = 'Tersimpan';
+        } else {
+          btnBookmark.style.borderColor = '';
+          btnBookmark.style.color = '';
+          bookmarkIcon.setAttribute('fill', 'none');
+          bookmarkText.textContent = 'Simpan';
+        }
+      }
+    }
+    renderUI();
+
+    if (btnLike) {
+      btnLike.onclick = async () => {
+        const u = auth ? auth.user : null;
+        if (!u) {
+          if (typeof showToast === 'function') showToast('Masuk dengan GitHub atau Google untuk menyukai catatan');
+          if (auth && auth.openLoginModal) auth.openLoginModal();
+          return;
+        }
+        let curCount = parseInt(likeCountEl ? likeCountEl.textContent : '0', 10) || 0;
+        if (isLiked) {
+          isLiked = false;
+          if (likeCountEl) likeCountEl.textContent = Math.max(0, curCount - 1);
+          renderUI();
+          try { localStorage.removeItem('katakating_like_' + articleId); } catch(e){}
+          if (sb && isValidUuid(u.id)) await sb.from('guide_likes').delete().eq('guide_id', articleId).eq('user_id', u.id);
+          if (typeof showToast === 'function') showToast('Batal menyukai catatan');
+        } else {
+          isLiked = true;
+          if (likeCountEl) likeCountEl.textContent = curCount + 1;
+          renderUI();
+          try { localStorage.setItem('katakating_like_' + articleId, 'true'); } catch(e){}
+          if (sb && isValidUuid(u.id)) {
+            const { error } = await sb.from('guide_likes').insert({ guide_id: articleId, user_id: u.id });
+            if (error) console.warn('guide_likes insert notice:', error);
+          }
+          if (typeof showToast === 'function') showToast('Catatan disukai!');
+        }
+      };
+    }
+
+    if (btnBookmark) {
+      btnBookmark.onclick = async () => {
+        const u = auth ? auth.user : null;
+        if (!u) {
+          if (typeof showToast === 'function') showToast('Masuk dengan GitHub atau Google untuk menyimpan catatan');
+          if (auth && auth.openLoginModal) auth.openLoginModal();
+          return;
+        }
+        if (isBookmarked) {
+          isBookmarked = false;
+          renderUI();
+          try { localStorage.removeItem('katakating_bookmark_' + articleId); } catch(e){}
+          if (sb && isValidUuid(u.id)) await sb.from('bookmarks').delete().eq('guide_id', articleId).eq('user_id', u.id);
+          if (typeof showToast === 'function') showToast('Catatan dihapus dari simpanan');
+        } else {
+          isBookmarked = true;
+          renderUI();
+          try { localStorage.setItem('katakating_bookmark_' + articleId, 'true'); } catch(e){}
+          if (sb && isValidUuid(u.id)) {
+            const { error } = await sb.from('bookmarks').insert({ guide_id: articleId, user_id: u.id });
+            if (error) console.warn('bookmarks insert notice:', error);
+          }
+          if (typeof showToast === 'function') showToast('Catatan disimpan ke daftar bacaan!');
+        }
+      };
+    }
+  }
+
+  setTimeout(syncNoteInteractions, 300);
+  window.addEventListener('auth-state-changed', syncNoteInteractions);
 })();
 </script>
