@@ -1,0 +1,26 @@
+---
+// src/pages/notes.astro
+// Backward-compatibility redirect adapter for legacy URLs like /notes?id=...
+---
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mengarahkan Catatan... | KATAKATING</title>
+  <script is:inline>
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+      if (id) {
+        window.location.replace('/note/' + encodeURIComponent(id));
+      } else {
+        window.location.replace('/#catalog');
+      }
+    })();
+  </script>
+</head>
+<body style="background: #090a0d; color: #fff; font-family: monospace; display: flex; align-items: center; justify-content: center; height: 100vh;">
+  <p>// Mengarahkan ke catatan...</p>
+</body>
+</html>

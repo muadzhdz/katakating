@@ -1,0 +1,275 @@
+---
+// src/pages/index.astro
+import fs from 'node:fs';
+import path from 'node:path';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NoteCard from '../components/NoteCard.astro';
+
+// Read notes directly at SSG build time
+const notesPath = path.resolve('./notes/notes.json');
+let notes: any[] = [];
+try {
+  notes = JSON.parse(fs.readFileSync(notesPath, 'utf8'));
+} catch (e) {
+  notes = [];
+}
+
+const recentNotes = notes.slice(0, 4);
+
+// Categories
+const categories = [
+  { id: 'all', label: 'Semua Kategori' },
+  { id: 'Jaringan Komputer', label: 'Jaringan' },
+  { id: 'Web & Tooling', label: 'Web & Linux' },
+  { id: 'Basis Data', label: 'Basis Data' },
+  { id: 'Algoritma & Pemrograman', label: 'Algoritma' },
+  { id: 'IoT & Embedded', label: 'IoT' },
+  { id: 'Game & Multimedia', label: 'Multimedia' },
+  { id: 'Akademik & Laporan', label: 'Akademik' },
+  { id: 'Git & DevOps', label: 'DevOps' },
+];
+---
+
+<BaseLayout
+  title="KATAKATING — Boash Student Notes & Knowledge Hub"
+  description="Pusat catatan praktikum mandiri, panduan belajar bersama, template laporan 4-4-3-3, dan dokumentasi terbuka mahasiswa Universitas Boash."
+  currentPath="/"
+>
+  <!-- HERO SECTION -->
+  <section class="market-hero">
+    <div class="market-hero-copy">
+      <div class="page-eyebrow">// DIREKTORI MAHASISWA &bull; UNIVERSITAS BOASH</div>
+      <h1>eksplorasi catatan mahasiswa boash</h1>
+      <p>
+        Dokumentasi praktikum teruji, rangkuman mata kuliah, dan panduan belajar bersama mahasiswa Universitas Boash. Dibangun dan dikurasi secara terbuka tanpa bloat.
+      </p>
+      <div class="market-hero-actions" style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <a class="button market-primary" href="#catalog">Jelajahi Catatan <span aria-hidden="true">&rarr;</span></a>
+        <button type="button" class="button" id="hero-req-btn" style="background: var(--panel); border: 1px solid var(--line); color: var(--heading);">
+          Minta Materi Baru ↗
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECENTLY ADDED SECTION -->
+  <section class="recent-section" id="recent-section" aria-labelledby="recent-title">
+    <div class="market-section-head">
+      <h2 id="recent-title">BARU DITAMBAHKAN</h2>
+      <a href="#catalog">lihat semua &rarr;</a>
+    </div>
+
+    <!-- Container with Mobile Scroll-Snap -->
+    <div id="recent-grid" class="recent-grid" aria-label="Catatan baru ditambahkan">
+      {recentNotes.map((note, idx) => (
+        <NoteCard note={note} index={idx} />
+      ))}
+    </div>
+
+    <!-- Mobile Slider Dots Navigation -->
+    <div class="slider-dots" id="recentDots" aria-label="Navigasi Slider Baru Ditambahkan"></div>
+  </section>
+
+  <!-- CATALOG SECTION -->
+  <section class="market-catalog" id="catalog" aria-labelledby="catalog-title" tabindex="-1">
+    <div class="catalog-heading">
+      <div>
+        <span class="page-eyebrow">// KATALOG PRAKTIKUM</span>
+        <h2 id="catalog-title">jelajahi semua catatan</h2>
+      </div>
+      <div class="catalog-heading-side">
+        <!-- Desktop View Mode Switcher ala plugins.omarchy.org -->
+        <div class="catalog-view-mode" role="group" aria-label="Mode Tampilan Katalog">
+          <button type="button" class="view-mode-btn active" id="view-mode-cards" data-view="cards" aria-pressed="true">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="7" x="3" y="3" rx="1"></rect><rect width="7" height="7" x="14" y="3" rx="1"></rect><rect width="7" height="7" x="14" y="14" rx="1"></rect><rect width="7" height="7" x="3" y="14" rx="1"></rect></svg>
+            Cards
+          </button>
+          <button type="button" class="view-mode-btn" id="view-mode-compact" data-view="compact" aria-pressed="false">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" x2="21" y1="6" y2="6"></line><line x1="3" x2="21" y1="12" y2="12"></line><line x1="3" x2="21" y1="18" y2="18"></line></svg>
+            Ringkas
+          </button>
+        </div>
+        <p><span id="plugin-count">{notes.length}</span> <span id="plugin-count-label">catatan praktikum</span></p>
+      </div>
+    </div>
+
+    <!-- SEARCH & CONTROLS -->
+    <div class="catalog-controls">
+      <div class="market-search">
+        <label class="sr-only" for="search-input">Cari catatan atau topik</label>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+        <input id="search-input" name="journal-search" type="text" placeholder="Cari catatan, topik, atau tag…" maxlength="160" autocomplete="off" spellcheck="false" />
+        <button type="button" id="search-clear-btn" class="search-clear-btn" aria-label="Hapus pencarian" hidden>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+        <kbd id="search-shortcut">/</kbd>
+      </div>
+
+      <div class="sort-control cyber-select-wrap" id="sort-select-wrap">
+        <button type="button" class="cyber-select-trigger" id="sort-select-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Urutkan catatan">
+          <span class="cyber-select-label" id="sort-select-label">TERBARU DITAMBAHKAN</span>
+          <svg class="cyber-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 10 4 4 4-4"/></svg>
+        </button>
+        <div class="cyber-select-menu" id="sort-select-menu" role="listbox" hidden>
+          <div class="cyber-select-option selected" role="option" data-value="recent" aria-selected="true">
+            <span>Terbaru Ditambahkan</span>
+            <span class="cyber-select-check">✓</span>
+          </div>
+          <div class="cyber-select-option" role="option" data-value="title" aria-selected="false">
+            <span>Judul (A–Z)</span>
+            <span class="cyber-select-check">✓</span>
+          </div>
+          <div class="cyber-select-option" role="option" data-value="category" aria-selected="false">
+            <span>Berdasarkan Kategori</span>
+            <span class="cyber-select-check">✓</span>
+          </div>
+        </div>
+        <select id="sort-select" class="cyber-select-native" tabindex="-1" aria-hidden="true">
+          <option value="recent">Terbaru Ditambahkan</option>
+          <option value="title">Judul (A–Z)</option>
+          <option value="category">Berdasarkan Kategori</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- CATEGORY FILTER BAR -->
+    <div class="category-bar">
+      <span>Filter</span>
+      <div id="category-filters" class="category-list">
+        {categories.map((c, i) => (
+          <button class={`category-chip ${i === 0 ? 'active' : ''}`} data-cat={c.id}>
+            {c.label}
+          </button>
+        ))}
+      </div>
+      <button id="clear-filters" type="button">Reset</button>
+    </div>
+
+    <!-- CARDS GRID -->
+    <div id="plugin-grid" class="plugin-grid market-plugin-grid mobile-slider">
+      {notes.map((note, idx) => (
+        <NoteCard note={note} index={idx} />
+      ))}
+    </div>
+
+    <!-- Mobile Slider Dots Navigation for Catalog -->
+    <div class="slider-dots" id="catalogDots" aria-label="Navigasi Slider Katalog"></div>
+  </section>
+</BaseLayout>
+
+<script is:inline>
+(function() {
+  // ── 1. Mobile Card Carousel Slider (Edurobotika Standard) ──
+  function initCardSlider(sliderId, dotsId, cardSelector) {
+    const slider = document.getElementById(sliderId);
+    const dotsContainer = document.getElementById(dotsId);
+    if (!slider || !dotsContainer) return;
+
+    const cards = slider.querySelectorAll(cardSelector);
+    if (!cards.length) return;
+
+    dotsContainer.innerHTML = '';
+    cards.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = `slider-dot${i === 0 ? ' active' : ''}`;
+      dot.setAttribute('aria-label', `Slide ${i + 1}`);
+      dot.addEventListener('click', () => {
+        cards[i].scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'center'
+        });
+      });
+      dotsContainer.appendChild(dot);
+    });
+
+    const dots = dotsContainer.querySelectorAll('.slider-dot');
+    let scrollRaf = null;
+
+    slider.addEventListener('scroll', () => {
+      if (scrollRaf) return;
+      scrollRaf = requestAnimationFrame(() => {
+        let closest = 0;
+        let best = Infinity;
+        const sliderCenter = slider.scrollLeft + slider.clientWidth / 2;
+        cards.forEach((c, i) => {
+          const cardCenter = c.offsetLeft + c.offsetWidth / 2;
+          const d = Math.abs(cardCenter - sliderCenter);
+          if (d < best) {
+            best = d;
+            closest = i;
+          }
+        });
+        dots.forEach((d, i) => d.classList.toggle('active', i === closest));
+        scrollRaf = null;
+      });
+    }, { passive: true });
+  }
+
+  // Initialize sliders on mobile
+  initCardSlider('recent-grid', 'recentDots', '.plugin-card');
+  initCardSlider('plugin-grid', 'catalogDots', '.plugin-card');
+
+  // ── 2. Desktop View Mode Switcher (Cards vs Compact Table) ──
+  const btnCards = document.getElementById('view-mode-cards');
+  const btnCompact = document.getElementById('view-mode-compact');
+  const pluginGrid = document.getElementById('plugin-grid');
+
+  if (btnCards && btnCompact && pluginGrid) {
+    btnCards.addEventListener('click', () => {
+      btnCards.classList.add('active');
+      btnCards.setAttribute('aria-pressed', 'true');
+      btnCompact.classList.remove('active');
+      btnCompact.setAttribute('aria-pressed', 'false');
+      pluginGrid.classList.remove('view-compact');
+    });
+
+    btnCompact.addEventListener('click', () => {
+      btnCompact.classList.add('active');
+      btnCompact.setAttribute('aria-pressed', 'true');
+      btnCards.classList.remove('active');
+      btnCards.setAttribute('aria-pressed', 'false');
+      pluginGrid.classList.add('view-compact');
+    });
+  }
+
+  // ── 3. Share Button Event Delegation ──
+  document.addEventListener('click', (e) => {
+    const shareBtn = e.target.closest('.card-btn-share');
+    if (!shareBtn) return;
+    e.preventDefault();
+    e.stopPropagation();
+
+    const title = shareBtn.getAttribute('data-title') || '';
+    const noteId = shareBtn.getAttribute('data-id') || '';
+    const summary = shareBtn.getAttribute('data-summary') || '';
+    const url = shareBtn.getAttribute('data-url') || (window.location.origin + '/note/' + noteId);
+
+    // If mobile Web Share is available, use it!
+    if (navigator.share && window.innerWidth <= 768) {
+      navigator.share({
+        title: title,
+        text: `${title} — ${summary}`,
+        url: url
+      }).catch(() => {
+        if (window.openShareModal) {
+          window.openShareModal({ title, id: noteId, url, summary });
+        }
+      });
+    } else {
+      if (window.openShareModal) {
+        window.openShareModal({ title, id: noteId, url, summary });
+      }
+    }
+  });
+
+  // Hero Request CTA button
+  const heroReqBtn = document.getElementById('hero-req-btn');
+  if (heroReqBtn) {
+    heroReqBtn.addEventListener('click', () => {
+      if (window.openRequestDrawer) window.openRequestDrawer();
+    });
+  }
+})();
+</script>

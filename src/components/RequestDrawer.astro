@@ -1,0 +1,242 @@
+---
+// src/components/RequestDrawer.astro
+---
+
+<div id="request-drawer" class="request-drawer-overlay" role="dialog" aria-modal="true" aria-labelledby="request-drawer-title">
+  <div class="request-drawer-panel">
+    <div class="request-drawer-head">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="display: inline-block; width: 6px; height: 14px; background: var(--accent); border-radius: 2px;"></span>
+        <h3 id="request-drawer-title" style="font-family: var(--mono); font-size: 13.5px; font-weight: 700; color: var(--heading);">
+          // REQUEST MATERI PRAKTIKUM
+        </h3>
+      </div>
+      <button type="button" class="square-action" id="close-request-btn" aria-label="Tutup Request" style="width: 28px; height: 28px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <div class="request-drawer-content">
+      <p style="font-size: 13px; color: var(--muted); margin-bottom: 18px; line-height: 1.5;">
+        Butuh panduan atau catatan yang belum tersedia di Katakating? Tulis permintaan lu di sini, kating dan sesama mahasiswa akan bantu menulisnya!
+      </p>
+
+      <!-- Request Form -->
+      <form id="topic-request-form" style="background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; margin-bottom: 24px;">
+        <div style="margin-bottom: 12px;">
+          <label style="font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--heading); display: block; margin-bottom: 6px;">
+            JUDUL TOPIK / MATERI *
+          </label>
+          <input type="text" id="req-topic-title" placeholder="cth: Tutorial Konfigurasi Mikrotik OSPF di Lab 3" required style="width: 100%; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 8px 12px; font-size: 13px; color: var(--text); outline: none;" />
+        </div>
+
+        <div style="margin-bottom: 12px;">
+          <label style="font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--heading); display: block; margin-bottom: 6px;">
+            PROGRAM STUDI / LAB
+          </label>
+          <select id="req-topic-prodi" style="width: 100%; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 8px 12px; font-size: 13px; color: var(--text); outline: none;">
+            <option value="TRM">Teknologi Rekayasa Multimedia (TRM)</option>
+            <option value="IF">Informatika (IF)</option>
+            <option value="SI">Sistem Informasi (SI)</option>
+            <option value="TE">Teknik Elektro / Mekatronika</option>
+            <option value="UMUM">Akademik &amp; Umum</option>
+          </select>
+        </div>
+
+        <div style="margin-bottom: 14px;">
+          <label style="font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--heading); display: block; margin-bottom: 6px;">
+            KETERANGAN TAMBAHAN (OPSIONAL)
+          </label>
+          <textarea id="req-topic-desc" rows="2" placeholder="Jelaskan kendala atau studi kasus yang lu butuhkan..." style="width: 100%; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 8px 12px; font-size: 12.5px; color: var(--text); outline: none; resize: vertical;"></textarea>
+        </div>
+
+        <button type="submit" class="button" style="width: 100%; min-height: 36px; font-size: 12px; font-weight: 600; background: var(--accent); color: var(--accent-contrast);">
+          Kirim Request Topik
+        </button>
+      </form>
+
+      <!-- Wishlist Board -->
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+        <span style="font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--heading); letter-spacing: 0.08em;">
+          WISHLIST PALING BANYAK DIREQUEST
+        </span>
+        <span id="req-count-badge" style="font-family: var(--mono); font-size: 10.5px; color: var(--muted); background: var(--panel-2); padding: 2px 6px; border-radius: 4px;">
+          4 Topik
+        </span>
+      </div>
+
+      <div id="request-list-container">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+(function() {
+  const drawer = document.getElementById('request-drawer');
+  const closeBtn = document.getElementById('close-request-btn');
+  const form = document.getElementById('topic-request-form');
+  const container = document.getElementById('request-list-container');
+  const countBadge = document.getElementById('req-count-badge');
+
+  if (!drawer) return;
+
+  const defaultRequests = [
+    {
+      id: 'req-1',
+      title: 'Tutorial Routing OSPF Multi-Area Cisco Packet Tracer',
+      prodi: 'TRM / IF',
+      upvotes: 18,
+      author: 'Anonim (Angkatan 24)',
+      date: '2 hari lalu'
+    },
+    {
+      id: 'req-2',
+      title: 'Koneksi ESP32 ke Supabase Realtime Database via REST API',
+      prodi: 'IoT & Mekatronika',
+      upvotes: 14,
+      author: 'Mahasiswa TRM',
+      date: '3 hari lalu'
+    },
+    {
+      id: 'req-3',
+      title: 'Panduan Ekspor Animasi Rigging Blender ke Unity 2026 Tanpa Deformasi',
+      prodi: 'Game & TRM',
+      upvotes: 11,
+      author: 'Mahasiswa Boash',
+      date: '5 hari lalu'
+    },
+    {
+      id: 'req-4',
+      title: 'Contoh Lengkap Bab 4 Analisis & Pembahasan Laporan PKL Format 4-4-3-3',
+      prodi: 'Akademik',
+      upvotes: 9,
+      author: 'Semester 5',
+      date: '1 minggu lalu'
+    }
+  ];
+
+  function getStoredRequests() {
+    try {
+      const saved = localStorage.getItem('katakating_topic_requests');
+      if (saved) return JSON.parse(saved);
+    } catch (_) {}
+    return defaultRequests;
+  }
+
+  function saveRequests(list) {
+    try {
+      localStorage.setItem('katakating_topic_requests', JSON.stringify(list));
+    } catch (_) {}
+  }
+
+  function getUpvotedIds() {
+    try {
+      return JSON.parse(localStorage.getItem('katakating_upvoted_topics') || '[]');
+    } catch (_) {
+      return [];
+    }
+  }
+
+  function renderList() {
+    const list = getStoredRequests();
+    const upvotedIds = getUpvotedIds();
+
+    list.sort((a, b) => b.upvotes - a.upvotes);
+    if (countBadge) countBadge.textContent = `${list.length} Topik`;
+
+    if (!container) return;
+    container.innerHTML = '';
+
+    list.forEach(item => {
+      const isUpvoted = upvotedIds.includes(item.id);
+      const card = document.createElement('div');
+      card.className = 'request-card-item';
+      card.innerHTML = `
+        <button type="button" class="request-upvote-btn ${isUpvoted ? 'upvoted' : ''}" data-id="${item.id}" aria-label="Upvote topik">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"></polyline></svg>
+          <span style="font-weight: 700;">${item.upvotes}</span>
+        </button>
+        <div style="flex: 1; min-width: 0;">
+          <h4 style="font-size: 13px; font-weight: 600; color: var(--heading); margin-bottom: 4px; line-height: 1.4;">${item.title}</h4>
+          <div style="font-family: var(--mono); font-size: 11px; color: var(--muted); display: flex; gap: 8px; flex-wrap: wrap;">
+            <span>[${item.prodi}]</span>
+            <span>&bull;</span>
+            <span>${item.date}</span>
+          </div>
+        </div>
+      `;
+
+      const upBtn = card.querySelector('.request-upvote-btn');
+      upBtn.addEventListener('click', () => {
+        let currentUpvoted = getUpvotedIds();
+        if (currentUpvoted.includes(item.id)) {
+          item.upvotes = Math.max(0, item.upvotes - 1);
+          currentUpvoted = currentUpvoted.filter(x => x !== item.id);
+        } else {
+          item.upvotes += 1;
+          currentUpvoted.push(item.id);
+        }
+        localStorage.setItem('katakating_upvoted_topics', JSON.stringify(currentUpvoted));
+        saveRequests(list);
+        renderList();
+      });
+
+      container.appendChild(card);
+    });
+  }
+
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const titleInput = document.getElementById('req-topic-title');
+      const prodiSelect = document.getElementById('req-topic-prodi');
+      const title = titleInput.value.trim();
+      const prodi = prodiSelect.value;
+      if (!title) return;
+
+      const list = getStoredRequests();
+      const newItem = {
+        id: 'req-' + Date.now(),
+        title: title,
+        prodi: prodi,
+        upvotes: 1,
+        author: 'Mahasiswa Boash',
+        date: 'Baru saja'
+      };
+      list.unshift(newItem);
+      saveRequests(list);
+
+      const upvoted = getUpvotedIds();
+      upvoted.push(newItem.id);
+      localStorage.setItem('katakating_upvoted_topics', JSON.stringify(upvoted));
+
+      titleInput.value = '';
+      document.getElementById('req-topic-desc').value = '';
+      renderList();
+    });
+  }
+
+  function closeDrawer() {
+    drawer.classList.remove('open');
+  }
+  if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+  drawer.addEventListener('click', (e) => {
+    if (e.target === drawer) closeDrawer();
+  });
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer();
+  });
+
+  window.openRequestDrawer = function() {
+    renderList();
+    drawer.classList.add('open');
+  };
+
+  renderList();
+})();
+</script>

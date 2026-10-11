@@ -1,0 +1,123 @@
+---
+// src/layouts/BaseLayout.astro
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import SettingsModal from '../components/SettingsModal.astro';
+import ShareModal from '../components/ShareModal.astro';
+import RequestDrawer from '../components/RequestDrawer.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  canonicalUrl?: string;
+  currentPath?: string;
+  keywords?: string;
+}
+
+const {
+  title = 'KATAKATING — Boash Student Notes & Knowledge Hub',
+  description = 'Pusat catatan praktikum mandiri, panduan belajar bersama, template laporan 4-4-3-3, dan dokumentasi terbuka mahasiswa Universitas Boash.',
+  ogImage = '/og/default.png',
+  ogType = 'website',
+  canonicalUrl = 'https://katakating.vercel.app',
+  currentPath = '/',
+  keywords = 'KATAKATING, KataKating, Universitas Boash, Mahasiswa Boash, Catatan Praktikum, Panduan Belajar, Format Laporan 4-4-3-3, Cisco VLAN, Normalisasi Database, Wokwi IoT, MDLC'
+} = Astro.props;
+
+const siteUrl = 'https://katakating.vercel.app';
+const fullOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`;
+---
+
+<!DOCTYPE html>
+<html lang="id" data-theme="vantablack" data-font="sans" data-size="normal">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+  <meta name="keywords" content={keywords} />
+  <meta name="author" content="KATAKATING & Mahasiswa Universitas Boash" />
+  <link rel="canonical" href={canonicalUrl} />
+  <meta name="theme-color" content="#090a0d" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content={ogType} />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:site_name" content="KATAKATING" />
+  <meta property="og:image" content={fullOgImage} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={fullOgImage} />
+
+  <title>{title}</title>
+
+  <!-- Typography Preconnect & Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..700&display=swap" rel="stylesheet" />
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="alternate icon" href="/favicon.ico" />
+  <link rel="stylesheet" href="/style.css?v=3.0" />
+
+  <!-- Silent Theme & Preferences Bootstrapper (No FOUC) -->
+  <script is:inline>
+    (function() {
+      try {
+        var t = localStorage.getItem('katakating_theme') || localStorage.getItem('omarchy_theme') || 'vantablack';
+        var f = localStorage.getItem('katakating_font') || 'sans';
+        var s = localStorage.getItem('katakating_size') || 'normal';
+        
+        document.documentElement.setAttribute('data-theme', t);
+        document.documentElement.setAttribute('data-font', f);
+        document.documentElement.setAttribute('data-size', s);
+        
+        if (t === 'flexoki-light' || t === 'light') {
+          document.documentElement.classList.add('light');
+        } else {
+          document.documentElement.classList.remove('light');
+        }
+      } catch (e) {}
+    })();
+  </script>
+
+  <script is:inline src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script is:inline src="/main.js?v=3.0" defer></script>
+  <script is:inline src="/auth.js?v=3.0" defer></script>
+</head>
+
+<body>
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast" role="status" aria-live="polite">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="20 6 9 17 4 12"></polyline>
+    </svg>
+    <span id="toast-msg">Tindakan berhasil</span>
+  </div>
+
+  <Header currentPath={currentPath} />
+
+  <main id="main-content">
+    <slot />
+  </main>
+
+  <Footer />
+
+  <!-- Universal Preferences Modal -->
+  <SettingsModal />
+
+  <!-- Social Media & IG Story Share Modal -->
+  <ShareModal />
+
+  <!-- Community Tutorial Request Board -->
+  <RequestDrawer />
+</body>
+</html>

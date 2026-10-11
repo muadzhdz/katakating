@@ -263,7 +263,6 @@ function initTheme() {
     localStorage.setItem('tpc_theme', isLight ? 'light' : 'dark');
     localStorage.setItem('readme-theme', isLight ? 'light' : 'dark');
     updateThemeIcon();
-    showToast(isLight ? 'Mode Terang diaktifkan' : 'Mode Gelap diaktifkan');
     window.dispatchEvent(new CustomEvent('katakating-theme-change', { detail: { isLight, theme: isLight ? 'light' : 'dark' } }));
   });
 }

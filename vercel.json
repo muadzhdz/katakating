@@ -1,5 +1,4 @@
 {
-  "outputDirectory": ".",
   "cleanUrls": true,
   "trailingSlash": false,
   "headers": [
@@ -15,61 +14,39 @@
           "value": "DENY"
         },
         {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
           "key": "Referrer-Policy",
           "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
         }
       ]
     },
     {
-      "source": "/style.css",
+      "source": "/og/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=86400, must-revalidate"
+          "value": "public, max-age=604800, stale-while-revalidate=86400"
         }
       ]
-    },
-    {
-      "source": "/main.js",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=86400, must-revalidate"
-        }
-      ]
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/note/:slug",
-      "destination": "/notes.html?id=:slug"
-    },
-    {
-      "source": "/article/:slug",
-      "destination": "/notes.html?id=:slug"
-    },
-    {
-      "source": "/kontribusi",
-      "destination": "/notes.html?id=panduan-kontribusi"
-    },
-    {
-      "source": "/upload",
-      "destination": "/upload.html"
-    },
-    {
-      "source": "/admin",
-      "destination": "/admin.html"
-    },
-    {
-      "source": "/profile",
-      "destination": "/profile.html"
     }
   ],
   "redirects": [
     {
       "source": "/daftar",
-      "destination": "/#katalog",
+      "destination": "/#catalog",
       "permanent": false
+    },
+    {
+      "source": "/kontribusi",
+      "destination": "/note/panduan-kontribusi",
+      "permanent": true
     }
   ]
 }

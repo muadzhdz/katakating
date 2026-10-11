@@ -1,0 +1,231 @@
+---
+// src/components/SettingsModal.astro
+---
+
+<div id="settings-modal" class="settings-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+  <div class="settings-modal-card">
+    <div class="settings-modal-header">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="display: inline-block; width: 6px; height: 14px; background: var(--accent); border-radius: 2px;"></span>
+        <h3 id="settings-title" class="settings-modal-title">// PENGATURAN TAMPILAN</h3>
+      </div>
+      <button type="button" class="square-action" id="close-settings-btn" aria-label="Tutup Pengaturan" style="width: 28px; height: 28px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <div class="settings-modal-body">
+      <!-- Theme Selection -->
+      <div class="settings-group">
+        <label class="settings-label">TEMA WARNA (OMARCHY SUITE)</label>
+        <div class="theme-swatches-grid" id="theme-swatches">
+          <!-- 1. Vantablack -->
+          <button type="button" class="theme-swatch-btn" data-theme-val="vantablack">
+            <div class="theme-swatch-preview" style="background: #090a0d; border: 1px solid rgba(255,255,255,0.15);">
+              <span style="flex: 1; background: #ffffff;"></span>
+              <span style="flex: 2; background: #111318;"></span>
+            </div>
+            <span class="theme-swatch-name">Vantablack</span>
+          </button>
+
+          <!-- 2. Tokyo Night -->
+          <button type="button" class="theme-swatch-btn" data-theme-val="tokyo-night">
+            <div class="theme-swatch-preview" style="background: #1a1b26; border: 1px solid rgba(122,162,247,0.3);">
+              <span style="flex: 1; background: #7aa2f7;"></span>
+              <span style="flex: 2; background: #24283b;"></span>
+            </div>
+            <span class="theme-swatch-name">Tokyo Night</span>
+          </button>
+
+          <!-- 3. Catppuccin -->
+          <button type="button" class="theme-swatch-btn" data-theme-val="catppuccin">
+            <div class="theme-swatch-preview" style="background: #1e1e2e; border: 1px solid rgba(203,166,247,0.3);">
+              <span style="flex: 1; background: #cba6f7;"></span>
+              <span style="flex: 2; background: #181825;"></span>
+            </div>
+            <span class="theme-swatch-name">Catppuccin</span>
+          </button>
+
+          <!-- 4. Nord -->
+          <button type="button" class="theme-swatch-btn" data-theme-val="nord">
+            <div class="theme-swatch-preview" style="background: #2e3440; border: 1px solid rgba(136,192,208,0.3);">
+              <span style="flex: 1; background: #88c0d0;"></span>
+              <span style="flex: 2; background: #3b4252;"></span>
+            </div>
+            <span class="theme-swatch-name">Nord Arctic</span>
+          </button>
+
+          <!-- 5. Gruvbox -->
+          <button type="button" class="theme-swatch-btn" data-theme-val="gruvbox">
+            <div class="theme-swatch-preview" style="background: #282828; border: 1px solid rgba(250,189,47,0.3);">
+              <span style="flex: 1; background: #fabd2f;"></span>
+              <span style="flex: 2; background: #32302f;"></span>
+            </div>
+            <span class="theme-swatch-name">Gruvbox</span>
+          </button>
+
+          <!-- 6. Rosé Pine -->
+          <button type="button" class="theme-swatch-btn" data-theme-val="rose-pine">
+            <div class="theme-swatch-preview" style="background: #191724; border: 1px solid rgba(235,188,186,0.3);">
+              <span style="flex: 1; background: #ebbcba;"></span>
+              <span style="flex: 2; background: #211f30;"></span>
+            </div>
+            <span class="theme-swatch-name">Rosé Pine</span>
+          </button>
+
+          <!-- 7. Everforest -->
+          <button type="button" class="theme-swatch-btn" data-theme-val="everforest">
+            <div class="theme-swatch-preview" style="background: #272e33; border: 1px solid rgba(167,192,128,0.3);">
+              <span style="flex: 1; background: #a7c080;"></span>
+              <span style="flex: 2; background: #2f383e;"></span>
+            </div>
+            <span class="theme-swatch-name">Everforest</span>
+          </button>
+
+          <!-- 8. Hackerman -->
+          <button type="button" class="theme-swatch-btn" data-theme-val="hackerman">
+            <div class="theme-swatch-preview" style="background: #0d1117; border: 1px solid rgba(57,211,83,0.35);">
+              <span style="flex: 1; background: #39d353;"></span>
+              <span style="flex: 2; background: #131920;"></span>
+            </div>
+            <span class="theme-swatch-name">Hackerman</span>
+          </button>
+
+          <!-- 9. Flexoki Light -->
+          <button type="button" class="theme-swatch-btn" data-theme-val="flexoki-light">
+            <div class="theme-swatch-preview" style="background: #ffffff; border: 1px solid rgba(0,0,0,0.15);">
+              <span style="flex: 1; background: #18181b;"></span>
+              <span style="flex: 2; background: #f4f4f5;"></span>
+            </div>
+            <span class="theme-swatch-name">Paper Light</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Typography Selection -->
+      <div class="settings-group">
+        <label class="settings-label">JENIS HURUF (TYPOGRAPHY)</label>
+        <div class="settings-pills" id="font-pills">
+          <button type="button" class="settings-pill-btn" data-font-val="sans">
+            Modern Sans (Geist/Inter)
+          </button>
+          <button type="button" class="settings-pill-btn" data-font-val="serif">
+            Editorial Serif
+          </button>
+          <button type="button" class="settings-pill-btn" data-font-val="mono">
+            Terminal Mono
+          </button>
+        </div>
+      </div>
+
+      <!-- Font Size Selection -->
+      <div class="settings-group">
+        <label class="settings-label">SKALA UKURAN BACA</label>
+        <div class="settings-pills" id="size-pills">
+          <button type="button" class="settings-pill-btn" data-size-val="compact">
+            Ringkas (14.5px)
+          </button>
+          <button type="button" class="settings-pill-btn" data-size-val="normal">
+            Normal (16px)
+          </button>
+          <button type="button" class="settings-pill-btn" data-size-val="large">
+            Besar (17.5px)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+(function() {
+  const modal = document.getElementById('settings-modal');
+  const closeBtn = document.getElementById('close-settings-btn');
+  if (!modal) return;
+
+  function syncActiveControls() {
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'vantablack';
+    const currentFont = document.documentElement.getAttribute('data-font') || 'sans';
+    const currentSize = document.documentElement.getAttribute('data-size') || 'normal';
+
+    // Theme swatches
+    document.querySelectorAll('.theme-swatch-btn').forEach(btn => {
+      const val = btn.getAttribute('data-theme-val');
+      const isMatch = (val === currentTheme) || 
+                      (val === 'vantablack' && currentTheme === 'dark') ||
+                      (val === 'flexoki-light' && currentTheme === 'light');
+      btn.classList.toggle('active', isMatch);
+    });
+
+    // Font pills
+    document.querySelectorAll('#font-pills .settings-pill-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-font-val') === currentFont);
+    });
+
+    // Size pills
+    document.querySelectorAll('#size-pills .settings-pill-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-size-val') === currentSize);
+    });
+  }
+
+  // Theme click listener
+  document.querySelectorAll('.theme-swatch-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const themeVal = btn.getAttribute('data-theme-val');
+      document.documentElement.setAttribute('data-theme', themeVal);
+      if (themeVal === 'flexoki-light') {
+        document.documentElement.classList.add('light');
+      } else {
+        document.documentElement.classList.remove('light');
+      }
+      localStorage.setItem('katakating_theme', themeVal);
+      localStorage.setItem('omarchy_theme', themeVal);
+      syncActiveControls();
+      window.dispatchEvent(new CustomEvent('katakating-theme-change', { detail: { theme: themeVal } }));
+    });
+  });
+
+  // Font click listener
+  document.querySelectorAll('#font-pills .settings-pill-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const fontVal = btn.getAttribute('data-font-val');
+      document.documentElement.setAttribute('data-font', fontVal);
+      localStorage.setItem('katakating_font', fontVal);
+      syncActiveControls();
+    });
+  });
+
+  // Size click listener
+  document.querySelectorAll('#size-pills .settings-pill-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const sizeVal = btn.getAttribute('data-size-val');
+      document.documentElement.setAttribute('data-size', sizeVal);
+      localStorage.setItem('katakating_size', sizeVal);
+      syncActiveControls();
+    });
+  });
+
+  // Close modal
+  function closeModal() {
+    modal.classList.remove('open');
+  }
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+  });
+
+  // Global trigger
+  window.openSettingsModal = function() {
+    syncActiveControls();
+    modal.classList.add('open');
+  };
+
+  syncActiveControls();
+})();
+</script>
