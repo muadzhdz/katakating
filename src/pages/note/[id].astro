@@ -9,6 +9,53 @@ export async function getStaticPaths() {
   const notesPath = path.resolve('./notes/notes.json');
   const notes = JSON.parse(fs.readFileSync(notesPath, 'utf8'));
 
+  // Custom Marked Renderer for Terminal Command Panels and Anchors
+  const renderer = new marked.Renderer();
+
+  function escapeHtml(str: string) {
+    return (str || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  renderer.code = function({ text, lang }: { text: string; lang?: string }) {
+    const cleanLang = (lang || 'sh').toLowerCase();
+    return `<div class="command-panel" data-lang="${cleanLang}">
+      <div class="command-panel-head">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="display: inline-flex; gap: 4px;">
+            <span style="width: 7px; height: 7px; border-radius: 50%; background: #ef4444; display: inline-block;"></span>
+            <span style="width: 7px; height: 7px; border-radius: 50%; background: #eab308; display: inline-block;"></span>
+            <span style="width: 7px; height: 7px; border-radius: 50%; background: #22c55e; display: inline-block;"></span>
+          </span>
+          <span class="command-panel-label">${cleanLang.toUpperCase()}</span>
+        </div>
+        <button type="button" class="copy-btn" onclick="window.copyCodeSnippet && window.copyCodeSnippet(this)">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+          <span>Salin</span>
+        </button>
+      </div>
+      <pre class="code-body"><code>${escapeHtml(text)}</code></pre>
+    </div>`;
+  };
+
+  renderer.heading = function({ text, depth }: { text: string; depth: number }) {
+    if (depth === 2) {
+      const slug = text.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
+      return `<h2 id="${slug}">${text} <a href="#${slug}" class="heading-anchor" title="Tautan bagian">#</a></h2>`;
+    }
+    return `<h${depth}>${text}</h${depth}>`;
+  };
+
+  renderer.blockquote = function({ text }: { text: string }) {
+    return `<blockquote class="article-quote">${text}</blockquote>`;
+  };
+
+  marked.use({ renderer });
+
   return notes.map((note: any, index: number) => {
     let mdContent = '';
     try {
@@ -20,6 +67,16 @@ export async function getStaticPaths() {
       mdContent = note.summary || '';
     }
 
+    // Extract table of contents headings (h2)
+    const headings: Array<{ text: string; slug: string }> = [];
+    const headingRegex = /^##\s+(.+)$/gm;
+    let match;
+    while ((match = headingRegex.exec(mdContent)) !== null) {
+      const rawText = match[1].trim();
+      const slug = rawText.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
+      headings.push({ text: rawText, slug });
+    }
+
     const prevNote = index > 0 ? notes[index - 1] : null;
     const nextNote = index < notes.length - 1 ? notes[index + 1] : null;
 
@@ -28,6 +85,7 @@ export async function getStaticPaths() {
       props: {
         note,
         contentHtml: marked.parse(mdContent),
+        headings,
         prevNote,
         nextNote,
       },
@@ -35,7 +93,7 @@ export async function getStaticPaths() {
   });
 }
 
-const { note, contentHtml, prevNote, nextNote } = Astro.props;
+const { note, contentHtml, headings, prevNote, nextNote } = Astro.props;
 
 const canonicalUrl = `https://katakating.vercel.app/note/${note.id}`;
 const ogImageUrl = `/og/${note.id}.png`;
@@ -50,43 +108,46 @@ const ogImageUrl = `/og/${note.id}.png`;
   currentPath={`/note/${note.id}`}
   keywords={`${note.title}, ${note.category}, ${note.tags.join(', ')}, Boash praktikum`}
 >
-  <!-- READING PROGRESS BAR -->
+  <!-- TOP READING PROGRESS BAR -->
   <div id="read-progress-bar" style="position: fixed; top: 0; left: 0; height: 3px; background: var(--accent); width: 0%; z-index: 1003; transition: width 0.1s linear;"></div>
 
-  <div class="notes-page-container">
+  <div class="article-layout">
     <!-- BREADCRUMBS -->
-    <nav class="article-breadcrumb" aria-label="Breadcrumb">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
       <a href="/">[>] Beranda</a>
       <span>/</span>
       <a href="/#catalog">{note.category}</a>
       <span>/</span>
-      <span style="color: var(--accent);">{note.initials || 'DOC'}</span>
+      <span style="color: var(--accent); font-weight: 600;">{note.initials || 'DOC'}</span>
     </nav>
 
     <!-- ARTICLE HEADER -->
     <header class="article-header">
       <div>
-        <span class="page-eyebrow">// {note.category.toUpperCase()}</span>
+        <span class="page-eyebrow">// {note.category.toUpperCase()} // KODE: {note.id}</span>
       </div>
       <h1 class="article-title">{note.title}</h1>
       
       <div class="article-meta">
-        <span>Penulis: <b>{note.author}</b></span>
+        <span>Kontributor: <b>{note.author}</b></span>
         <span>&bull;</span>
         <span>{note.date}</span>
         <span>&bull;</span>
         <span>{note.readTime} baca</span>
+        <span>&bull;</span>
+        <span id="article-views-counter"><b id="article-views-val">0</b> baca</span>
       </div>
 
+      <!-- TAGS -->
       <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px;">
         {note.tags.map((tag: string) => (
           <span class="card-tag">#{tag}</span>
         ))}
       </div>
 
-      <!-- INTERACTION BAR (LIKE, BOOKMARK, SHARE, VIEWS) -->
+      <!-- INTERACTION & TOOLBAR -->
       <div class="article-actions-bar" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line);">
-        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
           <!-- Like Button -->
           <button type="button" class="button" id="btn-like-article" data-id={note.id} style="min-height: 32px; font-size: 11px;">
             <svg id="like-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -103,7 +164,7 @@ const ogImageUrl = `/og/${note.id}.png`;
             <span id="bookmark-text">Simpan</span>
           </button>
 
-          <!-- Share Button (New!) -->
+          <!-- Share Button -->
           <button type="button" class="button" id="btn-share-article" data-id={note.id} data-title={note.title} data-summary={note.summary} style="min-height: 32px; font-size: 11px; background: var(--panel-2); border: 1px solid var(--line-strong);">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="18" cy="5" r="3"></circle>
@@ -112,17 +173,33 @@ const ogImageUrl = `/og/${note.id}.png`;
               <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
               <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
             </svg>
-            <span>Bagikan Medsos</span>
+            <span>Bagikan</span>
+          </button>
+
+          <!-- Print / Offline Guide -->
+          <button type="button" class="button" onclick="window.print()" style="min-height: 32px; font-size: 11px; background: transparent; border: 1px solid var(--line);">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 6 2 18 2 18 9"></polyline>
+              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+              <rect width="12" height="8" x="6" y="14"></rect>
+            </svg>
+            <span>Cetak / PDF</span>
           </button>
         </div>
 
-        <div style="font-family: var(--mono); font-size: 11px; color: var(--muted); display: flex; gap: 12px; align-items: center;">
-          <span><b id="article-views-val" style="color: var(--heading);">0</b> kali dibaca</span>
+        <!-- Quick In-Article Font Size Scaler -->
+        <div style="display: flex; align-items: center; gap: 4px; font-family: var(--mono); font-size: 11px; background: var(--panel-2); padding: 3px 6px; border-radius: var(--radius); border: 1px solid var(--line);">
+          <span style="color: var(--muted); margin-right: 4px;">Ukuran:</span>
+          <button type="button" class="font-scaler-btn" data-scale="compact" style="background: none; border: none; color: var(--muted); cursor: pointer; padding: 2px 4px; font-family: var(--mono); font-size: 11px;">A-</button>
+          <span style="color: var(--line);">|</span>
+          <button type="button" class="font-scaler-btn active" data-scale="normal" style="background: none; border: none; color: var(--heading); cursor: pointer; padding: 2px 4px; font-family: var(--mono); font-size: 11px; font-weight: 700;">A</button>
+          <span style="color: var(--line);">|</span>
+          <button type="button" class="font-scaler-btn" data-scale="large" style="background: none; border: none; color: var(--muted); cursor: pointer; padding: 2px 4px; font-family: var(--mono); font-size: 11px;">A+</button>
         </div>
       </div>
     </header>
 
-    <!-- TL;DR CARD (ANTI-BORING VISUAL SUMMARY) -->
+    <!-- TL;DR SUMMARY CARD -->
     <div class="tldr-card">
       <div class="tldr-badge">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -130,20 +207,36 @@ const ogImageUrl = `/og/${note.id}.png`;
         </svg>
         <span>INTISARI 30 DETIK (TL;DR)</span>
       </div>
-      <p style="font-size: 13.5px; color: var(--heading); font-weight: 500; margin: 0 0 6px;">
+      <p style="font-size: 13.5px; color: var(--heading); font-weight: 500; margin: 0 0 8px; line-height: 1.5;">
         {note.summary}
       </p>
       <ul class="tldr-list">
-        <li>Materi teruji langsung pada lingkungan laboratorium praktikum Universitas Boash.</li>
-        <li>Format dan prosedur sesuai standar kurikulum akademik terbaru.</li>
-        <li>Langkah komputasi dapat dipraktekkan langsung melalui terminal atau editor kode.</li>
+        <li>Materi divalidasi dan teruji langsung di laboratorium praktikum Universitas Boash.</li>
+        <li>Format dan prosedur penulisan naskah selaras standar kurikulum akademik.</li>
+        <li>Semua langkah konfigurasi dan sintaksis kode dapat langsung disalin ke terminal.</li>
       </ul>
     </div>
+
+    <!-- TABLE OF CONTENTS (TOC) PILLS (IF HEADINGS EXIST) -->
+    {headings && headings.length > 0 && (
+      <div style="background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 18px; margin-bottom: 28px;">
+        <div style="font-family: var(--mono); font-size: 10.5px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+          <span>// LOMPAT KE SUB-MATERI:</span>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+          {headings.map(h => (
+            <a href={`#${h.slug}`} style="font-family: var(--mono); font-size: 11.5px; color: var(--text); background: var(--panel-2); border: 1px solid var(--line); padding: 4px 10px; border-radius: var(--radius); text-decoration: none; transition: all 0.15s ease;">
+              {h.text}
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
 
     <!-- MAIN ARTICLE BODY (PRE-RENDERED FAST HTML) -->
     <article id="article-body" class="article-content" set:html={contentHtml} />
 
-    <!-- CHECKPOINT QUIZ (INTERACTIVE REINFORCEMENT) -->
+    <!-- CHECKPOINT QUIZ (INTERACTIVE RETENTION) -->
     <div class="checkpoint-quiz" id="checkpoint-quiz">
       <div class="quiz-header">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.2">
@@ -152,34 +245,38 @@ const ogImageUrl = `/og/${note.id}.png`;
         </svg>
         <span>CHECKPOINT PEMAHAMAN // UJI CEPAT</span>
       </div>
-      <p style="font-size: 13.5px; color: var(--heading); margin: 0;">
-        Setelah membaca panduan <b>{note.title}</b>, apakah prosedur di atas sudah lu pahami dan berhasil dipraktekkan?
+      <p style="font-size: 13.5px; color: var(--heading); margin: 0 0 12px; line-height: 1.5;">
+        Setelah mempraktikkan panduan <b>{note.title}</b>, apakah langkah-langkah di atas sudah berhasil dieksekusi di workstation lu?
       </p>
       <div class="quiz-options">
         <button type="button" class="quiz-opt-btn" data-answer="correct">
-          A. Ya, seluruh alur dan sintaksis kode sudah saya pahami dengan baik.
+          A. Berhasil 100%, konfigurasi/kode berjalan sesuai yang diharapkan di workstation saya.
         </button>
         <button type="button" class="quiz-opt-btn" data-answer="neutral">
-          B. Masih perlu membaca ulang dan mencoba simulasi langkah demi langkah.
+          B. Masih mengalami kendala dependensi atau error yang perlu dicari solusinya lebih lanjut.
         </button>
       </div>
-      <div id="quiz-feedback" style="display: none; margin-top: 12px; font-family: var(--mono); font-size: 12px; color: #4ade80;">
-        ✓ Jawaban tercatat! Selamat melanjutkan eksplorasi catatan praktikum lainnya.
+      <div id="quiz-feedback" style="display: none; margin-top: 14px; font-family: var(--mono); font-size: 12px; color: #4ade80; background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.25); padding: 10px 14px; border-radius: var(--radius);">
+        ✓ Catatan interaktif tersimpan! Jika butuh bantuan lebih lanjut, lu bisa menanyakan di forum lab atau request pembahasan lanjutan di tombol request.
       </div>
     </div>
 
     <!-- PREV / NEXT ARTICLE NAVIGATION -->
     <nav style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin: 36px 0; padding-top: 24px; border-top: 1px solid var(--line);">
       {prevNote && (
-        <a href={`/note/${prevNote.id}`} style="background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 18px; text-decoration: none; display: flex; flex-direction: column; gap: 4px; transition: all 0.2s;">
-          <span style="font-family: var(--mono); font-size: 11px; color: var(--muted);">&larr; CATATAN SEBELUMNYA</span>
-          <span style="font-size: 13px; font-weight: 600; color: var(--heading);">{prevNote.title}</span>
+        <a href={`/note/${prevNote.id}`} style="background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; text-decoration: none; display: flex; flex-direction: column; gap: 6px; transition: all 0.2s;">
+          <span style="font-family: var(--mono); font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 4px;">
+            <span>&larr;</span> CATATAN SEBELUMNYA
+          </span>
+          <span style="font-size: 13.5px; font-weight: 700; color: var(--heading); line-height: 1.4;">{prevNote.title}</span>
         </a>
       )}
       {nextNote && (
-        <a href={`/note/${nextNote.id}`} style="background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 18px; text-decoration: none; display: flex; flex-direction: column; gap: 4px; text-align: right; transition: all 0.2s;">
-          <span style="font-family: var(--mono); font-size: 11px; color: var(--muted);">CATATAN BERIKUTNYA &rarr;</span>
-          <span style="font-size: 13px; font-weight: 600; color: var(--heading);">{nextNote.title}</span>
+        <a href={`/note/${nextNote.id}`} style="background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; text-decoration: none; display: flex; flex-direction: column; gap: 6px; text-align: right; transition: all 0.2s;">
+          <span style="font-family: var(--mono); font-size: 11px; color: var(--muted); display: flex; align-items: center; justify-content: flex-end; gap: 4px;">
+            CATATAN BERIKUTNYA <span>&rarr;</span>
+          </span>
+          <span style="font-size: 13.5px; font-weight: 700; color: var(--heading); line-height: 1.4;">{nextNote.title}</span>
         </a>
       )}
     </nav>
@@ -197,6 +294,42 @@ const ogImageUrl = `/og/${note.id}.png`;
       progBar.style.width = Math.min(100, Math.max(0, pct)) + '%';
     }, { passive: true });
   }
+
+  // Quick In-Article Font Scaler
+  document.querySelectorAll('.font-scaler-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const scale = btn.getAttribute('data-scale') || 'normal';
+      document.documentElement.setAttribute('data-size', scale);
+      localStorage.setItem('katakating_size', scale);
+      document.querySelectorAll('.font-scaler-btn').forEach(b => {
+        b.style.fontWeight = '500';
+        b.style.color = 'var(--muted)';
+      });
+      btn.style.fontWeight = '700';
+      btn.style.color = 'var(--heading)';
+    });
+  });
+
+  // Global helper for copying code snippets in command panels
+  window.copyCodeSnippet = function(button) {
+    const panel = button.closest('.command-panel');
+    if (!panel) return;
+    const codeEl = panel.querySelector('code');
+    if (!codeEl) return;
+    const codeText = codeEl.innerText;
+
+    navigator.clipboard.writeText(codeText).then(() => {
+      const originalHtml = button.innerHTML;
+      button.innerHTML = '<span>Tersalin!</span>';
+      button.style.borderColor = '#22c55e';
+      button.style.color = '#22c55e';
+      setTimeout(() => {
+        button.innerHTML = originalHtml;
+        button.style.borderColor = '';
+        button.style.color = '';
+      }, 2000);
+    });
+  };
 
   // Share Article Button trigger
   const shareBtn = document.getElementById('btn-share-article');
@@ -230,32 +363,6 @@ const ogImageUrl = `/og/${note.id}.png`;
       btn.classList.add('correct');
       if (quizFeedback) quizFeedback.style.display = 'block';
     });
-  });
-
-  // Copy code blocks
-  document.querySelectorAll('pre code').forEach(codeBlock => {
-    const pre = codeBlock.parentElement;
-    if (!pre) return;
-    pre.style.position = 'relative';
-
-    const copyBtn = document.createElement('button');
-    copyBtn.type = 'button';
-    copyBtn.className = 'copy-code-btn';
-    copyBtn.textContent = 'Salin';
-    copyBtn.style.cssText = 'position: absolute; top: 8px; right: 8px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); color: #fff; font-family: monospace; font-size: 10.5px; padding: 3px 8px; border-radius: 4px; cursor: pointer;';
-
-    copyBtn.addEventListener('click', () => {
-      navigator.clipboard.writeText(codeBlock.innerText).then(() => {
-        copyBtn.textContent = 'Tersalin!';
-        copyBtn.style.background = '#22c55e';
-        setTimeout(() => {
-          copyBtn.textContent = 'Salin';
-          copyBtn.style.background = 'rgba(255,255,255,0.08)';
-        }, 2000);
-      });
-    });
-
-    pre.appendChild(copyBtn);
   });
 })();
 </script>

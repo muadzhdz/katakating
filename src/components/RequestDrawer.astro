@@ -4,11 +4,12 @@
 
 <div id="request-drawer" class="request-drawer-overlay" role="dialog" aria-modal="true" aria-labelledby="request-drawer-title">
   <div class="request-drawer-panel">
+    <!-- DRAWER HEAD -->
     <div class="request-drawer-head">
       <div style="display: flex; align-items: center; gap: 8px;">
         <span style="display: inline-block; width: 6px; height: 14px; background: var(--accent); border-radius: 2px;"></span>
         <h3 id="request-drawer-title" style="font-family: var(--mono); font-size: 13.5px; font-weight: 700; color: var(--heading);">
-          // REQUEST MATERI PRAKTIKUM
+          // WISHLIST &amp; REQUEST MATERI LAB
         </h3>
       </div>
       <button type="button" class="square-action" id="close-request-btn" aria-label="Tutup Request" style="width: 28px; height: 28px;">
@@ -19,57 +20,142 @@
       </button>
     </div>
 
+    <!-- TABS BAR: EXPLORE vs SUBMIT (Inspired by plugins.omarchy.org) -->
+    <div class="drawer-tabs-bar">
+      <button type="button" class="drawer-tab-btn active" id="tab-btn-explore">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+        <span>JELAJAHI USULAN (<span id="tab-count-badge">5</span>)</span>
+      </button>
+      <button type="button" class="drawer-tab-btn" id="tab-btn-submit">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        <span>AJUKAN TOPIK BARU</span>
+      </button>
+    </div>
+
+    <!-- DRAWER CONTENT AREA -->
     <div class="request-drawer-content">
-      <p style="font-size: 13px; color: var(--muted); margin-bottom: 18px; line-height: 1.5;">
-        Butuh panduan atau catatan yang belum tersedia di Katakating? Tulis permintaan lu di sini, kating dan sesama mahasiswa akan bantu menulisnya!
-      </p>
+      <!-- VIEW 1: EXPLORE WISHLIST -->
+      <div id="view-explore-requests">
+        <!-- Live Search Input -->
+        <input 
+          type="text" 
+          id="req-search-input" 
+          class="drawer-search-box" 
+          placeholder="Cari usulan materi (cth: mikrotik, unity, laporan 4433)..." 
+        />
 
-      <!-- Request Form -->
-      <form id="topic-request-form" style="background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; margin-bottom: 24px;">
-        <div style="margin-bottom: 12px;">
-          <label style="font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--heading); display: block; margin-bottom: 6px;">
-            JUDUL TOPIK / MATERI *
-          </label>
-          <input type="text" id="req-topic-title" placeholder="cth: Tutorial Konfigurasi Mikrotik OSPF di Lab 3" required style="width: 100%; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 8px 12px; font-size: 13px; color: var(--text); outline: none;" />
+        <!-- Category Filter Pills -->
+        <div class="drawer-pills-row" id="drawer-filter-pills">
+          <button type="button" class="drawer-pill-btn active" data-prodi="all">Semua</button>
+          <button type="button" class="drawer-pill-btn" data-prodi="TRM">TRM</button>
+          <button type="button" class="drawer-pill-btn" data-prodi="IF">Informatika</button>
+          <button type="button" class="drawer-pill-btn" data-prodi="IoT">IoT / Elektro</button>
+          <button type="button" class="drawer-pill-btn" data-prodi="AKADEMIK">Akademik</button>
         </div>
 
-        <div style="margin-bottom: 12px;">
-          <label style="font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--heading); display: block; margin-bottom: 6px;">
-            PROGRAM STUDI / LAB
-          </label>
-          <select id="req-topic-prodi" style="width: 100%; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 8px 12px; font-size: 13px; color: var(--text); outline: none;">
-            <option value="TRM">Teknologi Rekayasa Multimedia (TRM)</option>
-            <option value="IF">Informatika (IF)</option>
-            <option value="SI">Sistem Informasi (SI)</option>
-            <option value="TE">Teknik Elektro / Mekatronika</option>
-            <option value="UMUM">Akademik &amp; Umum</option>
-          </select>
+        <!-- Sort Controls -->
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; font-family: var(--mono); font-size: 11px;">
+          <span style="color: var(--muted);" id="req-filter-status-text">Menampilkan 5 usulan materi</span>
+          <div style="display: flex; gap: 8px;">
+            <button type="button" id="sort-votes-btn" style="background: none; border: none; color: var(--accent); cursor: pointer; font-weight: 600; font-family: var(--mono); font-size: 11px;">
+              🔥 Suara Terbanyak
+            </button>
+            <span style="color: var(--line);">|</span>
+            <button type="button" id="sort-recent-btn" style="background: none; border: none; color: var(--muted); cursor: pointer; font-family: var(--mono); font-size: 11px;">
+              ⚡ Terbaru
+            </button>
+          </div>
         </div>
 
-        <div style="margin-bottom: 14px;">
-          <label style="font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--heading); display: block; margin-bottom: 6px;">
-            KETERANGAN TAMBAHAN (OPSIONAL)
-          </label>
-          <textarea id="req-topic-desc" rows="2" placeholder="Jelaskan kendala atau studi kasus yang lu butuhkan..." style="width: 100%; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 8px 12px; font-size: 12.5px; color: var(--text); outline: none; resize: vertical;"></textarea>
+        <!-- Card List Container -->
+        <div id="request-list-container">
+          <!-- Dynamically populated via JS -->
         </div>
-
-        <button type="submit" class="button" style="width: 100%; min-height: 36px; font-size: 12px; font-weight: 600; background: var(--accent); color: var(--accent-contrast);">
-          Kirim Request Topik
-        </button>
-      </form>
-
-      <!-- Wishlist Board -->
-      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-        <span style="font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--heading); letter-spacing: 0.08em;">
-          WISHLIST PALING BANYAK DIREQUEST
-        </span>
-        <span id="req-count-badge" style="font-family: var(--mono); font-size: 10.5px; color: var(--muted); background: var(--panel-2); padding: 2px 6px; border-radius: 4px;">
-          4 Topik
-        </span>
       </div>
 
-      <div id="request-list-container">
-        <!-- Injected via JavaScript -->
+      <!-- VIEW 2: SUBMIT TOPIC REQUEST -->
+      <div id="view-submit-requests" style="display: none;">
+        <p style="font-size: 13px; color: var(--muted); margin-bottom: 16px; line-height: 1.5;">
+          Ada materi praktikum atau masalah lab yang belum ada panduannya di Katakating? Tulis di sini agar kating atau kontributor lain bisa membantu menyusunnya.
+        </p>
+
+        <!-- Quick Idea Chips -->
+        <div style="margin-bottom: 18px;">
+          <label style="font-family: var(--mono); font-size: 10.5px; font-weight: 700; color: var(--heading); text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 6px;">
+            // CONTOH TOPIK PALING SERING DITANYAKAN:
+          </label>
+          <div class="quick-chips-row">
+            <button type="button" class="quick-chip" data-preset="Konfigurasi Mikrotik OSPF Multi-Area">Mikrotik OSPF</button>
+            <button type="button" class="quick-chip" data-preset="Ekspor Rigging Model Blender ke Unity Tanpa Deformasi">Blender to Unity</button>
+            <button type="button" class="quick-chip" data-preset="Autentikasi Supabase dengan Google OAuth di React">Supabase OAuth</button>
+            <button type="button" class="quick-chip" data-preset="Studi Kasus Normalisasi Database 1NF ke 3NF">Normalisasi 3NF</button>
+            <button type="button" class="quick-chip" data-preset="Template Bab 4 Laporan PKL Format 4-4-3-3">Laporan Bab 4</button>
+          </div>
+        </div>
+
+        <!-- Submission Form -->
+        <form id="topic-request-form" style="background: var(--panel); border: 1px solid var(--line-strong); border-radius: var(--radius); padding: 18px; margin-bottom: 24px;">
+          <div style="margin-bottom: 14px;">
+            <label style="font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--heading); display: block; margin-bottom: 6px;">
+              JUDUL MATERI / PRAKTIKUM *
+            </label>
+            <input 
+              type="text" 
+              id="req-topic-title" 
+              placeholder="cth: Tutorial Routing Mikrotik VLAN di Lab Komputer" 
+              required 
+              style="width: 100%; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 9px 12px; font-size: 13px; color: var(--text); outline: none;" 
+            />
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+            <div>
+              <label style="font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--heading); display: block; margin-bottom: 6px;">
+                PROGRAM STUDI / LAB *
+              </label>
+              <select id="req-topic-prodi" style="width: 100%; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 9px 10px; font-size: 12.5px; color: var(--text); outline: none;">
+                <option value="TRM">Teknologi Rekayasa Multimedia (TRM)</option>
+                <option value="IF">Teknik Informatika (IF)</option>
+                <option value="SI">Sistem Informasi (SI)</option>
+                <option value="IoT">IoT / Teknik Elektro</option>
+                <option value="AKADEMIK">Akademik &amp; Tugas Akhir</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--heading); display: block; margin-bottom: 6px;">
+                IDENTITAS (OPSIONAL)
+              </label>
+              <input 
+                type="text" 
+                id="req-topic-author" 
+                placeholder="cth: Mahasiswa TRM '24" 
+                style="width: 100%; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 9px 12px; font-size: 12.5px; color: var(--text); outline: none;" 
+              />
+            </div>
+          </div>
+
+          <div style="margin-bottom: 16px;">
+            <label style="font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--heading); display: block; margin-bottom: 6px;">
+              DETAIL KENDALA / STUDI KASUS SPESIFIK
+            </label>
+            <textarea 
+              id="req-topic-desc" 
+              rows="3" 
+              placeholder="Jelaskan versi software atau kendala error yang sering dihadapi di lab..." 
+              style="width: 100%; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); padding: 9px 12px; font-size: 12.5px; color: var(--text); outline: none; resize: vertical;"
+            ></textarea>
+          </div>
+
+          <button type="submit" class="button" style="width: 100%; min-height: 38px; font-size: 12px; font-weight: 700; background: var(--accent); color: var(--accent-contrast);">
+            Publikasikan Usulan ke Wishlist Mahasiswa
+          </button>
+        </form>
       </div>
     </div>
   </div>
@@ -79,50 +165,81 @@
 (function() {
   const drawer = document.getElementById('request-drawer');
   const closeBtn = document.getElementById('close-request-btn');
+  const tabExplore = document.getElementById('tab-btn-explore');
+  const tabSubmit = document.getElementById('tab-btn-submit');
+  const viewExplore = document.getElementById('view-explore-requests');
+  const viewSubmit = document.getElementById('view-submit-requests');
+  const tabCount = document.getElementById('tab-count-badge');
+  const searchInput = document.getElementById('req-search-input');
+  const filterPills = document.querySelectorAll('.drawer-pill-btn');
+  const sortVotesBtn = document.getElementById('sort-votes-btn');
+  const sortRecentBtn = document.getElementById('sort-recent-btn');
+  const listContainer = document.getElementById('request-list-container');
   const form = document.getElementById('topic-request-form');
-  const container = document.getElementById('request-list-container');
-  const countBadge = document.getElementById('req-count-badge');
+  const quickChips = document.querySelectorAll('.quick-chip');
+  const statusText = document.getElementById('req-filter-status-text');
 
   if (!drawer) return;
+
+  let currentCategory = 'all';
+  let currentSort = 'votes'; // 'votes' | 'recent'
 
   const defaultRequests = [
     {
       id: 'req-1',
       title: 'Tutorial Routing OSPF Multi-Area Cisco Packet Tracer',
-      prodi: 'TRM / IF',
-      upvotes: 18,
-      author: 'Anonim (Angkatan 24)',
-      date: '2 hari lalu'
+      desc: 'Sering keluar di praktikum Jaringan Komputer Lanjut semester 4. Butuh konfigurasi CLI dan tabel routing lengkap.',
+      prodi: 'IF',
+      upvotes: 24,
+      author: 'Mahasiswa IF 23',
+      date: '2 hari lalu',
+      status: 'needed'
     },
     {
       id: 'req-2',
-      title: 'Koneksi ESP32 ke Supabase Realtime Database via REST API',
-      prodi: 'IoT & Mekatronika',
-      upvotes: 14,
-      author: 'Mahasiswa TRM',
-      date: '3 hari lalu'
+      title: 'Koneksi ESP32 ke Supabase Realtime Database via REST API & SSL',
+      desc: 'Banyak mahasiswa kesulitan menangani sertifikat SSL di ESP32 saat integrasi proyek IoT akhir.',
+      prodi: 'IoT',
+      upvotes: 19,
+      author: 'Tim Robotika Boash',
+      date: '3 hari lalu',
+      status: 'working'
     },
     {
       id: 'req-3',
-      title: 'Panduan Ekspor Animasi Rigging Blender ke Unity 2026 Tanpa Deformasi',
-      prodi: 'Game & TRM',
-      upvotes: 11,
-      author: 'Mahasiswa Boash',
-      date: '5 hari lalu'
+      title: 'Panduan Ekspor Rigging & Animasi Blender ke Unity 2026 Tanpa Deformasi Bone',
+      desc: 'Sering terjadi scale factor error (0.01) dan rotasi sumbu Z terbalik saat diimpor ke Unity.',
+      prodi: 'TRM',
+      upvotes: 16,
+      author: 'Studio TRM',
+      date: '5 hari lalu',
+      status: 'needed'
     },
     {
       id: 'req-4',
       title: 'Contoh Lengkap Bab 4 Analisis & Pembahasan Laporan PKL Format 4-4-3-3',
-      prodi: 'Akademik',
-      upvotes: 9,
-      author: 'Semester 5',
-      date: '1 minggu lalu'
+      desc: 'Format bab pembahasan sistem sering direvisi dosen pembimbing karena kurang membedah metodologi.',
+      prodi: 'AKADEMIK',
+      upvotes: 14,
+      author: 'Semester 6',
+      date: '1 minggu lalu',
+      status: 'needed'
+    },
+    {
+      id: 'req-5',
+      title: 'Konfigurasi Docker Compose untuk Local WordPress & MySQL Multi-Site',
+      desc: 'Panduan setup environment terisolasi tanpa instalasi XAMPP lokal di Windows dan Linux.',
+      prodi: 'TRM',
+      upvotes: 11,
+      author: 'Web Lab Boash',
+      date: '1 minggu lalu',
+      status: 'done'
     }
   ];
 
   function getStoredRequests() {
     try {
-      const saved = localStorage.getItem('katakating_topic_requests');
+      const saved = localStorage.getItem('katakating_topic_requests_v3');
       if (saved) return JSON.parse(saved);
     } catch (_) {}
     return defaultRequests;
@@ -130,13 +247,13 @@
 
   function saveRequests(list) {
     try {
-      localStorage.setItem('katakating_topic_requests', JSON.stringify(list));
+      localStorage.setItem('katakating_topic_requests_v3', JSON.stringify(list));
     } catch (_) {}
   }
 
   function getUpvotedIds() {
     try {
-      return JSON.parse(localStorage.getItem('katakating_upvoted_topics') || '[]');
+      return JSON.parse(localStorage.getItem('katakating_upvoted_topics_v3') || '[]');
     } catch (_) {
       return [];
     }
@@ -145,82 +262,227 @@
   function renderList() {
     const list = getStoredRequests();
     const upvotedIds = getUpvotedIds();
+    const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
 
-    list.sort((a, b) => b.upvotes - a.upvotes);
-    if (countBadge) countBadge.textContent = `${list.length} Topik`;
+    if (tabCount) tabCount.textContent = list.length;
 
-    if (!container) return;
-    container.innerHTML = '';
+    let filtered = list.filter(item => {
+      const matchCat = (currentCategory === 'all') || (item.prodi.toUpperCase() === currentCategory.toUpperCase());
+      const matchQuery = !query || item.title.toLowerCase().includes(query) || (item.desc && item.desc.toLowerCase().includes(query));
+      return matchCat && matchQuery;
+    });
 
-    list.forEach(item => {
+    if (currentSort === 'votes') {
+      filtered.sort((a, b) => b.upvotes - a.upvotes);
+    } else {
+      filtered.sort((a, b) => (b.id > a.id ? 1 : -1));
+    }
+
+    if (statusText) {
+      statusText.textContent = `Menampilkan ${filtered.length} dari ${list.length} usulan`;
+    }
+
+    if (!listContainer) return;
+    listContainer.innerHTML = '';
+
+    if (filtered.length === 0) {
+      listContainer.innerHTML = `
+        <div style="padding: 32px 16px; text-align: center; color: var(--muted); font-family: var(--mono); font-size: 12px; border: 1px dashed var(--line); border-radius: var(--radius);">
+          [!] Tidak ada topik yang cocok dengan filter "${query || currentCategory}".
+        </div>
+      `;
+      return;
+    }
+
+    filtered.forEach(item => {
       const isUpvoted = upvotedIds.includes(item.id);
+      let statusLabel = '🔍 Butuh Penulis';
+      let statusClass = 'needed';
+      if (item.status === 'working') {
+        statusLabel = '⚡ Sedang Ditulis';
+        statusClass = 'working';
+      } else if (item.status === 'done') {
+        statusLabel = '✓ Sudah Ada di Katalog';
+        statusClass = 'done';
+      }
+
       const card = document.createElement('div');
       card.className = 'request-card-item';
       card.innerHTML = `
-        <button type="button" class="request-upvote-btn ${isUpvoted ? 'upvoted' : ''}" data-id="${item.id}" aria-label="Upvote topik">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"></polyline></svg>
+        <button type="button" class="request-upvote-btn ${isUpvoted ? 'upvoted' : ''}" data-id="${item.id}" aria-label="Upvote topik ${item.title}">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="18 15 12 9 6 15"></polyline>
+          </svg>
           <span style="font-weight: 700;">${item.upvotes}</span>
         </button>
+
         <div style="flex: 1; min-width: 0;">
-          <h4 style="font-size: 13px; font-weight: 600; color: var(--heading); margin-bottom: 4px; line-height: 1.4;">${item.title}</h4>
-          <div style="font-family: var(--mono); font-size: 11px; color: var(--muted); display: flex; gap: 8px; flex-wrap: wrap;">
-            <span>[${item.prodi}]</span>
-            <span>&bull;</span>
-            <span>${item.date}</span>
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; flex-wrap: wrap;">
+            <div style="display: flex; gap: 6px; align-items: center;">
+              <span class="card-tag" style="font-size: 10px; padding: 2px 6px;">[${item.prodi}]</span>
+              <span class="request-status-tag ${statusClass}">${statusLabel}</span>
+            </div>
+            <span style="font-family: var(--mono); font-size: 10.5px; color: var(--muted);">${item.date}</span>
+          </div>
+
+          <h4 style="font-size: 13.5px; font-weight: 700; color: var(--heading); margin: 0 0 4px; line-height: 1.4;">
+            ${item.title}
+          </h4>
+
+          ${item.desc ? `<p style="font-size: 12px; color: var(--muted); margin: 0 0 8px; line-height: 1.5;">${item.desc}</p>` : ''}
+
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; border-top: 1px solid var(--line); padding-top: 8px; margin-top: 6px;">
+            <span style="font-family: var(--mono); font-size: 10.5px; color: var(--muted);">
+              Diulik oleh: <b style="color: var(--text);">${item.author || 'Mahasiswa Boash'}</b>
+            </span>
+
+            <a href="/upload?title=${encodeURIComponent(item.title)}&prodi=${encodeURIComponent(item.prodi)}" class="request-write-link">
+              <span>Saya Mau Tulis Ini</span>
+              <span>&rarr;</span>
+            </a>
           </div>
         </div>
       `;
 
+      // Upvote click handler
       const upBtn = card.querySelector('.request-upvote-btn');
       upBtn.addEventListener('click', () => {
         let currentUpvoted = getUpvotedIds();
+        const all = getStoredRequests();
+        const target = all.find(x => x.id === item.id);
+        if (!target) return;
+
         if (currentUpvoted.includes(item.id)) {
-          item.upvotes = Math.max(0, item.upvotes - 1);
+          target.upvotes = Math.max(0, target.upvotes - 1);
           currentUpvoted = currentUpvoted.filter(x => x !== item.id);
         } else {
-          item.upvotes += 1;
+          target.upvotes += 1;
           currentUpvoted.push(item.id);
         }
-        localStorage.setItem('katakating_upvoted_topics', JSON.stringify(currentUpvoted));
-        saveRequests(list);
+
+        localStorage.setItem('katakating_upvoted_topics_v3', JSON.stringify(currentUpvoted));
+        saveRequests(all);
         renderList();
       });
 
-      container.appendChild(card);
+      listContainer.appendChild(card);
     });
   }
 
+  // Switch tabs
+  function setTab(tab) {
+    if (tab === 'explore') {
+      tabExplore.classList.add('active');
+      tabSubmit.classList.remove('active');
+      viewExplore.style.display = 'block';
+      viewSubmit.style.display = 'none';
+      renderList();
+    } else {
+      tabSubmit.classList.add('active');
+      tabExplore.classList.remove('active');
+      viewExplore.style.display = 'none';
+      viewSubmit.style.display = 'block';
+    }
+  }
+
+  if (tabExplore) tabExplore.addEventListener('click', () => setTab('explore'));
+  if (tabSubmit) tabSubmit.addEventListener('click', () => setTab('submit'));
+
+  // Search filter
+  if (searchInput) {
+    searchInput.addEventListener('input', () => renderList());
+  }
+
+  // Category filter pills
+  filterPills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      filterPills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      currentCategory = pill.getAttribute('data-prodi') || 'all';
+      renderList();
+    });
+  });
+
+  // Sort buttons
+  if (sortVotesBtn) {
+    sortVotesBtn.addEventListener('click', () => {
+      currentSort = 'votes';
+      sortVotesBtn.style.color = 'var(--accent)';
+      sortVotesBtn.style.fontWeight = '700';
+      if (sortRecentBtn) {
+        sortRecentBtn.style.color = 'var(--muted)';
+        sortRecentBtn.style.fontWeight = '500';
+      }
+      renderList();
+    });
+  }
+  if (sortRecentBtn) {
+    sortRecentBtn.addEventListener('click', () => {
+      currentSort = 'recent';
+      sortRecentBtn.style.color = 'var(--accent)';
+      sortRecentBtn.style.fontWeight = '700';
+      if (sortVotesBtn) {
+        sortVotesBtn.style.color = 'var(--muted)';
+        sortVotesBtn.style.fontWeight = '500';
+      }
+      renderList();
+    });
+  }
+
+  // Quick chips
+  quickChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const preset = chip.getAttribute('data-preset');
+      const titleInput = document.getElementById('req-topic-title');
+      if (titleInput && preset) {
+        titleInput.value = preset;
+        titleInput.focus();
+      }
+    });
+  });
+
+  // Form submit handler
   if (form) {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       const titleInput = document.getElementById('req-topic-title');
       const prodiSelect = document.getElementById('req-topic-prodi');
+      const authorInput = document.getElementById('req-topic-author');
+      const descInput = document.getElementById('req-topic-desc');
+
       const title = titleInput.value.trim();
-      const prodi = prodiSelect.value;
       if (!title) return;
 
       const list = getStoredRequests();
       const newItem = {
         id: 'req-' + Date.now(),
         title: title,
-        prodi: prodi,
+        prodi: prodiSelect.value,
+        desc: descInput.value.trim(),
         upvotes: 1,
-        author: 'Mahasiswa Boash',
-        date: 'Baru saja'
+        author: authorInput.value.trim() || 'Mahasiswa Boash',
+        date: 'Baru saja',
+        status: 'needed'
       };
+
       list.unshift(newItem);
       saveRequests(list);
 
       const upvoted = getUpvotedIds();
       upvoted.push(newItem.id);
-      localStorage.setItem('katakating_upvoted_topics', JSON.stringify(upvoted));
+      localStorage.setItem('katakating_upvoted_topics_v3', JSON.stringify(upvoted));
 
+      // Reset form
       titleInput.value = '';
-      document.getElementById('req-topic-desc').value = '';
-      renderList();
+      descInput.value = '';
+      authorInput.value = '';
+
+      // Switch to explore tab and re-render
+      setTab('explore');
     });
   }
 
+  // Drawer open / close
   function closeDrawer() {
     drawer.classList.remove('open');
   }
@@ -230,10 +492,19 @@
   });
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer();
+    // Shortcut 'R' to toggle request drawer
+    if (e.key.toLowerCase() === 'r' && !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
+      e.preventDefault();
+      if (drawer.classList.contains('open')) {
+        closeDrawer();
+      } else {
+        window.openRequestDrawer && window.openRequestDrawer();
+      }
+    }
   });
 
   window.openRequestDrawer = function() {
-    renderList();
+    setTab('explore');
     drawer.classList.add('open');
   };
 
