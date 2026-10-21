@@ -810,21 +810,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         console.warn('Local submission storage notice:', err);
       }
 
-      // 2. Sync to Supabase if client is ready
-      if (sb) {
-        try {
-          sb.from('submissions').insert({
-            title: subRecord.title,
-            author_name: subRecord.author_name,
-            author_npm: subRecord.author_npm,
-            author_email: subRecord.author_email,
-            category: subRecord.category,
-            summary: subRecord.summary,
-            content: subRecord.content,
-            status: 'pending_review'
-          }).then(() => {}).catch(err => console.warn('Supabase submission insert notice:', err));
-        } catch (e) {}
-      }
+      // 2. Sync to Cloudflare D1 API
+      fetch('/api/submissions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: subRecord.title,
+          author_name: subRecord.author_name,
+          author_npm: subRecord.author_npm,
+          author_email: subRecord.author_email,
+          category: subRecord.category,
+          prodi_tags: [subRecord.prodi || 'praktikum'],
+          semester: 1,
+          summary: subRecord.summary,
+          content: subRecord.content
+        })
+      }).catch(err => console.warn('D1 submission insert notice:', err));
 
       document.getElementById('modal-ticket-id').textContent = ticketId;
       document.getElementById('modal-ticket-date').textContent = nowStr;

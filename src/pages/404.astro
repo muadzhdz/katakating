@@ -293,60 +293,32 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       }
     } catch (e) {}
 
-    // 2. Query from Supabase Client
-    function queryRemoteGuide() {
-      const sb = window.supabaseClient || (window.KataKatingAuth && window.KataKatingAuth.client) || (typeof window.getKataKatingDb === 'function' ? window.getKataKatingDb() : null);
-      if (!sb) {
-        if (!foundInStorage) {
-          // Retry briefly if auth.js is still hydrating
-          setTimeout(queryRemoteGuide, 200);
+    // 2. Query from Cloudflare D1 API
+    async function queryRemoteGuide() {
+      try {
+        const res = await fetch(`/api/guides/${encodeURIComponent(noteSlug)}`);
+        if (res.ok) {
+          const guide = await res.json();
+          if (guide && guide.id) {
+            renderNote(guide);
+            return;
+          }
         }
-        return;
+        if (!foundInStorage) {
+          showActual404(
+            'Catatan Tidak Ditemukan',
+            `Naskah catatan dengan kode "${escapeHtml(noteSlug)}" tidak ditemukan di repositori atau belum disetujui kurator.`
+          );
+        }
+      } catch (err) {
+        console.warn('API note fetch failed in 404 fallback:', err);
+        if (!foundInStorage) {
+          showActual404(
+            'Gagal Memuat Catatan',
+            `Terjadi gangguan saat mengambil naskah catatan "${escapeHtml(noteSlug)}". Silakan periksa koneksi internet Anda.`
+          );
+        }
       }
-
-      sb.from('guides')
-        .select('*')
-        .eq('id', noteSlug)
-        .then(({ data, error }) => {
-          if (!error && Array.isArray(data) && data.length > 0) {
-            renderNote(data[0]);
-          } else if (!foundInStorage) {
-            return sb.from('submissions')
-              .select('*')
-              .eq('status', 'approved')
-              .then(({ data: subs }) => {
-                const matchedSub = (Array.isArray(subs) ? subs : []).find(s => {
-                  const sSlug = (s.title || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-                  return sSlug === noteSlug || s.id === noteSlug;
-                });
-                if (matchedSub) {
-                  renderNote({
-                    id: noteSlug,
-                    title: matchedSub.title,
-                    author_name: matchedSub.author_name,
-                    category: matchedSub.category,
-                    summary: matchedSub.summary,
-                    content: matchedSub.content,
-                    created_at: matchedSub.submitted_at
-                  });
-                } else if (!foundInStorage) {
-                  showActual404(
-                    'Catatan Tidak Ditemukan',
-                    `Naskah catatan dengan kode "${escapeHtml(noteSlug)}" tidak ditemukan di repositori atau belum disetujui kurator.`
-                  );
-                }
-              });
-          }
-        })
-        .catch(err => {
-          console.warn('Supabase note fetch failed in 404 fallback:', err);
-          if (!foundInStorage) {
-            showActual404(
-              'Gagal Memuat Catatan',
-              `Terjadi gangguan saat mengambil naskah catatan "${escapeHtml(noteSlug)}". Silakan periksa koneksi internet Anda.`
-            );
-          }
-        });
     }
 
     queryRemoteGuide();

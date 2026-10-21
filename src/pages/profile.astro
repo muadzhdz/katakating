@@ -595,11 +595,12 @@ async function getArticlesCatalog(sb) {
     console.warn('Local articles.json fetch notice:', e);
   }
 
-  // 2. Fetch from Supabase guides table (for any database-only guides)
-  if (sb) {
-    try {
-      const { data: gData } = await sb.from('guides').select('id, title, summary, category, author_name');
-      if (gData) {
+  // 2. Fetch from Cloudflare D1 API (for any database-only guides)
+  try {
+    const res = await fetch('/api/guides');
+    if (res.ok) {
+      const gData = await res.json();
+      if (Array.isArray(gData)) {
         gData.forEach(g => {
           if (!catalogMap.has(g.id)) {
             catalogMap.set(g.id, {
@@ -612,9 +613,9 @@ async function getArticlesCatalog(sb) {
           }
         });
       }
-    } catch (e) {
-      console.warn('Supabase guides fetch notice:', e);
     }
+  } catch (e) {
+    console.warn('D1 guides fetch notice:', e);
   }
 
   cachedCatalogMap = catalogMap;
@@ -631,7 +632,7 @@ async function loadBookmarks(sb, userId) {
     const catalog = await getArticlesCatalog(sb);
     const bookmarkedIds = [];
 
-    // Query remote Supabase
+    // Query remote database
     if (sb && userId && isValidUuid(userId)) {
       const { data, error } = await sb
         .from('bookmarks')
@@ -714,7 +715,7 @@ async function loadLikes(sb, userId) {
     const catalog = await getArticlesCatalog(sb);
     const likedIds = [];
 
-    // Query remote Supabase
+    // Query remote database
     if (sb && userId && isValidUuid(userId)) {
       const { data, error } = await sb
         .from('guide_likes')

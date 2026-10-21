@@ -14,41 +14,33 @@ export async function getStaticPaths() {
     notes = [];
   }
 
-  // Fetch approved guides from Supabase so any newly published guides are built statically
+  // Fetch approved guides from Cloudflare D1 API so any newly published guides are built statically
   try {
-    const SUPABASE_URL = import.meta.env.SUPABASE_URL || process.env.SUPABASE_URL;
-    const SUPABASE_ANON_KEY = import.meta.env.SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
-    if (SUPABASE_URL && SUPABASE_ANON_KEY) {
-      const res = await fetch(`${SUPABASE_URL}/rest/v1/guides?select=*`, {
-        headers: {
-          'apikey': SUPABASE_ANON_KEY,
-          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-        },
-      });
-      if (res.ok) {
-        const dbGuides = await res.json();
-        if (Array.isArray(dbGuides)) {
-          for (const g of dbGuides) {
-            if (!notes.find((n: any) => n.id === g.id)) {
-              notes.push({
-                id: g.id,
-                title: g.title,
-                category: g.category || 'Praktikum',
-                author: g.author_name || 'Kontributor Boash',
-                date: g.created_at ? g.created_at.split('T')[0] : '2026-10-19',
-                readTime: '5 menit',
-                initials: g.initials || (g.title ? g.title.substring(0, 4).toUpperCase() : 'DOC'),
-                tags: Array.isArray(g.prodi_tags) && g.prodi_tags.length ? g.prodi_tags : ['praktikum'],
-                summary: g.summary || g.title,
-                rawContent: g.content || '',
-              });
-            }
+    const API_URL = import.meta.env.PUBLIC_API_URL || process.env.PUBLIC_API_URL || 'https://katakating.pages.dev';
+    const res = await fetch(`${API_URL}/api/guides`);
+    if (res.ok) {
+      const dbGuides = await res.json();
+      if (Array.isArray(dbGuides)) {
+        for (const g of dbGuides) {
+          if (!notes.find((n: any) => n.id === g.id)) {
+            notes.push({
+              id: g.id,
+              title: g.title,
+              category: g.category || 'Praktikum',
+              author: g.author_name || 'Kontributor Boash',
+              date: g.created_at ? g.created_at.split('T')[0] : '2026-10-19',
+              readTime: '5 menit',
+              initials: g.initials || (g.title ? g.title.substring(0, 4).toUpperCase() : 'DOC'),
+              tags: Array.isArray(g.prodi_tags) && g.prodi_tags.length ? g.prodi_tags : ['praktikum'],
+              summary: g.summary || g.title,
+              rawContent: g.content || '',
+            });
           }
         }
       }
     }
   } catch (err) {
-    console.warn('[getStaticPaths] Could not fetch remote guides from Supabase:', err);
+    // Gracefully fallback to local notes repository
   }
 
   // Custom Marked Renderer for Terminal Command Panels and Anchors
@@ -337,20 +329,13 @@ const ogImageUrl = `/og/${note.id}.png`;
     let isLiked = !!(localStorage.getItem('katakating_like_' + articleId) || localStorage.getItem('readme_like_' + articleId));
     let isBookmarked = !!(localStorage.getItem('katakating_bookmark_' + articleId) || localStorage.getItem('readme_bookmark_' + articleId));
 
-    if (sb) {
-      try {
-        const { count } = await sb.from('guide_likes').select('id', { count: 'exact', head: true }).eq('guide_id', articleId);
-        if (typeof count === 'number' && likeCountEl) likeCountEl.textContent = count;
-
-        if (user && isValidUuid(user.id)) {
-          const { data: userLike } = await sb.from('guide_likes').select('id').eq('guide_id', articleId).eq('user_id', user.id).maybeSingle();
-          if (userLike) isLiked = true;
-
-          const { data: userBookmark } = await sb.from('bookmarks').select('id').eq('guide_id', articleId).eq('user_id', user.id).maybeSingle();
-          if (userBookmark) isBookmarked = true;
-        }
-      } catch (e) {}
-    }
+    try {
+      const res = await fetch(`/api/likes?guide_id=${encodeURIComponent(articleId)}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (typeof data.count === 'number' && likeCountEl) likeCountEl.textContent = data.count;
+      }
+    } catch (e) {}
 
     function renderUI() {
       if (btnLike && likeIcon && likeText) {
@@ -405,15 +390,20 @@ const ogImageUrl = `/og/${note.id}.png`;
           if (likeCountEl) likeCountEl.textContent = Math.max(0, curCount - 1);
           renderUI();
           try { localStorage.removeItem('katakating_like_' + articleId); } catch(e){}
-          if (sb && isValidUuid(u.id)) await sb.from('guide_likes').delete().eq('guide_id', articleId).eq('user_id', u.id);
+          if (u && u.id) {
+            fetch(`/api/likes?guide_id=${encodeURIComponent(articleId)}&user_id=${encodeURIComponent(u.id)}`, { method: 'DELETE' }).catch(() => {});
+          }
         } else {
           isLiked = true;
           if (likeCountEl) likeCountEl.textContent = curCount + 1;
           renderUI();
           try { localStorage.setItem('katakating_like_' + articleId, 'true'); } catch(e){}
-          if (sb && isValidUuid(u.id)) {
-            const { error } = await sb.from('guide_likes').insert({ guide_id: articleId, user_id: u.id });
-            if (error) console.warn('guide_likes insert notice:', error);
+          if (u && u.id) {
+            fetch('/api/likes', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ guide_id: articleId, user_id: u.id })
+            }).catch(() => {});
           }
         }
       };
@@ -430,14 +420,19 @@ const ogImageUrl = `/og/${note.id}.png`;
           isBookmarked = false;
           renderUI();
           try { localStorage.removeItem('katakating_bookmark_' + articleId); } catch(e){}
-          if (sb && isValidUuid(u.id)) await sb.from('bookmarks').delete().eq('guide_id', articleId).eq('user_id', u.id);
+          if (u && u.id) {
+            fetch(`/api/bookmarks?guide_id=${encodeURIComponent(articleId)}&user_id=${encodeURIComponent(u.id)}`, { method: 'DELETE' }).catch(() => {});
+          }
         } else {
           isBookmarked = true;
           renderUI();
           try { localStorage.setItem('katakating_bookmark_' + articleId, 'true'); } catch(e){}
-          if (sb && isValidUuid(u.id)) {
-            const { error } = await sb.from('bookmarks').insert({ guide_id: articleId, user_id: u.id });
-            if (error) console.warn('bookmarks insert notice:', error);
+          if (u && u.id) {
+            fetch('/api/bookmarks', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ guide_id: articleId, user_id: u.id })
+            }).catch(() => {});
           }
         }
       };

@@ -11,6 +11,7 @@
     "dev": "astro dev",
     "build": "node scripts/generate-og.mjs && astro build",
     "preview": "astro preview",
+    "deploy": "npm run build && wrangler pages deploy dist --project-name katakating --commit-dirty=true",
     "astro": "astro",
     "test": "node --test test/catalog.test.js",
     "validate": "npm run build && npm test"

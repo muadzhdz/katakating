@@ -373,18 +373,12 @@
       console.warn('[>] LocalStorage approved notes notice:', storageErr);
     }
 
-    // 3. Merge Supabase published guides
-    var auth = window.KataKatingAuth || window.ReadmeAuth;
-    var sb = auth ? auth.client : null;
-    if (sb) {
-      try {
-        var dbRes = await sb
-          .from('guides')
-          .select('id, title, summary, author_name, category, prodi_tags, created_at')
-          .order('created_at', { ascending: false });
-
-        var dbGuides = dbRes.data;
-        if (dbGuides && dbGuides.length > 0) {
+    // 3. Merge Cloudflare D1 published guides
+    try {
+      var res = await fetch('/api/guides');
+      if (res.ok) {
+        var dbGuides = await res.json();
+        if (Array.isArray(dbGuides) && dbGuides.length > 0) {
           var existingSlugs = new Set(rawArticles.map(function(a) { return a.id; }));
           dbGuides.forEach(function(g) {
             if (!existingSlugs.has(g.id)) {
@@ -402,9 +396,9 @@
             }
           });
         }
-      } catch (dbErr) {
-        console.warn('[>] Supabase guides fetch notice:', dbErr.message);
       }
+    } catch (dbErr) {
+      console.warn('[>] D1 guides fetch notice:', dbErr.message);
     }
 
     // 4. Construct graph & start interactive render loop

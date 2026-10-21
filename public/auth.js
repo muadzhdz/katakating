@@ -1,18 +1,9 @@
 /* ══════════════════════════════════════════════════════════════════
-   KATAKATING — SUPABASE AUTH & IDENTITY MODULE
-   GitHub OAuth, Google OAuth, Identity Linking, Profiles, Likes, Bookmarks
+   KATAKATING — AUTH & IDENTITY MODULE
+   Cloudflare D1 & Pages Functions
    ══════════════════════════════════════════════════════════════════ */
 
-const SUPABASE_URL = 'https://nyywfctmbdzzypiwuilt.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im55eXdmY3RtYmR6enlwaXd1aWx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAxNTYxMjYsImV4cCI6MjEwNTczMjEyNn0.rSE8M3hyZE-CdcDVL9Rx0NUfQddn0-tw2ltBr1wPgOQ';
-
-// Initialize Supabase Client
 let sbClient = null;
-if (window.supabase && typeof window.supabase.createClient === 'function') {
-  sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  window.supabaseClient = sbClient;
-  window.getKataKatingDb = function() { return sbClient; };
-}
 
 // Global Auth State
 const KataKatingAuth = {
@@ -145,7 +136,7 @@ const KataKatingAuth = {
 
     if (!sbClient) return;
 
-    // 1. Asynchronously verify session from Supabase
+    // 1. Asynchronously verify session
     try {
       const { data: { session } } = await sbClient.auth.getSession();
       if (session && session.user) {
@@ -751,70 +742,51 @@ const KataKatingAuth = {
       return { success: false, error: 'Email dan kata sandi wajib diisi' };
     }
 
-    if (!sbClient) {
-      if (typeof showToast === 'function') showToast('Koneksi autentikasi Supabase tidak tersedia');
-      return { success: false, error: 'Supabase client belum siap' };
-    }
-
     try {
-      const { data, error } = await sbClient.auth.signInWithPassword({
-        email: cleanEmail,
-        password: cleanPass
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: cleanEmail, password: cleanPass })
       });
+      const data = await res.json();
 
-      if (error) {
-        const msg = error.message === 'Invalid login credentials'
-          ? 'Email atau kata sandi tidak valid'
-          : error.message;
+      if (!res.ok || !data.success) {
+        const msg = data.error || 'Email atau kata sandi tidak valid';
         if (typeof showToast === 'function') showToast(msg);
         return { success: false, error: msg };
       }
 
-      if (data && data.user) {
-        this.user = data.user;
-        await this.loadProfile();
+      this.user = data.user;
+      this.profile = {
+        id: data.user.id,
+        email: data.user.email,
+        full_name: data.user.full_name || 'Admin KataKating',
+        role: 'admin',
+        nim: 'ADMIN-01',
+        prodi: 'Pengelola KataKating'
+      };
 
-        // Check if user has administrator privileges
-        const isAdmin = data.user.email === 'katakating@gmail.com' ||
-                        (this.profile && this.profile.role === 'admin') ||
-                        data.user.user_metadata?.role === 'admin' ||
-                        data.user.app_metadata?.role === 'admin';
+      localStorage.setItem('katakating_admin_session', JSON.stringify({
+        email: data.user.email,
+        full_name: this.profile.full_name,
+        role: 'admin',
+        token: data.token,
+        authenticated_at: new Date().toISOString()
+      }));
 
-        if (isEditorial && !isAdmin) {
-          await sbClient.auth.signOut();
-          this.user = null;
-          this.profile = null;
-          if (typeof showToast === 'function') showToast('Akun ini tidak memiliki hak akses administrator');
-          return { success: false, error: 'Bukan akun administrator' };
-        }
-
-        if (isAdmin) {
-          let adminName = (this.profile && this.profile.full_name) || data.user.user_metadata?.full_name || 'Admin KataKating';
-          if (adminName.includes('Dewan Redaksi')) adminName = 'Admin KataKating';
-          localStorage.setItem('katakating_admin_session', JSON.stringify({
-            email: data.user.email,
-            full_name: adminName,
-            role: 'admin',
-            authenticated_at: new Date().toISOString()
-          }));
-        }
-
-        this.renderNav();
-        this.closeLoginModal();
-        if (typeof showToast === 'function') showToast(isAdmin ? 'Berhasil masuk sebagai Admin KATAKATING' : 'Berhasil masuk ke akun Anda');
-        if (typeof updateAuthViewState === 'function') updateAuthViewState();
-        if (typeof window.checkAdminAuth === 'function') window.checkAdminAuth();
-        const p = window.location.pathname;
-        if (p.includes('upload') || p.includes('admin')) {
-          setTimeout(() => { window.location.reload(); }, 350);
-        }
-        return { success: true, role: isAdmin ? 'admin' : 'student' };
+      this.renderNav();
+      this.closeLoginModal();
+      if (typeof showToast === 'function') showToast('Berhasil masuk sebagai Admin KataKating');
+      if (typeof updateAuthViewState === 'function') updateAuthViewState();
+      if (typeof window.checkAdminAuth === 'function') window.checkAdminAuth();
+      const p = window.location.pathname;
+      if (p.includes('upload') || p.includes('admin')) {
+        setTimeout(() => { window.location.reload(); }, 350);
       }
+      return { success: true, role: 'admin' };
     } catch (err) {
-      console.error('Login error:', err);
-      const msg = err.message || 'Terjadi kesalahan saat masuk';
-      if (typeof showToast === 'function') showToast(msg);
-      return { success: false, error: msg };
+      console.warn('Login error:', err);
+      return { success: false, error: 'Terjadi gangguan koneksi saat masuk' };
     }
   },
 

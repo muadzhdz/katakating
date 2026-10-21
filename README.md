@@ -26,7 +26,7 @@ KATAKATING adalah repositori naskah catatan dan panduan lab berbasis web statis 
 - **Katalog & Filter Rumpun Keilmuan:** Navigasi cepat catatan berdasarkan 8 kategori bidang studi (Jaringan Komputer, Web & Tooling, Basis Data, Algoritma, IoT, Game, Akademik, Git & DevOps).
 - **Konverter Multi-Format:** Ekstraksi otomatis naskah Word (.docx), PDF Digital (.pdf), Teks (.txt), dan Markdown (.md) langsung ke formulir pengajuan.
 - **Graf Pengetahuan 2D Canvas:** Visualisasi keterhubungan simpul konsep, kategori, dan kontributor menggunakan rendering Canvas performa tinggi.
-- **Panel Moderasi Kurasi:** Alur peninjauan dan persetujuan naskah mahasiswa terintegrasi dengan basis data Supabase.
+- **Panel Moderasi Kurasi:** Alur peninjauan dan persetujuan naskah mahasiswa terintegrasi dengan basis data Cloudflare D1 (Serverless SQLite).
 - **Template Naskah Baku:** Ketersediaan template siap pakai (DOCX, TXT, MD) berformat standar margin 4-4-3-3.
 
 ---
@@ -35,7 +35,7 @@ KATAKATING adalah repositori naskah catatan dan panduan lab berbasis web statis 
 
 - **Framework:** Astro 5 (Static Site Generation)
 - **Styling:** Vanilla CSS, CSS Variables, Monochrome Palette
-- **Backend / Auth:** Supabase (PostgreSQL & OAuth)
+- **Backend / Edge Database:** Cloudflare Pages Functions & Cloudflare D1 (SQLite APAC)
 - **Parser Dokumen:** Mammoth.js (.docx), PDF.js (.pdf), Marked.js (.md)
 - **Visualisasi:** HTML5 Canvas API
 

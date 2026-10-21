@@ -555,17 +555,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       if (emailEl) emailEl.textContent = email;
       if (avatarEl) avatarEl.textContent = (name.charAt(0) || 'A').toUpperCase();
 
-      // Fetch submissions from localStorage and Supabase
+      // Fetch submissions from localStorage and D1 API
       let subs = JSON.parse(localStorage.getItem('katakating_submissions') || '[]');
 
-      // If Supabase client available, try to fetch fresh submissions
-      if (auth && auth.client) {
-        try {
-          const { data, error } = await auth.client
-            .from('submissions')
-            .select('*')
-            .order('submitted_at', { ascending: false });
-          if (!error && data && data.length > 0) {
+      // Fetch fresh submissions from Cloudflare D1 API
+      try {
+        const res = await fetch('/api/submissions');
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data) && data.length > 0) {
             const localMap = new Map(subs.map(s => [s.id, s]));
             data.forEach(remote => {
               localMap.set(remote.id, {
@@ -581,9 +579,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             });
             subs = Array.from(localMap.values());
           }
-        } catch (e) {
-          console.warn('Submissions fetch notice:', e);
         }
+      } catch (e) {
+        console.warn('Submissions fetch notice:', e);
       }
 
       const pendingCount = subs.filter(s => s.status === 'pending_review' || s.status === 'pending').length;

@@ -43,31 +43,24 @@ function initSearchFilter() {
   const emptyState = document.getElementById('empty-state') || document.getElementById('search-empty');
   const grid = document.getElementById('plugin-grid');
 
-  // Prepend approved articles from Supabase guides and admin moderation
+  // Prepend approved articles from D1 guides and admin moderation
   let cards = grid ? Array.from(grid.querySelectorAll('.plugin-card, .article-card')) : Array.from(document.querySelectorAll('.plugin-card, .article-card'));
 
   async function syncApprovedGuidesToGrid() {
     if (!grid) return;
     let dbGuides = [];
-    const sb = window.supabaseClient || (window.KataKatingAuth && window.KataKatingAuth.client) || (typeof window.getKataKatingDb === 'function' ? window.getKataKatingDb() : null);
-    
-    if (sb) {
-      try {
-        const { data, error } = await sb.from('guides').select('*').order('created_at', { ascending: false });
-        if (!error && Array.isArray(data)) {
-          dbGuides = data;
-        }
-      } catch (e) {
-        console.warn('Could not query Supabase guides for catalog:', e);
+    try {
+      const res = await fetch('/api/guides');
+      if (res.ok) {
+        dbGuides = await res.json();
       }
+    } catch (e) {
+      console.warn('Could not query guides for catalog:', e);
     }
     
     let localApproved = [];
     try {
       localApproved = JSON.parse(localStorage.getItem('katakating_approved_articles') || '[]');
-      if (Array.isArray(localApproved)) {
-        localApproved = localApproved.filter(a => a.ticket_id !== 'SUB-DEMO1' && a.author !== 'Ahmad Fauzi');
-      }
     } catch (e) {}
 
     const allApproved = [...(Array.isArray(dbGuides) ? dbGuides : [])];
@@ -814,9 +807,6 @@ async function loadRecentlyAdded() {
     // Merge approved articles from moderation
     try {
       let approvedArticles = JSON.parse(localStorage.getItem('katakating_approved_articles') || '[]');
-      if (Array.isArray(approvedArticles)) {
-        approvedArticles = approvedArticles.filter(a => a.ticket_id !== 'SUB-DEMO1' && a.author !== 'Ahmad Fauzi');
-      }
       if (Array.isArray(approvedArticles) && approvedArticles.length > 0) {
         localArticles = [...approvedArticles, ...localArticles];
       }
@@ -824,23 +814,15 @@ async function loadRecentlyAdded() {
       console.warn('LocalStorage approved articles in loadRecentlyAdded notice:', e);
     }
 
-    // 2. Fetch Supabase articles
+    // 2. Fetch guides from Cloudflare D1 API
     let dbGuides = [];
-    const sb = window.supabaseClient || (window.KataKatingAuth && window.KataKatingAuth.client) || (typeof window.getKataKatingDb === 'function' ? window.getKataKatingDb() : null);
-
-    if (sb) {
-      try {
-        const { data, error } = await sb
-          .from('guides')
-          .select('id, title, summary, author_name, category, initials, prodi_tags, views_count, created_at')
-          .order('created_at', { ascending: false })
-          .limit(6);
-        if (!error && Array.isArray(data)) {
-          dbGuides = data;
-        }
-      } catch (err) {
-        console.warn('Recently added Supabase query notice:', err);
+    try {
+      const res = await fetch('/api/guides');
+      if (res.ok) {
+        dbGuides = await res.json();
       }
+    } catch (err) {
+      console.warn('Recently added D1 query notice:', err);
     }
 
     // 3. Merge: Seed with localArticles (authoritative file repository)
@@ -860,7 +842,7 @@ async function loadRecentlyAdded() {
       });
     });
 
-    // Merge Supabase entries (update stats or add database-only submissions)
+    // Merge D1 database entries (update stats or add database-only submissions)
     dbGuides.forEach(g => {
       if (mergedMap.has(g.id)) {
         const existing = mergedMap.get(g.id);

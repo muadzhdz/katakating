@@ -295,10 +295,6 @@ let currentFilter = 'all';
 let currentSearch = '';
 let activeSelectedId = null;
 
-function getAdminDb() {
-  return window.supabaseClient || (window.KataKatingAuth && window.KataKatingAuth.client) || (typeof window.getKataKatingDb === 'function' ? window.getKataKatingDb() : null);
-}
-
 // Helper to escape HTML safely
 function escapeHtml(str) {
   if (!str) return '';
@@ -320,7 +316,7 @@ function formatDate(isoStr) {
   }
 }
 
-// 1. Load submissions from LocalStorage and Supabase
+// 1. Load submissions from LocalStorage and D1 API
 async function loadSubmissions() {
   const tbody = document.getElementById('admin-table-body');
   if (tbody && allSubmissions.length === 0) {
@@ -336,33 +332,17 @@ async function loadSubmissions() {
   let localList = JSON.parse(localStorage.getItem('katakating_submissions') || '[]');
   let remoteList = [];
 
-  const sb = getAdminDb();
-  if (sb) {
-    try {
-      const { data, error } = await sb.from('submissions').select('*').order('submitted_at', { ascending: false });
-      if (!error && Array.isArray(data)) {
-        remoteList = data;
-      } else if (error) {
-        console.warn('Supabase fetch returned error:', error);
-      }
-    } catch (err) {
-      console.warn('Supabase fetch notice:', err);
+  try {
+    const res = await fetch('/api/submissions');
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data)) remoteList = data;
     }
+  } catch (err) {
+    console.warn('Pages API submissions fetch notice:', err);
   }
 
-  // Purge any obsolete demo starter item from storage
-  localList = localList.filter(item => item.id !== 'SUB-DEMO1' && item.author_name !== 'Ahmad Fauzi');
-  localStorage.setItem('katakating_submissions', JSON.stringify(localList));
-
-  try {
-    let approved = JSON.parse(localStorage.getItem('katakating_approved_articles') || '[]');
-    const cleaned = approved.filter(a => a.ticket_id !== 'SUB-DEMO1' && a.author !== 'Ahmad Fauzi');
-    if (cleaned.length !== approved.length) {
-      localStorage.setItem('katakating_approved_articles', JSON.stringify(cleaned));
-    }
-  } catch (e) {}
-
-  // Remote list from Supabase is primary source of truth
+  // Remote list from Cloudflare D1 is primary source of truth
   const map = new Map();
   if (Array.isArray(remoteList)) {
     remoteList.forEach(item => {
@@ -553,20 +533,27 @@ async function approveSubmission(id, notes) {
   if (notes) item.admin_notes = notes;
   saveSubmissionsToStorage();
 
-  // Sync update to Supabase submissions table
-  const sb = getAdminDb();
-  if (item.db_id && sb) {
+  // Sync approve to Cloudflare D1 API
+  const adminSess = JSON.parse(localStorage.getItem('katakating_admin_session') || '{}');
+  const adminToken = adminSess.token || '';
+  const targetId = item.db_id || item.id;
+
+  if (targetId) {
     try {
-      await sb.from('submissions').update({
-        status: 'approved',
-        admin_notes: item.admin_notes || ''
-      }).eq('id', item.db_id);
+      await fetch(`/api/submissions/${encodeURIComponent(targetId)}/approve`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminToken}`,
+          'x-admin-key': adminToken
+        }
+      });
     } catch (err) {
-      console.warn('Supabase status update error:', err);
+      console.warn('API approve submission error:', err);
     }
   }
 
-  // Also publish to katakating_approved_articles for live catalog display!
+  // Also publish to katakating_approved_articles for instant optimistic display
   const approvedList = JSON.parse(localStorage.getItem('katakating_approved_articles') || '[]');
   const slug = item.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || item.id.toLowerCase();
   
@@ -584,32 +571,10 @@ async function approveSubmission(id, notes) {
     views: 1
   };
 
-  // Replace or add
   const existIdx = approvedList.findIndex(a => a.id === slug || a.ticket_id === item.id);
   if (existIdx >= 0) approvedList[existIdx] = articleRecord;
   else approvedList.unshift(articleRecord);
   localStorage.setItem('katakating_approved_articles', JSON.stringify(approvedList));
-
-  // Sync to Supabase public.guides table so article is published in cloud database
-  if (sb) {
-    try {
-      await sb.from('guides').upsert({
-        id: slug,
-        title: item.title,
-        summary: item.summary || item.title,
-        content: item.content || '',
-        author_name: item.author_name || 'Kontributor Boash',
-        author_npm: item.author_npm || '',
-        category: item.category || 'Praktikum',
-        prodi_tags: [item.category.toLowerCase().split(' ')[0], 'praktikum', 'mahasiswa'],
-        semester: 1,
-        initials: slug.slice(0, 4).toUpperCase(),
-        accent: '#fafbfb'
-      }, { onConflict: 'id' });
-    } catch (err) {
-      console.warn('Supabase guide publication notice:', err);
-    }
-  }
 
   updateStats();
   renderTable();
@@ -663,13 +628,22 @@ async function executeDeleteSubmission(id) {
   if (!id) return;
   const item = allSubmissions.find(s => s.id === id);
 
-  // Delete from Supabase submissions table
-  const sb = getAdminDb();
-  if (item && item.db_id && sb) {
+  // Delete from Cloudflare D1 API
+  const adminSess = JSON.parse(localStorage.getItem('katakating_admin_session') || '{}');
+  const adminToken = adminSess.token || '';
+  const targetId = (item && item.db_id) || id;
+
+  if (targetId) {
     try {
-      await sb.from('submissions').delete().eq('id', item.db_id);
+      await fetch(`/api/submissions/${encodeURIComponent(targetId)}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${adminToken}`,
+          'x-admin-key': adminToken
+        }
+      });
     } catch (err) {
-      console.warn('Supabase delete error:', err);
+      console.warn('API delete error:', err);
     }
   }
 
@@ -698,16 +672,24 @@ async function executeRejectSubmission(id, reason) {
   item.admin_notes = reason;
   saveSubmissionsToStorage();
 
-  // Sync update to Supabase submissions table
-  const sb = getAdminDb();
-  if (item.db_id && sb) {
+  // Sync reject to Cloudflare D1 API
+  const adminSess = JSON.parse(localStorage.getItem('katakating_admin_session') || '{}');
+  const adminToken = adminSess.token || '';
+  const targetId = (item && item.db_id) || id;
+
+  if (targetId) {
     try {
-      await sb.from('submissions').update({
-        status: 'rejected',
-        admin_notes: reason
-      }).eq('id', item.db_id);
+      await fetch(`/api/submissions/${encodeURIComponent(targetId)}/reject`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminToken}`,
+          'x-admin-key': adminToken
+        },
+        body: JSON.stringify({ notes: reason })
+      });
     } catch (err) {
-      console.warn('Supabase status update error:', err);
+      console.warn('API reject error:', err);
     }
   }
 

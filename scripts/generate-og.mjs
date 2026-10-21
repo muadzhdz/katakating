@@ -137,7 +137,7 @@ async function run() {
     process.exit(1);
   }
 
-  // Also include guides from Supabase
+  // Also include guides from Cloudflare D1 API
   try {
     if (fs.existsSync(path.join(rootDir, '.env'))) {
       const envLines = fs.readFileSync(path.join(rootDir, '.env'), 'utf8').split('\n');
@@ -150,37 +150,29 @@ async function run() {
         }
       }
     }
-    const SUPABASE_URL = process.env.SUPABASE_URL;
-    const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
-    if (SUPABASE_URL && SUPABASE_ANON_KEY) {
-      const res = await fetch(`${SUPABASE_URL}/rest/v1/guides?select=*`, {
-        headers: {
-          'apikey': SUPABASE_ANON_KEY,
-          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-        },
-      });
-      if (res.ok) {
-        const dbGuides = await res.json();
-        if (Array.isArray(dbGuides)) {
-          for (const g of dbGuides) {
-            if (!notes.find(n => n.id === g.id)) {
-              notes.push({
-                id: g.id,
-                title: g.title,
-                category: g.category || 'PRAKTIKUM',
-                author: g.author_name || 'Kontributor Boash',
-                readTime: '5m baca',
-                initials: g.initials || (g.title ? g.title.substring(0, 4).toUpperCase() : 'DOC'),
-                tags: Array.isArray(g.prodi_tags) ? g.prodi_tags : ['praktikum'],
-                summary: g.summary || g.title,
-              });
-            }
+    const API_URL = process.env.PUBLIC_API_URL || 'https://katakating.pages.dev';
+    const res = await fetch(`${API_URL}/api/guides`);
+    if (res.ok) {
+      const dbGuides = await res.json();
+      if (Array.isArray(dbGuides)) {
+        for (const g of dbGuides) {
+          if (!notes.find(n => n.id === g.id)) {
+            notes.push({
+              id: g.id,
+              title: g.title,
+              category: g.category || 'PRAKTIKUM',
+              author: g.author_name || 'Kontributor Boash',
+              readTime: '5m baca',
+              initials: g.initials || (g.title ? g.title.substring(0, 4).toUpperCase() : 'DOC'),
+              tags: Array.isArray(g.prodi_tags) ? g.prodi_tags : ['praktikum'],
+              summary: g.summary || g.title,
+            });
           }
         }
       }
     }
   } catch (err) {
-    console.warn('[generate-og] Could not fetch remote guides from Supabase:', err.message);
+    // Gracefully fallback to local notes
   }
 
   // 1. Generate default site OG
