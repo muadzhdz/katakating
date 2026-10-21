@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://katakating.vercel.app/sitemap.xml

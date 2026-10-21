@@ -1,0 +1,68 @@
+name: Submit a Practical Guide / Tips
+description: Usulkan artikel tips praktikum, panduan mata kuliah, atau solusi error baru ke [>] README.
+title: "[SUBMIT]: <Judul Panduan>"
+labels: ["guide-submission", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Terima kasih telah berkontribusi ke platform **[>] README** (Boash Knowledge Base & Lab Survival Guide)!
+        Pastikan panduan yang diajukan orisinal, teruji di lab, dan bermanfaat bagi mahasiswa Universitas Boash.
+  - type: input
+    id: guide_title
+    attributes:
+      label: Judul Panduan
+      description: Tuliskan judul panduan yang jelas, padat, dan to-the-point.
+      placeholder: "Contoh: Solusi Mengatasi Build Timeout Gradle di Android Studio"
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Rumpun Keilmuan / Kategori
+      description: Pilih kategori utama yang sesuai.
+      options:
+        - "web-software (Rekayasa Perangkat Lunak & Web)"
+        - "systems-network (Sistem Komputer & Jaringan)"
+        - "iot-hardware (IoT, Sensor & Mekatronika)"
+        - "multimedia-3d (Multimedia, 3D & Grafika)"
+        - "mkdu-fondasi (Fondasi Kuliah & MKDU)"
+    validations:
+      required: true
+  - type: checkboxes
+    id: prodi_tags
+    attributes:
+      label: Relevansi Program Studi (Matrix Tagging)
+      description: Pilih satu atau lebih program studi yang relevan.
+      options:
+        - label: "TRM (Teknologi Rekayasa Multimedia)"
+        - label: "IF (Informatika)"
+        - label: "Mekatronika (Teknologi Rekayasa Mekatronika)"
+        - label: "SI (Sistem Informasi)"
+        - label: "SRK (Sistem Rekayasa Komputer)"
+        - label: "TRIO (Teknik Rekayasa Industri Otomotif)"
+        - label: "Umum / Seluruh Prodi Boash"
+    validations:
+      required: true
+  - type: input
+    id: author_info
+    attributes:
+      label: Identitas Penulis
+      description: Nama Lengkap dan NPM/NIM mahasiswa pengusul.
+      placeholder: "Nama Lengkap (NPM: 24903460xxx)"
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: Ringkasan Singkat (Summary)
+      description: Ringkasan 1-2 kalimat mengenai masalah yang diselesaikan panduan ini.
+    validations:
+      required: true
+  - type: textarea
+    id: content_markdown
+    attributes:
+      label: Isi Panduan (Format Markdown)
+      description: Tuliskan langkah-langkah solusi, kode program, perintah terminal, dan catatan penting.
+    validations:
+      required: true

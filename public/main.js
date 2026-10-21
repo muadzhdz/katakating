@@ -1,0 +1,1231 @@
+/* ══════════════════════════════════════════════════════════════════
+   KATAKATING — KNOWLEDGE HUB JAVASCRIPT
+   Search, Category Filtering, Dynamic Sorting, Code Copy, Theme Toggle
+   ══════════════════════════════════════════════════════════════════ */
+
+const SUN_SVG = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
+
+const MOON_SVG = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
+
+// ── Toast Notification Disabled ──
+function showToast(msg) {
+  // All toast popup notifications disabled per design specification.
+  // Interactive elements provide direct visual state feedback instead.
+  return;
+}
+
+// ── 1-Click Code Copy (Style) ──
+function initCopy() {
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.copy-btn') || e.target.closest('.copy-button');
+    if (!btn) return;
+    
+    const container = btn.closest('.code-container') || btn.closest('.command-panel') || btn.closest('.code-box');
+    const codeEl = container ? container.querySelector('code') || container.querySelector('pre') : null;
+    if (!codeEl) return;
+
+    navigator.clipboard.writeText(codeEl.textContent.trim()).then(() => {
+      const orig = btn.innerHTML;
+      btn.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Tersalin!`;
+      setTimeout(() => { btn.innerHTML = orig; }, 1800);
+    }).catch(() => {});
+  });
+}
+
+// ── Live Search, Filtering, and Sorting (KataKating Catalog) ──
+function initSearchFilter() {
+  const input = document.getElementById('search-input');
+  const searchClearBtn = document.getElementById('search-clear-btn');
+  const chips = document.querySelectorAll('.category-chip, .filter-pill');
+  const clearFiltersBtn = document.getElementById('clear-filters') || document.getElementById('empty-reset');
+  const countEl = document.getElementById('plugin-count');
+  const sortSelect = document.getElementById('sort-select');
+  const emptyState = document.getElementById('empty-state') || document.getElementById('search-empty');
+  const grid = document.getElementById('plugin-grid');
+
+  // Prepend approved articles from Supabase guides and admin moderation
+  let cards = grid ? Array.from(grid.querySelectorAll('.plugin-card, .article-card')) : Array.from(document.querySelectorAll('.plugin-card, .article-card'));
+
+  async function syncApprovedGuidesToGrid() {
+    if (!grid) return;
+    let dbGuides = [];
+    const sb = window.supabaseClient || (window.KataKatingAuth && window.KataKatingAuth.client) || (typeof window.getKataKatingDb === 'function' ? window.getKataKatingDb() : null);
+    
+    if (sb) {
+      try {
+        const { data, error } = await sb.from('guides').select('*').order('created_at', { ascending: false });
+        if (!error && Array.isArray(data)) {
+          dbGuides = data;
+        }
+      } catch (e) {
+        console.warn('Could not query Supabase guides for catalog:', e);
+      }
+    }
+    
+    let localApproved = [];
+    try {
+      localApproved = JSON.parse(localStorage.getItem('katakating_approved_articles') || '[]');
+      if (Array.isArray(localApproved)) {
+        localApproved = localApproved.filter(a => a.ticket_id !== 'SUB-DEMO1' && a.author !== 'Ahmad Fauzi');
+      }
+    } catch (e) {}
+
+    const allApproved = [...(Array.isArray(dbGuides) ? dbGuides : [])];
+    if (Array.isArray(localApproved)) {
+      localApproved.forEach(item => {
+        if (!allApproved.find(x => x.id === item.id)) {
+          allApproved.push({
+            id: item.id,
+            title: item.title,
+            author_name: item.author,
+            category: item.category,
+            summary: item.summary,
+            prodi_tags: item.tags,
+            created_at: item.date
+          });
+        }
+      });
+    }
+
+    let addedNew = false;
+    allApproved.forEach(item => {
+      const itemId = item.id;
+      if (!grid.querySelector(`[data-id="${itemId}"]`)) {
+        const card = document.createElement('article');
+        card.className = 'plugin-card';
+        card.setAttribute('data-id', itemId);
+        const tags = Array.isArray(item.prodi_tags) ? item.prodi_tags : (Array.isArray(item.tags) ? item.tags : []);
+        card.setAttribute('data-cat', (item.category || '').toLowerCase() + ' ' + tags.join(' '));
+        const mono = item.initials || (item.title ? item.title.substring(0, 4).toUpperCase() : 'DOC');
+        const tagSpans = tags.slice(0, 3).map(t => `<span class="card-tag">${escapeHtml(t)}</span>`).join('');
+        const author = item.author_name || item.author || 'Mahasiswa';
+        
+        card.innerHTML = `
+          <div class="plugin-card-banner">
+            <span class="banner-monogram">${escapeHtml(mono)}</span>
+          </div>
+          <div class="plugin-card-content">
+            <div class="plugin-card-header">
+              <h3 class="plugin-card-title">
+                <a href="/note/${escapeHtml(itemId)}">${escapeHtml(item.title)}</a>
+              </h3>
+              <div class="plugin-card-actions">
+                <button type="button" class="card-action-btn card-btn-bookmark" data-id="${escapeHtml(itemId)}" title="Simpan catatan" aria-label="Simpan catatan">
+                  <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+                  <span class="card-bookmark-count">0</span>
+                </button>
+                <button type="button" class="card-action-btn card-btn-like" data-id="${escapeHtml(itemId)}" title="Sukai catatan" aria-label="Sukai catatan">
+                  <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                  <span class="card-like-count">0</span>
+                </button>
+                <button type="button" class="card-action-btn card-btn-share" data-id="${escapeHtml(itemId)}" data-title="${escapeHtml(item.title)}" data-summary="${escapeHtml(item.summary || '')}" data-url="${window.location.origin}/note/${escapeHtml(itemId)}" title="Bagikan catatan" aria-label="Bagikan catatan">
+                  <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="18" cy="5" r="3"></circle>
+                    <circle cx="6" cy="12" r="3"></circle>
+                    <circle cx="18" cy="19" r="3"></circle>
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="plugin-card-meta-row">
+              <span class="plugin-card-by">by @${escapeHtml(author)} &bull; ${escapeHtml(item.category || 'Praktikum')}</span>
+              <span class="plugin-card-id">#NEW</span>
+            </div>
+            <p class="plugin-card-desc">${escapeHtml(item.summary || '')}</p>
+            ${tagSpans ? `<div class="plugin-card-tags">${tagSpans}</div>` : ''}
+          </div>
+          <div class="plugin-card-bottom">
+            <div class="card-bottom-left">
+              <span class="card-stat-group" title="Waktu baca">
+                <span class="card-read-time">${escapeHtml(item.read_time || '5m baca')}</span>
+              </span>
+              <span class="card-stat-sep">&bull;</span>
+              <span class="card-stat-group" title="Jumlah pembaca">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                <span class="card-views-count" data-id="${escapeHtml(itemId)}">0</span>
+              </span>
+            </div>
+            <div class="card-bottom-stats">
+              <a href="/note/${escapeHtml(itemId)}" class="card-read-action" title="Buka Catatan" aria-label="Buka Catatan">
+                <span>Buka</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+              </a>
+            </div>
+          </div>
+        `;
+        grid.prepend(card);
+        addedNew = true;
+      }
+    });
+
+    if (addedNew) {
+      cards = grid ? Array.from(grid.querySelectorAll('.plugin-card, .article-card')) : [];
+      if (countEl) countEl.textContent = cards.length;
+      if (typeof applyFilter === 'function') applyFilter();
+    }
+  }
+
+  // Prepend local approved immediately for zero lag, then sync remote in background
+  try {
+    let localApproved = JSON.parse(localStorage.getItem('katakating_approved_articles') || '[]');
+    if (Array.isArray(localApproved) && localApproved.length > 0) {
+      localApproved.forEach(item => {
+        if (!grid.querySelector(`[data-id="${item.id}"]`)) {
+          const card = document.createElement('article');
+          card.className = 'plugin-card';
+          card.setAttribute('data-id', item.id);
+          const tags = Array.isArray(item.tags) ? item.tags : [];
+          card.setAttribute('data-cat', (item.category || '').toLowerCase() + ' ' + tags.join(' '));
+          const mono = item.initials || (item.title ? item.title.substring(0, 4).toUpperCase() : 'DOC');
+          const tagSpans = tags.slice(0, 3).map(t => `<span class="card-tag">${escapeHtml(t)}</span>`).join('');
+          card.innerHTML = `
+            <div class="plugin-card-banner">
+              <span class="banner-monogram">${escapeHtml(mono)}</span>
+            </div>
+            <div class="plugin-card-content">
+              <div class="plugin-card-header">
+                <h3 class="plugin-card-title">
+                  <a href="/note/${escapeHtml(item.id)}">${escapeHtml(item.title)}</a>
+                </h3>
+                <div class="plugin-card-actions">
+                  <button type="button" class="card-action-btn card-btn-bookmark" data-id="${escapeHtml(item.id)}" title="Simpan catatan" aria-label="Simpan catatan">
+                    <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+                    <span class="card-bookmark-count">0</span>
+                  </button>
+                  <button type="button" class="card-action-btn card-btn-like" data-id="${escapeHtml(item.id)}" title="Sukai catatan" aria-label="Sukai catatan">
+                    <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                    <span class="card-like-count">0</span>
+                  </button>
+                  <button type="button" class="card-action-btn card-btn-share" data-id="${escapeHtml(item.id)}" data-title="${escapeHtml(item.title)}" data-summary="${escapeHtml(item.summary || '')}" data-url="${window.location.origin}/note/${escapeHtml(item.id)}" title="Bagikan catatan" aria-label="Bagikan catatan">
+                    <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <circle cx="18" cy="5" r="3"></circle>
+                      <circle cx="6" cy="12" r="3"></circle>
+                      <circle cx="18" cy="19" r="3"></circle>
+                      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                      <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="plugin-card-meta-row">
+                <span class="plugin-card-by">by @${escapeHtml(item.author || 'mahasiswa')} &bull; ${escapeHtml(item.category || 'Praktikum')}</span>
+                <span class="plugin-card-id">#NEW</span>
+              </div>
+              <p class="plugin-card-desc">${escapeHtml(item.summary || '')}</p>
+              ${tagSpans ? `<div class="plugin-card-tags">${tagSpans}</div>` : ''}
+            </div>
+            <div class="plugin-card-bottom">
+              <div class="card-bottom-left">
+                <span class="card-stat-group" title="Waktu baca">
+                  <span class="card-read-time">${escapeHtml(item.read_time || '5m baca')}</span>
+                </span>
+                <span class="card-stat-sep">&bull;</span>
+                <span class="card-stat-group" title="Jumlah pembaca">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <span class="card-views-count" data-id="${escapeHtml(item.id)}">0</span>
+                </span>
+              </div>
+              <div class="card-bottom-stats">
+                <a href="/note/${escapeHtml(item.id)}" class="card-read-action" title="Buka Catatan" aria-label="Buka Catatan">
+                  <span>Buka</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                </a>
+              </div>
+            </div>
+          `;
+          grid.prepend(card);
+        }
+      });
+      cards = grid ? Array.from(grid.querySelectorAll('.plugin-card, .article-card')) : [];
+    }
+  } catch (e) {}
+
+  syncApprovedGuidesToGrid();
+
+  cards = grid ? Array.from(grid.querySelectorAll('.plugin-card, .article-card')) : Array.from(document.querySelectorAll('.plugin-card, .article-card'));
+  if (!cards.length) return;
+
+  let activeCat = 'all';
+  let query = '';
+  let currentPage = 1;
+  const pageSize = 6;
+
+  const btnPrev = document.getElementById('btn-catalog-prev');
+  const btnNext = document.getElementById('btn-catalog-next');
+  const boxPrev = document.getElementById('page-box-prev');
+  const boxNext = document.getElementById('page-box-next');
+  const pageCounterNum = document.getElementById('page-counter-num');
+  const paginationBar = document.getElementById('omarchy-pagination');
+
+  function updatePaginationUI(totalPages) {
+    if (pageCounterNum) {
+      pageCounterNum.textContent = `${currentPage} / ${totalPages}`;
+    }
+
+    const hasPrev = currentPage > 1;
+    const hasNext = currentPage < totalPages;
+
+    if (btnPrev) btnPrev.disabled = !hasPrev;
+    if (btnNext) btnNext.disabled = !hasNext;
+    if (boxPrev) boxPrev.disabled = !hasPrev;
+    if (boxNext) boxNext.disabled = !hasNext;
+
+    if (paginationBar) {
+      paginationBar.style.display = totalPages <= 1 ? 'none' : 'grid';
+    }
+  }
+
+  function goToPage(p) {
+    currentPage = p;
+    apply(false);
+    const catalogSec = document.getElementById('catalog');
+    if (catalogSec) {
+      catalogSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  if (btnPrev) btnPrev.addEventListener('click', () => { if (currentPage > 1) goToPage(currentPage - 1); });
+  if (boxPrev) boxPrev.addEventListener('click', () => { if (currentPage > 1) goToPage(currentPage - 1); });
+  if (btnNext) btnNext.addEventListener('click', () => { goToPage(currentPage + 1); });
+  if (boxNext) boxNext.addEventListener('click', () => { goToPage(currentPage + 1); });
+
+  function updateClearBtn() {
+    if (searchClearBtn) {
+      searchClearBtn.hidden = !(input && input.value.trim().length > 0);
+    }
+  }
+
+  function apply(resetPage = true) {
+    if (resetPage) currentPage = 1;
+
+    let matched = [];
+    cards.forEach(card => {
+      const cat = (card.getAttribute('data-cat') || '').toLowerCase();
+      const text = card.textContent.toLowerCase();
+      const matchCat = activeCat === 'all' || cat.includes(activeCat.toLowerCase());
+      const matchQuery = query === '' || text.includes(query);
+
+      if (matchCat && matchQuery) {
+        matched.push(card);
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+
+    const totalPages = Math.max(1, Math.ceil(matched.length / pageSize));
+    if (currentPage > totalPages) currentPage = totalPages;
+
+    const startIndex = (currentPage - 1) * pageSize;
+    const endIndex = startIndex + pageSize;
+
+    matched.forEach((card, idx) => {
+      if (idx >= startIndex && idx < endIndex) {
+        card.classList.remove('hidden');
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+
+    if (countEl) {
+      countEl.textContent = matched.length;
+    }
+
+    if (emptyState) {
+      emptyState.hidden = matched.length > 0;
+      if (emptyState.style) emptyState.style.display = matched.length === 0 ? 'block' : 'none';
+    }
+
+    updatePaginationUI(totalPages);
+  }
+
+  // Sort logic
+  function applySort() {
+    if (!sortSelect || !grid) return;
+    const val = sortSelect.value;
+    const currentCards = Array.from(grid.querySelectorAll('.plugin-card, .article-card'));
+
+    currentCards.sort((a, b) => {
+      if (val === 'title') {
+        const titleA = (a.querySelector('h3') ? a.querySelector('h3').textContent : '').toLowerCase();
+        const titleB = (b.querySelector('h3') ? b.querySelector('h3').textContent : '').toLowerCase();
+        return titleA.localeCompare(titleB);
+      } else if (val === 'category') {
+        const catA = (a.getAttribute('data-cat') || '').toLowerCase();
+        const catB = (b.getAttribute('data-cat') || '').toLowerCase();
+        return catA.localeCompare(catB);
+      }
+      return 0; // Default order
+    });
+
+    currentCards.forEach(c => grid.appendChild(c));
+    cards = grid ? Array.from(grid.querySelectorAll('.plugin-card, .article-card')) : Array.from(document.querySelectorAll('.plugin-card, .article-card'));
+  }
+
+  if (sortSelect) {
+    setupCyberSelect(sortSelect);
+    sortSelect.addEventListener('change', () => {
+      applySort();
+      apply();
+    });
+  }
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      chips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      activeCat = chip.getAttribute('data-cat') || 'all';
+      apply();
+    });
+  });
+
+  if (clearFiltersBtn) {
+    clearFiltersBtn.addEventListener('click', () => {
+      activeCat = 'all';
+      query = '';
+      if (input) input.value = '';
+      chips.forEach(c => {
+        if (c.getAttribute('data-cat') === 'all') c.classList.add('active');
+        else c.classList.remove('active');
+      });
+      apply();
+    });
+  }
+
+  if (input) {
+    input.addEventListener('input', (e) => {
+      query = e.target.value.trim().toLowerCase();
+      updateClearBtn();
+      apply();
+    });
+
+    if (searchClearBtn) {
+      searchClearBtn.addEventListener('click', () => {
+        input.value = '';
+        query = '';
+        updateClearBtn();
+        apply();
+        input.focus();
+      });
+    }
+
+    window.addEventListener('keydown', (e) => {
+      // Ctrl+K or / to focus search
+      if ((e.key === '/' || (e.ctrlKey && e.key.toLowerCase() === 'k')) && document.activeElement !== input) {
+        e.preventDefault();
+        input.focus();
+        input.select();
+      } else if (e.key === 'Escape' && document.activeElement === input) {
+        input.value = '';
+        query = '';
+        updateClearBtn();
+        apply();
+        input.blur();
+      }
+    });
+  }
+
+  updateClearBtn();
+  apply();
+}
+
+// ── Theme Switcher with Sun & Moon SVG Icons ──
+function updateThemeIcon() {
+  const btn = document.getElementById('theme-toggle');
+  if (!btn) return;
+  const isLight = document.documentElement.classList.contains('light') || document.documentElement.getAttribute('data-theme') === 'light';
+  btn.innerHTML = isLight ? MOON_SVG : SUN_SVG;
+  btn.setAttribute('aria-label', isLight ? 'Beralih ke Mode Gelap' : 'Beralih ke Mode Terang');
+  btn.title = isLight ? 'Beralih ke Mode Gelap' : 'Beralih ke Mode Terang';
+}
+
+function initTheme() {
+  const btn = document.getElementById('theme-toggle');
+  const html = document.documentElement;
+  const lightThemes = ['flexoki-light', 'light', 'catppuccin-latte', 'gruvbox-light', 'rose-pine-dawn'];
+  const saved = localStorage.getItem('katakating_theme') || localStorage.getItem('omarchy_theme') || 'vantablack';
+  
+  const isLight = lightThemes.indexOf(saved) !== -1;
+  if (isLight) {
+    html.classList.add('light');
+  } else {
+    html.classList.remove('light');
+  }
+  html.setAttribute('data-theme', saved);
+  updateThemeIcon();
+
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    const current = html.getAttribute('data-theme') || 'vantablack';
+    const isCurLight = lightThemes.indexOf(current) !== -1;
+    const nextTheme = isCurLight ? 'vantablack' : 'flexoki-light';
+    
+    html.setAttribute('data-theme', nextTheme);
+    if (!isCurLight) {
+      html.classList.add('light');
+    } else {
+      html.classList.remove('light');
+    }
+    localStorage.setItem('katakating_theme', nextTheme);
+    localStorage.setItem('omarchy_theme', nextTheme);
+    updateThemeIcon();
+    window.dispatchEvent(new CustomEvent('katakating-theme-change', { detail: { isLight: !isCurLight, theme: nextTheme } }));
+  });
+}
+
+// ── Shared Lightweight Markdown Parser (Code Panels) ──
+function parseSimpleMarkdown(md) {
+  if (!md) return '';
+  let clean = md.replace(/^---[\s\S]*?---/, '').trim();
+  const esc = str => str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+  const codeBlocks = [];
+  clean = clean.replace(/```([a-zA-Z0-9_-]*)\n([\s\S]*?)```/g, (match, lang, code) => {
+    const idx = codeBlocks.length;
+    const language = lang || 'text';
+    codeBlocks.push(`
+      <div class="command-panel">
+        <div class="command-panel-head">
+          <span>${esc(language)}</span>
+          <button class="copy-button" type="button" aria-label="Salin kode">
+            <span class="copy-icon"></span>
+            SALIN
+          </button>
+        </div>
+        <pre class="code-body"><code>${esc(code.trim())}</code></pre>
+      </div>
+    `);
+    return `__CODE_BLOCK_${idx}__`;
+  });
+
+  clean = clean.replace(/^>\s*(.*$)/gim, '<blockquote style="border-left: 2px solid var(--accent); padding: 8px 14px; background: var(--panel-2); margin: 14px 0; color: var(--text); font-size: 0.9em;">$1</blockquote>');
+  clean = clean.replace(/`([^`]+)`/g, (m, c) => `<code style="font-family:var(--mono);font-size:0.85em;background:var(--code-bg);border:1px solid var(--line-strong);padding:2px 5px;border-radius:var(--radius);color:var(--accent);">${esc(c)}</code>`);
+
+  clean = clean.replace(/^### (.*$)/gim, '<h3 style="font-size: 1.1rem; font-weight: 600; color: var(--heading); margin: 24px 0 8px;">$1</h3>');
+  clean = clean.replace(/^## (.*$)/gim, '<h2 style="font-size: 1.35rem; font-weight: 700; color: var(--heading); margin: 32px 0 12px; border-bottom: 1px solid var(--line); padding-bottom: 6px;">$1</h2>');
+  clean = clean.replace(/^# (.*$)/gim, '<h1 style="font-size: 1.6rem; font-weight: 700; color: var(--heading); margin: 24px 0 12px;">$1</h1>');
+  clean = clean.replace(/^---$/gim, '<hr style="border: 0; border-top: 1px solid var(--line); margin: 28px 0;">');
+
+  clean = clean.replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>');
+  clean = clean.replace(/\*(.*?)\*/gim, '<em>$1</em>');
+
+  clean = clean.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (m, text, url) => {
+    const isExt = url.startsWith('http');
+    return `<a href="${url}" style="color: var(--accent); text-decoration: underline;"${isExt ? ' target="_blank" rel="noreferrer"' : ''}>${text}</a>`;
+  });
+
+  clean = clean.replace(/^\s*\d+\.\s+(.*$)/gim, '<li class="md-oli" style="margin-bottom: 4px;">$1</li>');
+  clean = clean.replace(/^\s*[\-\*]\s+(.*$)/gim, '<li class="md-uli" style="margin-bottom: 4px;">$1</li>');
+  clean = clean.replace(/((?:<li class="md-oli"[^>]*>.*?<\/li>\s*)+)/gs, '<ol style="margin: 12px 0 16px 24px; padding-left: 0; list-style-type: decimal;">$1</ol>');
+  clean = clean.replace(/((?:<li class="md-uli"[^>]*>.*?<\/li>\s*)+)/gs, '<ul style="margin: 12px 0 16px 24px; padding-left: 0; list-style-type: disc;">$1</ul>');
+
+  clean = clean.replace(/\|(.+)\|/g, (match) => {
+    const cells = match.split('|').slice(1, -1).map(c => c.trim());
+    if (cells.every(c => /^:?-+:?$/.test(c))) {
+      return '__TABLE_DIVIDER__';
+    }
+    return `<tr>${cells.map(c => `<td style="padding: 7px 12px; border: 1px solid var(--line); font-size: 13px;">${c}</td>`).join('')}</tr>`;
+  });
+  clean = clean.replace(/(<tr>[\s\S]*?<\/tr>(\s*__TABLE_DIVIDER__\s*<tr>[\s\S]*?<\/tr>)+)/g, (match) => {
+    const rows = match.replace(/__TABLE_DIVIDER__/g, '').trim();
+    return `<table style="width:100%; border-collapse: collapse; margin: 16px 0; border: 1px solid var(--line);">${rows}</table>`;
+  });
+  clean = clean.replace(/__TABLE_DIVIDER__/g, '');
+
+  clean = clean.split('\n\n').map(chunk => {
+    chunk = chunk.trim();
+    if (!chunk) return '';
+    if (chunk.startsWith('<h') || chunk.startsWith('<li') || chunk.startsWith('<ol') || chunk.startsWith('<ul') || chunk.startsWith('<table') || chunk.startsWith('<block') || chunk.startsWith('<hr') || chunk.startsWith('__CODE_BLOCK_') || chunk.startsWith('<div') || chunk.startsWith('<section')) {
+      return chunk;
+    }
+    return `<p style="margin-bottom: 14px; line-height: 1.65; color: var(--text); font-size: 14px;">${chunk.replace(/\n/g, '<br>')}</p>`;
+  }).join('\n\n');
+
+  codeBlocks.forEach((block, i) => {
+    clean = clean.replace(`__CODE_BLOCK_${i}__`, block);
+  });
+
+  return clean;
+}
+
+// ── Interactive Card Actions (Likes, Bookmarks, Real-Time Stats) ──
+// ── Card Interactions: Likes & Bookmarks Sync ──
+function isValidUuid(id) {
+  return typeof id === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+}
+
+async function initCardInteractions() {
+  const cards = document.querySelectorAll('.plugin-card[data-id]');
+  if (!cards.length) return;
+
+  const auth = window.KataKatingAuth || window.ReadmeAuth;
+  const sb = auth ? auth.client : null;
+
+  // 1. Sync from localStorage for immediate flicker-free display & offline/admin support
+  cards.forEach(card => {
+    const gid = card.getAttribute('data-id');
+    if (!gid) return;
+    if (localStorage.getItem('katakating_like_' + gid) || localStorage.getItem('readme_like_' + gid)) {
+      card.querySelectorAll('.card-btn-like').forEach(btn => btn.classList.add('active-heart'));
+    }
+    if (localStorage.getItem('katakating_bookmark_' + gid) || localStorage.getItem('readme_bookmark_' + gid)) {
+      card.querySelectorAll('.card-btn-bookmark').forEach(btn => {
+        btn.classList.add('active-bookmark');
+        btn.classList.add('active-star');
+      });
+    }
+  });
+
+  if (sb) {
+    try {
+      const user = auth ? auth.user : null;
+
+      // 2. Fetch user's own likes (only if valid UUID)
+      if (user && isValidUuid(user.id)) {
+        const { data: userLikes } = await sb.from('guide_likes').select('guide_id').eq('user_id', user.id);
+        if (userLikes) {
+          userLikes.forEach(l => {
+            document.querySelectorAll(`.card-btn-like[data-id="${l.guide_id}"]`).forEach(btn => {
+              btn.classList.add('active-heart');
+            });
+          });
+        }
+
+        // 3. Fetch user's own bookmarks (only if valid UUID)
+        const { data: userBookmarks } = await sb.from('bookmarks').select('guide_id').eq('user_id', user.id);
+        if (userBookmarks) {
+          userBookmarks.forEach(b => {
+            document.querySelectorAll(`.card-btn-bookmark[data-id="${b.guide_id}"]`).forEach(btn => {
+              btn.classList.add('active-bookmark');
+              btn.classList.add('active-star');
+            });
+          });
+        }
+      }
+
+      // 4. Fetch aggregate counts for likes
+      const { data: allLikes } = await sb.from('guide_likes').select('guide_id');
+      if (allLikes) {
+        const likeCounts = {};
+        allLikes.forEach(l => { likeCounts[l.guide_id] = (likeCounts[l.guide_id] || 0) + 1; });
+        Object.entries(likeCounts).forEach(([gid, cnt]) => {
+          document.querySelectorAll(`.card-btn-like[data-id="${gid}"] .card-like-count`).forEach(el => {
+            el.textContent = cnt;
+          });
+        });
+      }
+
+      // 5. Fetch aggregate counts for bookmarks
+      const { data: allBookmarks } = await sb.from('bookmarks').select('guide_id');
+      if (allBookmarks) {
+        const bookmarkCounts = {};
+        allBookmarks.forEach(b => { bookmarkCounts[b.guide_id] = (bookmarkCounts[b.guide_id] || 0) + 1; });
+        Object.entries(bookmarkCounts).forEach(([gid, cnt]) => {
+          document.querySelectorAll(`.card-btn-bookmark[data-id="${gid}"] .card-bookmark-count`).forEach(el => {
+            el.textContent = cnt;
+          });
+        });
+      }
+    } catch (err) {
+      console.warn('Card interactions load notice:', err);
+    }
+  }
+}
+
+// Global click delegation for card action buttons
+let cardClickDelegated = false;
+function setupCardDelegation() {
+  if (cardClickDelegated) return;
+  cardClickDelegated = true;
+
+  document.addEventListener('click', async (e) => {
+    const btnLike = e.target.closest('.card-btn-like');
+    const btnBookmark = e.target.closest('.card-btn-bookmark');
+    const auth = window.KataKatingAuth || window.ReadmeAuth;
+    const sb = auth ? auth.client : null;
+
+    if (btnLike) {
+      e.preventDefault();
+      e.stopPropagation();
+      const articleId = btnLike.getAttribute('data-id');
+      const user = auth ? auth.user : null;
+      if (!user) {
+        showToast('Masuk dengan GitHub atau Google untuk menyukai catatan');
+        if (auth && auth.openLoginModal) auth.openLoginModal();
+        return;
+      }
+
+      const isLiked = btnLike.classList.contains('active-heart');
+      const countEl = btnLike.querySelector('.card-like-count');
+      let count = parseInt(countEl ? countEl.textContent : '0', 10) || 0;
+      const nextCount = isLiked ? Math.max(0, count - 1) : count + 1;
+
+      document.querySelectorAll(`.card-btn-like[data-id="${articleId}"]`).forEach(btn => {
+        if (isLiked) {
+          btn.classList.remove('active-heart');
+        } else {
+          btn.classList.add('active-heart');
+        }
+        const c = btn.querySelector('.card-like-count');
+        if (c) c.textContent = nextCount;
+      });
+
+      if (isLiked) {
+        try { localStorage.removeItem('katakating_like_' + articleId); } catch(e){}
+        if (sb && isValidUuid(user.id)) await sb.from('guide_likes').delete().eq('guide_id', articleId).eq('user_id', user.id);
+      } else {
+        try { localStorage.setItem('katakating_like_' + articleId, 'true'); } catch(e){}
+        if (sb && isValidUuid(user.id)) {
+          const { error } = await sb.from('guide_likes').insert({ guide_id: articleId, user_id: user.id });
+          if (error) console.warn('guide_likes insert notice:', error);
+        }
+      }
+    }
+
+    if (btnBookmark) {
+      e.preventDefault();
+      e.stopPropagation();
+      const articleId = btnBookmark.getAttribute('data-id');
+      const user = auth ? auth.user : null;
+      if (!user) {
+        if (auth && auth.openLoginModal) auth.openLoginModal();
+        return;
+      }
+
+      const isSaved = btnBookmark.classList.contains('active-bookmark') || btnBookmark.classList.contains('active-star');
+      const countEl = btnBookmark.querySelector('.card-bookmark-count');
+      let count = parseInt(countEl ? countEl.textContent : '0', 10) || 0;
+      const nextCount = isSaved ? Math.max(0, count - 1) : count + 1;
+
+      document.querySelectorAll(`.card-btn-bookmark[data-id="${articleId}"]`).forEach(btn => {
+        if (isSaved) {
+          btn.classList.remove('active-bookmark');
+          btn.classList.remove('active-star');
+        } else {
+          btn.classList.add('active-bookmark');
+          btn.classList.add('active-star');
+        }
+        const c = btn.querySelector('.card-bookmark-count');
+        if (c) c.textContent = nextCount;
+      });
+
+      if (isSaved) {
+        try { localStorage.removeItem('katakating_bookmark_' + articleId); } catch(e){}
+        if (sb && isValidUuid(user.id)) await sb.from('bookmarks').delete().eq('guide_id', articleId).eq('user_id', user.id);
+      } else {
+        try { localStorage.setItem('katakating_bookmark_' + articleId, 'true'); } catch(e){}
+        if (sb && isValidUuid(user.id)) {
+          const { error } = await sb.from('bookmarks').insert({ guide_id: articleId, user_id: user.id });
+          if (error) console.warn('bookmarks insert notice:', error);
+        }
+      }
+    }
+
+    const btnShare = e.target.closest('.card-btn-share');
+    if (btnShare) {
+      e.preventDefault();
+      e.stopPropagation();
+      const cardEl = btnShare.closest('.plugin-card');
+      const noteId = btnShare.getAttribute('data-id') || (cardEl && cardEl.getAttribute('data-id')) || '';
+      const title = btnShare.getAttribute('data-title') || (cardEl && cardEl.querySelector('.plugin-card-title a')?.textContent?.trim()) || '';
+      const summary = btnShare.getAttribute('data-summary') || (cardEl && cardEl.querySelector('.plugin-card-desc')?.textContent?.trim()) || '';
+      const url = btnShare.getAttribute('data-url') || (window.location.origin + '/note/' + noteId);
+
+      if (window.openShareModal) {
+        window.openShareModal({ title, id: noteId, url, summary });
+      }
+      return;
+    }
+
+    // 3. Whole Card Click Navigation (allows clicking anywhere on the card to read)
+    const card = e.target.closest('.plugin-card');
+    if (card && !btnLike && !btnBookmark && !btnShare) {
+      const link = e.target.closest('a');
+      const button = e.target.closest('button');
+      if (!link && !button) {
+        const articleId = card.getAttribute('data-id');
+        if (articleId) {
+          window.location.href = `/note/${encodeURIComponent(articleId)}`;
+        }
+      }
+    }
+  });
+}
+
+// ── Utility: HTML Escape ──
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+// ── Utility: Relative Time ──
+function formatTimeAgo(isoString) {
+  if (!isoString) return 'BARU';
+  try {
+    const date = new Date(isoString);
+    const diffMs = Date.now() - date.getTime();
+    if (diffMs < 0) return 'baru saja';
+    const diffSec = Math.floor(diffMs / 1000);
+    const diffMin = Math.floor(diffSec / 60);
+    const diffHour = Math.floor(diffMin / 60);
+    const diffDay = Math.floor(diffHour / 24);
+
+    if (diffDay > 30) return `${Math.floor(diffDay / 30)} bln lalu`;
+    if (diffDay > 0) return `${diffDay} hr lalu`;
+    if (diffHour > 0) return `${diffHour} jam lalu`;
+    if (diffMin > 0) return `${diffMin} mnt lalu`;
+    return 'baru saja';
+  } catch (e) {
+    return 'BARU';
+  }
+}
+
+// ── Recently Added Dynamic Section (FIFO Rolling Queue) ──
+async function loadRecentlyAdded() {
+  const container = document.getElementById('recent-grid');
+  if (!container) return;
+
+  // Preserve Astro SSG pre-rendered cards without overwriting with client-side template
+  if (container.children.length > 0) {
+    if (typeof window.initCardSlider === 'function') {
+      window.initCardSlider('recent-grid', 'recentDots', '.plugin-card');
+    }
+    return;
+  }
+
+  try {
+    // 1. Fetch static curated articles from articles.json
+    let localArticles = [];
+    try {
+      const res = await fetch('notes/notes.json');
+      if (res.ok) {
+        localArticles = await res.json();
+      }
+    } catch (e) {
+      console.warn('Could not fetch local articles.json:', e);
+    }
+
+    // Merge approved articles from moderation
+    try {
+      let approvedArticles = JSON.parse(localStorage.getItem('katakating_approved_articles') || '[]');
+      if (Array.isArray(approvedArticles)) {
+        approvedArticles = approvedArticles.filter(a => a.ticket_id !== 'SUB-DEMO1' && a.author !== 'Ahmad Fauzi');
+      }
+      if (Array.isArray(approvedArticles) && approvedArticles.length > 0) {
+        localArticles = [...approvedArticles, ...localArticles];
+      }
+    } catch (e) {
+      console.warn('LocalStorage approved articles in loadRecentlyAdded notice:', e);
+    }
+
+    // 2. Fetch Supabase articles
+    let dbGuides = [];
+    const sb = window.supabaseClient || (window.KataKatingAuth && window.KataKatingAuth.client) || (typeof window.getKataKatingDb === 'function' ? window.getKataKatingDb() : null);
+
+    if (sb) {
+      try {
+        const { data, error } = await sb
+          .from('guides')
+          .select('id, title, summary, author_name, category, initials, prodi_tags, views_count, created_at')
+          .order('created_at', { ascending: false })
+          .limit(6);
+        if (!error && Array.isArray(data)) {
+          dbGuides = data;
+        }
+      } catch (err) {
+        console.warn('Recently added Supabase query notice:', err);
+      }
+    }
+
+    // 3. Merge: Seed with localArticles (authoritative file repository)
+    const mergedMap = new Map();
+
+    localArticles.forEach(item => {
+      mergedMap.set(item.id, {
+        id: item.id,
+        title: item.title,
+        summary: item.summary,
+        author_name: item.author || 'Kontributor',
+        category: item.category || 'Panduan',
+        initials: item.initials || (item.title ? item.title.substring(0, 4).toUpperCase() : 'DOC'),
+        prodi_tags: item.tags || item.prodi_tags || ['guide'],
+        views_count: item.views || 1,
+        created_at: item.date ? (item.date.includes('T') ? item.date : item.date + 'T12:00:00Z') : new Date().toISOString()
+      });
+    });
+
+    // Merge Supabase entries (update stats or add database-only submissions)
+    dbGuides.forEach(g => {
+      if (mergedMap.has(g.id)) {
+        const existing = mergedMap.get(g.id);
+        if (g.views_count) existing.views_count = g.views_count;
+        if (g.created_at) existing.created_at = g.created_at;
+        if (g.initials) existing.initials = g.initials;
+      } else {
+        mergedMap.set(g.id, g);
+      }
+    });
+
+    // 4. Sort descending: newest created_at / date first!
+    const allGuides = Array.from(mergedMap.values()).sort((a, b) => {
+      const timeA = new Date(a.created_at || 0).getTime();
+      const timeB = new Date(b.created_at || 0).getTime();
+      return timeB - timeA;
+    });
+
+    const recentGuides = allGuides.slice(0, 3);
+
+    if (recentGuides && recentGuides.length > 0) {
+      container.innerHTML = recentGuides.map((g, idx) => {
+        const monogram = escapeHtml(g.initials || (g.title ? g.title.substring(0, 4).toUpperCase() : 'DOC'));
+        const title = escapeHtml(g.title || 'Untitled');
+        const summary = escapeHtml(g.summary || '');
+        const author = escapeHtml(g.author_name || 'Kontributor');
+        const category = escapeHtml(g.category || 'Panduan');
+        const timeAgo = formatTimeAgo(g.created_at);
+        const tags = Array.isArray(g.prodi_tags) && g.prodi_tags.length > 0 ? g.prodi_tags : ['guide'];
+        const tagSpans = tags.slice(0, 3).map(t => `<span class="card-tag">${escapeHtml(t)}</span>`).join('');
+        const views = g.views_count || 0;
+        const idNum = `#0${idx + 1}`;
+
+        return `
+      <!-- Recent ${idx + 1}: ${escapeHtml(g.id)} -->
+      <article class="plugin-card" data-id="${escapeHtml(g.id)}" data-cat="${escapeHtml(category.toLowerCase())}">
+        <div class="plugin-card-banner">
+          <span class="banner-monogram">${monogram}</span>
+        </div>
+        <div class="plugin-card-content">
+          <div class="plugin-card-header">
+            <h3 class="plugin-card-title">
+              <a href="/note/${escapeHtml(g.id)}">${title}</a>
+            </h3>
+            <div class="plugin-card-actions">
+              <button type="button" class="card-action-btn card-btn-bookmark" data-id="${escapeHtml(g.id)}" title="Simpan catatan" aria-label="Simpan catatan">
+                <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+                <span class="card-bookmark-count">0</span>
+              </button>
+              <button type="button" class="card-action-btn card-btn-like" data-id="${escapeHtml(g.id)}" title="Sukai catatan" aria-label="Sukai catatan">
+                <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <span class="card-like-count">0</span>
+              </button>
+            </div>
+          </div>
+          <div class="plugin-card-meta-row">
+            <span class="plugin-card-by">by ${author} &bull; ${category}</span>
+            <span class="plugin-card-id" title="${timeAgo}">${idNum} &bull; ${timeAgo}</span>
+          </div>
+          <p class="plugin-card-desc">${summary}</p>
+          ${tagSpans ? `<div class="plugin-card-tags">${tagSpans}</div>` : ''}
+        </div>
+        <div class="plugin-card-bottom">
+          <div class="card-bottom-left">
+            <span class="card-stat-group" title="Waktu baca">
+              <span class="card-read-time">${timeAgo}</span>
+            </span>
+            <span class="card-stat-sep">&bull;</span>
+            <span class="card-stat-group" title="Jumlah pembaca">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span class="card-views-count" data-id="${escapeHtml(g.id)}">${views}</span>
+            </span>
+          </div>
+          <div class="card-bottom-stats">
+            <a href="/note/${escapeHtml(g.id)}" class="card-read-action" title="Buka Catatan" aria-label="Buka Catatan">
+              <span>Buka</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+            </a>
+          </div>
+        </div>
+      </article>`;
+      }).join('');
+
+      // Refresh interactions after dynamic render
+      initCardInteractions();
+    }
+  } catch (err) {
+    console.warn('Recently added load error:', err);
+  }
+}
+
+// ── Mobile Navigation Toggle ──
+function initMobileNav() {
+  const toggleBtn = document.getElementById('mobile-menu-btn');
+  const panel = document.getElementById('mobile-nav-panel');
+  if (!toggleBtn || !panel) return;
+
+  const iconOpen = toggleBtn.querySelector('.icon-menu-open');
+  const iconClose = toggleBtn.querySelector('.icon-menu-close');
+
+  function toggleMenu(forceClose = false) {
+    const isExpanded = forceClose ? true : toggleBtn.getAttribute('aria-expanded') === 'true';
+    if (isExpanded) {
+      toggleBtn.setAttribute('aria-expanded', 'false');
+      panel.hidden = true;
+      if (iconOpen) iconOpen.style.display = 'block';
+      if (iconClose) iconClose.style.display = 'none';
+    } else {
+      toggleBtn.setAttribute('aria-expanded', 'true');
+      panel.hidden = false;
+      if (iconOpen) iconOpen.style.display = 'none';
+      if (iconClose) iconClose.style.display = 'block';
+    }
+  }
+
+  toggleBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const authDrop = document.getElementById('auth-user-dropdown');
+    if (authDrop) authDrop.hidden = true;
+    toggleMenu();
+  });
+
+  // Close when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!panel.hidden && !panel.contains(e.target) && !toggleBtn.contains(e.target)) {
+      toggleMenu(true);
+    }
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !panel.hidden) {
+      toggleMenu(true);
+    }
+  });
+
+  // Close when clicking any nav item in the panel
+  panel.querySelectorAll('.mobile-nav-item').forEach(item => {
+    item.addEventListener('click', () => {
+      toggleMenu(true);
+    });
+  });
+}
+
+// ── Cyber Select Dropdown System (Zero Blue, 100% Cyber Emerald) ──
+function setupCyberSelect(selectEl) {
+  if (!selectEl || selectEl.dataset.cyberSelectInit) return;
+  selectEl.dataset.cyberSelectInit = 'true';
+
+  const existingWrap = selectEl.closest('.cyber-select-wrap');
+  if (existingWrap) {
+    const trigger = existingWrap.querySelector('.cyber-select-trigger');
+    const menu = existingWrap.querySelector('.cyber-select-menu');
+    const label = existingWrap.querySelector('.cyber-select-label');
+    const options = existingWrap.querySelectorAll('.cyber-select-option');
+
+    function syncActive() {
+      const curVal = selectEl.value;
+      options.forEach(opt => {
+        const isMatch = opt.getAttribute('data-value') === curVal;
+        opt.classList.toggle('selected', isMatch);
+        opt.setAttribute('aria-selected', String(isMatch));
+        if (isMatch && label) {
+          label.textContent = (opt.querySelector('span')?.textContent || opt.textContent).trim();
+        }
+      });
+    }
+
+    if (trigger && menu) {
+      trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = trigger.getAttribute('aria-expanded') === 'true';
+        document.querySelectorAll('.cyber-select-trigger[aria-expanded="true"]').forEach(b => {
+          if (b !== trigger) {
+            b.setAttribute('aria-expanded', 'false');
+            const m = b.parentElement.querySelector('.cyber-select-menu');
+            if (m) m.hidden = true;
+          }
+        });
+        trigger.setAttribute('aria-expanded', String(!isOpen));
+        menu.hidden = isOpen;
+      });
+
+      options.forEach(opt => {
+        opt.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const val = opt.getAttribute('data-value');
+          selectEl.value = val;
+          syncActive();
+          trigger.setAttribute('aria-expanded', 'false');
+          menu.hidden = true;
+          selectEl.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+      });
+
+      selectEl.addEventListener('change', syncActive);
+
+      document.addEventListener('click', (e) => {
+        if (!existingWrap.contains(e.target)) {
+          trigger.setAttribute('aria-expanded', 'false');
+          menu.hidden = true;
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && trigger.getAttribute('aria-expanded') === 'true') {
+          trigger.setAttribute('aria-expanded', 'false');
+          menu.hidden = true;
+          trigger.focus();
+        }
+      });
+      return;
+    }
+  }
+
+  // Dynamic wrap for standard <select class="form-select">
+  const wrap = document.createElement('div');
+  wrap.className = 'cyber-select-wrap form-cyber-select';
+  if (selectEl.id) wrap.id = 'wrap-' + selectEl.id;
+
+  selectEl.parentNode.insertBefore(wrap, selectEl);
+  wrap.appendChild(selectEl);
+  selectEl.classList.add('cyber-select-native');
+
+  const trigger = document.createElement('button');
+  trigger.type = 'button';
+  trigger.className = 'cyber-select-trigger';
+  trigger.setAttribute('aria-haspopup', 'listbox');
+  trigger.setAttribute('aria-expanded', 'false');
+
+  const label = document.createElement('span');
+  label.className = 'cyber-select-label';
+
+  const chevron = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  chevron.setAttribute('class', 'cyber-select-chevron');
+  chevron.setAttribute('viewBox', '0 0 24 24');
+  chevron.setAttribute('aria-hidden', 'true');
+  chevron.innerHTML = '<path d="m8 10 4 4 4-4"/>';
+
+  trigger.appendChild(label);
+  trigger.appendChild(chevron);
+  wrap.appendChild(trigger);
+
+  const menu = document.createElement('div');
+  menu.className = 'cyber-select-menu';
+  menu.setAttribute('role', 'listbox');
+  menu.hidden = true;
+  wrap.appendChild(menu);
+
+  function syncOptions() {
+    menu.innerHTML = '';
+    const selected = selectEl.options[selectEl.selectedIndex] || selectEl.options[0];
+    label.textContent = selected ? selected.textContent : '';
+
+    Array.from(selectEl.options).forEach((opt, idx) => {
+      const item = document.createElement('div');
+      item.className = 'cyber-select-option' + (idx === selectEl.selectedIndex ? ' selected' : '');
+      item.setAttribute('role', 'option');
+      item.setAttribute('data-value', opt.value);
+      if (opt.disabled) item.classList.add('disabled');
+
+      const spanText = document.createElement('span');
+      spanText.textContent = opt.textContent;
+
+      const spanCheck = document.createElement('span');
+      spanCheck.className = 'cyber-select-check';
+      spanCheck.textContent = '✓';
+
+      item.appendChild(spanText);
+      item.appendChild(spanCheck);
+
+      item.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (opt.disabled) return;
+        selectEl.selectedIndex = idx;
+        selectEl.value = opt.value;
+        label.textContent = opt.textContent;
+        menu.querySelectorAll('.cyber-select-option').forEach(o => o.classList.remove('selected'));
+        item.classList.add('selected');
+        trigger.setAttribute('aria-expanded', 'false');
+        menu.hidden = true;
+        selectEl.dispatchEvent(new Event('change', { bubbles: true }));
+        selectEl.dispatchEvent(new Event('input', { bubbles: true }));
+      });
+
+      menu.appendChild(item);
+    });
+  }
+
+  function syncSelected() {
+    const selected = selectEl.options[selectEl.selectedIndex];
+    if (selected) {
+      label.textContent = selected.textContent;
+      menu.querySelectorAll('.cyber-select-option').forEach((o, i) => {
+        o.classList.toggle('selected', i === selectEl.selectedIndex);
+      });
+    }
+  }
+
+  // Intercept programmatic assignment of selectEl.value
+  const protoDesc = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value');
+  if (protoDesc) {
+    Object.defineProperty(selectEl, 'value', {
+      get() {
+        return protoDesc.get.call(this);
+      },
+      set(val) {
+        protoDesc.set.call(this, val);
+        syncSelected();
+      }
+    });
+  }
+
+  trigger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = trigger.getAttribute('aria-expanded') === 'true';
+    document.querySelectorAll('.cyber-select-trigger[aria-expanded="true"]').forEach(b => {
+      if (b !== trigger) {
+        b.setAttribute('aria-expanded', 'false');
+        const m = b.parentElement.querySelector('.cyber-select-menu');
+        if (m) m.hidden = true;
+      }
+    });
+    trigger.setAttribute('aria-expanded', String(!isOpen));
+    menu.hidden = isOpen;
+  });
+
+  selectEl.addEventListener('change', syncSelected);
+
+  document.addEventListener('click', (e) => {
+    if (!wrap.contains(e.target)) {
+      trigger.setAttribute('aria-expanded', 'false');
+      menu.hidden = true;
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && trigger.getAttribute('aria-expanded') === 'true') {
+      trigger.setAttribute('aria-expanded', 'false');
+      menu.hidden = true;
+      trigger.focus();
+    }
+  });
+
+  // Watch for option changes dynamically
+  const observer = new MutationObserver(() => {
+    syncOptions();
+  });
+  observer.observe(selectEl, { childList: true, subtree: true });
+
+  syncOptions();
+  selectEl.refreshCyberSelect = syncOptions;
+}
+
+window.setupCyberSelect = setupCyberSelect;
+window.refreshCardInteractions = initCardInteractions;
+window.refreshRecentlyAdded = loadRecentlyAdded;
+
+document.addEventListener('DOMContentLoaded', () => {
+  initCopy();
+  initSearchFilter();
+  initTheme();
+  setupCardDelegation();
+  initMobileNav();
+  loadRecentlyAdded();
+  setTimeout(initCardInteractions, 300);
+  document.querySelectorAll('select.form-select, select#sort-select').forEach(setupCyberSelect);
+});

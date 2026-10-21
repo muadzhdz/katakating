@@ -1,0 +1,313 @@
+---
+// src/pages/index.astro
+import fs from 'node:fs';
+import path from 'node:path';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NoteCard from '../components/NoteCard.astro';
+
+// Read notes directly at SSG build time
+const notesPath = path.resolve('./notes/notes.json');
+let notes: any[] = [];
+try {
+  notes = JSON.parse(fs.readFileSync(notesPath, 'utf8'));
+} catch (e) {
+  notes = [];
+}
+
+// Fetch approved guides from Supabase at SSG build time
+try {
+  const SUPABASE_URL = import.meta.env.SUPABASE_URL || process.env.SUPABASE_URL;
+  const SUPABASE_ANON_KEY = import.meta.env.SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+  if (SUPABASE_URL && SUPABASE_ANON_KEY) {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/guides?select=*`, {
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+      },
+    });
+    if (res.ok) {
+      const dbGuides = await res.json();
+      if (Array.isArray(dbGuides)) {
+        for (const g of dbGuides) {
+          if (!notes.find((n: any) => n.id === g.id)) {
+            notes.unshift({
+              id: g.id,
+              title: g.title,
+              category: g.category || 'Praktikum',
+              author: g.author_name || 'Kontributor Boash',
+              date: g.created_at ? g.created_at.split('T')[0] : '2026-10-19',
+              readTime: '5 menit',
+              initials: g.initials || (g.title ? g.title.substring(0, 4).toUpperCase() : 'DOC'),
+              tags: Array.isArray(g.prodi_tags) && g.prodi_tags.length ? g.prodi_tags : ['praktikum'],
+              summary: g.summary || g.title,
+              file: '',
+            });
+          }
+        }
+      }
+    }
+  }
+} catch (err) {
+  console.warn('[index.astro] Could not fetch remote guides from Supabase:', err);
+}
+
+const recentNotes = [...notes]
+  .sort((a, b) => new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime())
+  .slice(0, 4);
+
+// Categories
+const categories = [
+  { id: 'all', label: 'Semua Kategori' },
+  { id: 'Jaringan Komputer', label: 'Jaringan' },
+  { id: 'Web & Tooling', label: 'Web & Linux' },
+  { id: 'Basis Data', label: 'Basis Data' },
+  { id: 'Algoritma & Pemrograman', label: 'Algoritma' },
+  { id: 'IoT & Embedded', label: 'IoT' },
+  { id: 'Game & Multimedia', label: 'Multimedia' },
+  { id: 'Akademik & Laporan', label: 'Akademik' },
+  { id: 'Git & DevOps', label: 'DevOps' },
+];
+---
+
+<BaseLayout
+  title="Catatan & Dokumentasi"
+  description="Pusat catatan praktikum mandiri, panduan belajar bersama, template laporan 4-4-3-3, dan dokumentasi terbuka mahasiswa Universitas Boash."
+  currentPath="/"
+>
+  <!-- HERO SECTION -->
+  <section class="market-hero">
+    <div class="market-hero-copy">
+      <div class="page-eyebrow">// DOKUMENTASI & PANDUAN AKADEMIK</div>
+      <h1>eksplorasi catatan mahasiswa boash</h1>
+      <p>
+        Pusat dokumentasi catatan praktikum mandiri dan panduan akademik mahasiswa Universitas Boash. Terbuka, terstruktur, dan mudah dipahami.
+      </p>
+      <div class="market-hero-actions">
+        <a class="button market-primary" href="#catalog">Jelajahi Catatan <span aria-hidden="true">&rarr;</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECENTLY ADDED SECTION -->
+  <section class="recent-section" id="recent-section" aria-labelledby="recent-title">
+    <div class="market-section-head">
+      <h2 id="recent-title">BARU DITAMBAHKAN</h2>
+      <a href="#catalog">lihat semua &rarr;</a>
+    </div>
+
+    <!-- Container with Mobile Scroll-Snap -->
+    <div id="recent-grid" class="recent-grid" aria-label="Catatan baru ditambahkan">
+      {recentNotes.map((note, idx) => (
+        <NoteCard note={note} index={idx} />
+      ))}
+    </div>
+
+    <!-- Mobile Slider Dots Navigation -->
+    <div class="slider-dots" id="recentDots" aria-label="Navigasi Slider Baru Ditambahkan"></div>
+  </section>
+
+  <!-- CATALOG SECTION -->
+  <section class="market-catalog" id="catalog" aria-labelledby="catalog-title" tabindex="-1">
+    <div class="market-section-head catalog-section-head">
+      <h2 id="catalog-title">SEMUA CATATAN</h2>
+      <div class="catalog-heading-side">
+        <p><span id="plugin-count">{notes.length}</span> <span id="plugin-count-label">catatan praktikum</span></p>
+        <div class="omarchy-switcher-btns" aria-label="Navigasi Halaman Katalog">
+          <button type="button" class="omarchy-arrow-btn" id="btn-catalog-prev" aria-label="Halaman Sebelumnya" title="Halaman Sebelumnya" disabled>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </button>
+          <button type="button" class="omarchy-arrow-btn" id="btn-catalog-next" aria-label="Halaman Berikutnya" title="Halaman Berikutnya">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- UNIFIED SEARCH & FILTER PANEL -->
+    <div class="catalog-filter-panel">
+      <!-- SEARCH & CONTROLS -->
+      <div class="catalog-controls">
+        <div class="market-search">
+          <label class="sr-only" for="search-input">Cari catatan atau topik</label>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+          <input id="search-input" name="journal-search" type="text" placeholder="Cari catatan, topik, atau tag…" maxlength="160" autocomplete="off" spellcheck="false" />
+          <button type="button" id="search-clear-btn" class="search-clear-btn" aria-label="Hapus pencarian" hidden>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        <div class="sort-control cyber-select-wrap" id="sort-select-wrap">
+          <button type="button" class="cyber-select-trigger" id="sort-select-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Urutkan catatan">
+            <span class="cyber-select-label" id="sort-select-label">TERBARU DITAMBAHKAN</span>
+            <svg class="cyber-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 10 4 4 4-4"/></svg>
+          </button>
+          <div class="cyber-select-menu" id="sort-select-menu" role="listbox" hidden>
+            <div class="cyber-select-option selected" role="option" data-value="recent" aria-selected="true">
+              <span>Terbaru Ditambahkan</span>
+              <span class="cyber-select-check">✓</span>
+            </div>
+            <div class="cyber-select-option" role="option" data-value="title" aria-selected="false">
+              <span>Judul (A–Z)</span>
+              <span class="cyber-select-check">✓</span>
+            </div>
+            <div class="cyber-select-option" role="option" data-value="category" aria-selected="false">
+              <span>Berdasarkan Kategori</span>
+              <span class="cyber-select-check">✓</span>
+            </div>
+          </div>
+          <select id="sort-select" class="cyber-select-native" tabindex="-1" aria-hidden="true">
+            <option value="recent">Terbaru Ditambahkan</option>
+            <option value="title">Judul (A–Z)</option>
+            <option value="category">Berdasarkan Kategori</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- CATEGORY FILTER BAR -->
+      <div class="category-bar">
+        <span>Filter</span>
+        <div id="category-filters" class="category-list">
+          {categories.map((c, i) => (
+            <button class={`category-chip ${i === 0 ? 'active' : ''}`} data-cat={c.id}>
+              {c.label}
+            </button>
+          ))}
+        </div>
+        <button id="clear-filters" type="button">Reset</button>
+      </div>
+    </div>
+
+    <!-- CARDS GRID -->
+    <div id="plugin-grid" class="plugin-grid market-plugin-grid">
+      {notes.map((note, idx) => (
+        <NoteCard note={note} index={idx} />
+      ))}
+    </div>
+
+    <!-- OMARCHY 3-BOX PAGINATION BAR (Indonesian) -->
+    <div class="omarchy-pagination-bar" id="omarchy-pagination" aria-label="Navigasi Halaman">
+      <button type="button" class="omarchy-page-box omarchy-page-prev" id="page-box-prev" disabled>
+        <span class="omarchy-box-label">&larr; SEBELUMNYA</span>
+      </button>
+
+      <div class="omarchy-page-box omarchy-page-counter">
+        <span class="omarchy-box-label">HALAMAN</span>
+        <span class="omarchy-box-number" id="page-counter-num">1 / 2</span>
+      </div>
+
+      <button type="button" class="omarchy-page-box omarchy-page-next" id="page-box-next">
+        <span class="omarchy-box-label">SELANJUTNYA &rarr;</span>
+      </button>
+    </div>
+  </section>
+
+  <script is:inline>
+  (function() {
+    // ── 1. Mobile Card Carousel Slider (Edurobotika Standard) ──
+    function initCardSlider(sliderId, dotsId, cardSelector) {
+      const slider = document.getElementById(sliderId);
+      const dotsContainer = document.getElementById(dotsId);
+      if (!slider || !dotsContainer) return;
+
+      const cards = slider.querySelectorAll(cardSelector);
+      if (!cards.length) {
+        dotsContainer.innerHTML = '';
+        return;
+      }
+
+      dotsContainer.innerHTML = '';
+
+      cards.forEach((card, i) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = `slider-dot${i === 0 ? ' active' : ''}`;
+        dot.setAttribute('aria-label', `Slide ${i + 1}`);
+
+        dot.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+
+          const cardRect = card.getBoundingClientRect();
+          const sliderRect = slider.getBoundingClientRect();
+          const target = slider.scrollLeft + (cardRect.left - sliderRect.left) - 16;
+
+          slider.scrollTo({
+            left: Math.max(0, target),
+            behavior: 'smooth'
+          });
+
+          const allDots = dotsContainer.querySelectorAll('.slider-dot');
+          allDots.forEach((d, idx) => d.classList.toggle('active', idx === i));
+        });
+
+        dotsContainer.appendChild(dot);
+      });
+
+      const dots = dotsContainer.querySelectorAll('.slider-dot');
+      let scrollRaf = null;
+
+      function updateActiveDot() {
+        const sliderRect = slider.getBoundingClientRect();
+        const snapTargetX = sliderRect.left + 16;
+
+        let closestIdx = 0;
+        let minDiff = Infinity;
+
+        cards.forEach((c, idx) => {
+          const rect = c.getBoundingClientRect();
+          const diff = Math.abs(rect.left - snapTargetX);
+          if (diff < minDiff) {
+            minDiff = diff;
+            closestIdx = idx;
+          }
+        });
+
+        dots.forEach((d, i) => d.classList.toggle('active', i === closestIdx));
+      }
+
+      if (slider._onCardSliderScroll) {
+        slider.removeEventListener('scroll', slider._onCardSliderScroll);
+      }
+      slider._onCardSliderScroll = () => {
+        if (scrollRaf) return;
+        scrollRaf = requestAnimationFrame(() => {
+          updateActiveDot();
+          scrollRaf = null;
+        });
+      };
+      slider.addEventListener('scroll', slider._onCardSliderScroll, { passive: true });
+    }
+
+    window.initCardSlider = initCardSlider;
+
+    // Initialize recent cards slider on mobile
+    initCardSlider('recent-grid', 'recentDots', '.plugin-card');
+
+    // ── 2. Share Button Event Delegation ──
+    document.addEventListener('click', (e) => {
+      const shareBtn = e.target.closest('.card-btn-share');
+      if (!shareBtn) return;
+      e.preventDefault();
+      e.stopPropagation();
+
+      const title = shareBtn.getAttribute('data-title') || '';
+      const noteId = shareBtn.getAttribute('data-id') || '';
+      const summary = shareBtn.getAttribute('data-summary') || '';
+      const url = shareBtn.getAttribute('data-url') || (window.location.origin + '/note/' + noteId);
+
+      if (window.openShareModal) {
+        window.openShareModal({ title, id: noteId, url, summary });
+      }
+    });
+
+    // Smooth scroll to catalog without modifying URL hash
+    document.querySelectorAll('a[href="#catalog"]').forEach((link) => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const catalogSec = document.getElementById('catalog');
+        if (catalogSec) catalogSec.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  })();
+  </script>
+</BaseLayout>

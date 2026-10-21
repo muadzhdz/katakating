@@ -1,0 +1,151 @@
+---
+// src/components/ShareModal.astro
+---
+
+<div id="share-modal" class="share-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="share-title">
+  <div class="share-modal-card">
+    <div class="share-modal-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+      <h3 id="share-title" class="share-modal-title" style="margin: 0; font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--heading); letter-spacing: 0.05em;">
+        // BAGIKAN CATATAN
+      </h3>
+      <button type="button" class="auth-modal-close" id="close-share-btn" aria-label="Tutup modal">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <div class="share-modal-body">
+      <!-- Live OG Preview Card -->
+      <div class="share-og-preview" style="margin-bottom: 14px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line);">
+        <img id="share-og-img" class="share-og-img" src="/og/default.png" alt="Preview Kartu Catatan" loading="lazy" />
+      </div>
+
+      <!-- Social Actions Grid -->
+      <div class="share-buttons-grid">
+        <!-- WhatsApp -->
+        <a id="share-wa-btn" href="#" target="_blank" rel="noopener noreferrer" class="share-action-btn" title="Bagikan ke WhatsApp">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#25D366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"></path>
+            <path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1"></path>
+          </svg>
+          <span>WhatsApp</span>
+        </a>
+
+        <!-- X / Twitter -->
+        <a id="share-x-btn" href="#" target="_blank" rel="noopener noreferrer" class="share-action-btn" title="Bagikan ke X">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+          <span>X (Twitter)</span>
+        </a>
+
+        <!-- Telegram -->
+        <a id="share-tg-btn" href="#" target="_blank" rel="noopener noreferrer" class="share-action-btn" title="Bagikan ke Telegram">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#229ED9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+          <span>Telegram</span>
+        </a>
+
+        <!-- LinkedIn -->
+        <a id="share-in-btn" href="#" target="_blank" rel="noopener noreferrer" class="share-action-btn" title="Bagikan ke LinkedIn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0A66C2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+            <rect width="4" height="12" x="2" y="9"></rect>
+            <circle cx="4" cy="4" r="2"></circle>
+          </svg>
+          <span>LinkedIn</span>
+        </a>
+      </div>
+
+      <!-- Copy Link Row -->
+      <label class="settings-label" style="margin-top: 14px; display: block; font-family: var(--mono); font-size: 10.5px; text-transform: uppercase; color: var(--muted); letter-spacing: 0.05em;">SALIN TAUTAN LANGSUNG</label>
+      <div class="share-copy-row" style="display: flex; gap: 8px; margin-top: 6px;">
+        <input type="text" id="share-link-input" class="share-url-input" readonly value="" />
+        <button type="button" id="share-copy-btn" class="share-copy-btn" style="min-width: 108px; display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box;">Salin Tautan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+(function() {
+  const modal = document.getElementById('share-modal');
+  const closeBtn = document.getElementById('close-share-btn');
+  const copyBtn = document.getElementById('share-copy-btn');
+  const linkInput = document.getElementById('share-link-input');
+  const ogImg = document.getElementById('share-og-img');
+
+  const waBtn = document.getElementById('share-wa-btn');
+  const xBtn = document.getElementById('share-x-btn');
+  const tgBtn = document.getElementById('share-tg-btn');
+  const inBtn = document.getElementById('share-in-btn');
+
+  if (!modal) return;
+
+  function closeModal() {
+    modal.classList.remove('open');
+  }
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+  });
+
+  let copyTimeout = null;
+  const CHECK_ICON_SVG = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>';
+
+  if (copyBtn && linkInput) {
+    copyBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(linkInput.value).then(() => {
+        if (copyTimeout) clearTimeout(copyTimeout);
+        copyBtn.innerHTML = CHECK_ICON_SVG;
+        copyTimeout = setTimeout(() => {
+          copyBtn.textContent = 'Salin Tautan';
+        }, 2000);
+      }).catch(() => {
+        linkInput.select();
+        document.execCommand('copy');
+        if (copyTimeout) clearTimeout(copyTimeout);
+        copyBtn.innerHTML = CHECK_ICON_SVG;
+        copyTimeout = setTimeout(() => {
+          copyBtn.textContent = 'Salin Tautan';
+        }, 2000);
+      });
+    });
+  }
+
+  // Global open share modal
+  window.openShareModal = function(opts) {
+    const title = opts.title || document.title || 'Catatan Praktikum Katakating';
+    const noteId = opts.id || '';
+    const shareUrl = opts.url || window.location.href;
+    const summary = opts.summary || 'Dokumentasi praktikum teruji mahasiswa Boash.';
+
+    if (linkInput) linkInput.value = shareUrl;
+
+    if (ogImg) {
+      if (noteId) {
+        ogImg.src = `/og/${noteId}.png`;
+      } else {
+        ogImg.src = '/og/default.png';
+      }
+    }
+
+    const encUrl = encodeURIComponent(shareUrl);
+    const encText = encodeURIComponent(`${title} — ${summary}\n\nBaca di KATAKATING: `);
+
+    if (waBtn) waBtn.href = `https://api.whatsapp.com/send?text=${encText}${encUrl}`;
+    if (xBtn) xBtn.href = `https://x.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encUrl}&hashtags=Katakating,UniversitasBoash`;
+    if (tgBtn) tgBtn.href = `https://t.me/share/url?url=${encUrl}&text=${encodeURIComponent(title)}`;
+    if (inBtn) inBtn.href = `https://www.linkedin.com/sharing/share-offsite/?url=${encUrl}`;
+
+    modal.classList.add('open');
+  };
+})();
+</script>

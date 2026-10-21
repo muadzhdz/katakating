@@ -1,0 +1,111 @@
+---
+// src/layouts/BaseLayout.astro
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import ShareModal from '../components/ShareModal.astro';
+import MobileBottomNav from '../components/MobileBottomNav.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  canonicalUrl?: string;
+  currentPath?: string;
+  keywords?: string;
+}
+
+const {
+  title = 'Catatan & Dokumentasi',
+  description = 'Pusat catatan praktikum mandiri, panduan belajar bersama, template laporan 4-4-3-3, dan dokumentasi terbuka mahasiswa Universitas Boash.',
+  ogImage = '/og/default.png',
+  ogType = 'website',
+  canonicalUrl = 'https://katakating.vercel.app',
+  currentPath = '/',
+  keywords = 'KATAKATING, KataKating, Universitas Boash, Mahasiswa Boash, Catatan Praktikum, Panduan Belajar, Format Laporan 4-4-3-3, Cisco VLAN, Normalisasi Database, Wokwi IoT, MDLC'
+} = Astro.props;
+
+const siteUrl = 'https://katakating.vercel.app';
+const fullOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`;
+---
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Instant Theme Bootstrapper (Zero FOUC) -->
+  <script is:inline>
+    (function() {
+      try {
+        var t = localStorage.getItem('katakating_theme') || localStorage.getItem('omarchy_theme') || 'vantablack';
+        var lightThemes = ['flexoki-light', 'light', 'catppuccin-latte', 'gruvbox-light', 'rose-pine-dawn'];
+        var isLight = lightThemes.indexOf(t) !== -1;
+        document.documentElement.setAttribute('data-theme', t);
+        if (isLight) {
+          document.documentElement.classList.add('light');
+        } else {
+          document.documentElement.classList.remove('light');
+        }
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'vantablack');
+      }
+    })();
+  </script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+  <meta name="keywords" content={keywords} />
+  <meta name="author" content="Mu'adz Hudzaifah & Tim KataKating" />
+  <link rel="canonical" href={canonicalUrl} />
+  <meta name="theme-color" content="#090a0d" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content={ogType} />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:site_name" content="KATAKATING" />
+  <meta property="og:image" content={fullOgImage} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={fullOgImage} />
+
+  <title>{title}</title>
+
+  <!-- Typography Preconnect & Google Fonts (Inter + JetBrains Mono) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="alternate icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <link rel="stylesheet" href="/style.css?v=3.3" />
+
+  <script is:inline src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script is:inline src="/main.js?v=3.2" defer></script>
+  <script is:inline src="/auth.js?v=3.2" defer></script>
+</head>
+
+<body>
+  <Header currentPath={currentPath} />
+
+  <main id="main-content">
+    <slot />
+  </main>
+
+  <Footer />
+
+  <!-- Social Media & IG Story Share Modal -->
+  <ShareModal />
+
+  <!-- Fixed Mobile Bottom App Bar -->
+  <MobileBottomNav currentPath={currentPath} />
+</body>
+</html>

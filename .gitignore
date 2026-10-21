@@ -1,0 +1,28 @@
+.vercel
+.env
+.env.local
+.env.*.local
+!.env.example
+__pycache__/
+*.pyc
+*.pyo
+supabase/.temp/
+.env*
+.agents/
+
+# Build output
+dist/
+
+# Generated types
+.astro/
+
+# Dependencies
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# OS
+.DS_Store

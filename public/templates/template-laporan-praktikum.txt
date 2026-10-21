@@ -1,0 +1,51 @@
+LAPORAN PRAKTIKUM MAHASISWA
+UNIVERSITAS BOASH
+
+Judul Catatan: Laporan Praktikum [Judul Topik Anda]
+Kategori: Akademik & Laporan
+Nama Penulis: [Nama Lengkap Anda]
+NIM: [NIM Mahasiswa]
+Program Studi: [TRM / Teknik Informatika / Sistem Informasi]
+Ringkasan: Ringkasan singkat 1-2 kalimat mengenai inti praktikum yang dilakukan.
+
+========================================================================
+BAB I: TUJUAN PRAKTIKUM
+========================================================================
+1. Memahami konsep dasar dan implementasi teknis materi.
+2. Mampu mempraktikkan konfigurasi dan langkah pengujian di laboratorium.
+3. Menganalisis hasil serta melakukan troubleshooting kendala teknis.
+
+========================================================================
+BAB II: ALAT DAN BAHAN
+========================================================================
+1. Komputer / Laptop Workstation
+2. Perangkat Lunak Praktikum (cth: VS Code, Git, Cisco Packet Tracer, Arduino IDE)
+3. Koneksi Internet / Jaringan Kampus
+
+========================================================================
+BAB III: LANGKAH-LANGKAH KERJA
+========================================================================
+Langkah 1: Persiapan Awal
+Buka terminal atau editor, lalu jalankan perintah persiapan berikut:
+git status
+
+Langkah 2: Konfigurasi Sistem
+Lakukan pengaturan parameter sesuai petunjuk dosen pengampu.
+
+Langkah 3: Pengujian Fungsional
+Jalankan pengujian dan pastikan respons sistem berjalan tanpa error.
+
+========================================================================
+BAB IV: HASIL DAN ANALISIS
+========================================================================
+Tuliskan hasil pengujian di sini beserta analisis mengapa sistem berjalan seperti itu.
+Sebutkan kendala atau bug yang ditemukan, serta langkah perbaikan yang dilakukan.
+
+========================================================================
+BAB V: KESIMPULAN
+========================================================================
+1. Percobaan berhasil diselesaikan dengan baik sesuai modul.
+2. [Poin pembelajaran penting yang didapatkan selama praktikum].
+
+Daftar Pustaka:
+1. Modul Praktikum Laboratorium Universitas Boash (2026).

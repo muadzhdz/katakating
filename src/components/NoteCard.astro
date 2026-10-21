@@ -1,0 +1,103 @@
+---
+// src/components/NoteCard.astro
+interface Props {
+  note: {
+    id: string;
+    title: string;
+    category: string;
+    author: string;
+    date: string;
+    readTime: string;
+    initials?: string;
+    tags: string[];
+    summary: string;
+  };
+  index?: number;
+}
+
+const { note, index = 0 } = Astro.props;
+const formattedIndex = '#' + String(index).padStart(2, '0');
+const noteUrl = `/note/${note.id}`;
+---
+
+<article class="plugin-card" data-id={note.id} data-cat={`${note.category} ${note.tags.join(' ')}`} data-title={note.title}>
+  <div class="plugin-card-banner">
+    <span class="banner-monogram">{note.initials || 'DOC'}</span>
+  </div>
+
+  <div class="plugin-card-content">
+    <div class="plugin-card-header">
+      <h3 class="plugin-card-title">
+        <a href={noteUrl}>{note.title}</a>
+      </h3>
+      <div class="plugin-card-actions">
+        <!-- Bookmark -->
+        <button type="button" class="card-action-btn card-btn-bookmark" data-id={note.id} title="Simpan catatan" aria-label="Simpan catatan">
+          <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
+          </svg>
+          <span class="card-bookmark-count">0</span>
+        </button>
+
+        <!-- Like -->
+        <button type="button" class="card-action-btn card-btn-like" data-id={note.id} title="Sukai catatan" aria-label="Sukai catatan">
+          <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+          <span class="card-like-count">0</span>
+        </button>
+
+        <!-- Share (New!) -->
+        <button type="button" class="card-action-btn card-btn-share" data-id={note.id} data-title={note.title} data-summary={note.summary} data-url={`https://katakating.vercel.app${noteUrl}`} title="Bagikan ke Medsos" aria-label="Bagikan ke Medsos">
+          <svg class="card-btn-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="18" cy="5" r="3"></circle>
+            <circle cx="6" cy="12" r="3"></circle>
+            <circle cx="18" cy="19" r="3"></circle>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="plugin-card-meta-row">
+      <span class="plugin-card-by">by {note.author} &bull; {note.category}</span>
+      <span class="plugin-card-id">{formattedIndex}</span>
+    </div>
+
+    <p class="plugin-card-desc">{note.summary}</p>
+
+    {note.tags && note.tags.length > 0 && (
+      <div class="plugin-card-tags">
+        {note.tags.slice(0, 3).map((tag) => (
+          <span class="card-tag">{tag}</span>
+        ))}
+      </div>
+    )}
+  </div>
+
+  <div class="plugin-card-bottom">
+    <div class="card-bottom-left">
+      <span class="card-stat-group" title="Waktu baca">
+        <span class="card-read-time">{note.readTime}</span>
+      </span>
+      <span class="card-stat-sep">&bull;</span>
+      <span class="card-stat-group" title="Jumlah pembaca">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+        <span class="card-views-count" data-id={note.id}>0</span>
+      </span>
+    </div>
+    <div class="card-bottom-stats">
+      <a href={noteUrl} class="card-read-action" title="Buka Catatan" aria-label="Buka Catatan">
+        <span>Buka</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="7" y1="17" x2="17" y2="7"></line>
+          <polyline points="7 7 17 7 17 17"></polyline>
+        </svg>
+      </a>
+    </div>
+  </div>
+</article>

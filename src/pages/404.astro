@@ -1,0 +1,355 @@
+---
+// src/pages/404.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Memuat Catatan... | KATAKATING"
+  description="Pusat dokumentasi catatan praktikum mandiri dan panduan akademik mahasiswa Universitas Boash."
+  currentPath="/404"
+>
+  <!-- TOP READING PROGRESS BAR (HIDDEN IN 404 MODE, ACTIVE IN DYNAMIC READER) -->
+  <div id="read-progress-bar" style="position: fixed; top: 0; left: 0; height: 3px; background: var(--accent); width: 0%; z-index: 1003; transition: width 0.1s linear;"></div>
+
+  <!-- CONTAINER 1: DYNAMIC NOTE VIEWER (HYDRATED ON /note/* FALLBACK) -->
+  <div id="dynamic-note-wrapper" style="display: none; width: 100%;">
+    <!-- SKELETON / LOADING STATE -->
+    <div id="dynamic-loading-state" class="article-layout" style="padding: 60px 20px; text-align: center;">
+      <div style="display: inline-block; width: 36px; height: 36px; border: 3px solid var(--line); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 20px;"></div>
+      <h2 style="font-size: 18px; font-weight: 700; color: var(--heading); margin-bottom: 8px;">Mengambil Naskah Catatan Cloud...</h2>
+      <p style="font-size: 13px; color: var(--muted); font-family: var(--mono);" id="dynamic-loading-slug">// Menghubungkan ke basis data repositori...</p>
+    </div>
+
+    <!-- RENDERED NOTE CONTENT (INJECTED DYNAMICALLY) -->
+    <div id="dynamic-article-content" style="display: none;"></div>
+  </div>
+
+  <!-- CONTAINER 2: STANDARD 404 ERROR (SHOWN WHEN PAGE/NOTE REALLY DOES NOT EXIST) -->
+  <section class="error-404-section" id="standard-404-wrapper" style="display: none; padding: 100px 20px 120px; text-align: center; max-width: 640px; margin: 0 auto;">
+    <div style="font-family: var(--mono); font-size: 12px; font-weight: 700; color: #ef4444; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px;">
+      // KESALAHAN SISTEM 404
+    </div>
+    <h1 style="font-size: 38px; font-weight: 800; color: var(--heading); letter-spacing: -0.02em; margin-bottom: 16px;" id="error-title">
+      Halaman Tidak Ditemukan
+    </h1>
+    <p style="font-size: 14.5px; color: var(--muted); line-height: 1.6; margin-bottom: 32px;" id="error-desc">
+      Halaman atau naskah catatan praktikum yang Anda cari tidak tersedia di server atau belum disetujui kurator.
+    </p>
+    <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+      <a href="/" class="button market-primary" style="padding: 10px 24px; font-weight: 700;">
+        &larr; Kembali ke Beranda
+      </a>
+      <a href="/#catalog" class="button" style="padding: 10px 24px; font-weight: 600;">
+        Cari di Semua Catatan &rarr;
+      </a>
+    </div>
+  </section>
+
+  <!-- VENDOR MARKED BUNDLE -->
+  <script is:inline src="/vendor/marked.min.js"></script>
+
+  <style>
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+
+  <script is:inline>
+  (function() {
+    const pathname = window.location.pathname;
+    const dynamicWrapper = document.getElementById('dynamic-note-wrapper');
+    const dynamicLoading = document.getElementById('dynamic-loading-state');
+    const dynamicArticle = document.getElementById('dynamic-article-content');
+    const dynamicSlugText = document.getElementById('dynamic-loading-slug');
+    const standard404 = document.getElementById('standard-404-wrapper');
+    const errorTitle = document.getElementById('error-title');
+    const errorDesc = document.getElementById('error-desc');
+
+    function showActual404(customTitle, customDesc) {
+      if (dynamicWrapper) dynamicWrapper.style.display = 'none';
+      if (standard404) {
+        if (customTitle && errorTitle) errorTitle.textContent = customTitle;
+        if (customDesc && errorDesc) errorDesc.textContent = customDesc;
+        standard404.style.display = 'block';
+      }
+      document.title = '404 Tidak Ditemukan | KATAKATING';
+    }
+
+    // Check if this 404 was triggered by a /note/<id> request
+    const isNoteRoute = pathname.startsWith('/note/');
+    if (!isNoteRoute) {
+      showActual404();
+      return;
+    }
+
+    // Extract note slug
+    const noteSlug = pathname.replace(/^\/note\//, '').replace(/\/$/, '').trim();
+    if (!noteSlug) {
+      showActual404();
+      return;
+    }
+
+    // Show dynamic loader
+    if (dynamicWrapper) dynamicWrapper.style.display = 'block';
+    if (dynamicSlugText) dynamicSlugText.textContent = `// Mencari naskah: ${noteSlug}...`;
+
+    function escapeHtml(str) {
+      return (str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function renderNote(note) {
+      document.title = `${note.title} | KATAKATING`;
+
+      // Configure marked if loaded
+      let parsedHtml = '';
+      if (window.marked) {
+        const renderer = new window.marked.Renderer();
+        renderer.code = function({ text, lang }) {
+          const cleanLang = (lang || 'sh').toLowerCase();
+          return `<div class="command-panel" data-lang="${cleanLang}">
+            <div class="command-panel-head">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="display: inline-flex; gap: 4px;">
+                  <span style="width: 7px; height: 7px; border-radius: 50%; background: #ef4444; display: inline-block;"></span>
+                  <span style="width: 7px; height: 7px; border-radius: 50%; background: #eab308; display: inline-block;"></span>
+                  <span style="width: 7px; height: 7px; border-radius: 50%; background: #22c55e; display: inline-block;"></span>
+                </span>
+                <span class="command-panel-label">${cleanLang.toUpperCase()}</span>
+              </div>
+              <button type="button" class="copy-btn" onclick="window.copyCodeSnippet && window.copyCodeSnippet(this)">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                <span>Salin</span>
+              </button>
+            </div>
+            <pre class="code-body"><code>${escapeHtml(text)}</code></pre>
+          </div>`;
+        };
+        renderer.heading = function({ text, depth }) {
+          if (depth === 2) {
+            const slug = text.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
+            return `<h2 id="${slug}">${text}</h2>`;
+          }
+          return `<h${depth}>${text}</h${depth}>`;
+        };
+        renderer.blockquote = function({ text }) {
+          return `<blockquote class="article-quote">${text}</blockquote>`;
+        };
+
+        window.marked.use({ renderer });
+        let rawContent = (note.content || '').replace(/^---[\s\S]*?---/, '').trim();
+        parsedHtml = window.marked.parse(rawContent);
+      } else {
+        parsedHtml = `<pre style="white-space: pre-wrap; font-family: var(--sans);">${escapeHtml(note.content || note.summary)}</pre>`;
+      }
+
+      const tags = Array.isArray(note.prodi_tags) ? note.prodi_tags : (Array.isArray(note.tags) ? note.tags : ['praktikum']);
+      const tagHtml = tags.map(t => `<span class="card-tag">#${escapeHtml(t)}</span>`).join('');
+      const dateStr = note.created_at ? note.created_at.split('T')[0] : (note.date || 'Terbaru');
+      const category = note.category || 'Praktikum';
+      const initials = note.initials || 'DOC';
+      const author = note.author_name || note.author || 'Mahasiswa Boash';
+      const readTime = note.readTime || '5m baca';
+
+      dynamicArticle.innerHTML = `
+        <div class="article-layout">
+          <!-- BREADCRUMBS -->
+          <nav class="breadcrumbs" aria-label="Breadcrumb">
+            <a href="/">[>] Beranda</a>
+            <span>/</span>
+            <a href="/#catalog">${escapeHtml(category)}</a>
+            <span>/</span>
+            <span style="color: var(--accent); font-weight: 600;">${escapeHtml(initials)}</span>
+          </nav>
+
+          <!-- ARTICLE HEADER -->
+          <header class="article-header">
+            <div>
+              <span class="page-eyebrow">// ${escapeHtml(category.toUpperCase())} // KODE: ${escapeHtml(note.id)}</span>
+            </div>
+            <h1 class="article-title">${escapeHtml(note.title)}</h1>
+            
+            <div class="article-meta">
+              <div class="article-meta-author">Kontributor: <b>${escapeHtml(author)}</b></div>
+              <div class="article-meta-details">
+                <span>${escapeHtml(dateStr)}</span>
+                <span class="article-meta-sep">&bull;</span>
+                <span>${escapeHtml(readTime)}</span>
+                <span class="article-meta-sep">&bull;</span>
+                <span id="article-views-counter"><b id="article-views-val">${escapeHtml(String(note.views_count || note.views || 1))}</b> baca</span>
+              </div>
+            </div>
+
+            <!-- TAGS -->
+            <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px;">
+              ${tagHtml}
+            </div>
+
+            <!-- INTERACTION & TOOLBAR -->
+            <div class="article-actions-bar">
+              <div class="article-actions-group">
+                <!-- Like Button -->
+                <button type="button" class="button btn-action-item" id="btn-like-article" data-id="${escapeHtml(note.id)}">
+                  <svg id="like-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                  </svg>
+                  <span id="like-text">Suka</span> (<span id="like-count">0</span>)
+                </button>
+
+                <!-- Bookmark Button -->
+                <button type="button" class="button btn-action-item" id="btn-bookmark-article" data-id="${escapeHtml(note.id)}">
+                  <svg id="bookmark-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path>
+                  </svg>
+                  <span id="bookmark-text">Simpan</span>
+                </button>
+
+                <!-- Share Button -->
+                <button type="button" class="button btn-action-item" id="btn-share-article" data-id="${escapeHtml(note.id)}" data-title="${escapeHtml(note.title)}" data-summary="${escapeHtml(note.summary || '')}">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="18" cy="5" r="3"></circle>
+                    <circle cx="6" cy="12" r="3"></circle>
+                    <circle cx="18" cy="19" r="3"></circle>
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                  </svg>
+                  <span>Bagikan</span>
+                </button>
+
+                <!-- Print Button -->
+                <button type="button" class="button btn-action-item" onclick="window.print()">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                    <rect width="12" height="8" x="6" y="14"></rect>
+                  </svg>
+                  <span>Cetak / PDF</span>
+                </button>
+              </div>
+            </div>
+          </header>
+
+          <!-- MAIN ARTICLE BODY -->
+          <article id="article-body" class="article-content">${parsedHtml}</article>
+
+          <!-- BOTTOM ACTION NAVIGATION -->
+          <nav class="article-pagination-bar" aria-label="Navigasi Catatan" style="margin-top: 40px;">
+            <a href="/" class="pagination-link prev">
+              <span>&larr;</span> KEMBALI KE BERANDA
+            </a>
+            <span class="pagination-divider">|</span>
+            <a href="/#catalog" class="pagination-link next">
+              JELAJAHI SEMUA CATATAN <span>&rarr;</span>
+            </a>
+          </nav>
+        </div>
+      `;
+
+      if (dynamicLoading) dynamicLoading.style.display = 'none';
+      if (dynamicArticle) dynamicArticle.style.display = 'block';
+
+      // Setup Reading Progress Bar
+      const progBar = document.getElementById('read-progress-bar');
+      if (progBar) {
+        window.addEventListener('scroll', () => {
+          const h = document.documentElement.scrollHeight - window.innerHeight;
+          const pct = h > 0 ? (window.scrollY / h) * 100 : 0;
+          progBar.style.width = Math.min(100, Math.max(0, pct)) + '%';
+        }, { passive: true });
+      }
+
+      // Setup Copy Snippet global helper
+      window.copyCodeSnippet = function(button) {
+        const panel = button.closest('.command-panel');
+        if (!panel) return;
+        const codeEl = panel.querySelector('code');
+        if (!codeEl) return;
+        navigator.clipboard.writeText(codeEl.innerText).then(() => {
+          const original = button.innerHTML;
+          button.innerHTML = '<span>Tersalin!</span>';
+          button.style.borderColor = '#22c55e';
+          button.style.color = '#22c55e';
+          setTimeout(() => {
+            button.innerHTML = original;
+            button.style.borderColor = '';
+            button.style.color = '';
+          }, 1800);
+        }).catch(() => {});
+      };
+    }
+
+    // 1. Check local storage first
+    let foundInStorage = false;
+    try {
+      const localApproved = JSON.parse(localStorage.getItem('katakating_approved_articles') || '[]');
+      const match = localApproved.find(a => a.id === noteSlug || a.ticket_id === noteSlug);
+      if (match) {
+        foundInStorage = true;
+        renderNote(match);
+      }
+    } catch (e) {}
+
+    // 2. Query from Supabase Client
+    function queryRemoteGuide() {
+      const sb = window.supabaseClient || (window.KataKatingAuth && window.KataKatingAuth.client) || (typeof window.getKataKatingDb === 'function' ? window.getKataKatingDb() : null);
+      if (!sb) {
+        if (!foundInStorage) {
+          // Retry briefly if auth.js is still hydrating
+          setTimeout(queryRemoteGuide, 200);
+        }
+        return;
+      }
+
+      sb.from('guides')
+        .select('*')
+        .eq('id', noteSlug)
+        .then(({ data, error }) => {
+          if (!error && Array.isArray(data) && data.length > 0) {
+            renderNote(data[0]);
+          } else if (!foundInStorage) {
+            return sb.from('submissions')
+              .select('*')
+              .eq('status', 'approved')
+              .then(({ data: subs }) => {
+                const matchedSub = (Array.isArray(subs) ? subs : []).find(s => {
+                  const sSlug = (s.title || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+                  return sSlug === noteSlug || s.id === noteSlug;
+                });
+                if (matchedSub) {
+                  renderNote({
+                    id: noteSlug,
+                    title: matchedSub.title,
+                    author_name: matchedSub.author_name,
+                    category: matchedSub.category,
+                    summary: matchedSub.summary,
+                    content: matchedSub.content,
+                    created_at: matchedSub.submitted_at
+                  });
+                } else if (!foundInStorage) {
+                  showActual404(
+                    'Catatan Tidak Ditemukan',
+                    `Naskah catatan dengan kode "${escapeHtml(noteSlug)}" tidak ditemukan di repositori atau belum disetujui kurator.`
+                  );
+                }
+              });
+          }
+        })
+        .catch(err => {
+          console.warn('Supabase note fetch failed in 404 fallback:', err);
+          if (!foundInStorage) {
+            showActual404(
+              'Gagal Memuat Catatan',
+              `Terjadi gangguan saat mengambil naskah catatan "${escapeHtml(noteSlug)}". Silakan periksa koneksi internet Anda.`
+            );
+          }
+        });
+    }
+
+    queryRemoteGuide();
+  })();
+  </script>
+</BaseLayout>

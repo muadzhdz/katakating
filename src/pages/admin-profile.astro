@@ -1,0 +1,674 @@
+---
+// src/pages/admin-profile.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Profil Admin"
+  description="Profil pengelola, metrik moderasi naskah praktikum, dan riwayat kurasi catatan mahasiswa Universitas Boash."
+  currentPath="/admin-profile"
+>
+  <div class="admin-profile-container">
+    <!-- Breadcrumbs -->
+    <nav class="breadcrumbs">
+      <a href="/">Beranda</a>
+      <span>/</span>
+      <a href="/admin">Panel Moderasi</a>
+      <span>/</span>
+      <span style="color: var(--accent);">Profil Admin</span>
+    </nav>
+
+    <!-- ACCESS DENIED STATE (IF NOT LOGGED IN AS ADMIN) -->
+    <div id="ap-denied" class="admin-denied-box" style="display: none;">
+      <h2>Autentikasi Administrator Diperlukan</h2>
+      <div class="admin-denied-actions" style="margin-top: 20px;">
+        <a href="/admin" class="button market-primary">Buka Panel Admin &rarr;</a>
+        <a href="/" class="button">Kembali ke Beranda</a>
+      </div>
+    </div>
+
+    <!-- MAIN ADMIN PROFILE CONTENT -->
+    <div id="admin-profile-main" style="display: none;">
+      <!-- Header Identity Card -->
+      <section class="admin-profile-card">
+        <div class="admin-profile-header-inner">
+          <div class="admin-profile-avatar" id="ap-avatar">A</div>
+          <div class="admin-profile-details">
+            <h1 id="ap-name" class="admin-name">Admin KataKating</h1>
+            <div id="ap-email" class="admin-email">katakating@gmail.com</div>
+          </div>
+        </div>
+
+        <!-- Quick Actions Bar -->
+        <div class="admin-actions-bar">
+          <div class="admin-nav-actions-row">
+            <a href="/admin" class="button market-primary ap-btn-action">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              PANEL
+            </a>
+            <a href="/upload" class="button ap-btn-action">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              UPLOAD
+            </a>
+            <a href="/" class="button ap-btn-action">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              KATALOG
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Moderation Stats Grid -->
+      <div class="ap-section-header">
+        <span class="ap-section-label">// REKAPITULASI STATUS NASKAH</span>
+      </div>
+      <div class="admin-stat-grid">
+        <div class="ap-stat-card stat-pending">
+          <div class="ap-stat-value" id="ap-stat-pending">0</div>
+          <div class="ap-stat-label">Menunggu Review</div>
+        </div>
+        <div class="ap-stat-card stat-approved">
+          <div class="ap-stat-value" id="ap-stat-approved">0</div>
+          <div class="ap-stat-label">Disetujui / Terbit</div>
+        </div>
+        <div class="ap-stat-card stat-rejected">
+          <div class="ap-stat-value" id="ap-stat-rejected">0</div>
+          <div class="ap-stat-label">Naskah Ditolak</div>
+        </div>
+        <div class="ap-stat-card stat-total">
+          <div class="ap-stat-value" id="ap-stat-total">0</div>
+          <div class="ap-stat-label">Total Pengajuan</div>
+        </div>
+      </div>
+
+      <!-- Recent Moderation Activity -->
+      <div class="ap-section-header">
+        <span class="ap-section-label">// RIWAYAT AKTIVITAS KURASI</span>
+        <span id="ap-activity-count" class="ap-activity-badge">0 aktivitas</span>
+      </div>
+      <div class="ap-activity-list" id="ap-activity-list">
+        <div class="ap-empty">
+          <svg class="ap-empty-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+          <div class="ap-empty-title">ANTREAN KURASI KOSONG</div>
+          <div class="ap-empty-desc">Belum ada naskah atau aktivitas kurasi tercatat dalam antrean saat ini.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style is:global>
+    .admin-profile-container {
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px 20px 80px;
+      box-sizing: border-box;
+    }
+
+    .admin-denied-box {
+      max-width: 440px;
+      margin: 60px auto 100px;
+      padding: 36px 28px;
+      background: var(--panel);
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius);
+      text-align: center;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+    }
+
+    .admin-denied-badge {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: #ef4444;
+      letter-spacing: .08em;
+      margin-bottom: 12px;
+    }
+
+    .admin-denied-box h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--heading);
+      margin: 0 0 8px;
+    }
+
+    .admin-denied-box p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    .admin-denied-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .admin-profile-card {
+      background: var(--panel);
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 28px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .admin-profile-header-inner {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .admin-profile-avatar {
+      width: 56px;
+      height: 56px;
+      background: #ffffff;
+      color: #000000;
+      border: 1px solid var(--line-strong);
+      font-family: var(--mono);
+      font-size: 24px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border-radius: var(--radius);
+    }
+
+    html.light .admin-profile-avatar,
+    :root[data-theme="light"] .admin-profile-avatar {
+      background: #18181b;
+      color: #ffffff;
+      border-color: #27272a;
+    }
+
+    .admin-profile-details {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .admin-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--heading);
+      margin: 0 0 4px;
+      letter-spacing: -0.01em;
+    }
+
+    .admin-email {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+      word-break: break-all;
+    }
+
+    .admin-actions-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .admin-nav-actions-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .ap-btn-action {
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .04em;
+      padding: 7px 10px;
+      white-space: nowrap;
+    }
+
+    .btn-logout-admin {
+      margin-left: auto;
+      border-color: rgba(239, 68, 68, 0.5) !important;
+      color: #ef4444 !important;
+    }
+
+    .btn-logout-admin:hover {
+      background: rgba(239, 68, 68, 0.1) !important;
+      color: #f87171 !important;
+    }
+
+    .ap-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 8px;
+    }
+
+    .ap-section-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--sidebar-heading);
+    }
+
+    .ap-activity-badge {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .admin-stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .ap-stat-card {
+      padding: 16px 18px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      text-align: center;
+      box-sizing: border-box;
+      transition: border-color var(--t-fast) var(--ease-out);
+    }
+
+    .ap-stat-card:hover {
+      border-color: var(--line-strong);
+    }
+
+    .ap-stat-value {
+      font-family: var(--mono);
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+
+    .ap-stat-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .ap-stat-card.stat-pending .ap-stat-value { color: #f59e0b; }
+    .ap-stat-card.stat-approved .ap-stat-value { color: var(--accent); }
+    .ap-stat-card.stat-rejected .ap-stat-value { color: #ef4444; }
+    .ap-stat-card.stat-total .ap-stat-value { color: var(--heading); }
+
+    .ap-activity-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .ap-activity-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      transition: all var(--t-fast) var(--ease-out);
+      box-sizing: border-box;
+    }
+
+    .ap-activity-item:hover {
+      border-color: var(--line-strong);
+      background: var(--panel-2);
+    }
+
+    .ap-activity-status {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      padding: 4px 8px;
+      border-radius: var(--radius);
+      flex-shrink: 0;
+    }
+
+    .status-approved {
+      background: rgba(0, 255, 102, 0.1);
+      color: var(--accent);
+      border: 1px solid var(--accent);
+    }
+
+    .status-rejected {
+      background: rgba(239, 68, 68, 0.1);
+      color: #ef4444;
+      border: 1px solid #ef4444;
+    }
+
+    .status-pending {
+      background: rgba(245, 158, 11, 0.1);
+      color: #f59e0b;
+      border: 1px solid #f59e0b;
+    }
+
+    .ap-activity-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .ap-activity-category {
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      color: var(--accent);
+      margin-bottom: 2px;
+    }
+
+    .ap-activity-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--heading);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 2px;
+    }
+
+    .ap-activity-sub {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .ap-activity-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .ap-activity-meta {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .ap-empty {
+      padding: 32px 20px;
+      text-align: center;
+      background: var(--panel);
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ap-empty-icon {
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .ap-empty-title {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--heading);
+      letter-spacing: .03em;
+    }
+
+    .ap-empty-desc {
+      font-size: 12px;
+      color: var(--muted);
+      max-width: 400px;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    @media (max-width: 768px) {
+      .admin-profile-container {
+        padding: 16px 14px 60px;
+      }
+      .admin-stat-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+      }
+      .admin-profile-header-inner {
+        flex-direction: row;
+        align-items: center;
+        gap: 16px;
+      }
+      .admin-actions-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+      }
+      .admin-nav-actions-row {
+        width: 100%;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+      }
+      .btn-logout-admin {
+        margin-left: 0;
+        width: 100%;
+        justify-content: center;
+      }
+      .ap-activity-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      .ap-activity-right {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+  </style>
+
+  <script is:inline>
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function timeAgo(dateStr) {
+      if (!dateStr) return '';
+      const diff = Date.now() - new Date(dateStr).getTime();
+      const mins = Math.floor(diff / 60000);
+      if (mins < 1) return 'baru saja';
+      if (mins < 60) return mins + ' menit lalu';
+      const hrs = Math.floor(mins / 60);
+      if (hrs < 24) return hrs + ' jam lalu';
+      return Math.floor(hrs / 24) + ' hari lalu';
+    }
+
+    function statusLabel(s) {
+      if (s === 'approved') return 'DISETUJUI';
+      if (s === 'rejected') return 'DITOLAK';
+      return 'PENDING';
+    }
+
+    async function checkAuthAndInit() {
+      const auth = window.KataKatingAuth || window.ReadmeAuth;
+      const adminSess = JSON.parse(localStorage.getItem('katakating_admin_session') || 'null');
+      const user = auth ? auth.user : null;
+      const isAuthAdmin = (user && (user.email === 'katakating@gmail.com' || user.id === 'admin-katakating' || user.user_metadata?.role === 'admin' || (auth.profile && auth.profile.role === 'admin'))) ||
+        (adminSess && adminSess.email === 'katakating@gmail.com');
+
+      const deniedEl = document.getElementById('ap-denied');
+      const mainEl = document.getElementById('admin-profile-main');
+
+      if (!isAuthAdmin) {
+        if (deniedEl) deniedEl.style.display = 'block';
+        if (mainEl) mainEl.style.display = 'none';
+        return;
+      }
+
+      if (deniedEl) deniedEl.style.display = 'none';
+      if (mainEl) mainEl.style.display = 'block';
+
+      if (adminSess && adminSess.full_name && adminSess.full_name.includes('Dewan Redaksi')) {
+        adminSess.full_name = 'Admin KataKating';
+        try { localStorage.setItem('katakating_admin_session', JSON.stringify(adminSess)); } catch (e) {}
+      }
+
+      let name = (adminSess && adminSess.full_name) ||
+                 (auth && auth.profile && auth.profile.full_name) ||
+                 (user && (user.user_metadata?.full_name || user.user_metadata?.name)) ||
+                 'Admin KataKating';
+      if (name.includes('Dewan Redaksi')) {
+        name = 'Admin KataKating';
+      }
+      const email = (adminSess && adminSess.email) || (user && user.email) || 'katakating@gmail.com';
+
+      const nameEl = document.getElementById('ap-name');
+      const emailEl = document.getElementById('ap-email');
+      const avatarEl = document.getElementById('ap-avatar');
+
+      if (nameEl) nameEl.textContent = name;
+      if (emailEl) emailEl.textContent = email;
+      if (avatarEl) avatarEl.textContent = (name.charAt(0) || 'A').toUpperCase();
+
+      // Fetch submissions from localStorage and Supabase
+      let subs = JSON.parse(localStorage.getItem('katakating_submissions') || '[]');
+
+      // If Supabase client available, try to fetch fresh submissions
+      if (auth && auth.client) {
+        try {
+          const { data, error } = await auth.client
+            .from('submissions')
+            .select('*')
+            .order('submitted_at', { ascending: false });
+          if (!error && data && data.length > 0) {
+            const localMap = new Map(subs.map(s => [s.id, s]));
+            data.forEach(remote => {
+              localMap.set(remote.id, {
+                id: remote.id,
+                title: remote.title,
+                author_name: remote.author_name,
+                author_npm: remote.author_npm,
+                category: remote.category,
+                status: remote.status,
+                submittedAt: remote.submitted_at,
+                updatedAt: remote.updated_at || remote.submitted_at
+              });
+            });
+            subs = Array.from(localMap.values());
+          }
+        } catch (e) {
+          console.warn('Submissions fetch notice:', e);
+        }
+      }
+
+      const pendingCount = subs.filter(s => s.status === 'pending_review' || s.status === 'pending').length;
+      const approvedCount = subs.filter(s => s.status === 'approved').length;
+      const rejectedCount = subs.filter(s => s.status === 'rejected').length;
+      const totalCount = subs.length;
+
+      const elPending = document.getElementById('ap-stat-pending');
+      const elApproved = document.getElementById('ap-stat-approved');
+      const elRejected = document.getElementById('ap-stat-rejected');
+      const elTotal = document.getElementById('ap-stat-total');
+
+      if (elPending) elPending.textContent = String(pendingCount);
+      if (elApproved) elApproved.textContent = String(approvedCount);
+      if (elRejected) elRejected.textContent = String(rejectedCount);
+      if (elTotal) elTotal.textContent = String(totalCount);
+
+      const countBadge = document.getElementById('ap-activity-count');
+      if (countBadge) countBadge.textContent = `${totalCount} naskah`;
+
+      const listEl = document.getElementById('ap-activity-list');
+      if (!listEl) return;
+
+      if (subs.length === 0) {
+        listEl.innerHTML = `
+          <div class="ap-empty">
+            <svg class="ap-empty-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            <div class="ap-empty-title">ANTREAN KURASI KOSONG</div>
+            <div class="ap-empty-desc">Belum ada naskah atau aktivitas kurasi tercatat dalam antrean saat ini.</div>
+          </div>
+        `;
+      } else {
+        const sorted = [...subs].sort((a, b) => {
+          const timeA = new Date(b.updatedAt || b.submittedAt || 0).getTime();
+          const timeB = new Date(a.updatedAt || a.submittedAt || 0).getTime();
+          return timeA - timeB;
+        });
+
+        listEl.innerHTML = sorted.map(item => {
+          const st = item.status === 'approved' ? 'approved' : (item.status === 'rejected' ? 'rejected' : 'pending');
+          const stClass = st === 'approved' ? 'status-approved' : (st === 'rejected' ? 'status-rejected' : 'status-pending');
+          const label = statusLabel(item.status);
+          const time = timeAgo(item.updatedAt || item.submittedAt);
+          const authorStr = (item.author_name || 'Anonim') + (item.author_npm ? ` (${item.author_npm})` : '');
+          const categoryStr = (item.category || 'Panduan').toUpperCase();
+
+          return `
+            <div class="ap-activity-item">
+              <span class="ap-activity-status ${stClass}">${label}</span>
+              <div class="ap-activity-info">
+                <div class="ap-activity-category">// ${escapeHtml(categoryStr)}</div>
+                <div class="ap-activity-title" title="${escapeHtml(item.title || item.id)}">${escapeHtml(item.title || item.id)}</div>
+                <div class="ap-activity-sub">Pengirim: ${escapeHtml(authorStr)}</div>
+              </div>
+              <div class="ap-activity-right">
+                <span class="ap-activity-meta">${escapeHtml(time)}</span>
+                <a href="/admin" class="button market-primary ap-btn-review" style="padding: 4px 10px; font-size: 11px;">Review &rarr;</a>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      checkAuthAndInit();
+
+      const logoutBtn = document.getElementById('ap-logout-btn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', async () => {
+          const auth = window.KataKatingAuth || window.ReadmeAuth;
+          if (auth && typeof auth.signOut === 'function') {
+            await auth.signOut();
+          } else {
+            localStorage.removeItem('katakating_admin_session');
+            window.location.href = '/admin';
+          }
+        });
+      }
+    });
+  </script>
+</BaseLayout>

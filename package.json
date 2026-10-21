@@ -1,0 +1,34 @@
+{
+  "name": "katakating",
+  "version": "1.0.0",
+  "description": "KataKating - Boash Knowledge Base & Lab Survival Guide - Interactive Multimedia Guide Repository",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "node scripts/generate-og.mjs && astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "test": "node --test test/catalog.test.js",
+    "validate": "npm run build && npm test"
+  },
+  "keywords": [
+    "katakating",
+    "boash",
+    "knowledge-base",
+    "universitas-boash",
+    "multimedia",
+    "guides"
+  ],
+  "author": "Mu'adz Hudzaifah & Mahasiswa Universitas Boash",
+  "license": "MIT",
+  "dependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "astro": "^7.3.8",
+    "mammoth": "^1.13.0",
+    "marked": "^18.1.0"
+  }
+}
