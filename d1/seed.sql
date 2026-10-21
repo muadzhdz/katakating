@@ -6,7 +6,7 @@ INSERT INTO guides (
   'setup-dual-boot-linux-windows',
   'Panduan Setup Dual-Boot Linux dan Windows untuk Praktikum Mahasiswa Baru',
   'Langkah aman instalasi dual-boot Arch/Ubuntu dan Windows tanpa menghapus partisi EFI atau kehilangan lisensi bawaan laptop.',
-  '## Persiapan Partisi\n1. Matikan Fast Startup dan BitLocker di Windows.\n2. Sisakan unallocated space minimal 60GB di Disk Management.\n3. Siapkan USB flashdisk dengan Ventoy atau Rufus (GPT partition scheme).\n\n```bash\nsudo parted -l\nsudo fdisk -l\n```\n\n## Instalasi Bootloader\nPastikan partisi EFI (ESP) di-mount ke /boot atau /efi agar GRUB atau systemd-boot mendeteksi entri Windows Boot Manager secara otomatis.',
+  'Langkah aman instalasi dual-boot Arch/Ubuntu dan Windows tanpa menghapus partisi EFI atau kehilangan lisensi bawaan laptop.',
   'Mu''adz Hudzaifah',
   '24903460014',
   'systems-network',
@@ -37,7 +37,7 @@ INSERT INTO guides (
   'pointer-memori-dinamis-cpp',
   'Solusi Memahami Pointer dan Alokasi Memori Dinamis C/C++ Tanpa Segfault',
   'Tips visual memahami alamat memori, dereferencing, malloc, free, dan smart pointers di C++ agar praktikum algoritma bebas error.',
-  '## Anatomi Pointer\nPointer adalah variabel yang menyimpan alamat memori variabel lain. Jangan pernah melakukan dereferensi pointer NULL!\n\n```c\nint a = 42;\nint *p = &a; // p menunjuk ke alamat a\nprintf("Nilai: %d, Alamat: %p\\n", *p, (void*)p);\n```\n\n## Pencegahan Memory Leak\nSetiap kali menggunakan `malloc()` atau `new`, pastikan ada pasangan `free()` atau `delete` yang dipanggil tepat waktu.',
+  'Tips visual memahami alamat memori, dereferencing, malloc, free, dan smart pointers di C++ agar praktikum algoritma bebas error.',
   'Mu''adz Hudzaifah',
   '24903460014',
   'web-software',
@@ -68,7 +68,7 @@ INSERT INTO guides (
   'normalisasi-sql-1nf-ke-3nf',
   'Cheat-Sheet Query SQL: Cara Cepat Normalisasi Data dari 1NF sampai 3NF',
   'Metode cepat memecah tabel data yang berantakan menjadi tabel relasional yang memenuhi standar 1NF, 2NF, dan 3NF.',
-  '## Tahapan Normalisasi\n- 1NF: Hilangkan kolom berulang, pastikan setiap sel bernilai atomik (satu nilai tunggal).\n- 2NF: Harus sudah 1NF, dan hilangkan dependensi parsial (setiap atribut non-kunci bergantung penuh pada Primary Key).\n- 3NF: Harus sudah 2NF, dan hilangkan dependensi transitif (tidak ada ketergantungan antar atribut non-kunci).\n\n```sql\nCREATE TABLE mahasiswa (\n  npm VARCHAR(12) PRIMARY KEY,\n  nama VARCHAR(100) NOT NULL,\n  kode_prodi VARCHAR(5) REFERENCES prodi(kode)\n);\n```',
+  'Metode cepat memecah tabel data yang berantakan menjadi tabel relasional yang memenuhi standar 1NF, 2NF, dan 3NF.',
   'Tim KataKating',
   '24903460014',
   'web-software',
@@ -99,7 +99,7 @@ INSERT INTO guides (
   'render-blender-crash-gpu-hemat-daya',
   'Cara Mengatasi Render Blender Sering Crash pada Laptop Tanpa GPU Tambahan',
   'Trik optimasi setting render Cycles dan Eevee agar tidak freeze atau close sendiri saat rendering tugas 3D di laptop standar.',
-  '## Langkah Optimasi\n1. Buka Edit -> Preferences -> System -> Cycles Render Devices. Pilih HIP atau OptiX jika didukung, atau set ke CPU.\n2. Turunkan Tile Size ke 64x64 atau 128x128 untuk menghemat VRAM.\n3. Aktifkan Denoising (OpenImageDenoise) dan batasi Max Samples ke 128–256.\n4. Tutup aplikasi browser berat saat proses render berlangsung.',
+  'Trik optimasi setting render Cycles dan Eevee agar tidak freeze atau close sendiri saat rendering tugas 3D di laptop standar.',
   'Tim KataKating',
   '24903460014',
   'multimedia-3d',
@@ -130,7 +130,7 @@ INSERT INTO guides (
   'simulasi-esp32-dht22-wokwi',
   'Langkah Simulasi ESP32 dan Sensor DHT22 di Wokwi Sebelum Turun ke Hardware Fisik',
   'Panduan lengkap wiring virtual diagram.json, konfigurasi MQTT broker publik, dan pengujian OLED SSD1306 di Wokwi.',
-  '## Wiring Pin ESP32 DevKit v1\n- OLED SSD1306: SCL -> GPIO 22, SDA -> GPIO 21\n- Sensor DHT22: Data -> GPIO 15\n- Status LED: Anoda (+) -> GPIO 2\n\n```cpp\n#include <WiFi.h>\n#include <PubSubClient.h>\n#include \"DHTesp.h\"\n\nconst char* mqtt_server = \"broker.emqx.io\";\nWiFiClient espClient;\nPubSubClient client(espClient);\n```\n\nJalankan simulasi di browser secara instan tanpa khawatir merusak modul mikrokontroler fisik!',
+  'Panduan lengkap wiring virtual diagram.json, konfigurasi MQTT broker publik, dan pengujian OLED SSD1306 di Wokwi.',
   'Mu''adz Hudzaifah',
   '24903460014',
   'iot-hardware',
@@ -161,7 +161,7 @@ INSERT INTO guides (
   'bypass-gradle-timeout-android-studio',
   'Solusi Mengatasi Build Timeout dan Error Gradle pada Android Studio',
   'Trik mengonfigurasi gradle.properties dan offline mode agar kompilasi aplikasi mobile tidak stuck berjam-jam saat koneksi lab lambat.',
-  '## Modifikasi gradle.properties\nTambahkan konfigurasi alokasi RAM dan parallel build berikut:\n\n```properties\norg.gradle.jvmargs=-Xmx4096m -XX:MaxMetaspaceSize=1024m -XX:+HeapDumpOnOutOfMemoryError\norg.gradle.parallel=true\norg.gradle.caching=true\nandroid.useAndroidX=true\n```\n\nAktifkan toggle Toggle Offline Mode di toolbar Gradle saat dependensi sudah terunduh sekali.',
+  'Trik mengonfigurasi gradle.properties dan offline mode agar kompilasi aplikasi mobile tidak stuck berjam-jam saat koneksi lab lambat.',
   'Tim KataKating',
   '24903460014',
   'web-software',
@@ -2304,6 +2304,28 @@ Untuk mempermudah penulisan, telah disediakan tiga pilihan format berkas siap pa
 * **Orisinalitas Materi**: Naskah merupakan hasil penulisan mandiri atau laporan praktikum kelompok yang sah, bukan duplikasi tanpa izin.
 * **Atribusi & Rujukan**: Cantumkan modul lab dosen, dokumentasi resmi, atau literatur yang dijadikan acuan pada bagian akhir naskah.
 * **Kerapian Format**: Gunakan blok kode untuk sintaks terminal/pemrograman, sertakan hasil pengujian langkah kerja, dan terapkan bahasa yang lugas.
+
+## 6. Kolaborasi Open-Source via Git & Pull Request
+Bagi rekan-rekan mahasiswa teknik dan software engineering yang terbiasa bekerja di lingkungan terminal, Git, dan Neovim / VS Code, repositori KATAKATING dikembangkan secara terbuka (*open-source*). Kamu dapat berkontribusi langsung menambahkan modul catatan atau menyempurnakan fitur web melalui alur Git Pull Request:
+
+1. **Clone Repositori**:
+```bash
+git clone https://github.com/muadzhdz/katakating.git
+cd katakating
+```
+
+2. **Buat Naskah Baru**:
+Tambahkan berkas catatan berformat Markdown di folder `notes/nama-catatan.md` dan daftarkan metadatanya di `notes/notes.json`.
+
+3. **Uji Validasi & Build**:
+```bash
+npm install
+npm test
+npm run build
+```
+
+4. **Kirimkan Pull Request**:
+Buka Pull Request ke branch `main` di repositori GitHub [muadzhdz/katakating](https://github.com/muadzhdz/katakating). Tim pengembang akan meninjau dan menggabungkan kontribusi kamu secara langsung ke naskah resmi!
 ',
   'Tim KataKating',
   '24903460014',

@@ -73,3 +73,25 @@ Untuk mempermudah penulisan, telah disediakan tiga pilihan format berkas siap pa
 * **Orisinalitas Materi**: Naskah merupakan hasil penulisan mandiri atau laporan praktikum kelompok yang sah, bukan duplikasi tanpa izin.
 * **Atribusi & Rujukan**: Cantumkan modul lab dosen, dokumentasi resmi, atau literatur yang dijadikan acuan pada bagian akhir naskah.
 * **Kerapian Format**: Gunakan blok kode untuk sintaks terminal/pemrograman, sertakan hasil pengujian langkah kerja, dan terapkan bahasa yang lugas.
+
+## 6. Kolaborasi Open-Source via Git & Pull Request
+Bagi rekan-rekan mahasiswa teknik dan software engineering yang terbiasa bekerja di lingkungan terminal, Git, dan Neovim / VS Code, repositori KATAKATING dikembangkan secara terbuka (*open-source*). Kamu dapat berkontribusi langsung menambahkan modul catatan atau menyempurnakan fitur web melalui alur Git Pull Request:
+
+1. **Clone Repositori**:
+```bash
+git clone https://github.com/muadzhdz/katakating.git
+cd katakating
+```
+
+2. **Buat Naskah Baru**:
+Tambahkan berkas catatan berformat Markdown di folder `notes/nama-catatan.md` dan daftarkan metadatanya di `notes/notes.json`.
+
+3. **Uji Validasi & Build**:
+```bash
+npm install
+npm test
+npm run build
+```
+
+4. **Kirimkan Pull Request**:
+Buka Pull Request ke branch `main` di repositori GitHub [muadzhdz/katakating](https://github.com/muadzhdz/katakating). Tim pengembang akan meninjau dan menggabungkan kontribusi kamu secara langsung ke naskah resmi!
