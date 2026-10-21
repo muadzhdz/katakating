@@ -6705,8 +6705,9 @@ html.light .pill-dot.cortex,
 
 @media (max-width: 768px) {
   .mobile-bottom-bar {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    display: flex;
+    align-items: stretch;
+    justify-content: space-around;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -6720,6 +6721,8 @@ html.light .pill-dot.cortex,
   }
 
   .mobile-bar-item {
+    flex: 1 1 0;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     align-items: center;

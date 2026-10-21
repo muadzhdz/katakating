@@ -121,7 +121,7 @@ function createOgSvg({ title, category, author, readTime, initials, tags, summar
 
       <!-- Tags & Domain -->
       <text x="1040" y="19" fill="#71717a" font-size="12" font-weight="500" font-family="'JetBrains Mono', monospace" text-anchor="end">${escapeXml(tagsStr)}</text>
-      <text x="1040" y="40" fill="#ffffff" font-size="13" font-weight="700" font-family="'JetBrains Mono', monospace" text-anchor="end">katakating.vercel.app</text>
+      <text x="1040" y="40" fill="#ffffff" font-size="13" font-weight="700" font-family="'JetBrains Mono', monospace" text-anchor="end">katakating.pages.dev</text>
     </g>
   </svg>`;
 }

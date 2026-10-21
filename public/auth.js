@@ -100,14 +100,19 @@ const KataKatingAuth = {
 
   // Update profile avatar across database, memory, and cache
   async updateAvatar(newAvatarUrl) {
-    if (!this.user || !sbClient) return { success: false, error: 'Belum login' };
+    if (!this.user) return { success: false, error: 'Belum login' };
     try {
-      const { error } = await sbClient
-        .from('profiles')
-        .update({ avatar_url: newAvatarUrl })
-        .eq('id', this.user.id);
-
-      if (error) throw error;
+      const res = await fetch(`/api/profiles/${encodeURIComponent(this.user.id)}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          avatar_url: newAvatarUrl,
+          email: this.user.email,
+          full_name: (this.profile && this.profile.full_name) || this.user.user_metadata?.full_name
+        })
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || 'Gagal menyimpan foto profil');
 
       if (!this.profile) {
         this.profile = { id: this.user.id, email: this.user.email };
@@ -134,105 +139,27 @@ const KataKatingAuth = {
       return;
     }
 
-    if (!sbClient) return;
-
-    // 1. Asynchronously verify session
-    try {
-      const { data: { session } } = await sbClient.auth.getSession();
-      if (session && session.user) {
-        this.user = session.user;
-        await this.loadProfile();
-      } else {
-        if (this.user && this.user.id !== 'admin-katakating') {
-          this.user = null;
-          this.profile = null;
-          this.clearCache();
-        }
-      }
-    } catch (err) {
-      console.warn('Auth session check notice:', err);
-    }
-
-    this.renderNav();
-    this.checkOnboarding();
-    window.dispatchEvent(new CustomEvent('auth-state-changed', { detail: { user: this.user, profile: this.profile } }));
-
-    // 2. Listen to Auth State Changes
-    sbClient.auth.onAuthStateChange(async (event, session) => {
-      if (session && session.user) {
-        this.user = session.user;
-        await this.loadProfile();
-      } else {
-        this.user = null;
-        this.profile = null;
-        this.clearCache();
-      }
+    if (this.user && this.user.id) {
+      await this.loadProfile();
       this.renderNav();
+      this.checkOnboarding();
       window.dispatchEvent(new CustomEvent('auth-state-changed', { detail: { user: this.user, profile: this.profile } }));
-      if (typeof window.refreshRecentlyAdded === 'function') window.refreshRecentlyAdded();
-      if (typeof window.refreshCardInteractions === 'function') window.refreshCardInteractions();
-    });
+    }
   },
 
-  // 2. Fetch User Profile from public.profiles
+  // 2. Fetch User Profile from /api/profiles/:id (Cloudflare D1)
   async loadProfile() {
-    if (!sbClient || !this.user) return;
-    if (this.user.id === 'admin-katakating') return;
+    if (!this.user || this.user.id === 'admin-katakating') return;
 
     try {
-      const { data, error } = await sbClient
-        .from('profiles')
-        .select('*')
-        .eq('id', this.user.id)
-        .single();
-
-      const meta = this.user.user_metadata || {};
-      const googleAvatar = this.getGoogleAvatar(this.user);
-      const ghAvatar = this.getGitHubAvatar(this.user, this.profile);
-      const detectedAvatar = googleAvatar || ghAvatar || meta.avatar_url || meta.picture || '';
-      const fullName = meta.full_name || meta.name || meta.user_name || this.user.email.split('@')[0];
-      const ghUser = meta.user_name || this.user.identities?.find(i => i.provider === 'github')?.identity_data?.user_name || '';
-
-      if (data) {
-        if (data.email === 'katakating@gmail.com' || (data.full_name && data.full_name.includes('Dewan'))) {
-          data.full_name = 'Admin KataKating';
-          if (sbClient) {
-            sbClient.from('profiles').update({ full_name: 'Admin KataKating' }).eq('id', this.user.id).then(() => {});
-          }
+      const res = await fetch(`/api/profiles/${encodeURIComponent(this.user.id)}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.id) {
+          this.profile = { ...this.profile, ...data };
+          this.saveCache();
         }
-        this.profile = data;
-        let needsUpdate = false;
-        const updates = {};
-
-        // Backfill avatar if empty in DB
-        if (!this.profile.avatar_url && detectedAvatar) {
-          this.profile.avatar_url = detectedAvatar;
-          updates.avatar_url = detectedAvatar;
-          needsUpdate = true;
-        }
-        // Backfill github_username if empty in DB
-        if (!this.profile.github_username && ghUser) {
-          this.profile.github_username = ghUser;
-          updates.github_username = ghUser;
-          needsUpdate = true;
-        }
-
-        if (needsUpdate) {
-          await sbClient.from('profiles').update(updates).eq('id', this.user.id);
-        }
-      } else if (error) {
-        // If row not created by trigger yet, create basic row
-        const newProf = {
-          id: this.user.id,
-          email: this.user.email,
-          full_name: this.user.email === 'katakating@gmail.com' ? 'Admin KataKating' : fullName,
-          avatar_url: detectedAvatar,
-          github_username: ghUser
-        };
-        await sbClient.from('profiles').upsert(newProf);
-        this.profile = newProf;
       }
-      this.saveCache();
     } catch (err) {
       console.warn('Profile fetch notice:', err);
     }
@@ -707,27 +634,28 @@ const KataKatingAuth = {
       }
 
       try {
-        const { error } = await sbClient
-          .from('profiles')
-          .update({ full_name, nim, angkatan, fakultas, prodi })
-          .eq('id', this.user.id);
+        const res = await fetch(`/api/profiles/${encodeURIComponent(this.user.id)}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ full_name, nim, angkatan, fakultas, prodi })
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || 'Gagal menyimpan identitas');
 
-        if (!error) {
-          if (this.profile) {
-            this.profile.full_name = full_name;
-            this.profile.nim = nim;
-            this.profile.angkatan = angkatan;
-            this.profile.fakultas = fakultas;
-            this.profile.prodi = prodi;
-          }
-          document.getElementById('onboarding-modal').hidden = true;
-          if (typeof showToast === 'function') showToast('Identitas mahasiswa berhasil disimpan');
-          this.renderNav();
-        } else {
-          alert('Gagal menyimpan identitas: ' + error.message);
+        if (this.profile) {
+          this.profile.full_name = full_name;
+          this.profile.nim = nim;
+          this.profile.angkatan = angkatan;
+          this.profile.fakultas = fakultas;
+          this.profile.prodi = prodi;
         }
+        this.saveCache();
+        document.getElementById('onboarding-modal').hidden = true;
+        if (typeof showToast === 'function') showToast('Identitas mahasiswa berhasil disimpan');
+        this.renderNav();
       } catch (e) {
         console.error(e);
+        if (typeof showToast === 'function') showToast(e.message || 'Gagal menyimpan identitas');
       }
     });
   },
@@ -790,50 +718,26 @@ const KataKatingAuth = {
     }
   },
 
-  async signInWithGitHub() {
-    if (!sbClient) return;
-    await sbClient.auth.signInWithOAuth({
-      provider: 'github',
-      options: {
-        redirectTo: window.location.href
-      }
-    });
+  signInWithGitHub() {
+    window.location.href = '/api/auth/github';
   },
 
-  async signInWithGoogle() {
-    if (!sbClient) return;
-    await sbClient.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: window.location.href
-      }
-    });
+  signInWithGoogle() {
+    window.location.href = '/api/auth/google';
   },
 
-  async linkGitHub() {
-    if (!sbClient) return;
-    await sbClient.auth.linkIdentity({
-      provider: 'github',
-      options: {
-        redirectTo: window.location.origin + '/profile'
-      }
-    });
+  linkGitHub() {
+    window.location.href = '/api/auth/github';
   },
 
   async signOut() {
     this.clearCache();
-    if (sbClient) {
-      try {
-        await sbClient.auth.signOut();
-      } catch (err) {
-        console.warn('Signout notice:', err);
-      }
-    }
     this.user = null;
     this.profile = null;
     const container = document.getElementById('auth-nav-container');
     if (container) container.dataset.renderedKey = '';
     this.renderNav();
+    window.dispatchEvent(new CustomEvent('auth-state-changed', { detail: { user: null, profile: null } }));
     if (typeof showToast === 'function') showToast('Anda telah keluar dari akun');
     setTimeout(() => {
       window.location.reload();

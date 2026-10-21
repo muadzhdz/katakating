@@ -7,6 +7,10 @@
 interface Env {
   DB: D1Database;
   ADMIN_KEY?: string;
+  GITHUB_CLIENT_ID?: string;
+  GITHUB_CLIENT_SECRET?: string;
+  GOOGLE_CLIENT_ID?: string;
+  GOOGLE_CLIENT_SECRET?: string;
 }
 
 function corsHeaders(origin: string = '*'): HeadersInit {
@@ -90,6 +94,223 @@ export const onRequest: PagesFunction<Env> = async (context) => {
         });
       }
       return errorResponse('Kredensial admin tidak valid', 401);
+    }
+
+    // 2b. Auth: GET /api/auth/github (Redirect to GitHub OAuth)
+    if (pathname === '/api/auth/github' && method === 'GET') {
+      const clientId = (env.GITHUB_CLIENT_ID || '').trim();
+      if (!clientId) {
+        return new Response(`<!DOCTYPE html><html><body style="font-family:sans-serif;background:#0e1015;color:#e4e4e7;padding:40px;line-height:1.6;"><h2 style="color:#ef4444;">GitHub OAuth Belum Dikonfigurasi</h2><p>GITHUB_CLIENT_ID belum disetel di Cloudflare Pages secrets.<br>Silakan daftarkan OAuth App di GitHub (https://github.com/settings/applications/new) dengan Authorization callback URL: <code>${url.origin}/api/auth/github/callback</code> lalu set secret GITHUB_CLIENT_ID &amp; GITHUB_CLIENT_SECRET.</p><a href="/" style="color:#38bdf8;">&larr; Kembali ke Beranda</a></body></html>`, {
+          status: 500,
+          headers: { 'Content-Type': 'text/html; charset=utf-8' }
+        });
+      }
+      const target = `https://github.com/login/oauth/authorize?client_id=${clientId}&scope=read:user%20user:email&redirect_uri=${encodeURIComponent(url.origin + '/api/auth/github/callback')}`;
+      return Response.redirect(target, 302);
+    }
+
+    // Auth: GET /api/auth/github/callback
+    if (pathname === '/api/auth/github/callback' && method === 'GET') {
+      const code = url.searchParams.get('code');
+      const clientId = (env.GITHUB_CLIENT_ID || '').trim();
+      const clientSecret = (env.GITHUB_CLIENT_SECRET || '').trim();
+      if (!code || !clientId || !clientSecret) {
+        return errorResponse('Kredensial atau kode GitHub OAuth tidak lengkap', 400);
+      }
+
+      const tokenRes = await fetch('https://github.com/login/oauth/access_token', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'User-Agent': 'KataKating-Pages-App'
+        },
+        body: JSON.stringify({ client_id: clientId, client_secret: clientSecret, code })
+      });
+      const tokenData = await tokenRes.json().catch(() => ({})) as any;
+      if (!tokenData.access_token) {
+        return errorResponse('Gagal menukarkan token dengan GitHub: ' + (tokenData.error_description || 'Unknown error'), 400);
+      }
+
+      const userRes = await fetch('https://api.github.com/user', {
+        headers: {
+          'Authorization': `Bearer ${tokenData.access_token}`,
+          'User-Agent': 'KataKating-Pages-App'
+        }
+      });
+      const ghUser = await userRes.json() as any;
+
+      let email = ghUser.email;
+      if (!email) {
+        const emailsRes = await fetch('https://api.github.com/user/emails', {
+          headers: {
+            'Authorization': `Bearer ${tokenData.access_token}`,
+            'User-Agent': 'KataKating-Pages-App'
+          }
+        });
+        const emails = await emailsRes.json().catch(() => []) as any[];
+        const primary = emails.find((e: any) => e.primary && e.verified) || emails[0];
+        if (primary) email = primary.email;
+      }
+      email = email || `${ghUser.login}@github.com`;
+
+      const userId = `gh-${ghUser.id || ghUser.login}`;
+      const fullName = ghUser.name || ghUser.login;
+      const avatarUrl = ghUser.avatar_url || `https://github.com/${ghUser.login}.png`;
+
+      await env.DB.prepare(`
+        INSERT INTO profiles (id, email, full_name, avatar_url, github_username, bio, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, datetime('now'))
+        ON CONFLICT(id) DO UPDATE SET
+          full_name = coalesce(excluded.full_name, profiles.full_name),
+          avatar_url = coalesce(excluded.avatar_url, profiles.avatar_url),
+          github_username = coalesce(excluded.github_username, profiles.github_username),
+          updated_at = datetime('now')
+      `).bind(userId, email, fullName, avatarUrl, ghUser.login, ghUser.bio || '').run();
+
+      const userPayload = {
+        id: userId,
+        email,
+        user_metadata: {
+          full_name: fullName,
+          user_name: ghUser.login,
+          avatar_url: avatarUrl,
+          bio: ghUser.bio || '',
+          provider: 'github'
+        }
+      };
+
+      const profilePayload = {
+        id: userId,
+        email,
+        full_name: fullName,
+        avatar_url: avatarUrl,
+        github_username: ghUser.login,
+        bio: ghUser.bio || '',
+        role: 'student'
+      };
+
+      const html = `<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>Berhasil Masuk</title></head>
+<body style="font-family:sans-serif;background:#090a0d;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;">
+<div style="text-align:center;">
+  <p style="font-family:monospace;font-size:13px;color:#22c55e;">// OTENTIKASI GITHUB BERHASIL</p>
+  <p style="color:#a1a1aa;font-size:12px;">Sedang mengalihkan ke KataKating...</p>
+</div>
+<script>
+  try {
+    localStorage.setItem('katakating_auth_cache', JSON.stringify({
+      user: ${JSON.stringify(userPayload)},
+      profile: ${JSON.stringify(profilePayload)}
+    }));
+  } catch(e){}
+  window.location.href = '/';
+</script>
+</body>
+</html>`;
+      return new Response(html, { headers: { 'Content-Type': 'text/html; charset=utf-8' } });
+    }
+
+    // 2c. Auth: GET /api/auth/google (Redirect to Google OAuth)
+    if (pathname === '/api/auth/google' && method === 'GET') {
+      const clientId = (env.GOOGLE_CLIENT_ID || '322078863271-7c46ksnl0miauftb19simeravt49f39d.apps.googleusercontent.com').trim();
+      const redirectUri = encodeURIComponent(url.origin + '/api/auth/google/callback');
+      const target = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=openid%20profile%20email&access_type=offline`;
+      return Response.redirect(target, 302);
+    }
+
+    // Auth: GET /api/auth/google/callback
+    if (pathname === '/api/auth/google/callback' && method === 'GET') {
+      const code = url.searchParams.get('code');
+      const clientId = (env.GOOGLE_CLIENT_ID || '322078863271-7c46ksnl0miauftb19simeravt49f39d.apps.googleusercontent.com').trim();
+      const clientSecret = (env.GOOGLE_CLIENT_SECRET || '').trim();
+
+      if (!code) {
+        return errorResponse('Kode otorisasi Google tidak ditemukan', 400);
+      }
+
+      if (!clientSecret) {
+        return new Response(`<!DOCTYPE html><html><body style="font-family:sans-serif;background:#0e1015;color:#e4e4e7;padding:40px;line-height:1.6;"><h2 style="color:#ef4444;">Google OAuth Secret Belum Dikonfigurasi</h2><p>GOOGLE_CLIENT_SECRET belum disetel di Cloudflare Pages secrets.<br>Silakan tambahkan GOOGLE_CLIENT_SECRET di Cloudflare Pages Dashboard &gt; Settings &gt; Environment variables.</p><a href="/" style="color:#38bdf8;">&larr; Kembali ke Beranda</a></body></html>`, {
+          status: 500,
+          headers: { 'Content-Type': 'text/html; charset=utf-8' }
+        });
+      }
+
+      const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          code,
+          client_id: clientId,
+          client_secret: clientSecret,
+          redirect_uri: url.origin + '/api/auth/google/callback',
+          grant_type: 'authorization_code'
+        })
+      });
+      const tokenData = await tokenRes.json().catch(() => ({})) as any;
+      if (!tokenData.access_token) {
+        return errorResponse('Gagal menukarkan token dengan Google: ' + (tokenData.error_description || tokenData.error || 'Unknown error'), 400);
+      }
+
+      const userinfoRes = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+        headers: { 'Authorization': `Bearer ${tokenData.access_token}` }
+      });
+      const gUser = await userinfoRes.json() as any;
+
+      const userId = `g-${gUser.id}`;
+      const email = gUser.email;
+      const fullName = gUser.name || email.split('@')[0];
+      const avatarUrl = gUser.picture || '';
+
+      await env.DB.prepare(`
+        INSERT INTO profiles (id, email, full_name, avatar_url, updated_at)
+        VALUES (?, ?, ?, ?, datetime('now'))
+        ON CONFLICT(id) DO UPDATE SET
+          full_name = coalesce(excluded.full_name, profiles.full_name),
+          avatar_url = coalesce(excluded.avatar_url, profiles.avatar_url),
+          updated_at = datetime('now')
+      `).bind(userId, email, fullName, avatarUrl).run();
+
+      const userPayload = {
+        id: userId,
+        email,
+        user_metadata: {
+          full_name: fullName,
+          name: fullName,
+          avatar_url: avatarUrl,
+          provider: 'google'
+        }
+      };
+
+      const profilePayload = {
+        id: userId,
+        email,
+        full_name: fullName,
+        avatar_url: avatarUrl,
+        role: 'student'
+      };
+
+      const html = `<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>Berhasil Masuk</title></head>
+<body style="font-family:sans-serif;background:#090a0d;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;">
+<div style="text-align:center;">
+  <p style="font-family:monospace;font-size:13px;color:#22c55e;">// OTENTIKASI GOOGLE BERHASIL</p>
+  <p style="color:#a1a1aa;font-size:12px;">Sedang mengalihkan ke KataKating...</p>
+</div>
+<script>
+  try {
+    localStorage.setItem('katakating_auth_cache', JSON.stringify({
+      user: ${JSON.stringify(userPayload)},
+      profile: ${JSON.stringify(profilePayload)}
+    }));
+  } catch(e){}
+  window.location.href = '/';
+</script>
+</body>
+</html>`;
+      return new Response(html, { headers: { 'Content-Type': 'text/html; charset=utf-8' } });
     }
 
     // 3. GET /api/guides — List all approved guides

@@ -70,12 +70,13 @@ const isAdminRoute = currentPath === '/admin' || currentPath === '/admin-profile
     <span>Upload</span>
   </a>
 
-  <!-- 5. PANEL MODERASI ADMIN -->
+  <!-- 5. PANEL MODERASI ADMIN (Hanya tampil saat login admin) -->
   <a
     href="/admin"
     id="tab-nav-panel"
     class={`mobile-bar-item ${isAdminRoute ? 'active' : ''}`}
     aria-label="Panel Moderasi"
+    style="display: none;"
   >
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
@@ -86,6 +87,21 @@ const isAdminRoute = currentPath === '/admin' || currentPath === '/admin-profile
 
 <script is:inline>
 (function() {
+  function updatePanelVisibility() {
+    const tabPanel = document.getElementById('tab-nav-panel');
+    if (!tabPanel) return;
+    try {
+      const adminSess = JSON.parse(localStorage.getItem('katakating_admin_session') || 'null');
+      if (adminSess && (adminSess.role === 'admin' || adminSess.email === 'katakating@gmail.com')) {
+        tabPanel.style.display = 'flex';
+      } else {
+        tabPanel.style.display = 'none';
+      }
+    } catch (e) {
+      tabPanel.style.display = 'none';
+    }
+  }
+
   function setActive(targetEl) {
     if (!targetEl || targetEl.classList.contains('active')) return;
     const tabs = document.querySelectorAll('.mobile-bottom-bar .mobile-bar-item');
@@ -152,7 +168,13 @@ const isAdminRoute = currentPath === '/admin' || currentPath === '/admin-profile
     if (p === '/') syncActiveTab();
   }, { passive: true });
 
-  document.addEventListener('DOMContentLoaded', syncActiveTab);
+  document.addEventListener('DOMContentLoaded', () => {
+    updatePanelVisibility();
+    syncActiveTab();
+  });
+  window.addEventListener('auth-state-changed', updatePanelVisibility);
+  window.addEventListener('storage', updatePanelVisibility);
+  updatePanelVisibility();
   syncActiveTab();
 })();
 </script>
