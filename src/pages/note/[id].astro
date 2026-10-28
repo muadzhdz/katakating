@@ -57,6 +57,38 @@ export async function getStaticPaths() {
 
   renderer.code = function({ text, lang }: { text: string; lang?: string }) {
     const cleanLang = (lang || 'sh').toLowerCase();
+
+    // 1. Native Interactive Cyber-Terminal for terminal / console / cli blocks
+    if (cleanLang === 'terminal' || cleanLang === 'console' || cleanLang === 'cli') {
+      return `<div class="interactive-terminal" data-terminal="true">
+        <div class="terminal-bar">
+          <div class="terminal-dots">
+            <span class="t-dot t-dot-red"></span>
+            <span class="t-dot t-dot-yellow"></span>
+            <span class="t-dot t-dot-green"></span>
+          </div>
+          <div class="terminal-title">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+            <span>bash &mdash; katakating@boash-lab:~</span>
+          </div>
+          <div class="terminal-actions">
+            <button type="button" class="terminal-action-btn terminal-btn-replay" onclick="window.replayTerminalTyping && window.replayTerminalTyping(this)" title="Simulasikan Ketik Ulang" aria-label="Simulasikan Ketik Ulang">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+              <span>Ketik Ulang</span>
+            </button>
+            <button type="button" class="terminal-action-btn copy-btn" onclick="window.copyCodeSnippet && window.copyCodeSnippet(this)" title="Salin Perintah">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+              <span>Salin</span>
+            </button>
+          </div>
+        </div>
+        <div class="terminal-screen" data-raw-code="${escapeHtml(text)}">
+          <pre class="terminal-code"><code>${escapeHtml(text)}</code></pre>
+        </div>
+      </div>`;
+    }
+
+    // 2. Standard Command Panel with window control dots & 1-click copy
     return `<div class="command-panel" data-lang="${cleanLang}">
       <div class="command-panel-head">
         <div style="display: flex; align-items: center; gap: 8px;">
@@ -84,8 +116,44 @@ export async function getStaticPaths() {
     return `<h${depth}>${text}</h${depth}>`;
   };
 
+  // 3. GitHub & Docusaurus Grade Admonition Callouts Engine
   renderer.blockquote = function({ text }: { text: string }) {
-    return `<blockquote class="article-quote">${text}</blockquote>`;
+    const alertMatch = text.match(/^\s*(?:<p>)?\s*\[!(KATING|STANDAR|ERROR|WARNING|NOTE|TIP|CAUTION|INFO)\](?:\s*<\/p>|\s*<br\s*\/?>|\n|\r\n)?\s*([\s\S]*)$/i);
+    if (!alertMatch) {
+      return `<blockquote class="article-quote">${text}</blockquote>`;
+    }
+
+    const type = alertMatch[1].toUpperCase();
+    let innerHtml = alertMatch[2].replace(/<\/p>\s*$/, '');
+    if (!innerHtml.trim().startsWith('<p>')) {
+      innerHtml = '<p>' + innerHtml.trim().split(/\n\s*\n/).map((p: string) => p.trim()).filter(Boolean).join('</p><p>') + '</p>';
+    }
+
+    let badgeClass = 'admonition-note';
+    let title = 'CATATAN TEKNIS // DOKUMENTASI';
+    let iconSvg = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>';
+
+    if (type === 'KATING' || type === 'TIP') {
+      badgeClass = 'admonition-kating';
+      title = 'TIPS KATING // SHORTCUT PRAKTIKUM';
+      iconSvg = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>';
+    } else if (type === 'STANDAR') {
+      badgeClass = 'admonition-standar';
+      title = 'STANDAR 4-4-3-3 // PEDOMAN LAPORAN TRM';
+      iconSvg = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>';
+    } else if (type === 'ERROR' || type === 'WARNING' || type === 'CAUTION') {
+      badgeClass = 'admonition-error';
+      title = 'PERINGATAN ERROR // ANTISIPASI BUG';
+      iconSvg = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+    }
+
+    return `<div class="admonition-callout ${badgeClass}" role="region" aria-label="${title}">
+      <div class="admonition-header">
+        <span class="admonition-icon">${iconSvg}</span>
+        <span class="admonition-title">${title}</span>
+      </div>
+      <div class="admonition-body">${innerHtml}</div>
+    </div>`;
   };
 
   marked.use({ renderer });
@@ -270,15 +338,16 @@ const ogImageUrl = `/og/${note.id}.png`;
 
 
 
-  // Global helper for copying code snippets in command panels
+  // Global helper for copying code snippets in command panels and interactive terminals
   window.copyCodeSnippet = function(button) {
-    const panel = button.closest('.command-panel');
+    const panel = button.closest('.command-panel') || button.closest('.interactive-terminal');
     if (!panel) return;
+    const scr = panel.querySelector('.terminal-screen');
     const codeEl = panel.querySelector('code');
-    if (!codeEl) return;
-    const codeText = codeEl.innerText;
+    const codeText = scr ? (scr.getAttribute('data-raw-code') || (codeEl ? codeEl.innerText : '')) : (codeEl ? codeEl.innerText : '');
+    if (!codeText) return;
 
-    navigator.clipboard.writeText(codeText).then(() => {
+    navigator.clipboard.writeText(codeText.trim()).then(() => {
       const originalHtml = button.innerHTML;
       button.innerHTML = '<span>Tersalin!</span>';
       button.style.borderColor = '#22c55e';
@@ -290,6 +359,167 @@ const ogImageUrl = `/og/${note.id}.png`;
       }, 2000);
     });
   };
+
+  // Interactive Terminal Simulator Engine
+  function escapeHtml(str) {
+    return (str || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  function runTerminalAnimation(screen, rawText) {
+    if (!screen) return;
+    screen.dataset.animating = 'true';
+    screen.dataset.cancelled = 'false';
+
+    screen.onclick = function() {
+      if (screen.dataset.animating === 'true') {
+        screen.dataset.cancelled = 'true';
+      }
+    };
+
+    const lines = rawText.split(/\r?\n/);
+    screen.innerHTML = '';
+    const pre = document.createElement('pre');
+    pre.className = 'terminal-code';
+    screen.appendChild(pre);
+
+    let lineIdx = 0;
+
+    function finishAll() {
+      screen.dataset.animating = 'false';
+      screen.dataset.cancelled = 'false';
+      screen.innerHTML = '';
+      const finishPre = document.createElement('pre');
+      finishPre.className = 'terminal-code';
+      lines.forEach((l) => {
+        const isCmd = /^[$>]\s/.test(l.trim());
+        const isComment = /^#/.test(l.trim());
+        const row = document.createElement('div');
+        row.className = 'terminal-row';
+        if (isCmd) {
+          const sym = l.trim().startsWith('$') ? '$' : '>';
+          const cmd = l.trim().replace(/^[$>]\s*/, '');
+          row.innerHTML = `<span class="terminal-line-prompt">kating@boash-lab:~${sym} </span><span class="terminal-line-cmd">${escapeHtml(cmd)}</span>`;
+        } else if (isComment) {
+          row.className += ' terminal-line-comment';
+          row.textContent = l;
+        } else {
+          row.className += ' terminal-line-output';
+          row.textContent = l;
+        }
+        finishPre.appendChild(row);
+      });
+      screen.appendChild(finishPre);
+    }
+
+    function processNextLine() {
+      if (screen.dataset.cancelled === 'true' || lineIdx >= lines.length) {
+        finishAll();
+        return;
+      }
+
+      const curLine = lines[lineIdx];
+      lineIdx++;
+
+      const isCmd = /^[$>]\s/.test(curLine.trim());
+      const isComment = /^#/.test(curLine.trim());
+
+      if (isCmd) {
+        const sym = curLine.trim().startsWith('$') ? '$' : '>';
+        const cmd = curLine.trim().replace(/^[$>]\s*/, '');
+
+        const row = document.createElement('div');
+        row.className = 'terminal-row';
+        const pSpan = document.createElement('span');
+        pSpan.className = 'terminal-line-prompt';
+        pSpan.textContent = `kating@boash-lab:~${sym} `;
+
+        const cSpan = document.createElement('span');
+        cSpan.className = 'terminal-line-cmd';
+
+        const cursor = document.createElement('span');
+        cursor.className = 'terminal-cursor';
+
+        row.appendChild(pSpan);
+        row.appendChild(cSpan);
+        row.appendChild(cursor);
+        pre.appendChild(row);
+
+        let charIdx = 0;
+        function typeChar() {
+          if (screen.dataset.cancelled === 'true') {
+            finishAll();
+            return;
+          }
+          if (charIdx < cmd.length) {
+            cSpan.textContent += cmd[charIdx];
+            charIdx++;
+            setTimeout(typeChar, 20 + Math.random() * 20);
+          } else {
+            cursor.remove();
+            setTimeout(processNextLine, 200);
+          }
+        }
+        typeChar();
+      } else if (isComment) {
+        const row = document.createElement('div');
+        row.className = 'terminal-row terminal-line-comment';
+        row.textContent = curLine;
+        pre.appendChild(row);
+        setTimeout(processNextLine, 100);
+      } else {
+        const row = document.createElement('div');
+        row.className = 'terminal-row terminal-line-output';
+        row.textContent = curLine;
+        pre.appendChild(row);
+        setTimeout(processNextLine, 80);
+      }
+    }
+
+    processNextLine();
+  }
+
+  window.replayTerminalTyping = function(btn) {
+    const term = btn.closest('.interactive-terminal');
+    if (!term) return;
+    const screen = term.querySelector('.terminal-screen');
+    if (!screen) return;
+    const raw = screen.getAttribute('data-raw-code') || (screen.querySelector('code') ? screen.querySelector('code').textContent : '');
+    if (!raw) return;
+    runTerminalAnimation(screen, raw);
+  };
+
+  function initTerminals() {
+    const terms = document.querySelectorAll('.interactive-terminal');
+    if (!terms.length) return;
+    terms.forEach((t) => {
+      const scr = t.querySelector('.terminal-screen');
+      if (!scr) return;
+      const raw = scr.getAttribute('data-raw-code') || (scr.querySelector('code') ? scr.querySelector('code').textContent : '');
+      if (!raw) return;
+
+      if ('IntersectionObserver' in window) {
+        const obs = new IntersectionObserver((entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting && !t.dataset.played) {
+              t.dataset.played = 'true';
+              obs.unobserve(t);
+              runTerminalAnimation(scr, raw);
+            }
+          });
+        }, { threshold: 0.25 });
+        obs.observe(t);
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTerminals);
+  } else {
+    initTerminals();
+  }
 
   // Share Article Button trigger
   const shareBtn = document.getElementById('btn-share-article');

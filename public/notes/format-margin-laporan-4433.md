@@ -16,6 +16,10 @@ Berdasarkan Pedoman Penulisan Karya Tulis Ilmiah & Laporan Praktikum Universitas
 ## 2. Spesifikasi Halaman & Margin
 Ukuran kertas baku adalah **A4 (210 x 297 mm)** dengan rincian batas margin:
 
+> [!STANDAR]
+> Ketentuan margin 4-4-3-3 adalah standar mutlak perpustakaan dan kurikulum TRM Boash:
+> Kiri 4 cm (ruang jilid lakban/hardcover), Atas 4 cm, Kanan 3 cm, dan Bawah 3 cm.
+
 * **Batas Kiri (Left)**: `4 cm` (Dilebihkan 1 cm untuk jilid / binding).
 * **Batas Atas (Top)**: `4 cm`.
 * **Batas Kanan (Right)**: `3 cm`.
@@ -24,6 +28,9 @@ Ukuran kertas baku adalah **A4 (210 x 297 mm)** dengan rincian batas margin:
 * **Spasi Paragraf**: 1.5 Lines (Before: 0pt, After: 0pt).
 
 ## 3. Langkah Konfigurasi di Microsoft Word
+
+> [!KATING]
+> Tips rahasia kating: Selalu gunakan Section Break (Next Page) tepat sebelum Bab 1, dan jangan lupa nonaktifkan "Link to Previous" di Footer agar nomor halaman Romawi cover/kata pengantar tidak bersambung ke naskah utama!
 
 ### 3.1. Setting Margin
 1. Masuk ke tab **Layout** > klik **Margins** > pilih **Custom Margins**.

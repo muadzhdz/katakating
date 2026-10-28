@@ -24,23 +24,40 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <div id="dynamic-article-content" style="display: none;"></div>
   </div>
 
-  <!-- CONTAINER 2: STANDARD 404 ERROR (SHOWN WHEN PAGE/NOTE REALLY DOES NOT EXIST) -->
-  <section class="error-404-section" id="standard-404-wrapper" style="display: none; padding: 100px 20px 120px; text-align: center; max-width: 640px; margin: 0 auto;">
-    <div style="font-family: var(--mono); font-size: 12px; font-weight: 700; color: #ef4444; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px;">
-      // KESALAHAN SISTEM 404
+  <!-- CONTAINER 2: STANDARD 404 ERROR (DISCONNECTED SYNAPSE NODE ANIMATION) -->
+  <section class="error-404-section" id="standard-404-wrapper" style="display: none; padding: 50px 20px 100px; text-align: center; max-width: 680px; margin: 0 auto;">
+    
+    <!-- CANVAS DISCONNECTED NEURAL NODE -->
+    <div class="synapse-node-container" style="position: relative; width: 100%; max-width: 440px; height: 180px; margin: 0 auto 24px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid var(--line); overflow: hidden; display: flex; align-items: center; justify-content: center;">
+      <canvas id="synapse-canvas" width="440" height="180" style="width: 100%; height: 100%; display: block;"></canvas>
+      <div style="position: absolute; bottom: 8px; left: 14px; font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.05em; pointer-events: none;">
+        SIGNAL_LOSS // GAP: 184px
+      </div>
+      <div style="position: absolute; bottom: 8px; right: 14px; font-family: var(--mono); font-size: 10px; color: #ef4444; letter-spacing: 0.05em; pointer-events: none; font-weight: 700;">
+        DISCONNECTED
+      </div>
     </div>
-    <h1 style="font-size: 38px; font-weight: 800; color: var(--heading); letter-spacing: -0.02em; margin-bottom: 16px;" id="error-title">
-      Halaman Tidak Ditemukan
+
+    <div style="font-family: var(--mono); font-size: 11px; font-weight: 700; color: #ef4444; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px;">
+      // STATUS: NODE_UNREACHABLE &middot; SINAPSIS TERPUTUS
+    </div>
+    <h1 style="font-size: 32px; font-weight: 800; color: var(--heading); letter-spacing: -0.02em; margin-bottom: 14px;" id="error-title">
+      Jalur Pengetahuan Belum Terpetakan
     </h1>
-    <p style="font-size: 14.5px; color: var(--muted); line-height: 1.6; margin-bottom: 32px;" id="error-desc">
-      Halaman atau naskah catatan praktikum yang Anda cari tidak tersedia di server atau belum disetujui kurator.
+    <p style="font-size: 14px; color: var(--muted); line-height: 1.65; max-width: 520px; margin: 0 auto 28px;" id="error-desc">
+      Simpul catatan praktikum atau naskah panduan yang Anda cari belum tersedia di repositori The Brain, atau naskah tersebut sedang dalam proses kurasi kating.
     </p>
     <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
-      <a href="/" class="button market-primary" style="padding: 10px 24px; font-weight: 700;">
-        &larr; Kembali ke Beranda
+      <a href="/upload" class="button market-primary" style="padding: 10px 22px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>
+        <span>+ Petakan &amp; Upload Catatan</span>
       </a>
-      <a href="/#catalog" class="button" style="padding: 10px 24px; font-weight: 600;">
-        Cari di Semua Catatan &rarr;
+      <a href="/graph" class="button" style="padding: 10px 20px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><path d="M12 8v4"/><path d="m7.5 16.5 2.5-3.5"/><path d="m16.5 16.5-2.5-3.5"/></svg>
+        <span>Jelajahi The Brain</span>
+      </a>
+      <a href="/" class="button" style="padding: 10px 18px; font-weight: 600;">
+        &larr; Katalog Beranda
       </a>
     </div>
   </section>
@@ -71,8 +88,180 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         if (customTitle && errorTitle) errorTitle.textContent = customTitle;
         if (customDesc && errorDesc) errorDesc.textContent = customDesc;
         standard404.style.display = 'block';
+        initSynapseCanvas();
       }
       document.title = '404 Tidak Ditemukan | KATAKATING';
+    }
+
+    function initSynapseCanvas() {
+      const canvas = document.getElementById('synapse-canvas');
+      if (!canvas || canvas.dataset.running === 'true') return;
+      canvas.dataset.running = 'true';
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      const dpr = window.devicePixelRatio || 1;
+      const w = 440;
+      const h = 180;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      ctx.scale(dpr, dpr);
+
+      let animId = null;
+      let mouseX = w / 2;
+      let mouseY = h / 2;
+      let isHovering = false;
+
+      canvas.onmousemove = function(e) {
+        const b = canvas.getBoundingClientRect();
+        mouseX = (e.clientX - b.left) * (w / b.width);
+        mouseY = (e.clientY - b.top) * (h / b.height);
+        isHovering = true;
+      };
+      canvas.onmouseleave = function() {
+        isHovering = false;
+      };
+
+      const particles = [];
+      for (let i = 0; i < 28; i++) {
+        particles.push({
+          x: 130 + Math.random() * (w - 260),
+          y: h / 2 + (Math.random() - 0.5) * 36,
+          vx: (Math.random() - 0.5) * 1.4,
+          vy: (Math.random() - 0.5) * 1.2,
+          life: Math.random(),
+          decay: 0.015 + Math.random() * 0.02,
+          radius: 1 + Math.random() * 1.6,
+          color: Math.random() > 0.4 ? '#38bdf8' : '#ef4444'
+        });
+      }
+
+      const nodeA = { x: 75, y: h / 2, label: 'NODE_A // TRM_HUB' };
+      const nodeB = { x: w - 75, y: h / 2, label: 'NODE_B // UNKNOWN' };
+
+      let frame = 0;
+
+      function render() {
+        frame++;
+        ctx.clearRect(0, 0, w, h);
+
+        // 1. Grid
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+        ctx.lineWidth = 1;
+        for (let x = 30; x < w; x += 30) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, h);
+          ctx.stroke();
+        }
+        for (let y = 30; y < h; y += 30) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(w, y);
+          ctx.stroke();
+        }
+
+        // 2. Pulse waves
+        const pulseR1 = (frame * 0.7) % 45;
+        const pulseAlpha1 = Math.max(0, 1 - pulseR1 / 45);
+        ctx.strokeStyle = `rgba(56, 189, 248, ${pulseAlpha1 * 0.45})`;
+        ctx.beginPath();
+        ctx.arc(nodeA.x, nodeA.y, pulseR1, 0, Math.PI * 2);
+        ctx.stroke();
+
+        const pulseR2 = ((frame + 22) * 0.7) % 45;
+        const pulseAlpha2 = Math.max(0, 1 - pulseR2 / 45);
+        ctx.strokeStyle = `rgba(239, 68, 68, ${pulseAlpha2 * 0.45})`;
+        ctx.beginPath();
+        ctx.arc(nodeB.x, nodeB.y, pulseR2, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // 3. Broken filament wire
+        const leftEnd = nodeA.x + 85 + Math.sin(frame * 0.1) * 3;
+        ctx.strokeStyle = 'rgba(56, 189, 248, 0.75)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(nodeA.x, nodeA.y);
+        ctx.lineTo(leftEnd, nodeA.y + (Math.random() - 0.5) * 2);
+        ctx.stroke();
+
+        const rightEnd = nodeB.x - 85 - Math.sin(frame * 0.1) * 3;
+        ctx.strokeStyle = 'rgba(239, 68, 68, 0.75)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(nodeB.x, nodeB.y);
+        ctx.lineTo(rightEnd, nodeB.y + (Math.random() - 0.5) * 2);
+        ctx.stroke();
+
+        // Random electrical jitter
+        if (Math.random() < 0.28) {
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.85)';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(leftEnd, nodeA.y);
+          const midX = (leftEnd + rightEnd) / 2;
+          ctx.lineTo(midX, nodeA.y + (Math.random() - 0.5) * 16);
+          ctx.stroke();
+        }
+
+        // 4. Particles
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.life -= p.decay;
+
+          if (isHovering) {
+            const dx = mouseX - p.x;
+            const dy = mouseY - p.y;
+            p.x += dx * 0.04;
+            p.y += dy * 0.04;
+          }
+
+          if (p.life <= 0 || p.x < leftEnd - 20 || p.x > rightEnd + 20) {
+            p.x = leftEnd + Math.random() * (rightEnd - leftEnd);
+            p.y = nodeA.y + (Math.random() - 0.5) * 20;
+            p.vx = (Math.random() - 0.5) * 1.4;
+            p.vy = (Math.random() - 0.5) * 1.2;
+            p.life = 1;
+          }
+
+          ctx.fillStyle = p.color;
+          ctx.globalAlpha = Math.max(0, p.life * 0.85);
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.globalAlpha = 1;
+        });
+
+        // 5. Nodes
+        ctx.shadowColor = '#38bdf8';
+        ctx.shadowBlur = 12;
+        ctx.fillStyle = '#38bdf8';
+        ctx.beginPath();
+        ctx.arc(nodeA.x, nodeA.y, 6.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        ctx.shadowColor = '#ef4444';
+        ctx.shadowBlur = 12;
+        ctx.fillStyle = '#ef4444';
+        ctx.beginPath();
+        ctx.arc(nodeB.x, nodeB.y, 6.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        // Labels
+        ctx.fillStyle = '#a1a1aa';
+        ctx.font = '9px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(nodeA.label, nodeA.x, nodeA.y - 14);
+        ctx.fillText(nodeB.label, nodeB.x, nodeB.y - 14);
+
+        animId = requestAnimationFrame(render);
+      }
+
+      animId = requestAnimationFrame(render);
     }
 
     // Check if this 404 was triggered by a /note/<id> request
@@ -111,6 +300,36 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         const renderer = new window.marked.Renderer();
         renderer.code = function({ text, lang }) {
           const cleanLang = (lang || 'sh').toLowerCase();
+
+          if (cleanLang === 'terminal' || cleanLang === 'console' || cleanLang === 'cli') {
+            return `<div class="interactive-terminal" data-terminal="true">
+              <div class="terminal-bar">
+                <div class="terminal-dots">
+                  <span class="t-dot t-dot-red"></span>
+                  <span class="t-dot t-dot-yellow"></span>
+                  <span class="t-dot t-dot-green"></span>
+                </div>
+                <div class="terminal-title">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                  <span>bash &mdash; katakating@boash-lab:~</span>
+                </div>
+                <div class="terminal-actions">
+                  <button type="button" class="terminal-action-btn terminal-btn-replay" onclick="window.replayTerminalTyping && window.replayTerminalTyping(this)" title="Simulasikan Ketik Ulang" aria-label="Simulasikan Ketik Ulang">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                    <span>Ketik Ulang</span>
+                  </button>
+                  <button type="button" class="terminal-action-btn copy-btn" onclick="window.copyCodeSnippet && window.copyCodeSnippet(this)" title="Salin Perintah">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                    <span>Salin</span>
+                  </button>
+                </div>
+              </div>
+              <div class="terminal-screen" data-raw-code="${escapeHtml(text)}">
+                <pre class="terminal-code"><code>${escapeHtml(text)}</code></pre>
+              </div>
+            </div>`;
+          }
+
           return `<div class="command-panel" data-lang="${cleanLang}">
             <div class="command-panel-head">
               <div style="display: flex; align-items: center; gap: 8px;">
@@ -137,7 +356,42 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           return `<h${depth}>${text}</h${depth}>`;
         };
         renderer.blockquote = function({ text }) {
-          return `<blockquote class="article-quote">${text}</blockquote>`;
+          const alertMatch = text.match(/^\s*(?:<p>)?\s*\[!(KATING|STANDAR|ERROR|WARNING|NOTE|TIP|CAUTION|INFO)\](?:\s*<\/p>|\s*<br\s*\/?>|\n|\r\n)?\s*([\s\S]*)$/i);
+          if (!alertMatch) {
+            return `<blockquote class="article-quote">${text}</blockquote>`;
+          }
+
+          const type = alertMatch[1].toUpperCase();
+          let innerHtml = alertMatch[2].replace(/<\/p>\s*$/, '');
+          if (!innerHtml.trim().startsWith('<p>')) {
+            innerHtml = '<p>' + innerHtml.trim().split(/\n\s*\n/).map(p => p.trim()).filter(Boolean).join('</p><p>') + '</p>';
+          }
+
+          let badgeClass = 'admonition-note';
+          let title = 'CATATAN TEKNIS // DOKUMENTASI';
+          let iconSvg = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>';
+
+          if (type === 'KATING' || type === 'TIP') {
+            badgeClass = 'admonition-kating';
+            title = 'TIPS KATING // SHORTCUT PRAKTIKUM';
+            iconSvg = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>';
+          } else if (type === 'STANDAR') {
+            badgeClass = 'admonition-standar';
+            title = 'STANDAR 4-4-3-3 // PEDOMAN LAPORAN TRM';
+            iconSvg = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>';
+          } else if (type === 'ERROR' || type === 'WARNING' || type === 'CAUTION') {
+            badgeClass = 'admonition-error';
+            title = 'PERINGATAN ERROR // ANTISIPASI BUG';
+            iconSvg = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+          }
+
+          return `<div class="admonition-callout ${badgeClass}" role="region" aria-label="${title}">
+            <div class="admonition-header">
+              <span class="admonition-icon">${iconSvg}</span>
+              <span class="admonition-title">${title}</span>
+            </div>
+            <div class="admonition-body">${innerHtml}</div>
+          </div>`;
         };
 
         window.marked.use({ renderer });
@@ -264,11 +518,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
       // Setup Copy Snippet global helper
       window.copyCodeSnippet = function(button) {
-        const panel = button.closest('.command-panel');
+        const panel = button.closest('.command-panel') || button.closest('.interactive-terminal');
         if (!panel) return;
+        const scr = panel.querySelector('.terminal-screen');
         const codeEl = panel.querySelector('code');
-        if (!codeEl) return;
-        navigator.clipboard.writeText(codeEl.innerText).then(() => {
+        const codeText = scr ? (scr.getAttribute('data-raw-code') || (codeEl ? codeEl.innerText : '')) : (codeEl ? codeEl.innerText : '');
+        if (!codeText) return;
+        navigator.clipboard.writeText(codeText.trim()).then(() => {
           const original = button.innerHTML;
           button.innerHTML = '<span>Tersalin!</span>';
           button.style.borderColor = '#22c55e';
@@ -280,6 +536,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           }, 1800);
         }).catch(() => {});
       };
+
+      if (window.initTerminals) {
+        window.initTerminals();
+      }
     }
 
     // 1. Check local storage first

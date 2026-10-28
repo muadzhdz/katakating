@@ -20,11 +20,14 @@ function initCopy() {
     const btn = e.target.closest('.copy-btn') || e.target.closest('.copy-button');
     if (!btn) return;
     
-    const container = btn.closest('.code-container') || btn.closest('.command-panel') || btn.closest('.code-box');
-    const codeEl = container ? container.querySelector('code') || container.querySelector('pre') : null;
-    if (!codeEl) return;
+    const container = btn.closest('.code-container') || btn.closest('.command-panel') || btn.closest('.interactive-terminal') || btn.closest('.code-box');
+    if (!container) return;
+    const scr = container.querySelector('.terminal-screen');
+    const codeEl = container.querySelector('code') || container.querySelector('pre');
+    const textToCopy = scr ? (scr.getAttribute('data-raw-code') || (codeEl ? codeEl.textContent : '')) : (codeEl ? codeEl.textContent : '');
+    if (!textToCopy) return;
 
-    navigator.clipboard.writeText(codeEl.textContent.trim()).then(() => {
+    navigator.clipboard.writeText(textToCopy.trim()).then(() => {
       const orig = btn.innerHTML;
       btn.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Tersalin!`;
       setTimeout(() => { btn.innerHTML = orig; }, 1800);
@@ -1197,6 +1200,163 @@ function setupCyberSelect(selectEl) {
   selectEl.refreshCyberSelect = syncOptions;
 }
 
+// ── Interactive Terminal CLI Typing Simulator ──
+function escapeTermHtml(str) {
+  return (str || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function runTerminalSimulation(screen, rawText) {
+  if (!screen) return;
+  screen.dataset.animating = 'true';
+  screen.dataset.cancelled = 'false';
+
+  screen.onclick = function() {
+    if (screen.dataset.animating === 'true') {
+      screen.dataset.cancelled = 'true';
+    }
+  };
+
+  const lines = rawText.split(/\r?\n/);
+  screen.innerHTML = '';
+  const pre = document.createElement('pre');
+  pre.className = 'terminal-code';
+  screen.appendChild(pre);
+
+  let lineIdx = 0;
+
+  function finishAll() {
+    screen.dataset.animating = 'false';
+    screen.dataset.cancelled = 'false';
+    screen.innerHTML = '';
+    const finishPre = document.createElement('pre');
+    finishPre.className = 'terminal-code';
+    lines.forEach((l) => {
+      const isCmd = /^[$>]\s/.test(l.trim());
+      const isComment = /^#/.test(l.trim());
+      const row = document.createElement('div');
+      row.className = 'terminal-row';
+      if (isCmd) {
+        const sym = l.trim().startsWith('$') ? '$' : '>';
+        const cmd = l.trim().replace(/^[$>]\s*/, '');
+        row.innerHTML = `<span class="terminal-line-prompt">kating@boash-lab:~${sym} </span><span class="terminal-line-cmd">${escapeTermHtml(cmd)}</span>`;
+      } else if (isComment) {
+        row.className += ' terminal-line-comment';
+        row.textContent = l;
+      } else {
+        row.className += ' terminal-line-output';
+        row.textContent = l;
+      }
+      finishPre.appendChild(row);
+    });
+    screen.appendChild(finishPre);
+  }
+
+  function processNextLine() {
+    if (screen.dataset.cancelled === 'true' || lineIdx >= lines.length) {
+      finishAll();
+      return;
+    }
+
+    const curLine = lines[lineIdx];
+    lineIdx++;
+
+    const isCmd = /^[$>]\s/.test(curLine.trim());
+    const isComment = /^#/.test(curLine.trim());
+
+    if (isCmd) {
+      const sym = curLine.trim().startsWith('$') ? '$' : '>';
+      const cmd = curLine.trim().replace(/^[$>]\s*/, '');
+
+      const row = document.createElement('div');
+      row.className = 'terminal-row';
+      const pSpan = document.createElement('span');
+      pSpan.className = 'terminal-line-prompt';
+      pSpan.textContent = `kating@boash-lab:~${sym} `;
+
+      const cSpan = document.createElement('span');
+      cSpan.className = 'terminal-line-cmd';
+
+      const cursor = document.createElement('span');
+      cursor.className = 'terminal-cursor';
+
+      row.appendChild(pSpan);
+      row.appendChild(cSpan);
+      row.appendChild(cursor);
+      pre.appendChild(row);
+
+      let charIdx = 0;
+      function typeChar() {
+        if (screen.dataset.cancelled === 'true') {
+          finishAll();
+          return;
+        }
+        if (charIdx < cmd.length) {
+          cSpan.textContent += cmd[charIdx];
+          charIdx++;
+          setTimeout(typeChar, 20 + Math.random() * 20);
+        } else {
+          cursor.remove();
+          setTimeout(processNextLine, 200);
+        }
+      }
+      typeChar();
+    } else if (isComment) {
+      const row = document.createElement('div');
+      row.className = 'terminal-row terminal-line-comment';
+      row.textContent = curLine;
+      pre.appendChild(row);
+      setTimeout(processNextLine, 100);
+    } else {
+      const row = document.createElement('div');
+      row.className = 'terminal-row terminal-line-output';
+      row.textContent = curLine;
+      pre.appendChild(row);
+      setTimeout(processNextLine, 80);
+    }
+  }
+
+  processNextLine();
+}
+
+window.replayTerminalTyping = function(btn) {
+  const term = btn.closest('.interactive-terminal');
+  if (!term) return;
+  const screen = term.querySelector('.terminal-screen');
+  if (!screen) return;
+  const raw = screen.getAttribute('data-raw-code') || (screen.querySelector('code') ? screen.querySelector('code').textContent : '');
+  if (!raw) return;
+  runTerminalSimulation(screen, raw);
+};
+
+function initInteractiveTerminals() {
+  const terms = document.querySelectorAll('.interactive-terminal');
+  if (!terms.length) return;
+  terms.forEach((t) => {
+    const scr = t.querySelector('.terminal-screen');
+    if (!scr) return;
+    const raw = scr.getAttribute('data-raw-code') || (scr.querySelector('code') ? scr.querySelector('code').textContent : '');
+    if (!raw) return;
+
+    if ('IntersectionObserver' in window) {
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting && !t.dataset.played) {
+            t.dataset.played = 'true';
+            obs.unobserve(t);
+            runTerminalSimulation(scr, raw);
+          }
+        });
+      }, { threshold: 0.25 });
+      obs.observe(t);
+    }
+  });
+}
+
+window.initInteractiveTerminals = initInteractiveTerminals;
+
 window.setupCyberSelect = setupCyberSelect;
 window.refreshCardInteractions = initCardInteractions;
 window.refreshRecentlyAdded = loadRecentlyAdded;
@@ -1208,6 +1368,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupCardDelegation();
   initMobileNav();
   loadRecentlyAdded();
+  initInteractiveTerminals();
   setTimeout(initCardInteractions, 300);
   document.querySelectorAll('select.form-select, select#sort-select').forEach(setupCyberSelect);
 });

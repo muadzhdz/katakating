@@ -23,38 +23,41 @@ Menyiapkan environment pengembangan web berbasis Linux di dalam sistem operasi W
 ### 3.1. Install WSL2 & Ubuntu 24.04
 Buka PowerShell dengan hak akses Administrator (**Run as Administrator**), lalu jalankan perintah berikut:
 
-```bash
-# Install WSL kernel dan distro Ubuntu terbaru
-wsl --install -d Ubuntu-24.04
+```terminal
+$ wsl --install -d Ubuntu-24.04
+# Output: Installing: Virtual Machine Platform... Done
+# Output: Downloading Ubuntu 24.04 LTS... (100%)
+# Output: Installation successful. Please reboot your workstation.
 ```
+
+> [!ERROR]
+> Pastikan fitur Virtualization Technology (VT-x / AMD-V) sudah diaktifkan di BIOS laptop Anda. Jika tidak aktif, WSL2 akan melempar pesan error `Wsl/Service/RegisterDistro/CreateVm/HCS/ERROR_VIRTUALIZATION_NEEDS_ENABLE`.
 
 Setelah proses download selesai, restart komputer jika diminta oleh sistem Windows.
 
 ### 3.2. Update Repositori & Package Esensial
 Buka terminal Ubuntu yang baru dipasang, lalu buat username dan password UNIX Anda. Selanjutnya, perbarui repositori:
 
-```bash
-# Update index repositori dan upgrade paket
-sudo apt update && sudo apt upgrade -y
-
-# Install build tools dan curl
-sudo apt install -y build-essential curl wget git unzip
+```terminal
+$ sudo apt update && sudo apt upgrade -y
+# Output: All packages are up to date.
+$ sudo apt install -y build-essential curl wget git unzip
+# Output: Setting up build-essential... Done.
 ```
 
 ### 3.3. Pasang Node.js via NVM (Node Version Manager)
 Hindari memasang Node.js langsung via `apt` karena versinya sering tertinggal. Gunakan NVM agar versi Node mudah disesuaikan dengan modul praktikum:
 
-```bash
-# Download & install NVM
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+> [!KATING]
+> Tips kating: Jangan pernah install Node.js dengan perintah `sudo apt install nodejs` di Ubuntu karena repo default sering tertahan di versi lama (v18/v12). NVM memungkinkan Anda switch versi Node kapan pun sesuai kebutuhan praktikum!
 
-# Muat ulang konfigurasi bash
-source ~/.bashrc
-
-# Pasang Node.js versi LTS (Long Term Support)
-nvm install --lts
-nvm use --lts
-node -v && npm -v
+```terminal
+$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+$ source ~/.bashrc
+$ nvm install --lts
+# Output: Now using node v20.18.0 (npm v10.8.2)
+$ node -v && npm -v
+# Output: v20.18.0
 ```
 
 ### 3.4. Pasang Stack PHP & Composer (Praktikum Web Backend)
