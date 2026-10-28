@@ -23,18 +23,23 @@ export async function getStaticPaths() {
       if (Array.isArray(dbGuides)) {
         for (const g of dbGuides) {
           if (!notes.find((n: any) => n.id === g.id)) {
-            notes.push({
-              id: g.id,
-              title: g.title,
-              category: g.category || 'Praktikum',
-              author: g.author_name || 'Kontributor Boash',
-              date: g.created_at ? g.created_at.split('T')[0] : '2026-10-19',
-              readTime: '5 menit',
-              initials: g.initials || (g.title ? g.title.substring(0, 4).toUpperCase() : 'DOC'),
-              tags: Array.isArray(g.prodi_tags) && g.prodi_tags.length ? g.prodi_tags : ['praktikum'],
-              summary: g.summary || g.title,
-              rawContent: g.content || '',
-            });
+            const hasLocalFile = fs.existsSync(path.resolve('./notes', `${g.id}.md`));
+            const hasContent = g.content && g.content.length > 200 && g.content !== g.summary;
+            if (hasLocalFile || hasContent) {
+              notes.push({
+                id: g.id,
+                title: g.title,
+                category: g.category || 'Praktikum',
+                author: g.author_name || 'Kontributor Boash',
+                date: g.created_at ? g.created_at.split('T')[0] : '2026-10-19',
+                readTime: '5 menit',
+                initials: g.initials || (g.title ? g.title.substring(0, 4).toUpperCase() : 'DOC'),
+                tags: Array.isArray(g.prodi_tags) && g.prodi_tags.length ? g.prodi_tags : ['praktikum'],
+                summary: g.summary || g.title,
+                file: hasLocalFile ? `${g.id}.md` : '',
+                rawContent: hasContent ? g.content : '',
+              });
+            }
           }
         }
       }
@@ -186,6 +191,10 @@ export async function getStaticPaths() {
     const prevNote = index > 0 ? notes[index - 1] : null;
     const nextNote = index < notes.length - 1 ? notes[index + 1] : null;
 
+    const audioPath = path.resolve('./public/audio', `${note.id}.mp3`);
+    const hasAudio = fs.existsSync(audioPath);
+    const audioUrl = hasAudio ? `/audio/${note.id}.mp3` : null;
+
     return {
       params: { id: note.id },
       props: {
@@ -194,12 +203,13 @@ export async function getStaticPaths() {
         headings,
         prevNote,
         nextNote,
+        audioUrl,
       },
     };
   });
 }
 
-const { note, contentHtml, headings, prevNote, nextNote } = Astro.props;
+const { note, contentHtml, headings, prevNote, nextNote, audioUrl } = Astro.props;
 
 const canonicalUrl = `https://katakating.pages.dev/note/${note.id}`;
 const ogImageUrl = `/og/${note.id}.png`;
@@ -295,6 +305,53 @@ const ogImageUrl = `/og/${note.id}.png`;
         </div>
       </div>
     </header>
+
+    {audioUrl && (
+      <section class="kating-audio-player" id="kating-audio-player" aria-label="Pemutar Audio Panduan Neural">
+        <div class="audio-player-badge">
+          <span class="audio-badge-dot"></span>
+          <span class="audio-badge-text">// PANDUAN SUARA NEURAL &bull; KATING BOASH</span>
+          <span class="audio-badge-tech">24kHz 48kbps Mono</span>
+        </div>
+        <div class="audio-player-controls">
+          <button type="button" class="audio-btn-play" id="audio-play-toggle" aria-label="Putar Panduan Suara">
+            <svg class="audio-icon-play" width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+            <svg class="audio-icon-pause" width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+              <rect x="6" y="4" width="4" height="16"/>
+              <rect x="14" y="4" width="4" height="16"/>
+            </svg>
+            <span class="audio-play-label">Putar Audio</span>
+          </button>
+
+          <!-- EQUALIZER BARS ANIMATION -->
+          <div class="audio-equalizer" aria-hidden="true" title="Equalizer Audio">
+            <span class="eq-bar"></span>
+            <span class="eq-bar"></span>
+            <span class="eq-bar"></span>
+            <span class="eq-bar"></span>
+            <span class="eq-bar"></span>
+          </div>
+
+          <!-- TIME & SCRUBBER -->
+          <div class="audio-track-wrapper">
+            <input type="range" class="audio-progress" id="audio-progress-bar" min="0" max="100" value="0" step="0.1" aria-label="Progress Audio" />
+            <div class="audio-time-row">
+              <span id="audio-current-time" class="audio-time-text">00:00</span>
+              <span class="audio-time-sep">/</span>
+              <span id="audio-total-time" class="audio-time-text">--:--</span>
+            </div>
+          </div>
+
+          <!-- SPEED TOGGLE -->
+          <button type="button" class="audio-btn-speed" id="audio-speed-btn" title="Ubah Kecepatan Suara" aria-label="Kecepatan 1.0x">
+            <span id="audio-speed-val">1.0x</span>
+          </button>
+        </div>
+        <audio id="kating-audio-element" src={audioUrl} preload="metadata"></audio>
+      </section>
+    )}
 
     <!-- MAIN ARTICLE BODY (PRE-RENDERED FAST HTML) -->
     <article id="article-body" class="article-content" set:html={contentHtml} />
@@ -666,6 +723,98 @@ const ogImageUrl = `/og/${note.id}.png`;
           }
         }
       };
+    }
+  }
+
+  // AI Neural Audio Player Controller
+  const audioEl = document.getElementById('kating-audio-element');
+  const playBtn = document.getElementById('audio-play-toggle');
+  const playIcon = playBtn ? playBtn.querySelector('.audio-icon-play') : null;
+  const pauseIcon = playBtn ? playBtn.querySelector('.audio-icon-pause') : null;
+  const playLabel = playBtn ? playBtn.querySelector('.audio-play-label') : null;
+  const eqEl = document.querySelector('.audio-equalizer');
+  const audioProgBar = document.getElementById('audio-progress-bar');
+  const currTimeEl = document.getElementById('audio-current-time');
+  const totalTimeEl = document.getElementById('audio-total-time');
+  const speedBtn = document.getElementById('audio-speed-btn');
+  const speedVal = document.getElementById('audio-speed-val');
+
+  if (audioEl && playBtn && audioProgBar) {
+    let isSeeking = false;
+
+    function formatTime(sec) {
+      if (!sec || isNaN(sec)) return '00:00';
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s);
+    }
+
+    function setPlayState(isPlaying) {
+      if (isPlaying) {
+        if (playIcon) playIcon.style.display = 'none';
+        if (pauseIcon) pauseIcon.style.display = 'inline-block';
+        if (playLabel) playLabel.textContent = 'Jeda';
+        if (eqEl) eqEl.classList.add('playing');
+      } else {
+        if (playIcon) playIcon.style.display = 'inline-block';
+        if (pauseIcon) pauseIcon.style.display = 'none';
+        if (playLabel) playLabel.textContent = 'Putar Audio';
+        if (eqEl) eqEl.classList.remove('playing');
+      }
+    }
+
+    audioEl.addEventListener('loadedmetadata', () => {
+      if (totalTimeEl) totalTimeEl.textContent = formatTime(audioEl.duration);
+    });
+
+    audioEl.addEventListener('timeupdate', () => {
+      if (!isSeeking && audioEl.duration) {
+        const pct = (audioEl.currentTime / audioEl.duration) * 100;
+        audioProgBar.value = pct;
+        if (currTimeEl) currTimeEl.textContent = formatTime(audioEl.currentTime);
+      }
+    });
+
+    audioEl.addEventListener('ended', () => {
+      setPlayState(false);
+      audioProgBar.value = 0;
+      if (currTimeEl) currTimeEl.textContent = '00:00';
+    });
+
+    playBtn.addEventListener('click', () => {
+      if (audioEl.paused) {
+        audioEl.play().then(() => setPlayState(true)).catch(() => {});
+      } else {
+        audioEl.pause();
+        setPlayState(false);
+      }
+    });
+
+    audioProgBar.addEventListener('input', () => {
+      isSeeking = true;
+      if (audioEl.duration) {
+        const target = (audioProgBar.value / 100) * audioEl.duration;
+        if (currTimeEl) currTimeEl.textContent = formatTime(target);
+      }
+    });
+
+    audioProgBar.addEventListener('change', () => {
+      if (audioEl.duration) {
+        audioEl.currentTime = (audioProgBar.value / 100) * audioEl.duration;
+      }
+      isSeeking = false;
+    });
+
+    const speeds = [1.0, 1.25, 1.5, 2.0];
+    let speedIdx = 0;
+    if (speedBtn) {
+      speedBtn.addEventListener('click', () => {
+        speedIdx = (speedIdx + 1) % speeds.length;
+        const s = speeds[speedIdx];
+        audioEl.playbackRate = s;
+        if (speedVal) speedVal.textContent = s.toFixed(1) + 'x';
+        speedBtn.setAttribute('aria-label', 'Kecepatan ' + s + 'x');
+      });
     }
   }
 

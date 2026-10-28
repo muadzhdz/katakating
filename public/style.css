@@ -7060,4 +7060,233 @@ html.light .admonition-note .admonition-header,
   50%, 100% { opacity: 0; }
 }
 
+/* ==========================================================================
+   AI NEURAL AUDIO GUIDE PLAYER COMPONENT
+   ========================================================================== */
+.kating-audio-player {
+  background: var(--surface, #14171f);
+  border: 1px solid var(--line, #27272a);
+  border-left: 3px solid var(--accent, #38bdf8);
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin: 18px 0 28px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  transition: border-color var(--t-fast, 0.2s) ease, box-shadow var(--t-fast, 0.2s) ease;
+}
+
+.kating-audio-player:hover {
+  border-color: var(--accent, #38bdf8);
+  box-shadow: 0 6px 20px rgba(56, 189, 248, 0.08);
+}
+
+.audio-player-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+  color: var(--muted, #a1a1aa);
+}
+
+.audio-badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 8px #22c55e;
+  display: inline-block;
+  animation: audioDotPulse 1.8s infinite ease-in-out;
+}
+
+@keyframes audioDotPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.audio-badge-text {
+  color: var(--heading, #f4f4f5);
+}
+
+.audio-badge-tech {
+  margin-left: auto;
+  font-size: 10px;
+  color: var(--muted, #71717a);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 2px 7px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.audio-player-controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.audio-btn-play {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent, #38bdf8);
+  color: #090a0d;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform var(--t-fast, 0.15s) ease, background var(--t-fast, 0.15s) ease, box-shadow var(--t-fast, 0.15s) ease;
+  flex-shrink: 0;
+}
+
+.audio-btn-play:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.35);
+  background: #7dd3fc;
+}
+
+.audio-btn-play:active {
+  transform: translateY(0);
+}
+
+/* Equalizer Bars */
+.audio-equalizer {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 18px;
+  width: 25px;
+  flex-shrink: 0;
+}
+
+.eq-bar {
+  width: 3px;
+  height: 4px;
+  background: var(--muted, #71717a);
+  border-radius: 1px;
+  transition: height 0.2s ease, background 0.2s ease;
+}
+
+.audio-equalizer.playing .eq-bar {
+  background: var(--accent, #38bdf8);
+  animation: eqPulse 1.2s infinite ease-in-out;
+}
+
+.audio-equalizer.playing .eq-bar:nth-child(1) { animation-delay: 0.1s; }
+.audio-equalizer.playing .eq-bar:nth-child(2) { animation-delay: 0.35s; }
+.audio-equalizer.playing .eq-bar:nth-child(3) { animation-delay: 0.2s; }
+.audio-equalizer.playing .eq-bar:nth-child(4) { animation-delay: 0.45s; }
+.audio-equalizer.playing .eq-bar:nth-child(5) { animation-delay: 0.15s; }
+
+@keyframes eqPulse {
+  0%, 100% { height: 4px; }
+  50% { height: 18px; }
+}
+
+/* Scrubber & Time */
+.audio-track-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 140px;
+}
+
+.audio-progress {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--line, #27272a);
+  outline: none;
+  cursor: pointer;
+  transition: height 0.15s ease, background 0.15s ease;
+}
+
+.audio-progress:hover {
+  height: 6px;
+  background: #3f3f46;
+}
+
+.audio-progress::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent, #38bdf8);
+  cursor: pointer;
+  box-shadow: 0 0 6px rgba(56, 189, 248, 0.5);
+  transition: transform 0.15s ease;
+}
+
+.audio-progress::-webkit-slider-thumb:hover {
+  transform: scale(1.3);
+}
+
+.audio-progress::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  background: var(--accent, #38bdf8);
+  cursor: pointer;
+}
+
+.audio-time-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 10px;
+  color: var(--muted, #71717a);
+}
+
+.audio-time-text {
+  color: var(--muted, #a1a1aa);
+}
+
+/* Speed Button */
+.audio-btn-speed {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--line, #27272a);
+  color: var(--heading, #f4f4f5);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-family: var(--mono, ui-monospace, monospace);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--t-fast, 0.15s) ease;
+  flex-shrink: 0;
+}
+
+.audio-btn-speed:hover {
+  border-color: var(--accent, #38bdf8);
+  color: var(--accent, #38bdf8);
+  background: rgba(56, 189, 248, 0.08);
+}
+
+@media (max-width: 640px) {
+  .kating-audio-player {
+    padding: 12px 14px;
+    margin: 14px 0 20px;
+  }
+  .audio-player-controls {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .audio-track-wrapper {
+    order: 3;
+    width: 100%;
+    flex: 0 0 100%;
+  }
+}
+
 

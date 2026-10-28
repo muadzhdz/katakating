@@ -9,7 +9,8 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "node scripts/generate-og.mjs && astro build",
+    "build:audio": "node scripts/generate-audio.mjs",
+    "build": "node scripts/generate-audio.mjs && node scripts/generate-og.mjs && astro build",
     "preview": "astro preview",
     "deploy": "npm run build && npx wrangler pages deploy dist --project-name katakating --commit-dirty=true",
     "astro": "astro",
@@ -33,6 +34,7 @@
     "marked": "^18.1.0"
   },
   "devDependencies": {
+    "msedge-tts": "^2.1.1",
     "wrangler": "^4.154.0"
   }
 }

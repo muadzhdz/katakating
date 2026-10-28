@@ -265,5 +265,118 @@
     ],
     "summary": "Panduan sopan dan templat pesan WhatsApp siap pakai saat ingin berkonsultasi mengenai tugas, meminta izin tidak hadir, atau meminta bimbingan kepada kakak tingkat tanpa rasa canggung.",
     "file": "tata-cara-sopan-menghubungi-dosen-kating.md"
+  },
+  {
+    "id": "setup-dual-boot-linux-windows",
+    "title": "Panduan Setup Dual-Boot Linux dan Windows untuk Praktikum Mahasiswa Baru",
+    "category": "Web & Tooling",
+    "author": "Mu'adz Hudzaifah",
+    "date": "2026-09-22",
+    "readTime": "8 menit",
+    "initials": "DUAL",
+    "tags": [
+      "linux",
+      "windows",
+      "dual-boot",
+      "arch",
+      "ubuntu",
+      "efi"
+    ],
+    "summary": "Langkah aman instalasi dual-boot Arch/Ubuntu dan Windows tanpa menghapus partisi EFI atau kehilangan lisensi bawaan laptop.",
+    "file": "setup-dual-boot-linux-windows.md"
+  },
+  {
+    "id": "pointer-memori-dinamis-cpp",
+    "title": "Solusi Memahami Pointer dan Alokasi Memori Dinamis C/C++ Tanpa Segfault",
+    "category": "Algoritma & Pemrograman",
+    "author": "Mu'adz Hudzaifah",
+    "date": "2026-09-22",
+    "readTime": "7 menit",
+    "initials": "PTR",
+    "tags": [
+      "cpp",
+      "c",
+      "pointer",
+      "memory",
+      "segfault",
+      "algoritma"
+    ],
+    "summary": "Tips visual memahami alamat memori, dereferencing, malloc, free, dan smart pointers di C++ agar praktikum algoritma bebas error.",
+    "file": "pointer-memori-dinamis-cpp.md"
+  },
+  {
+    "id": "normalisasi-sql-1nf-ke-3nf",
+    "title": "Cheat-Sheet Query SQL: Cara Cepat Normalisasi Data dari 1NF sampai 3NF",
+    "category": "Basis Data",
+    "author": "Tim KataKating",
+    "date": "2026-09-23",
+    "readTime": "6 menit",
+    "initials": "NORM",
+    "tags": [
+      "database",
+      "sql",
+      "normalisasi",
+      "mysql",
+      "basis-data"
+    ],
+    "summary": "Metode cepat memecah tabel data yang berantakan menjadi tabel relasional yang memenuhi standar 1NF, 2NF, dan 3NF.",
+    "file": "normalisasi-sql-1nf-ke-3nf.md"
+  },
+  {
+    "id": "render-blender-crash-gpu-hemat-daya",
+    "title": "Cara Mengatasi Render Blender Sering Crash pada Laptop Tanpa GPU Tambahan",
+    "category": "Game & Multimedia",
+    "author": "Tim KataKating",
+    "date": "2026-09-22",
+    "readTime": "6 menit",
+    "initials": "BLEN",
+    "tags": [
+      "blender",
+      "multimedia",
+      "3d",
+      "render",
+      "cycles",
+      "eevee"
+    ],
+    "summary": "Trik optimasi setting render Cycles dan Eevee agar tidak freeze atau close sendiri saat rendering tugas 3D di laptop standar.",
+    "file": "render-blender-crash-gpu-hemat-daya.md"
+  },
+  {
+    "id": "simulasi-esp32-dht22-wokwi",
+    "title": "Langkah Simulasi ESP32 dan Sensor DHT22 di Wokwi Sebelum Turun ke Hardware Fisik",
+    "category": "IoT & Embedded",
+    "author": "Mu'adz Hudzaifah",
+    "date": "2026-09-22",
+    "readTime": "7 menit",
+    "initials": "WOKW",
+    "tags": [
+      "iot",
+      "esp32",
+      "dht22",
+      "wokwi",
+      "mqtt",
+      "arduino"
+    ],
+    "summary": "Panduan lengkap wiring virtual diagram.json, konfigurasi MQTT broker publik, dan pengujian OLED SSD1306 di Wokwi.",
+    "file": "simulasi-esp32-dht22-wokwi.md"
+  },
+  {
+    "id": "bypass-gradle-timeout-android-studio",
+    "title": "Solusi Mengatasi Build Timeout dan Error Gradle pada Android Studio",
+    "category": "Web & Tooling",
+    "author": "Tim KataKating",
+    "date": "2026-09-22",
+    "readTime": "6 menit",
+    "initials": "GRAD",
+    "tags": [
+      "android",
+      "gradle",
+      "mobile",
+      "build",
+      "java",
+      "kotlin"
+    ],
+    "summary": "Trik mengonfigurasi gradle.properties dan offline mode agar kompilasi aplikasi mobile tidak stuck berjam-jam saat koneksi lab lambat.",
+    "file": "bypass-gradle-timeout-android-studio.md"
   }
 ]
