@@ -253,11 +253,39 @@ async function synthesizeChunkWithRetry(voice, text, maxRetries = 3) {
       await tts.setMetadata(voice, OUTPUT_FORMAT.AUDIO_24KHZ_48KBITRATE_MONO_MP3);
 
       const buffer = await new Promise((resolve, reject) => {
-        const { audioStream } = tts.toStream(safeText);
-        const buffers = [];
-        audioStream.on('data', chunk => buffers.push(chunk));
-        audioStream.on('end', () => resolve(Buffer.concat(buffers)));
-        audioStream.on('error', err => reject(err));
+        let isSettled = false;
+        const timer = setTimeout(() => {
+          if (!isSettled) {
+            isSettled = true;
+            reject(new Error('TTS socket timed out after 20s'));
+          }
+        }, 20000);
+
+        try {
+          const { audioStream } = tts.toStream(safeText);
+          const buffers = [];
+          audioStream.on('data', chunk => buffers.push(chunk));
+          audioStream.on('end', () => {
+            if (!isSettled) {
+              isSettled = true;
+              clearTimeout(timer);
+              resolve(Buffer.concat(buffers));
+            }
+          });
+          audioStream.on('error', err => {
+            if (!isSettled) {
+              isSettled = true;
+              clearTimeout(timer);
+              reject(err);
+            }
+          });
+        } catch (e) {
+          if (!isSettled) {
+            isSettled = true;
+            clearTimeout(timer);
+            reject(e);
+          }
+        }
       });
 
       return buffer;

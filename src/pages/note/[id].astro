@@ -301,99 +301,96 @@ const ogImageUrl = `/og/${note.id}.png`;
           </button>
 
           <!-- Audio Guide Button (Beside Print / Share) -->
-          {audioUrl && (
-            <button type="button" class="button btn-action-item btn-action-audio" id="btn-toggle-audio-panel" title="Putar Panduan Audio Suara Neural" aria-expanded="false">
-              <svg id="action-audio-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-              </svg>
-              <span>Audio</span>
-              <span id="action-audio-pulse" class="action-audio-pulse-dot" style="display: none;"></span>
-            </button>
-          )}
+          <button type="button" class="button btn-action-item btn-action-audio" id="btn-toggle-audio-panel" title="Putar Panduan Audio Suara Neural" aria-expanded="false">
+            <svg id="action-audio-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+            </svg>
+            <span>AUDIO</span>
+            <span id="action-audio-pulse" class="action-audio-pulse-dot" style="display: none;"></span>
+          </button>
         </div>
       </div>
     </header>
 
-    {audioUrl && (
-      <aside class="kating-audio-popup" id="kating-audio-popup" aria-label="Pemutar Audio Panduan" style="display: none;">
-        <div class="audio-popup-card">
-          <!-- POPUP HEADER ROW -->
-          <div class="audio-popup-head">
-            <div class="audio-popup-title-group">
-              <span class="audio-popup-pulse-dot"></span>
-              <span class="audio-popup-title">// SUARA NEURAL KATING</span>
-            </div>
-            <div class="audio-popup-actions">
-              <!-- SPEED SELECTOR -->
-              <button type="button" class="audio-btn-speed" id="audio-speed-btn" title="Ubah Kecepatan Suara" aria-label="Kecepatan 1.0x">
-                <span id="audio-speed-val">1.0x</span>
-              </button>
-              <!-- CLOSE POPUP BUTTON -->
-              <button type="button" class="audio-btn-close" id="audio-popup-close-btn" aria-label="Tutup Panel Audio" title="Tutup Panel Audio">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-              </button>
-            </div>
+    <!-- FLOATING POPUP AUDIO PLAYER (DESKTOP: BOTTOM-RIGHT, MOBILE: ABOVE BOTTOM BAR) -->
+    <aside class="kating-audio-popup" id="kating-audio-popup" aria-label="Pemutar Audio Panduan" style="display: none;">
+      <div class="audio-popup-card">
+        <!-- POPUP HEADER ROW -->
+        <div class="audio-popup-head">
+          <div class="audio-popup-title-group">
+            <span class="audio-popup-pulse-dot"></span>
+            <span class="audio-popup-title">// SUARA NEURAL KATING</span>
           </div>
-
-          <!-- NOTE TITLE SUBHEADER -->
-          <div class="audio-popup-note-title" title={note.title}>
-            {note.title}
-          </div>
-
-          <!-- PLAYBACK CONTROLS: -10s, MAIN PLAY/PAUSE, +10s -->
-          <div class="audio-controls-row">
-            <!-- -10s -->
-            <button type="button" class="audio-btn-step" id="audio-step-back" title="Mundur 10 Detik" aria-label="Mundur 10 Detik">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M11 17l-5-5 5-5M18 17l-5-5 5-5"/>
-              </svg>
-              <span>-10s</span>
+          <div class="audio-popup-actions">
+            <!-- SPEED SELECTOR -->
+            <button type="button" class="audio-btn-speed" id="audio-speed-btn" title="Ubah Kecepatan Suara" aria-label="Kecepatan 1.0x">
+              <span id="audio-speed-val">1.0x</span>
             </button>
-
-            <!-- MAIN PLAY/PAUSE BUTTON -->
-            <button type="button" class="audio-btn-main-play" id="audio-play-toggle" aria-label="Putar Panduan Suara">
-              <svg class="audio-icon-play" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <polygon points="6 4 19 12 6 20 6 4"/>
-              </svg>
-              <svg class="audio-icon-pause" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
-                <rect x="6" y="4" width="4" height="16"/>
-                <rect x="14" y="4" width="4" height="16"/>
-              </svg>
-            </button>
-
-            <!-- +10s -->
-            <button type="button" class="audio-btn-step" id="audio-step-forward" title="Maju 10 Detik" aria-label="Maju 10 Detik">
-              <span>+10s</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M13 17l5-5-5-5M6 17l5-5-5-5"/>
+            <!-- CLOSE POPUP BUTTON -->
+            <button type="button" class="audio-btn-close" id="audio-popup-close-btn" aria-label="Tutup Panel Audio" title="Tutup Panel Audio">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
               </svg>
             </button>
           </div>
-
-          <!-- CUSTOM MODERN SCRUBBER SLIDER (MATCHING SCREENSHOT) -->
-          <div class="audio-scrubber-container">
-            <div class="audio-scrubber-hitbox" id="audio-scrubber-hitbox" role="slider" aria-label="Posisi Durasi Audio" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">
-              <div class="audio-scrubber-track">
-                <div class="audio-scrubber-played" id="audio-scrubber-played" style="width: 0%;"></div>
-                <div class="audio-scrubber-cursor" id="audio-scrubber-cursor" style="left: 0%;"></div>
-                <span class="audio-scrubber-end-dot" aria-hidden="true"></span>
-              </div>
-            </div>
-            <div class="audio-time-row">
-              <span id="audio-current-time" class="audio-time-text">0:00</span>
-              <span id="audio-total-time" class="audio-time-text">--:--</span>
-            </div>
-          </div>
-
-          <audio id="kating-audio-element" src={audioUrl} preload="metadata"></audio>
         </div>
-      </aside>
-    )}
+
+        <!-- NOTE TITLE SUBHEADER -->
+        <div class="audio-popup-note-title" title={note.title}>
+          {note.title}
+        </div>
+
+        <!-- PLAYBACK CONTROLS: -10s, MAIN PLAY/PAUSE, +10s -->
+        <div class="audio-controls-row">
+          <!-- -10s -->
+          <button type="button" class="audio-btn-step" id="audio-step-back" title="Mundur 10 Detik" aria-label="Mundur 10 Detik">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 17l-5-5 5-5M18 17l-5-5 5-5"/>
+            </svg>
+            <span>-10s</span>
+          </button>
+
+          <!-- MAIN PLAY/PAUSE BUTTON -->
+          <button type="button" class="audio-btn-main-play" id="audio-play-toggle" aria-label="Putar Panduan Suara">
+            <svg class="audio-icon-play" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="6 4 19 12 6 20 6 4"/>
+            </svg>
+            <svg class="audio-icon-pause" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+              <rect x="6" y="4" width="4" height="16"/>
+              <rect x="14" y="4" width="4" height="16"/>
+            </svg>
+          </button>
+
+          <!-- +10s -->
+          <button type="button" class="audio-btn-step" id="audio-step-forward" title="Maju 10 Detik" aria-label="Maju 10 Detik">
+            <span>+10s</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M13 17l5-5-5-5M6 17l5-5-5-5"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- CUSTOM MODERN SCRUBBER SLIDER (MATCHING SCREENSHOT) -->
+        <div class="audio-scrubber-container">
+          <div class="audio-scrubber-hitbox" id="audio-scrubber-hitbox" role="slider" aria-label="Posisi Durasi Audio" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">
+            <div class="audio-scrubber-track">
+              <div class="audio-scrubber-played" id="audio-scrubber-played" style="width: 0%;"></div>
+              <div class="audio-scrubber-cursor" id="audio-scrubber-cursor" style="left: 0%;"></div>
+              <span class="audio-scrubber-end-dot" aria-hidden="true"></span>
+            </div>
+          </div>
+          <div class="audio-time-row">
+            <span id="audio-current-time" class="audio-time-text">0:00</span>
+            <span id="audio-total-time" class="audio-time-text">--:--</span>
+          </div>
+        </div>
+
+        <audio id="kating-audio-element" src={audioUrl || `/audio/${note.id}.mp3`} preload="metadata"></audio>
+      </div>
+    </aside>
 
     <!-- MAIN ARTICLE BODY (PRE-RENDERED FAST HTML) -->
     <article id="article-body" class="article-content" set:html={contentHtml} />
@@ -777,6 +774,12 @@ const ogImageUrl = `/og/${note.id}.png`;
 
   if (audioEl && scrubberHitbox) {
     let isDragging = false;
+    let isSynth = false;
+    let synthTimer = null;
+    let synthElapsed = 0;
+    let synthDuration = 180;
+    const speeds = [1.0, 1.25, 1.5, 2.0];
+    let speedIdx = 0;
 
     function formatTime(sec) {
       if (!sec || isNaN(sec) || sec < 0) return '0:00';
@@ -814,13 +817,107 @@ const ogImageUrl = `/og/${note.id}.png`;
     }
 
     function handleSeek(e, commit = false) {
-      if (!audioEl.duration) return;
+      const activeDuration = isSynth ? synthDuration : (audioEl.duration || 0);
+      if (!activeDuration) return;
       const pct = getPctFromEvent(e);
       updateScrubberUI(pct);
-      const targetTime = (pct / 100) * audioEl.duration;
+      const targetTime = (pct / 100) * activeDuration;
       if (currTimeEl) currTimeEl.textContent = formatTime(targetTime);
       if (commit) {
-        audioEl.currentTime = targetTime;
+        if (isSynth) {
+          synthElapsed = targetTime;
+        } else {
+          audioEl.currentTime = targetTime;
+        }
+      }
+    }
+
+    function startSpeech() {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const articleEl = document.getElementById('article-body');
+      const textToRead = (articleEl ? articleEl.innerText : '').replace(/\s+/g, ' ').trim();
+      if (!textToRead) return;
+
+      const utterance = new SpeechSynthesisUtterance(textToRead);
+      utterance.lang = 'id-ID';
+      utterance.rate = speeds[speedIdx];
+
+      const voices = window.speechSynthesis.getVoices();
+      const idVoice = voices.find(v => v.lang.startsWith('id') || v.lang.startsWith('in'));
+      if (idVoice) utterance.voice = idVoice;
+
+      const words = textToRead.split(' ').length;
+      synthDuration = Math.max(30, Math.round((words / 140) * 60 / speeds[speedIdx]));
+      if (totalTimeEl) totalTimeEl.textContent = formatTime(synthDuration);
+
+      isSynth = true;
+      setPlayState(true);
+      synthElapsed = 0;
+
+      clearInterval(synthTimer);
+      synthTimer = setInterval(() => {
+        if (window.speechSynthesis.speaking && !window.speechSynthesis.paused) {
+          synthElapsed += 0.5;
+          const pct = Math.min(100, (synthElapsed / synthDuration) * 100);
+          updateScrubberUI(pct);
+          if (currTimeEl) currTimeEl.textContent = formatTime(synthElapsed);
+        }
+      }, 500);
+
+      utterance.onend = () => {
+        clearInterval(synthTimer);
+        isSynth = false;
+        setPlayState(false);
+        updateScrubberUI(0);
+        if (currTimeEl) currTimeEl.textContent = '0:00';
+      };
+
+      utterance.onerror = () => {
+        clearInterval(synthTimer);
+        isSynth = false;
+        setPlayState(false);
+      };
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function playAudioOrSpeech() {
+      if (isSynth) {
+        if (window.speechSynthesis.paused) {
+          window.speechSynthesis.resume();
+          setPlayState(true);
+        } else if (!window.speechSynthesis.speaking) {
+          startSpeech();
+        }
+        return;
+      }
+
+      // Check if audio has valid duration or try playing
+      const playPromise = audioEl.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            setPlayState(true);
+          })
+          .catch(() => {
+            // Audio file not found or failed -> fallback to SpeechSynthesis
+            startSpeech();
+          });
+      } else {
+        startSpeech();
+      }
+    }
+
+    function pauseAudioOrSpeech() {
+      if (isSynth) {
+        if (window.speechSynthesis.speaking) {
+          window.speechSynthesis.pause();
+        }
+        setPlayState(false);
+      } else {
+        audioEl.pause();
+        setPlayState(false);
       }
     }
 
@@ -828,7 +925,6 @@ const ogImageUrl = `/og/${note.id}.png`;
     function openPopup() {
       if (!audioPopup) return;
       audioPopup.style.display = 'block';
-      // Trigger CSS transition
       requestAnimationFrame(() => {
         audioPopup.classList.add('audio-popup-visible');
       });
@@ -859,8 +955,9 @@ const ogImageUrl = `/og/${note.id}.png`;
           closePopup();
         } else {
           openPopup();
-          if (audioEl.paused) {
-            audioEl.play().then(() => setPlayState(true)).catch(() => {});
+          const isPlaying = isSynth ? (window.speechSynthesis.speaking && !window.speechSynthesis.paused) : !audioEl.paused;
+          if (!isPlaying) {
+            playAudioOrSpeech();
           }
         }
       });
@@ -872,11 +969,13 @@ const ogImageUrl = `/og/${note.id}.png`;
 
     // Audio Metadata & Time Update
     audioEl.addEventListener('loadedmetadata', () => {
-      if (totalTimeEl) totalTimeEl.textContent = formatTime(audioEl.duration);
+      if (totalTimeEl && audioEl.duration && !isSynth) {
+        totalTimeEl.textContent = formatTime(audioEl.duration);
+      }
     });
 
     audioEl.addEventListener('timeupdate', () => {
-      if (!isDragging && audioEl.duration) {
+      if (!isDragging && audioEl.duration && !isSynth) {
         const pct = (audioEl.currentTime / audioEl.duration) * 100;
         updateScrubberUI(pct);
         if (currTimeEl) currTimeEl.textContent = formatTime(audioEl.currentTime);
@@ -892,11 +991,11 @@ const ogImageUrl = `/og/${note.id}.png`;
     // Play / Pause Button
     if (playBtn) {
       playBtn.addEventListener('click', () => {
-        if (audioEl.paused) {
-          audioEl.play().then(() => setPlayState(true)).catch(() => {});
+        const isPlaying = isSynth ? (window.speechSynthesis.speaking && !window.speechSynthesis.paused) : !audioEl.paused;
+        if (isPlaying) {
+          pauseAudioOrSpeech();
         } else {
-          audioEl.pause();
-          setPlayState(false);
+          playAudioOrSpeech();
         }
       });
     }
@@ -904,13 +1003,23 @@ const ogImageUrl = `/og/${note.id}.png`;
     // Step -10s and +10s
     if (stepBackBtn) {
       stepBackBtn.addEventListener('click', () => {
-        audioEl.currentTime = Math.max(0, audioEl.currentTime - 10);
+        if (isSynth) {
+          synthElapsed = Math.max(0, synthElapsed - 10);
+          updateScrubberUI((synthElapsed / synthDuration) * 100);
+          if (currTimeEl) currTimeEl.textContent = formatTime(synthElapsed);
+        } else {
+          audioEl.currentTime = Math.max(0, audioEl.currentTime - 10);
+        }
       });
     }
 
     if (stepForwardBtn) {
       stepForwardBtn.addEventListener('click', () => {
-        if (audioEl.duration) {
+        if (isSynth) {
+          synthElapsed = Math.min(synthDuration, synthElapsed + 10);
+          updateScrubberUI((synthElapsed / synthDuration) * 100);
+          if (currTimeEl) currTimeEl.textContent = formatTime(synthElapsed);
+        } else if (audioEl.duration) {
           audioEl.currentTime = Math.min(audioEl.duration, audioEl.currentTime + 10);
         }
       });
@@ -952,32 +1061,47 @@ const ogImageUrl = `/og/${note.id}.png`;
       if (isDragging) {
         isDragging = false;
         const clientX = e.changedTouches && e.changedTouches.length > 0 ? e.changedTouches[0].clientX : null;
-        if (clientX !== null && audioEl.duration) {
+        const activeDuration = isSynth ? synthDuration : (audioEl.duration || 0);
+        if (clientX !== null && activeDuration) {
           const rect = scrubberHitbox.getBoundingClientRect();
           const pct = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
-          audioEl.currentTime = (pct / 100) * audioEl.duration;
+          if (isSynth) {
+            synthElapsed = (pct / 100) * activeDuration;
+          } else {
+            audioEl.currentTime = (pct / 100) * activeDuration;
+          }
         }
       }
     });
 
     // Scrubber Keyboard Accessibility
     scrubberHitbox.addEventListener('keydown', (e) => {
-      if (!audioEl.duration) return;
+      const activeDuration = isSynth ? synthDuration : (audioEl.duration || 0);
+      if (!activeDuration) return;
       if (e.key === 'ArrowLeft') {
-        audioEl.currentTime = Math.max(0, audioEl.currentTime - 5);
+        if (isSynth) {
+          synthElapsed = Math.max(0, synthElapsed - 5);
+        } else {
+          audioEl.currentTime = Math.max(0, audioEl.currentTime - 5);
+        }
       } else if (e.key === 'ArrowRight') {
-        audioEl.currentTime = Math.min(audioEl.duration, audioEl.currentTime + 5);
+        if (isSynth) {
+          synthElapsed = Math.min(activeDuration, synthElapsed + 5);
+        } else {
+          audioEl.currentTime = Math.min(activeDuration, audioEl.currentTime + 5);
+        }
       }
     });
 
     // Playback Speed Toggle (1.0x -> 1.25x -> 1.5x -> 2.0x)
-    const speeds = [1.0, 1.25, 1.5, 2.0];
-    let speedIdx = 0;
     if (speedBtn) {
       speedBtn.addEventListener('click', () => {
         speedIdx = (speedIdx + 1) % speeds.length;
         const s = speeds[speedIdx];
         audioEl.playbackRate = s;
+        if (isSynth && window.speechSynthesis.speaking) {
+          startSpeech();
+        }
         if (speedVal) speedVal.textContent = s.toFixed(1) + 'x';
         speedBtn.setAttribute('aria-label', 'Kecepatan ' + s + 'x');
       });

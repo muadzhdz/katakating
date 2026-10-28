@@ -2946,6 +2946,9 @@ pre.code-body {
     justify-content: center !important;
     min-height: 38px !important;
   }
+  .article-actions-group .btn-action-audio {
+    grid-column: 1 / -1 !important;
+  }
   .article-font-scaler {
     width: 100% !important;
     justify-content: center !important;
