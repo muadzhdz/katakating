@@ -224,9 +224,6 @@ const ogImageUrl = `/og/${note.id}.png`;
   currentPath={`/note/${note.id}`}
   keywords={`${note.title}, ${note.category}, ${note.tags.join(', ')}, Boash praktikum`}
 >
-  <!-- TOP READING PROGRESS BAR -->
-  <div id="read-progress-bar" style="position: fixed; top: 0; left: 0; height: 3px; background: var(--accent); width: 0%; z-index: 1003; transition: width 0.1s linear;"></div>
-
   <div class="article-layout">
     <!-- BREADCRUMBS -->
     <nav class="breadcrumbs" aria-label="Breadcrumb">
@@ -302,55 +299,100 @@ const ogImageUrl = `/og/${note.id}.png`;
             </svg>
             <span>Cetak / PDF</span>
           </button>
+
+          <!-- Audio Guide Button (Beside Print / Share) -->
+          {audioUrl && (
+            <button type="button" class="button btn-action-item btn-action-audio" id="btn-toggle-audio-panel" title="Putar Panduan Audio Suara Neural" aria-expanded="false">
+              <svg id="action-audio-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+              </svg>
+              <span>Audio</span>
+              <span id="action-audio-pulse" class="action-audio-pulse-dot" style="display: none;"></span>
+            </button>
+          )}
         </div>
       </div>
     </header>
 
     {audioUrl && (
-      <section class="kating-audio-player" id="kating-audio-player" aria-label="Pemutar Audio Panduan Neural">
-        <div class="audio-player-badge">
-          <span class="audio-badge-dot"></span>
-          <span class="audio-badge-text">// PANDUAN SUARA NEURAL &bull; KATING BOASH</span>
-          <span class="audio-badge-tech">24kHz 48kbps Mono</span>
-        </div>
-        <div class="audio-player-controls">
-          <button type="button" class="audio-btn-play" id="audio-play-toggle" aria-label="Putar Panduan Suara">
-            <svg class="audio-icon-play" width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-              <polygon points="5 3 19 12 5 21 5 3"/>
-            </svg>
-            <svg class="audio-icon-pause" width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
-              <rect x="6" y="4" width="4" height="16"/>
-              <rect x="14" y="4" width="4" height="16"/>
-            </svg>
-            <span class="audio-play-label">Putar Audio</span>
-          </button>
-
-          <!-- EQUALIZER BARS ANIMATION -->
-          <div class="audio-equalizer" aria-hidden="true" title="Equalizer Audio">
-            <span class="eq-bar"></span>
-            <span class="eq-bar"></span>
-            <span class="eq-bar"></span>
-            <span class="eq-bar"></span>
-            <span class="eq-bar"></span>
+      <aside class="kating-audio-popup" id="kating-audio-popup" aria-label="Pemutar Audio Panduan" style="display: none;">
+        <div class="audio-popup-card">
+          <!-- POPUP HEADER ROW -->
+          <div class="audio-popup-head">
+            <div class="audio-popup-title-group">
+              <span class="audio-popup-pulse-dot"></span>
+              <span class="audio-popup-title">// SUARA NEURAL KATING</span>
+            </div>
+            <div class="audio-popup-actions">
+              <!-- SPEED SELECTOR -->
+              <button type="button" class="audio-btn-speed" id="audio-speed-btn" title="Ubah Kecepatan Suara" aria-label="Kecepatan 1.0x">
+                <span id="audio-speed-val">1.0x</span>
+              </button>
+              <!-- CLOSE POPUP BUTTON -->
+              <button type="button" class="audio-btn-close" id="audio-popup-close-btn" aria-label="Tutup Panel Audio" title="Tutup Panel Audio">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
           </div>
 
-          <!-- TIME & SCRUBBER -->
-          <div class="audio-track-wrapper">
-            <input type="range" class="audio-progress" id="audio-progress-bar" min="0" max="100" value="0" step="0.1" aria-label="Progress Audio" />
+          <!-- NOTE TITLE SUBHEADER -->
+          <div class="audio-popup-note-title" title={note.title}>
+            {note.title}
+          </div>
+
+          <!-- PLAYBACK CONTROLS: -10s, MAIN PLAY/PAUSE, +10s -->
+          <div class="audio-controls-row">
+            <!-- -10s -->
+            <button type="button" class="audio-btn-step" id="audio-step-back" title="Mundur 10 Detik" aria-label="Mundur 10 Detik">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 17l-5-5 5-5M18 17l-5-5 5-5"/>
+              </svg>
+              <span>-10s</span>
+            </button>
+
+            <!-- MAIN PLAY/PAUSE BUTTON -->
+            <button type="button" class="audio-btn-main-play" id="audio-play-toggle" aria-label="Putar Panduan Suara">
+              <svg class="audio-icon-play" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="6 4 19 12 6 20 6 4"/>
+              </svg>
+              <svg class="audio-icon-pause" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+                <rect x="6" y="4" width="4" height="16"/>
+                <rect x="14" y="4" width="4" height="16"/>
+              </svg>
+            </button>
+
+            <!-- +10s -->
+            <button type="button" class="audio-btn-step" id="audio-step-forward" title="Maju 10 Detik" aria-label="Maju 10 Detik">
+              <span>+10s</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M13 17l5-5-5-5M6 17l5-5-5-5"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- CUSTOM MODERN SCRUBBER SLIDER (MATCHING SCREENSHOT) -->
+          <div class="audio-scrubber-container">
+            <div class="audio-scrubber-hitbox" id="audio-scrubber-hitbox" role="slider" aria-label="Posisi Durasi Audio" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">
+              <div class="audio-scrubber-track">
+                <div class="audio-scrubber-played" id="audio-scrubber-played" style="width: 0%;"></div>
+                <div class="audio-scrubber-cursor" id="audio-scrubber-cursor" style="left: 0%;"></div>
+                <span class="audio-scrubber-end-dot" aria-hidden="true"></span>
+              </div>
+            </div>
             <div class="audio-time-row">
-              <span id="audio-current-time" class="audio-time-text">00:00</span>
-              <span class="audio-time-sep">/</span>
+              <span id="audio-current-time" class="audio-time-text">0:00</span>
               <span id="audio-total-time" class="audio-time-text">--:--</span>
             </div>
           </div>
 
-          <!-- SPEED TOGGLE -->
-          <button type="button" class="audio-btn-speed" id="audio-speed-btn" title="Ubah Kecepatan Suara" aria-label="Kecepatan 1.0x">
-            <span id="audio-speed-val">1.0x</span>
-          </button>
+          <audio id="kating-audio-element" src={audioUrl} preload="metadata"></audio>
         </div>
-        <audio id="kating-audio-element" src={audioUrl} preload="metadata"></audio>
-      </section>
+      </aside>
     )}
 
     <!-- MAIN ARTICLE BODY (PRE-RENDERED FAST HTML) -->
@@ -383,18 +425,6 @@ const ogImageUrl = `/og/${note.id}.png`;
 
 <script is:inline>
 (function() {
-  // Reading progress bar
-  const progBar = document.getElementById('read-progress-bar');
-  if (progBar) {
-    window.addEventListener('scroll', () => {
-      const h = document.documentElement.scrollHeight - window.innerHeight;
-      const pct = h > 0 ? (window.scrollY / h) * 100 : 0;
-      progBar.style.width = Math.min(100, Math.max(0, pct)) + '%';
-    }, { passive: true });
-  }
-
-
-
   // Global helper for copying code snippets in command panels and interactive terminals
   window.copyCodeSnippet = function(button) {
     const panel = button.closest('.command-panel') || button.closest('.interactive-terminal');
@@ -726,85 +756,221 @@ const ogImageUrl = `/og/${note.id}.png`;
     }
   }
 
-  // AI Neural Audio Player Controller
+  // AI Neural Audio Popup Player Controller
   const audioEl = document.getElementById('kating-audio-element');
+  const btnTogglePanel = document.getElementById('btn-toggle-audio-panel');
+  const audioPopup = document.getElementById('kating-audio-popup');
+  const btnClosePopup = document.getElementById('audio-popup-close-btn');
+  const audioPulse = document.getElementById('action-audio-pulse');
   const playBtn = document.getElementById('audio-play-toggle');
   const playIcon = playBtn ? playBtn.querySelector('.audio-icon-play') : null;
   const pauseIcon = playBtn ? playBtn.querySelector('.audio-icon-pause') : null;
-  const playLabel = playBtn ? playBtn.querySelector('.audio-play-label') : null;
-  const eqEl = document.querySelector('.audio-equalizer');
-  const audioProgBar = document.getElementById('audio-progress-bar');
+  const stepBackBtn = document.getElementById('audio-step-back');
+  const stepForwardBtn = document.getElementById('audio-step-forward');
+  const scrubberHitbox = document.getElementById('audio-scrubber-hitbox');
+  const scrubberPlayed = document.getElementById('audio-scrubber-played');
+  const scrubberCursor = document.getElementById('audio-scrubber-cursor');
   const currTimeEl = document.getElementById('audio-current-time');
   const totalTimeEl = document.getElementById('audio-total-time');
   const speedBtn = document.getElementById('audio-speed-btn');
   const speedVal = document.getElementById('audio-speed-val');
 
-  if (audioEl && playBtn && audioProgBar) {
-    let isSeeking = false;
+  if (audioEl && scrubberHitbox) {
+    let isDragging = false;
 
     function formatTime(sec) {
-      if (!sec || isNaN(sec)) return '00:00';
+      if (!sec || isNaN(sec) || sec < 0) return '0:00';
       const m = Math.floor(sec / 60);
       const s = Math.floor(sec % 60);
-      return (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s);
+      return m + ':' + (s < 10 ? '0' + s : s);
     }
 
     function setPlayState(isPlaying) {
       if (isPlaying) {
         if (playIcon) playIcon.style.display = 'none';
         if (pauseIcon) pauseIcon.style.display = 'inline-block';
-        if (playLabel) playLabel.textContent = 'Jeda';
-        if (eqEl) eqEl.classList.add('playing');
+        if (audioPulse) audioPulse.style.display = 'inline-block';
+        if (btnTogglePanel) btnTogglePanel.classList.add('audio-active-playing');
       } else {
         if (playIcon) playIcon.style.display = 'inline-block';
         if (pauseIcon) pauseIcon.style.display = 'none';
-        if (playLabel) playLabel.textContent = 'Putar Audio';
-        if (eqEl) eqEl.classList.remove('playing');
+        if (audioPulse) audioPulse.style.display = 'none';
+        if (btnTogglePanel) btnTogglePanel.classList.remove('audio-active-playing');
       }
     }
 
+    function updateScrubberUI(pct) {
+      const clamped = Math.max(0, Math.min(100, pct));
+      if (scrubberPlayed) scrubberPlayed.style.width = clamped + '%';
+      if (scrubberCursor) scrubberCursor.style.left = clamped + '%';
+      if (scrubberHitbox) scrubberHitbox.setAttribute('aria-valuenow', clamped.toFixed(1));
+    }
+
+    function getPctFromEvent(e) {
+      const rect = scrubberHitbox.getBoundingClientRect();
+      const clientX = e.touches && e.touches.length > 0 ? e.touches[0].clientX : e.clientX;
+      const x = clientX - rect.left;
+      return Math.max(0, Math.min(100, (x / rect.width) * 100));
+    }
+
+    function handleSeek(e, commit = false) {
+      if (!audioEl.duration) return;
+      const pct = getPctFromEvent(e);
+      updateScrubberUI(pct);
+      const targetTime = (pct / 100) * audioEl.duration;
+      if (currTimeEl) currTimeEl.textContent = formatTime(targetTime);
+      if (commit) {
+        audioEl.currentTime = targetTime;
+      }
+    }
+
+    // Popup Open / Close Actions
+    function openPopup() {
+      if (!audioPopup) return;
+      audioPopup.style.display = 'block';
+      // Trigger CSS transition
+      requestAnimationFrame(() => {
+        audioPopup.classList.add('audio-popup-visible');
+      });
+      if (btnTogglePanel) {
+        btnTogglePanel.setAttribute('aria-expanded', 'true');
+        btnTogglePanel.classList.add('active');
+      }
+    }
+
+    function closePopup() {
+      if (!audioPopup) return;
+      audioPopup.classList.remove('audio-popup-visible');
+      setTimeout(() => {
+        if (!audioPopup.classList.contains('audio-popup-visible')) {
+          audioPopup.style.display = 'none';
+        }
+      }, 240);
+      if (btnTogglePanel) {
+        btnTogglePanel.setAttribute('aria-expanded', 'false');
+        btnTogglePanel.classList.remove('active');
+      }
+    }
+
+    if (btnTogglePanel) {
+      btnTogglePanel.addEventListener('click', () => {
+        const isOpen = audioPopup && audioPopup.classList.contains('audio-popup-visible');
+        if (isOpen) {
+          closePopup();
+        } else {
+          openPopup();
+          if (audioEl.paused) {
+            audioEl.play().then(() => setPlayState(true)).catch(() => {});
+          }
+        }
+      });
+    }
+
+    if (btnClosePopup) {
+      btnClosePopup.addEventListener('click', closePopup);
+    }
+
+    // Audio Metadata & Time Update
     audioEl.addEventListener('loadedmetadata', () => {
       if (totalTimeEl) totalTimeEl.textContent = formatTime(audioEl.duration);
     });
 
     audioEl.addEventListener('timeupdate', () => {
-      if (!isSeeking && audioEl.duration) {
+      if (!isDragging && audioEl.duration) {
         const pct = (audioEl.currentTime / audioEl.duration) * 100;
-        audioProgBar.value = pct;
+        updateScrubberUI(pct);
         if (currTimeEl) currTimeEl.textContent = formatTime(audioEl.currentTime);
       }
     });
 
     audioEl.addEventListener('ended', () => {
       setPlayState(false);
-      audioProgBar.value = 0;
-      if (currTimeEl) currTimeEl.textContent = '00:00';
+      updateScrubberUI(0);
+      if (currTimeEl) currTimeEl.textContent = '0:00';
     });
 
-    playBtn.addEventListener('click', () => {
-      if (audioEl.paused) {
-        audioEl.play().then(() => setPlayState(true)).catch(() => {});
-      } else {
-        audioEl.pause();
-        setPlayState(false);
+    // Play / Pause Button
+    if (playBtn) {
+      playBtn.addEventListener('click', () => {
+        if (audioEl.paused) {
+          audioEl.play().then(() => setPlayState(true)).catch(() => {});
+        } else {
+          audioEl.pause();
+          setPlayState(false);
+        }
+      });
+    }
+
+    // Step -10s and +10s
+    if (stepBackBtn) {
+      stepBackBtn.addEventListener('click', () => {
+        audioEl.currentTime = Math.max(0, audioEl.currentTime - 10);
+      });
+    }
+
+    if (stepForwardBtn) {
+      stepForwardBtn.addEventListener('click', () => {
+        if (audioEl.duration) {
+          audioEl.currentTime = Math.min(audioEl.duration, audioEl.currentTime + 10);
+        }
+      });
+    }
+
+    // Interactive Drag & Seek Scrubber (Desktop Mouse)
+    scrubberHitbox.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      handleSeek(e, false);
+
+      const onMouseMove = (ev) => {
+        if (isDragging) handleSeek(ev, false);
+      };
+
+      const onMouseUp = (ev) => {
+        if (isDragging) {
+          isDragging = false;
+          handleSeek(ev, true);
+        }
+        window.removeEventListener('mousemove', onMouseMove);
+        window.removeEventListener('mouseup', onMouseUp);
+      };
+
+      window.addEventListener('mousemove', onMouseMove);
+      window.addEventListener('mouseup', onMouseUp);
+    });
+
+    // Interactive Drag & Seek Scrubber (Mobile Touch)
+    scrubberHitbox.addEventListener('touchstart', (e) => {
+      isDragging = true;
+      handleSeek(e, false);
+    }, { passive: true });
+
+    scrubberHitbox.addEventListener('touchmove', (e) => {
+      if (isDragging) handleSeek(e, false);
+    }, { passive: true });
+
+    scrubberHitbox.addEventListener('touchend', (e) => {
+      if (isDragging) {
+        isDragging = false;
+        const clientX = e.changedTouches && e.changedTouches.length > 0 ? e.changedTouches[0].clientX : null;
+        if (clientX !== null && audioEl.duration) {
+          const rect = scrubberHitbox.getBoundingClientRect();
+          const pct = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
+          audioEl.currentTime = (pct / 100) * audioEl.duration;
+        }
       }
     });
 
-    audioProgBar.addEventListener('input', () => {
-      isSeeking = true;
-      if (audioEl.duration) {
-        const target = (audioProgBar.value / 100) * audioEl.duration;
-        if (currTimeEl) currTimeEl.textContent = formatTime(target);
+    // Scrubber Keyboard Accessibility
+    scrubberHitbox.addEventListener('keydown', (e) => {
+      if (!audioEl.duration) return;
+      if (e.key === 'ArrowLeft') {
+        audioEl.currentTime = Math.max(0, audioEl.currentTime - 5);
+      } else if (e.key === 'ArrowRight') {
+        audioEl.currentTime = Math.min(audioEl.duration, audioEl.currentTime + 5);
       }
     });
 
-    audioProgBar.addEventListener('change', () => {
-      if (audioEl.duration) {
-        audioEl.currentTime = (audioProgBar.value / 100) * audioEl.duration;
-      }
-      isSeeking = false;
-    });
-
+    // Playback Speed Toggle (1.0x -> 1.25x -> 1.5x -> 2.0x)
     const speeds = [1.0, 1.25, 1.5, 2.0];
     let speedIdx = 0;
     if (speedBtn) {

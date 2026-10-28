@@ -8,9 +8,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   description="Pusat dokumentasi catatan praktikum mandiri dan panduan akademik mahasiswa Universitas Boash."
   currentPath="/404"
 >
-  <!-- TOP READING PROGRESS BAR (HIDDEN IN 404 MODE, ACTIVE IN DYNAMIC READER) -->
-  <div id="read-progress-bar" style="position: fixed; top: 0; left: 0; height: 3px; background: var(--accent); width: 0%; z-index: 1003; transition: width 0.1s linear;"></div>
-
   <!-- CONTAINER 1: DYNAMIC NOTE VIEWER (HYDRATED ON /note/* FALLBACK) -->
   <div id="dynamic-note-wrapper" style="display: none; width: 100%;">
     <!-- SKELETON / LOADING STATE -->
