@@ -11,7 +11,7 @@
     "dev": "astro dev",
     "build": "node scripts/generate-og.mjs && astro build",
     "preview": "astro preview",
-    "deploy": "npm run build && wrangler pages deploy dist --project-name katakating --commit-dirty=true",
+    "deploy": "npm run build && npx wrangler pages deploy dist --project-name katakating --commit-dirty=true",
     "astro": "astro",
     "test": "node --test test/catalog.test.js",
     "validate": "npm run build && npm test"
@@ -31,5 +31,8 @@
     "astro": "^7.3.8",
     "mammoth": "^1.13.0",
     "marked": "^18.1.0"
+  },
+  "devDependencies": {
+    "wrangler": "^4.154.0"
   }
 }
