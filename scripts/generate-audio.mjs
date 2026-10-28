@@ -225,7 +225,7 @@ function sanitizeMarkdownToSpeech(rawContent, meta = {}) {
 /**
  * Splits long text into chunks of <= maxChunkSize characters at paragraph or sentence boundaries
  */
-function splitIntoChunks(text, maxChunkSize = 1500) {
+function splitIntoChunks(text, maxChunkSize = 900) {
   if (text.length <= maxChunkSize) return [text];
 
   const chunks = [];
@@ -263,41 +263,70 @@ function splitIntoChunks(text, maxChunkSize = 1500) {
 }
 
 /**
- * Synthesizes a text chunk to an in-memory MP3 Buffer using an active msedge-tts instance
+ * Synthesizes a text chunk to an in-memory MP3 Buffer using a dedicated fresh msedge-tts connection
  */
-async function synthesizeChunk(tts, text, timeoutMs = 60000) {
+async function synthesizeChunk(text, voice = selectedVoice, maxIdleMs = 20000, maxTotalMs = 120000) {
   const safeText = escapeXml(text);
+  const tts = new MsEdgeTTS({ connectionTimeoutMs: 15000, synthesisTimeoutMs: maxTotalMs });
+  await tts.setMetadata(voice, OUTPUT_FORMAT.AUDIO_24KHZ_48KBITRATE_MONO_MP3);
+
   return new Promise((resolve, reject) => {
     let isSettled = false;
-    const timer = setTimeout(() => {
+    let idleTimer = null;
+    const totalTimer = setTimeout(() => {
       if (!isSettled) {
         isSettled = true;
-        reject(new Error(`TTS socket timed out after ${timeoutMs / 1000}s`));
+        clearTimeout(idleTimer);
+        try { tts.close(); } catch(e){}
+        reject(new Error(`TTS stream total timeout of ${maxTotalMs / 1000}s exceeded`));
       }
-    }, timeoutMs);
+    }, maxTotalMs);
+
+    const resetIdle = () => {
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => {
+        if (!isSettled) {
+          isSettled = true;
+          clearTimeout(totalTimer);
+          try { tts.close(); } catch(e){}
+          reject(new Error(`TTS idle timeout (${maxIdleMs / 1000}s without data)`));
+        }
+      }, maxIdleMs);
+    };
+
+    resetIdle();
 
     try {
       const { audioStream } = tts.toStream(safeText);
       const buffers = [];
-      audioStream.on('data', chunk => buffers.push(chunk));
+      audioStream.on('data', chunk => {
+        resetIdle();
+        buffers.push(chunk);
+      });
       audioStream.on('end', () => {
         if (!isSettled) {
           isSettled = true;
-          clearTimeout(timer);
+          clearTimeout(idleTimer);
+          clearTimeout(totalTimer);
+          try { tts.close(); } catch(e){}
           resolve(Buffer.concat(buffers));
         }
       });
       audioStream.on('error', err => {
         if (!isSettled) {
           isSettled = true;
-          clearTimeout(timer);
+          clearTimeout(idleTimer);
+          clearTimeout(totalTimer);
+          try { tts.close(); } catch(e){}
           reject(err);
         }
       });
     } catch (e) {
       if (!isSettled) {
         isSettled = true;
-        clearTimeout(timer);
+        clearTimeout(idleTimer);
+        clearTimeout(totalTimer);
+        try { tts.close(); } catch(e){}
         reject(e);
       }
     }
@@ -323,7 +352,41 @@ async function main() {
     process.exit(1);
   }
 
-  const catalog = JSON.parse(fs.readFileSync(NOTES_CATALOG, 'utf8'));
+  let catalog = JSON.parse(fs.readFileSync(NOTES_CATALOG, 'utf8'));
+
+  // Also discover approved guides from Cloudflare D1 API if reachable
+  try {
+    const API_URL = process.env.PUBLIC_API_URL || 'https://katakating.pages.dev';
+    const res = await fetch(`${API_URL}/api/guides`, { signal: AbortSignal.timeout(3500) });
+    if (res.ok) {
+      const dbGuides = await res.json();
+      if (Array.isArray(dbGuides)) {
+        for (const g of dbGuides) {
+          if (!catalog.find(n => n.id === g.id)) {
+            const hasLocalFile = fs.existsSync(path.join(NOTES_DIR, `${g.id}.md`));
+            const hasContent = g.content && g.content.length > 200 && g.content !== g.summary;
+            if (hasLocalFile || hasContent) {
+              // If markdown file doesn't exist locally yet, write it so it can be synthesized
+              if (!hasLocalFile && hasContent) {
+                fs.writeFileSync(path.join(NOTES_DIR, `${g.id}.md`), g.content, 'utf8');
+              }
+              catalog.push({
+                id: g.id,
+                title: g.title,
+                category: g.category || 'Praktikum',
+                author: g.author_name || 'Kontributor Boash',
+                summary: g.summary || g.title,
+                file: `${g.id}.md`
+              });
+            }
+          }
+        }
+      }
+    }
+  } catch (e) {
+    // Graceful offline fallback
+  }
+
   let targetNotes = catalog;
 
   if (targetId) {
@@ -367,23 +430,18 @@ async function main() {
     console.log(`  - Panjang naskah lisan: ${spokenText.length} karakter (${chunks.length} bagian)`);
     const startTime = Date.now();
 
-    let tts = new MsEdgeTTS();
     try {
-      await tts.setMetadata(selectedVoice, OUTPUT_FORMAT.AUDIO_24KHZ_48KBITRATE_MONO_MP3);
       const audioParts = [];
       for (let i = 0; i < chunks.length; i++) {
         process.stdout.write(`  - Mengirim bagian ${i + 1}/${chunks.length} ke neural engine... `);
         let partBuffer = null;
         for (let attempt = 1; attempt <= 3; attempt++) {
           try {
-            partBuffer = await synthesizeChunk(tts, chunks[i], 60000);
+            partBuffer = await synthesizeChunk(chunks[i], selectedVoice, 25000);
             break;
           } catch (err) {
             console.warn(`\n    (percobaan ${attempt} gagal: ${err.message})`);
-            try { tts.close(); } catch(e){}
-            tts = new MsEdgeTTS();
-            await tts.setMetadata(selectedVoice, OUTPUT_FORMAT.AUDIO_24KHZ_48KBITRATE_MONO_MP3);
-            await new Promise(r => setTimeout(r, 1500));
+            await new Promise(r => setTimeout(r, 1200));
           }
         }
         if (!partBuffer) {
@@ -395,6 +453,13 @@ async function main() {
 
       const finalMp3 = Buffer.concat(audioParts);
       fs.writeFileSync(outFile, finalMp3);
+
+      // Also copy to dist/audio if dist exists
+      const distAudioDir = path.join(rootDir, 'dist', 'audio');
+      if (fs.existsSync(distAudioDir)) {
+        fs.writeFileSync(path.join(distAudioDir, `${note.id}.mp3`), finalMp3);
+      }
+
       const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
       const sizeKb = (finalMp3.length / 1024).toFixed(1);
 
@@ -402,8 +467,6 @@ async function main() {
       generatedCount++;
     } catch (err) {
       console.error(`  [ERROR] Gagal memproses audio untuk '${note.id}':`, err.message || err);
-    } finally {
-      try { tts.close(); } catch(e){}
     }
   }
 

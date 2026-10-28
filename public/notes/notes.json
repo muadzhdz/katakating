@@ -80,25 +80,6 @@
     "file": "format-margin-laporan-4433.md"
   },
   {
-    "id": "jaringan-routing-vlan-cisco",
-    "title": "Konfigurasi Inter-VLAN Routing & Trunking pada Cisco Packet Tracer",
-    "category": "Jaringan Komputer",
-    "author": "Mu'adz Hudzaifah",
-    "date": "2026-09-21",
-    "readTime": "7 menit",
-    "initials": "VLAN",
-    "tags": [
-      "jaringan",
-      "cisco",
-      "vlan",
-      "routing",
-      "packet-tracer",
-      "networking"
-    ],
-    "summary": "Tutorial konfigurasi jaringan switch layer-2 dan router on-a-stick untuk memisahkan segmentasi traffic mahasiswa dan dosen di lab praktikum.",
-    "file": "jaringan-routing-vlan-cisco.md"
-  },
-  {
     "id": "basis-data-relasional-normalisasi",
     "title": "Panduan Praktis Normalisasi Basis Data (1NF, 2NF, 3NF)",
     "category": "Basis Data",
@@ -135,25 +116,6 @@
     "file": "algoritma-struktur-data-dasar.md"
   },
   {
-    "id": "wokwi-esp32-mqtt-hivemq",
-    "title": "Simulasi Telemetri ESP32 & MQTT HiveMQ di Browser (Tanpa Alat Fisik)",
-    "category": "IoT & Embedded",
-    "author": "Mu'adz Hudzaifah",
-    "date": "2026-09-21",
-    "readTime": "6 menit",
-    "initials": "MQTT",
-    "tags": [
-      "iot",
-      "esp32",
-      "mqtt",
-      "wokwi",
-      "hivemq",
-      "arduino"
-    ],
-    "summary": "Tutorial membuat simulasi monitoring sensor suhu virtual di Wokwi dan mempublikasikan data telemetry real-time ke broker publik MQTT tanpa membeli modul hardware.",
-    "file": "wokwi-esp32-mqtt-hivemq.md"
-  },
-  {
     "id": "git-workflow-conflict-detached-head",
     "title": "Mengatasi Detached HEAD & Merge Conflict pada Git Kolaboratif",
     "category": "Git & DevOps",
@@ -170,25 +132,6 @@
     ],
     "summary": "Panduan pemecahan masalah (troubleshooting) ketika commit tersangkut di detached HEAD atau branch lokal bentrok dengan commit rekan kelompok di repository GitHub.",
     "file": "git-workflow-conflict-detached-head.md"
-  },
-  {
-    "id": "blender-to-unity-pipeline",
-    "title": "Pipeline Export Aset 3D Blender ke Unity 2022 LTS (Fix Skala & Rotasi)",
-    "category": "Game & Multimedia",
-    "author": "Tim KataKating",
-    "date": "2026-09-21",
-    "readTime": "5 menit",
-    "initials": "BLND",
-    "tags": [
-      "blender",
-      "unity",
-      "3d",
-      "gamedev",
-      "fbx",
-      "multimedia"
-    ],
-    "summary": "Panduan export FBX dari Blender 4.x ke engine Unity agar model tidak miring rotasi -90 derajat pada sumbu X dan skala objek proporsional 1:1.",
-    "file": "blender-to-unity-pipeline.md"
   },
   {
     "id": "metodologi-mdlc-multimedia",
@@ -229,44 +172,6 @@
     "file": "panduan-kontribusi.md"
   },
   {
-    "id": "rumus-esensial-excel-akuntansi-kuliah",
-    "title": "Rumus Esensial Excel untuk Tugas Kuliah, Olah Data & Akuntansi",
-    "category": "Akademik & Laporan",
-    "author": "BEM & Mahasiswa Akuntansi",
-    "date": "2026-09-28",
-    "readTime": "6 menit",
-    "initials": "EXCL",
-    "tags": [
-      "excel",
-      "office",
-      "akuntansi",
-      "olah-data",
-      "vlookup",
-      "statistik"
-    ],
-    "summary": "Kumpulan rumus penting Microsoft Excel yang wajib dikuasai mahasiswa semua jurusan untuk menyelesaikan tugas laporan, olah data praktikum, dan tabel keuangan tanpa repot menghitung manual.",
-    "file": "rumus-esensial-excel-akuntansi-kuliah.md"
-  },
-  {
-    "id": "tata-cara-sopan-menghubungi-dosen-kating",
-    "title": "Tata Cara & Etika Sopan Menghubungi Dosen serta Kakak Tingkat",
-    "category": "Akademik & Laporan",
-    "author": "Tim Katakating & Himpunan Mahasiswa",
-    "date": "2026-09-28",
-    "readTime": "3 menit",
-    "initials": "ETIK",
-    "tags": [
-      "mentoring",
-      "etika",
-      "whatsapp",
-      "dosen",
-      "tips-kuliah",
-      "kating"
-    ],
-    "summary": "Panduan sopan dan templat pesan WhatsApp siap pakai saat ingin berkonsultasi mengenai tugas, meminta izin tidak hadir, atau meminta bimbingan kepada kakak tingkat tanpa rasa canggung.",
-    "file": "tata-cara-sopan-menghubungi-dosen-kating.md"
-  },
-  {
     "id": "setup-dual-boot-linux-windows",
     "title": "Panduan Setup Dual-Boot Linux dan Windows untuk Praktikum Mahasiswa Baru",
     "category": "Web & Tooling",
@@ -286,25 +191,6 @@
     "file": "setup-dual-boot-linux-windows.md"
   },
   {
-    "id": "pointer-memori-dinamis-cpp",
-    "title": "Solusi Memahami Pointer dan Alokasi Memori Dinamis C/C++ Tanpa Segfault",
-    "category": "Algoritma & Pemrograman",
-    "author": "Mu'adz Hudzaifah",
-    "date": "2026-09-22",
-    "readTime": "7 menit",
-    "initials": "PTR",
-    "tags": [
-      "cpp",
-      "c",
-      "pointer",
-      "memory",
-      "segfault",
-      "algoritma"
-    ],
-    "summary": "Tips visual memahami alamat memori, dereferencing, malloc, free, dan smart pointers di C++ agar praktikum algoritma bebas error.",
-    "file": "pointer-memori-dinamis-cpp.md"
-  },
-  {
     "id": "normalisasi-sql-1nf-ke-3nf",
     "title": "Cheat-Sheet Query SQL: Cara Cepat Normalisasi Data dari 1NF sampai 3NF",
     "category": "Basis Data",
@@ -321,62 +207,5 @@
     ],
     "summary": "Metode cepat memecah tabel data yang berantakan menjadi tabel relasional yang memenuhi standar 1NF, 2NF, dan 3NF.",
     "file": "normalisasi-sql-1nf-ke-3nf.md"
-  },
-  {
-    "id": "render-blender-crash-gpu-hemat-daya",
-    "title": "Cara Mengatasi Render Blender Sering Crash pada Laptop Tanpa GPU Tambahan",
-    "category": "Game & Multimedia",
-    "author": "Tim KataKating",
-    "date": "2026-09-22",
-    "readTime": "6 menit",
-    "initials": "BLEN",
-    "tags": [
-      "blender",
-      "multimedia",
-      "3d",
-      "render",
-      "cycles",
-      "eevee"
-    ],
-    "summary": "Trik optimasi setting render Cycles dan Eevee agar tidak freeze atau close sendiri saat rendering tugas 3D di laptop standar.",
-    "file": "render-blender-crash-gpu-hemat-daya.md"
-  },
-  {
-    "id": "simulasi-esp32-dht22-wokwi",
-    "title": "Langkah Simulasi ESP32 dan Sensor DHT22 di Wokwi Sebelum Turun ke Hardware Fisik",
-    "category": "IoT & Embedded",
-    "author": "Mu'adz Hudzaifah",
-    "date": "2026-09-22",
-    "readTime": "7 menit",
-    "initials": "WOKW",
-    "tags": [
-      "iot",
-      "esp32",
-      "dht22",
-      "wokwi",
-      "mqtt",
-      "arduino"
-    ],
-    "summary": "Panduan lengkap wiring virtual diagram.json, konfigurasi MQTT broker publik, dan pengujian OLED SSD1306 di Wokwi.",
-    "file": "simulasi-esp32-dht22-wokwi.md"
-  },
-  {
-    "id": "bypass-gradle-timeout-android-studio",
-    "title": "Solusi Mengatasi Build Timeout dan Error Gradle pada Android Studio",
-    "category": "Web & Tooling",
-    "author": "Tim KataKating",
-    "date": "2026-09-22",
-    "readTime": "6 menit",
-    "initials": "GRAD",
-    "tags": [
-      "android",
-      "gradle",
-      "mobile",
-      "build",
-      "java",
-      "kotlin"
-    ],
-    "summary": "Trik mengonfigurasi gradle.properties dan offline mode agar kompilasi aplikasi mobile tidak stuck berjam-jam saat koneksi lab lambat.",
-    "file": "bypass-gradle-timeout-android-studio.md"
   }
 ]

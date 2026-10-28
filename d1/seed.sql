@@ -6,51 +6,89 @@ INSERT INTO guides (
   'setup-dual-boot-linux-windows',
   'Panduan Setup Dual-Boot Linux dan Windows untuk Praktikum Mahasiswa Baru',
   'Langkah aman instalasi dual-boot Arch/Ubuntu dan Windows tanpa menghapus partisi EFI atau kehilangan lisensi bawaan laptop.',
-  'Langkah aman instalasi dual-boot Arch/Ubuntu dan Windows tanpa menghapus partisi EFI atau kehilangan lisensi bawaan laptop.',
+  '---
+id: setup-dual-boot-linux-windows
+title: "Panduan Setup Dual-Boot Linux dan Windows untuk Praktikum Mahasiswa Baru"
+category: Web & Tooling
+author: Mu''adz Hudzaifah
+date: 2026-09-22
+readTime: 8 menit
+initials: DUAL
+tags: ["linux", "windows", "dual-boot", "arch", "ubuntu", "efi"]
+summary: Langkah aman instalasi dual-boot Arch/Ubuntu dan Windows tanpa menghapus partisi EFI atau kehilangan lisensi bawaan laptop.
+file: setup-dual-boot-linux-windows.md
+---
+
+## 1. Landasan & Persiapan Partisi
+Banyak mahasiswa baru salah langkah saat ingin memasang Linux untuk praktikum jaringan atau pemrograman: mereka tanpa sengaja memformat partisi sistem Windows atau merusak EFI Bootloader bawaan pabrik (*OEM partition*).
+
+> [!STANDAR]
+> Jangan pernah menginstal Linux di laptop sebelum Anda mematikan fitur **Fast Startup** dan **BitLocker** di Windows. Jika Fast Startup aktif, partisi NTFS Windows akan terkunci dalam status *hibernated*, sehingga Linux tidak dapat membaca disk dengan aman.
+
+### Langkah Persiapan di Windows:
+1. Matikan **BitLocker Drive Encryption** di menu *Control Panel > BitLocker*.
+2. Matikan **Fast Startup** via *Power Options > Choose what the power buttons do*.
+3. Buka **Disk Management** (`diskmgmt.msc`), klik kanan pada partisi `C:`, pilih **Shrink Volume**.
+4. Sisihkan ruang kosong (*Unallocated Space*) minimal **50 GB** untuk sistem Linux.
+
+---
+
+## 2. Setting BIOS / UEFI
+Restart laptop dan masuk ke menu BIOS/UEFI (biasanya tombol `F2`, `F12`, atau `Del` saat logo laptop menyala):
+1. **SATA Mode / Storage Controller**: Pastikan diatur ke **AHCI**, bukan *Intel RST / RAID On*. Jika masih RAID On, Linux installer tidak akan mendeteksi SSD NVMe Anda.
+2. **Secure Boot**: Nonaktifkan (*Disabled*) jika Anda memasang distro seperti Arch Linux. Jika memasang Ubuntu atau Fedora, Secure Boot dapat dibiarkan aktif.
+
+> [!ERROR]
+> Mengubah mode SATA dari RST ke AHCI dapat membuat Windows bluescreen jika tidak dipersiapkan via *Safe Mode* terlebih dahulu. Jalankan `bcdedit /set {current} safeboot minimal` di cmd Windows sebelum mengubah mode SATA di BIOS.
+
+---
+
+## 3. Langkah Partisi Manual di Linux Installer
+Saat masuk ke instalasi Linux (misal Ubuntu atau Archinstall), selalu pilih opsi **Manual Partitioning / Something Else**, BUKAN opsi *"Erase disk and install Linux"*.
+
+Gunakan partisi EFI yang sudah ada dari Windows:
+1. **EFI System Partition (ESP)**: Cari partisi bertipe `EFI` (ukuran biasanya 100 MB - 260 MB, format FAT32). Tetapkan *Mount Point* ke `/boot/efi` dan **JANGAN diformat**!
+2. **Root Partition (`/`)**: Pada *Unallocated Space*, buat partisi format `ext4` atau `btrfs` dengan mount point `/`.
+3. **Swap**: Jika RAM laptop 8 GB atau lebih, swap file sudah cukup; tidak wajib membuat partisi swap khusus.
+
+```terminal
+$ lsblk -f
+# Output: nvme0n1p1  vfat   BOOT  /boot/efi (Windows Boot Manager + GRUB)
+# Output: nvme0n1p2  ntfs   OS    (Windows 11)
+# Output: nvme0n1p3  ext4   ROOT  / (Ubuntu / Arch Linux)
+```
+
+---
+
+## 4. Konfigurasi GRUB & Os-Prober
+Agar menu GRUB saat booting otomatis memuat pilihan Windows dan Linux:
+
+> [!KATING]
+> Tips kating: Di distro modern seperti Ubuntu 24.04 atau Arch Linux, fitur `os-prober` sering kali dinonaktifkan secara default untuk alasan keamanan. Pastikan Anda mengaktifkannya kembali di file konfigurasi `/etc/default/grub`.
+
+```terminal
+$ sudo apt install os-prober
+$ sudo nano /etc/default/grub
+# Tambahkan atau ubah baris berikut:
+GRUB_DISABLE_OS_PROBER=false
+$ sudo update-grub
+```
+
+Setelah `update-grub` dijalankan, terminal akan mendeteksi `Found Windows Boot Manager on /dev/nvme0n1p1@/EFI/Microsoft/Boot/bootmgfw.efi`. Sekarang laptop Anda siap dipakai praktikum dengan dual-boot yang bersih dan aman.
+',
   'Mu''adz Hudzaifah',
   '24903460014',
-  'systems-network',
-  '["TRM","IF","SRK","Mekatronika"]',
+  'Web & Tooling',
+  '["linux","windows","dual-boot","arch","ubuntu","efi"]',
   1,
-  'DB',
+  'DUAL',
   '#00ff66',
   '',
   '',
-  142,
-  45,
-  '2026-09-23 10:00:00',
-  '2026-09-23 10:00:00'
-) ON CONFLICT(id) DO UPDATE SET
-  title = excluded.title,
-  summary = excluded.summary,
-  content = excluded.content,
-  author_name = excluded.author_name,
-  category = excluded.category,
-  prodi_tags = excluded.prodi_tags,
-  initials = excluded.initials,
-  updated_at = datetime('now');
-
-
-INSERT INTO guides (
-  id, title, summary, content, author_name, author_npm, category, prodi_tags, semester, initials, accent, video_url, diagram_url, views_count, copy_count, created_at, updated_at
-) VALUES (
-  'pointer-memori-dinamis-cpp',
-  'Solusi Memahami Pointer dan Alokasi Memori Dinamis C/C++ Tanpa Segfault',
-  'Tips visual memahami alamat memori, dereferencing, malloc, free, dan smart pointers di C++ agar praktikum algoritma bebas error.',
-  'Tips visual memahami alamat memori, dereferencing, malloc, free, dan smart pointers di C++ agar praktikum algoritma bebas error.',
-  'Mu''adz Hudzaifah',
-  '24903460014',
-  'web-software',
-  '["TRM","IF","Mekatronika"]',
-  1,
-  'PT',
-  '#00ff66',
-  '',
-  '',
-  89,
-  23,
-  '2026-09-23 10:00:00',
-  '2026-09-23 10:00:00'
+  120,
+  35,
+  '2026-09-22 10:00:00',
+  '2026-09-22 10:00:00'
 ) ON CONFLICT(id) DO UPDATE SET
   title = excluded.title,
   summary = excluded.summary,
@@ -68,111 +106,149 @@ INSERT INTO guides (
   'normalisasi-sql-1nf-ke-3nf',
   'Cheat-Sheet Query SQL: Cara Cepat Normalisasi Data dari 1NF sampai 3NF',
   'Metode cepat memecah tabel data yang berantakan menjadi tabel relasional yang memenuhi standar 1NF, 2NF, dan 3NF.',
-  'Metode cepat memecah tabel data yang berantakan menjadi tabel relasional yang memenuhi standar 1NF, 2NF, dan 3NF.',
+  '---
+id: normalisasi-sql-1nf-ke-3nf
+title: "Cheat-Sheet Query SQL: Cara Cepat Normalisasi Data dari 1NF sampai 3NF"
+category: Basis Data
+author: Tim KataKating
+date: 2026-09-23
+readTime: 6 menit
+initials: NORM
+tags: ["database", "sql", "normalisasi", "mysql", "basis-data"]
+summary: Metode cepat memecah tabel data yang berantakan menjadi tabel relasional yang memenuhi standar 1NF, 2NF, dan 3NF.
+file: normalisasi-sql-1nf-ke-3nf.md
+---
+
+## 1. Masalah Utama: Tabel Unnormalized (UNF)
+Di dunia nyata praktikum dan proyek industri, data mentah sering kali berasal dari file Excel atau Google Form yang berantakan. Kolom-kolomnya berisi banyak nilai dalam satu baris (*repeating groups*) atau data duplikat yang memicu *insert anomaly*, *update anomaly*, dan *delete anomaly*.
+
+> [!STANDAR]
+> Normalisasi adalah proses perancangan skema relasional untuk meminimalkan redundansi data tanpa kehilangan informasi (*lossless decomposition*). Standar praktikum Basis Data TRM mewajibkan minimal bentuk normal ketiga (3NF) untuk semua entitas transaksional.
+
+Contoh data mentah (*Unnormalized Form*):
+```text
+NIM     | Nama_Mhs | Kode_MK        | Nama_MK        | Dosen        | Ruang | Nilai
+24001   | Muadz    | TRM101, TRM102 | Linux, Web-Dev | Pak Budi     | R.301 | A, B+
+24002   | Siti     | TRM101         | Linux          | Pak Budi     | R.301 | A
+```
+
+---
+
+## 2. Langkah 1: Bentuk Normal Pertama (1NF)
+**Aturan Mutlak 1NF**:
+1. Setiap kolom wajib memiliki nilai atomik (satu sel hanya boleh berisi satu nilai tunggal).
+2. Tidak boleh ada array atau koma dalam nilai sel.
+3. Wajib menentukan Primary Key unik.
+
+```sql
+-- Skema Tabel 1NF: Mahasiswa_KRS_1NF
+-- Primary Key komposit: (nim, kode_mk)
+CREATE TABLE mahasiswa_krs_1nf (
+  nim VARCHAR(15) NOT NULL,
+  nama_mhs VARCHAR(100) NOT NULL,
+  kode_mk VARCHAR(10) NOT NULL,
+  nama_mk VARCHAR(100) NOT NULL,
+  dosen VARCHAR(100) NOT NULL,
+  ruang VARCHAR(20) NOT NULL,
+  nilai VARCHAR(2),
+  PRIMARY KEY (nim, kode_mk)
+);
+```
+
+> [!KATING]
+> Tips kating: Pada bentuk 1NF, jangan gunakan kolom JSON atau string dipisah koma. Jika sebuah entitas memiliki banyak item, jadikan baris tersendiri dan gunakan Primary Key gabungan (*composite key*).
+
+---
+
+## 3. Langkah 2: Bentuk Normal Kedua (2NF)
+**Aturan Mutlak 2NF**:
+1. Harus sudah memenuhi syarat 1NF.
+2. Tidak boleh ada **ketergantungan fungsional sebagian** (*partial functional dependency*). Semua kolom non-key harus bergantung penuh pada seluruh Primary Key, bukan sebagiannya saja.
+
+Pada tabel 1NF di atas:
+* `nama_mhs` hanya bergantung pada `nim` (bukan pada `kode_mk`).
+* `nama_mk`, `dosen`, dan `ruang` hanya bergantung pada `kode_mk` (bukan pada `nim`).
+* Hanya kolom `nilai` yang benar-benar bergantung pada kombinasi `(nim, kode_mk)`.
+
+### Solusi Pemisahan Tabel (Dekomposisi 2NF):
+```sql
+-- 1. Tabel Master Mahasiswa
+CREATE TABLE mahasiswa (
+  nim VARCHAR(15) PRIMARY KEY,
+  nama_mhs VARCHAR(100) NOT NULL
+);
+
+-- 2. Tabel Master Mata Kuliah
+CREATE TABLE mata_kuliah (
+  kode_mk VARCHAR(10) PRIMARY KEY,
+  nama_mk VARCHAR(100) NOT NULL,
+  dosen VARCHAR(100) NOT NULL,
+  ruang VARCHAR(20) NOT NULL
+);
+
+-- 3. Tabel Transaksi KRS / Nilai
+CREATE TABLE krs_nilai (
+  nim VARCHAR(15) NOT NULL,
+  kode_mk VARCHAR(10) NOT NULL,
+  nilai VARCHAR(2),
+  PRIMARY KEY (nim, kode_mk),
+  FOREIGN KEY (nim) REFERENCES mahasiswa(nim) ON DELETE CASCADE,
+  FOREIGN KEY (kode_mk) REFERENCES mata_kuliah(kode_mk) ON DELETE RESTRICT
+);
+```
+
+---
+
+## 4. Langkah 3: Bentuk Normal Ketiga (3NF)
+**Aturan Mutlak 3NF**:
+1. Harus sudah memenuhi syarat 2NF.
+2. Tidak boleh ada **ketergantungan transitif** (*transitive dependency*), yaitu kolom non-key yang bergantung pada kolom non-key lainnya.
+
+Pada tabel `mata_kuliah` di 2NF:
+* `ruang` sering kali melekat pada `dosen` atau jadwal kelas, bukan properti inheren dari mata kuliah itu sendiri. Jika dosen berganti, seluruh entri mata kuliah harus di-update (*update anomaly*).
+
+### Solusi Pemisahan Tabel (3NF Sempurna):
+```sql
+-- Tabel Dosen Pengampu
+CREATE TABLE dosen (
+  id_dosen INT AUTO_INCREMENT PRIMARY KEY,
+  nama_dosen VARCHAR(100) NOT NULL,
+  ruang_kantor VARCHAR(20) NOT NULL
+);
+
+-- Tabel Mata Kuliah (Mengacu ke id_dosen via Foreign Key)
+CREATE TABLE mata_kuliah_3nf (
+  kode_mk VARCHAR(10) PRIMARY KEY,
+  nama_mk VARCHAR(100) NOT NULL,
+  sks INT NOT NULL DEFAULT 3,
+  id_dosen INT NOT NULL,
+  FOREIGN KEY (id_dosen) REFERENCES dosen(id_dosen)
+);
+```
+
+> [!ERROR]
+> Hindari normalisasi berlebihan (*over-normalization*) melebihi 3NF / BCNF untuk tugas praktikum semester 1-5, karena akan membuat query JOIN terlalu kompleks dan menurunkan performa baca pada laporan sederhana.
+
+---
+
+## 5. Ringkasan Cheat-Sheet SQL
+```terminal
+$ mysql -u root -p sistem_akademik_boash < skema_3nf.sql
+# Output: Query OK, 4 tables created. All foreign keys verified.
+```
+Simpan file SQL di atas sebagai template praktikum Anda. Dengan skema 3NF ini, data dijamin konsisten dan siap dipakai untuk backend REST API maupun Laravel Eloquent.
+',
   'Tim KataKating',
   '24903460014',
-  'web-software',
-  '["TRM","IF","SI"]',
-  2,
-  'NF',
-  '#22c55e',
-  '',
-  '',
-  112,
-  38,
-  '2026-09-23 10:00:00',
-  '2026-09-23 10:00:00'
-) ON CONFLICT(id) DO UPDATE SET
-  title = excluded.title,
-  summary = excluded.summary,
-  content = excluded.content,
-  author_name = excluded.author_name,
-  category = excluded.category,
-  prodi_tags = excluded.prodi_tags,
-  initials = excluded.initials,
-  updated_at = datetime('now');
-
-
-INSERT INTO guides (
-  id, title, summary, content, author_name, author_npm, category, prodi_tags, semester, initials, accent, video_url, diagram_url, views_count, copy_count, created_at, updated_at
-) VALUES (
-  'render-blender-crash-gpu-hemat-daya',
-  'Cara Mengatasi Render Blender Sering Crash pada Laptop Tanpa GPU Tambahan',
-  'Trik optimasi setting render Cycles dan Eevee agar tidak freeze atau close sendiri saat rendering tugas 3D di laptop standar.',
-  'Trik optimasi setting render Cycles dan Eevee agar tidak freeze atau close sendiri saat rendering tugas 3D di laptop standar.',
-  'Tim KataKating',
-  '24903460014',
-  'multimedia-3d',
-  '["TRM"]',
-  3,
-  'BL',
-  '#34d399',
-  '',
-  '',
-  76,
-  19,
-  '2026-09-23 10:00:00',
-  '2026-09-23 10:00:00'
-) ON CONFLICT(id) DO UPDATE SET
-  title = excluded.title,
-  summary = excluded.summary,
-  content = excluded.content,
-  author_name = excluded.author_name,
-  category = excluded.category,
-  prodi_tags = excluded.prodi_tags,
-  initials = excluded.initials,
-  updated_at = datetime('now');
-
-
-INSERT INTO guides (
-  id, title, summary, content, author_name, author_npm, category, prodi_tags, semester, initials, accent, video_url, diagram_url, views_count, copy_count, created_at, updated_at
-) VALUES (
-  'simulasi-esp32-dht22-wokwi',
-  'Langkah Simulasi ESP32 dan Sensor DHT22 di Wokwi Sebelum Turun ke Hardware Fisik',
-  'Panduan lengkap wiring virtual diagram.json, konfigurasi MQTT broker publik, dan pengujian OLED SSD1306 di Wokwi.',
-  'Panduan lengkap wiring virtual diagram.json, konfigurasi MQTT broker publik, dan pengujian OLED SSD1306 di Wokwi.',
-  'Mu''adz Hudzaifah',
-  '24903460014',
-  'iot-hardware',
-  '["TRM","Mekatronika","SRK"]',
-  5,
-  'WK',
+  'Basis Data',
+  '["database","sql","normalisasi","mysql","basis-data"]',
+  1,
+  'NORM',
   '#00ff66',
   '',
   '',
-  204,
-  67,
-  '2026-09-23 10:00:00',
-  '2026-09-23 10:00:00'
-) ON CONFLICT(id) DO UPDATE SET
-  title = excluded.title,
-  summary = excluded.summary,
-  content = excluded.content,
-  author_name = excluded.author_name,
-  category = excluded.category,
-  prodi_tags = excluded.prodi_tags,
-  initials = excluded.initials,
-  updated_at = datetime('now');
-
-
-INSERT INTO guides (
-  id, title, summary, content, author_name, author_npm, category, prodi_tags, semester, initials, accent, video_url, diagram_url, views_count, copy_count, created_at, updated_at
-) VALUES (
-  'bypass-gradle-timeout-android-studio',
-  'Solusi Mengatasi Build Timeout dan Error Gradle pada Android Studio',
-  'Trik mengonfigurasi gradle.properties dan offline mode agar kompilasi aplikasi mobile tidak stuck berjam-jam saat koneksi lab lambat.',
-  'Trik mengonfigurasi gradle.properties dan offline mode agar kompilasi aplikasi mobile tidak stuck berjam-jam saat koneksi lab lambat.',
-  'Tim KataKating',
-  '24903460014',
-  'web-software',
-  '["TRM","IF"]',
-  5,
-  'AS',
-  '#10b981',
-  '',
-  '',
-  165,
-  52,
+  120,
+  35,
   '2026-09-23 10:00:00',
   '2026-09-23 10:00:00'
 ) ON CONFLICT(id) DO UPDATE SET
@@ -1210,38 +1286,41 @@ Menyiapkan environment pengembangan web berbasis Linux di dalam sistem operasi W
 ### 3.1. Install WSL2 & Ubuntu 24.04
 Buka PowerShell dengan hak akses Administrator (**Run as Administrator**), lalu jalankan perintah berikut:
 
-```bash
-# Install WSL kernel dan distro Ubuntu terbaru
-wsl --install -d Ubuntu-24.04
+```terminal
+$ wsl --install -d Ubuntu-24.04
+# Output: Installing: Virtual Machine Platform... Done
+# Output: Downloading Ubuntu 24.04 LTS... (100%)
+# Output: Installation successful. Please reboot your workstation.
 ```
+
+> [!ERROR]
+> Pastikan fitur Virtualization Technology (VT-x / AMD-V) sudah diaktifkan di BIOS laptop Anda. Jika tidak aktif, WSL2 akan melempar pesan error `Wsl/Service/RegisterDistro/CreateVm/HCS/ERROR_VIRTUALIZATION_NEEDS_ENABLE`.
 
 Setelah proses download selesai, restart komputer jika diminta oleh sistem Windows.
 
 ### 3.2. Update Repositori & Package Esensial
 Buka terminal Ubuntu yang baru dipasang, lalu buat username dan password UNIX Anda. Selanjutnya, perbarui repositori:
 
-```bash
-# Update index repositori dan upgrade paket
-sudo apt update && sudo apt upgrade -y
-
-# Install build tools dan curl
-sudo apt install -y build-essential curl wget git unzip
+```terminal
+$ sudo apt update && sudo apt upgrade -y
+# Output: All packages are up to date.
+$ sudo apt install -y build-essential curl wget git unzip
+# Output: Setting up build-essential... Done.
 ```
 
 ### 3.3. Pasang Node.js via NVM (Node Version Manager)
 Hindari memasang Node.js langsung via `apt` karena versinya sering tertinggal. Gunakan NVM agar versi Node mudah disesuaikan dengan modul praktikum:
 
-```bash
-# Download & install NVM
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+> [!KATING]
+> Tips kating: Jangan pernah install Node.js dengan perintah `sudo apt install nodejs` di Ubuntu karena repo default sering tertahan di versi lama (v18/v12). NVM memungkinkan Anda switch versi Node kapan pun sesuai kebutuhan praktikum!
 
-# Muat ulang konfigurasi bash
-source ~/.bashrc
-
-# Pasang Node.js versi LTS (Long Term Support)
-nvm install --lts
-nvm use --lts
-node -v && npm -v
+```terminal
+$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+$ source ~/.bashrc
+$ nvm install --lts
+# Output: Now using node v20.18.0 (npm v10.8.2)
+$ node -v && npm -v
+# Output: v20.18.0
 ```
 
 ### 3.4. Pasang Stack PHP & Composer (Praktikum Web Backend)
@@ -1328,6 +1407,10 @@ Berdasarkan Pedoman Penulisan Karya Tulis Ilmiah & Laporan Praktikum Universitas
 ## 2. Spesifikasi Halaman & Margin
 Ukuran kertas baku adalah **A4 (210 x 297 mm)** dengan rincian batas margin:
 
+> [!STANDAR]
+> Ketentuan margin 4-4-3-3 adalah standar mutlak perpustakaan dan kurikulum TRM Boash:
+> Kiri 4 cm (ruang jilid lakban/hardcover), Atas 4 cm, Kanan 3 cm, dan Bawah 3 cm.
+
 * **Batas Kiri (Left)**: `4 cm` (Dilebihkan 1 cm untuk jilid / binding).
 * **Batas Atas (Top)**: `4 cm`.
 * **Batas Kanan (Right)**: `3 cm`.
@@ -1336,6 +1419,9 @@ Ukuran kertas baku adalah **A4 (210 x 297 mm)** dengan rincian batas margin:
 * **Spasi Paragraf**: 1.5 Lines (Before: 0pt, After: 0pt).
 
 ## 3. Langkah Konfigurasi di Microsoft Word
+
+> [!KATING]
+> Tips rahasia kating: Selalu gunakan Section Break (Next Page) tepat sebelum Bab 1, dan jangan lupa nonaktifkan "Link to Previous" di Footer agar nomor halaman Romawi cover/kata pengantar tidak bersambung ke naskah utama!
 
 ### 3.1. Setting Margin
 1. Masuk ke tab **Layout** > klik **Margins** > pilih **Custom Margins**.
@@ -1388,140 +1474,6 @@ LAMPIRAN
   '["akademik","laporan","word","margin","skripsi","boash"]',
   1,
   '4433',
-  '#00ff66',
-  '',
-  '',
-  120,
-  35,
-  '2026-09-21 10:00:00',
-  '2026-09-21 10:00:00'
-) ON CONFLICT(id) DO UPDATE SET
-  title = excluded.title,
-  summary = excluded.summary,
-  content = excluded.content,
-  author_name = excluded.author_name,
-  category = excluded.category,
-  prodi_tags = excluded.prodi_tags,
-  initials = excluded.initials,
-  updated_at = datetime('now');
-
-
-INSERT INTO guides (
-  id, title, summary, content, author_name, author_npm, category, prodi_tags, semester, initials, accent, video_url, diagram_url, views_count, copy_count, created_at, updated_at
-) VALUES (
-  'jaringan-routing-vlan-cisco',
-  'Konfigurasi Inter-VLAN Routing & Trunking pada Cisco Packet Tracer',
-  'Tutorial konfigurasi jaringan switch layer-2 dan router on-a-stick untuk memisahkan segmentasi traffic mahasiswa dan dosen di lab praktikum.',
-  '---
-id: jaringan-routing-vlan-cisco
-title: Konfigurasi Inter-VLAN Routing & Trunking pada Cisco Packet Tracer
-category: Jaringan Komputer
-author: Mu''adz Hudzaifah
-date: 2026-09-21
-
-initials: VLAN
-tags: ["jaringan", "cisco", "vlan", "routing", "packet-tracer", "networking"]
-summary: Tutorial konfigurasi jaringan switch layer-2 dan router on-a-stick untuk memisahkan segmentasi traffic mahasiswa dan dosen di lab praktikum.
----
-
-## 1. Tujuan Praktikum
-Memahami konsep segmentasi Local Area Network menggunakan Virtual LAN (VLAN) dan mengonfigurasi Router-on-a-Stick (802.1Q Encapsulation) pada Cisco IOS agar host yang berada pada subnet VLAN berbeda dapat saling berkomunikasi secara terkontrol.
-
-## 2. Topologi & Alokasi Subnet
-* **Switch**: Cisco Catalyst 2960
-* **Router**: Cisco 2911
-* **VLAN 10 (Mahasiswa)**:
-  * Network: `192.168.10.0/24`
-  * Gateway: `192.168.10.1`
-* **VLAN 20 (Dosen)**:
-  * Network: `192.168.20.0/24`
-  * Gateway: `192.168.20.1`
-
-## 3. Langkah Konfigurasi
-
-### 3.1. Konfigurasi VLAN pada Switch
-Buka CLI Switch 2960 dan daftarkan database VLAN:
-
-```cisco
-Switch> enable
-Switch# configure terminal
-Switch(config)# vlan 10
-Switch(config-vlan)# name VLAN_MAHASISWA
-Switch(config-vlan)# exit
-
-Switch(config)# vlan 20
-Switch(config-vlan)# name VLAN_DOSEN
-Switch(config-vlan)# exit
-```
-
-### 3.2. Penentuan Access Port ke PC Client
-Arahkan port FastEthernet 0/1 ke VLAN 10 dan FastEthernet 0/2 ke VLAN 20:
-
-```cisco
-# Port untuk PC Mahasiswa
-Switch(config)# interface FastEthernet 0/1
-Switch(config-if)# switchport mode access
-Switch(config-if)# switchport access vlan 10
-Switch(config-if)# exit
-
-# Port untuk PC Dosen
-Switch(config)# interface FastEthernet 0/2
-Switch(config-if)# switchport mode access
-Switch(config-if)# switchport access vlan 20
-Switch(config-if)# exit
-```
-
-### 3.3. Konfigurasi Trunking Port ke Router
-Port uplink yang mengarah ke router (misal GigabitEthernet 0/1) wajib diatur ke mode Trunk agar membawa paket dari banyak VLAN:
-
-```cisco
-Switch(config)# interface GigabitEthernet 0/1
-Switch(config-if)# switchport mode trunk
-Switch(config-if)# exit
-```
-
-### 3.4. Konfigurasi Sub-Interface (Router-on-a-Stick)
-Pada Router 2911, aktifkan interface fisik dan buat sub-interface virtual untuk tiap ID VLAN:
-
-```cisco
-Router> enable
-Router# configure terminal
-Router(config)# interface GigabitEthernet 0/0
-Router(config-if)# no shutdown
-Router(config-if)# exit
-
-# Sub-interface VLAN 10
-Router(config)# interface GigabitEthernet 0/0.10
-Router(config-subif)# encapsulation dot1Q 10
-Router(config-subif)# ip address 192.168.10.1 255.255.255.0
-Router(config-subif)# exit
-
-# Sub-interface VLAN 20
-Router(config)# interface GigabitEthernet 0/0.20
-Router(config-subif)# encapsulation dot1Q 20
-Router(config-subif)# ip address 192.168.20.1 255.255.255.0
-Router(config-subif)# exit
-```
-
-## 4. Pengujian & Verifikasi
-1. Atur IP Address di PC Mahasiswa: `192.168.10.10`, Subnet: `255.255.255.0`, Gateway: `192.168.10.1`.
-2. Atur IP Address di PC Dosen: `192.168.20.10`, Subnet: `255.255.255.0`, Gateway: `192.168.20.1`.
-3. Buka Command Prompt pada PC Mahasiswa, jalankan ping lintas VLAN:
-```bash
-ping 192.168.20.10
-```
-Jika konfigurasi benar, ping pertama mungkin RTO (karena ARP discovery), lalu paket berikutnya akan menghasilkan status **Reply from 192.168.20.10: bytes=32 time=1ms TTL=127**.
-
-## 5. Referensi
-* Cisco Networking Academy: *CCNA Routing and Switching - Introduction to Networks*.
-* Tanenbaum, A. S., & Wetherall, D. J. (2011). *Computer Networks (5th Edition)*.
-',
-  'Mu''adz Hudzaifah',
-  '24903460014',
-  'Jaringan Komputer',
-  '["jaringan","cisco","vlan","routing","packet-tracer","networking"]',
-  1,
-  'VLAN',
   '#00ff66',
   '',
   '',
@@ -1803,143 +1755,6 @@ print("Antrian sisa:", q.size()) # Output: 1
 INSERT INTO guides (
   id, title, summary, content, author_name, author_npm, category, prodi_tags, semester, initials, accent, video_url, diagram_url, views_count, copy_count, created_at, updated_at
 ) VALUES (
-  'wokwi-esp32-mqtt-hivemq',
-  'Simulasi Telemetri ESP32 & MQTT HiveMQ di Browser (Tanpa Alat Fisik)',
-  'Tutorial membuat simulasi monitoring sensor suhu virtual di Wokwi dan mempublikasikan data telemetry real-time ke broker publik MQTT tanpa membeli modul hardware.',
-  '---
-id: wokwi-esp32-mqtt-hivemq
-title: Simulasi Telemetri ESP32 & MQTT HiveMQ di Browser (Tanpa Alat Fisik)
-category: IoT & Embedded
-author: Mu''adz Hudzaifah
-date: 2026-09-21
-
-initials: MQTT
-tags: ["iot", "esp32", "mqtt", "wokwi", "hivemq", "arduino"]
-summary: Tutorial membuat simulasi monitoring sensor suhu virtual di Wokwi dan mempublikasikan data telemetry real-time ke broker publik MQTT tanpa membeli modul hardware.
----
-
-## 1. Tujuan Praktikum
-Menyelesaikan praktikum Internet of Things (IoT) protokol Machine-to-Machine (M2M) menggunakan MQTT (Message Queuing Telemetry Transport) tanpa kendala hardware rusak, kekurangan kabel jumper, atau ketiadaan router WiFi fisik.
-
-## 2. Prasyarat & Lingkungan
-* Akses browser ke simulator online gratis: [Wokwi.com](https://wokwi.com).
-* Broker MQTT Publik: `broker.hivemq.com` (Port TCP: 1883).
-* MQTT Client Dashboard: MQTTX Desktop Client atau web client di `http://www.hivemq.com/demos/websocket-client/`.
-
-## 3. Rangkaian Virtual di Wokwi
-1. Buka Wokwi, buat proyek baru: **ESP32 Arduino**.
-2. Tambahkan komponen sensor suhu dan kelembaban **DHT22**.
-3. Hubungkan pin:
-   * `VCC DHT22` -> `3V3 ESP32`
-   * `GND DHT22` -> `GND ESP32`
-   * `SDA DHT22` -> `GPIO 15 ESP32`
-
-## 4. Kode Lengkap Arduino / C++
-
-```cpp
-#include <WiFi.h>
-#include <PubSubClient.h>
-#include <DHTesp.h>
-
-const int DHT_PIN = 15;
-DHTesp dhtSensor;
-
-// Konfigurasi WiFi Wokwi Virtual
-const char* ssid = "Wokwi-GUEST";
-const char* password = "";
-
-// Konfigurasi MQTT Broker Publik
-const char* mqtt_server = "broker.hivemq.com";
-const int mqtt_port = 1883;
-const char* mqtt_topic = "boash/trm/telemetry/suhu";
-
-WiFiClient espClient;
-PubSubClient client(espClient);
-
-void setup_wifi() {
-  delay(10);
-  Serial.println("Menghubungkan ke Virtual WiFi...");
-  WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
-  Serial.println("\nWiFi Terkoneksi!");
-}
-
-void reconnect() {
-  while (!client.connected()) {
-    Serial.print("Mencoba koneksi MQTT...");
-    String clientId = "ESP32Boash-" + String(random(0xffff), HEX);
-    if (client.connect(clientId.c_str())) {
-      Serial.println("Terhubung ke HiveMQ Broker!");
-    } else {
-      delay(5000);
-    }
-  }
-}
-
-void setup() {
-  Serial.begin(115200);
-  dhtSensor.setup(DHT_PIN, DHTesp::DHT22);
-  setup_wifi();
-  client.setServer(mqtt_server, mqtt_port);
-}
-
-void loop() {
-  if (!client.connected()) {
-    reconnect();
-  }
-  client.loop();
-
-  TempAndHumidity data = dhtSensor.getTempAndHumidity();
-  String payload = "{\"suhu\":" + String(data.temperature, 2) + 
-                   ",\"lembab\":" + String(data.humidity, 1) + "}";
-                   
-  client.publish(mqtt_topic, payload.c_str());
-  Serial.println("Publikasi data: " + payload);
-  delay(3000);
-}
-```
-
-## 5. Pengujian & Monitoring
-1. Klik tombol **Play (Simulate)** di Wokwi.
-2. Buka web dashboard HiveMQ WebSocket Client di tab browser baru.
-3. Hubungkan ke `broker.hivemq.com` port `8000` (atau 8884 SSL).
-4. Klik **Subscribe to topic**, masukkan topik: `boash/trm/telemetry/suhu`.
-5. Klik sensor DHT22 di simulator Wokwi untuk mengubah suhu. Anda akan melihat payload JSON diterima secara instan tanpa jeda!
-
-## 6. Referensi
-* Oasis Standard: *MQTT Version 5.0 Specification*.
-* Wokwi Documentation: *ESP32 WiFi Simulation*.
-',
-  'Mu''adz Hudzaifah',
-  '24903460014',
-  'IoT & Embedded',
-  '["iot","esp32","mqtt","wokwi","hivemq","arduino"]',
-  1,
-  'MQTT',
-  '#00ff66',
-  '',
-  '',
-  120,
-  35,
-  '2026-09-21 10:00:00',
-  '2026-09-21 10:00:00'
-) ON CONFLICT(id) DO UPDATE SET
-  title = excluded.title,
-  summary = excluded.summary,
-  content = excluded.content,
-  author_name = excluded.author_name,
-  category = excluded.category,
-  prodi_tags = excluded.prodi_tags,
-  initials = excluded.initials,
-  updated_at = datetime('now');
-
-
-INSERT INTO guides (
-  id, title, summary, content, author_name, author_npm, category, prodi_tags, semester, initials, accent, video_url, diagram_url, views_count, copy_count, created_at, updated_at
-) VALUES (
   'git-workflow-conflict-detached-head',
   'Mengatasi Detached HEAD & Merge Conflict pada Git Kolaboratif',
   'Panduan pemecahan masalah (troubleshooting) ketika commit tersangkut di detached HEAD atau branch lokal bentrok dengan commit rekan kelompok di repository GitHub.',
@@ -2024,94 +1839,6 @@ Gunakan standar prefix commit pesan berikut agar riwayat commit tugas Anda profe
   '["git","github","detached-head","conflict","devops"]',
   1,
   'GIT',
-  '#00ff66',
-  '',
-  '',
-  120,
-  35,
-  '2026-09-21 10:00:00',
-  '2026-09-21 10:00:00'
-) ON CONFLICT(id) DO UPDATE SET
-  title = excluded.title,
-  summary = excluded.summary,
-  content = excluded.content,
-  author_name = excluded.author_name,
-  category = excluded.category,
-  prodi_tags = excluded.prodi_tags,
-  initials = excluded.initials,
-  updated_at = datetime('now');
-
-
-INSERT INTO guides (
-  id, title, summary, content, author_name, author_npm, category, prodi_tags, semester, initials, accent, video_url, diagram_url, views_count, copy_count, created_at, updated_at
-) VALUES (
-  'blender-to-unity-pipeline',
-  'Pipeline Export Aset 3D Blender ke Unity 2022 LTS (Fix Skala & Rotasi)',
-  'Panduan export FBX dari Blender 4.x ke engine Unity agar model tidak miring rotasi -90 derajat pada sumbu X dan skala objek proporsional 1:1.',
-  '---
-id: blender-to-unity-pipeline
-title: Pipeline Export Aset 3D Blender ke Unity 2022 LTS (Fix Skala & Rotasi)
-category: Game & Multimedia
-author: Tim KataKating
-date: 2026-09-21
-
-initials: BLND
-tags: ["blender", "unity", "3d", "gamedev", "fbx", "multimedia"]
-summary: Panduan export FBX dari Blender 4.x ke engine Unity agar model tidak miring rotasi -90 derajat pada sumbu X dan skala objek proporsional 1:1.
----
-
-## 1. Latar Belakang Masalah
-Blender menggunakan sistem koordinat **Right-Handed Z-Up**, sedangkan Unity menggunakan sistem koordinat **Left-Handed Y-Up**. Akibatnya, jika model 3D diekspor secara default tanpa penyesuaian:
-1. Model di Unity Inspector akan memiliki rotasi `X: -90°`.
-2. Skala model sering berubah menjadi raksasa `Scale: 100` atau mikro `Scale: 0.01`.
-3. Rigging / Armature karakter bisa patah atau terbalik arah.
-
-## 2. Langkah di Blender Sebelum Export
-
-### 2.1. Terapkan Seluruh Transformasi
-1. Di Object Mode, pilih model dan armature yang ingin diekspor.
-2. Tekan shortcut:
-```text
-Ctrl + A  >  Apply All Transforms
-```
-Langkah ini mereset Location menjadi (0,0,0), Rotation menjadi (0,0,0), dan Scale menjadi (1,1,1).
-
-### 2.2. Setting Origin Point
-Pastikan titik pivot (Origin Point) berada di dasar bawah model (tempat kaki menyentuh tanah) agar snapping objek ke ground/terrain di Unity tepat:
-* Masuk ke menu **Object** > **Set Origin** > **Origin to 3D Cursor** (setelah cursor diposisikan di titik terbawah).
-
-## 3. Konfigurasi Export FBX
-Masuk ke menu **File** > **Export** > **FBX (.fbx)**, lalu sesuaikan parameter panel kanan:
-
-1. **Include**:
-   * Centang: `[x] Selected Objects`
-   * Object Types: Pilih `Mesh` dan `Armature` (tahan tombol Shift).
-2. **Transform**:
-   * Scale: `1.00`
-   * Apply Scalings: Pilih **FBX Units Scale**
-   * Forward: `-Z Forward`
-   * Up: `Y Up`
-   * Centang: `[x] Apply Transform` *(Fitur kunci untuk mencegah rotasi -90° di Unity!)*
-3. **Armature** (Jika model memiliki tulang):
-   * Hilangkan centang: `[ ] Add Leaf Bones` (mencegah penambahan bone ekstra di ujung hierarki).
-
-## 4. Konfigurasi Import di Unity 2022 LTS
-1. Drag file `.fbx` ke panel Project di folder `Assets/Models/`.
-2. Klik aset model tersebut, pada panel **Inspector**:
-   * Masuk ke tab **Model**: Pastikan *Convert Units* dicentang.
-   * Masuk ke tab **Rig**: Jika karakter humanoid, ubah Animation Type menjadi **Humanoid**, klik *Apply*, lalu cek konfigurasi di tombol *Configure*.
-   * Masuk ke tab **Materials**: Ubah Location menjadi *Use External Materials (Legacy)* jika ingin mengekstrak tekstur dan material.
-
-## 5. Referensi
-* Unity Manual: *Importing Objects From Blender (2022.3 LTS)*.
-* Blender 4.x Manual: *FBX Format Exporter Options*.
-',
-  'Tim KataKating',
-  '24903460014',
-  'Game & Multimedia',
-  '["blender","unity","3d","gamedev","fbx","multimedia"]',
-  1,
-  'BLND',
   '#00ff66',
   '',
   '',
@@ -2340,192 +2067,6 @@ Buka Pull Request ke branch `main` di repositori GitHub [muadzhdz/katakating](ht
   35,
   '2026-09-27 10:00:00',
   '2026-09-27 10:00:00'
-) ON CONFLICT(id) DO UPDATE SET
-  title = excluded.title,
-  summary = excluded.summary,
-  content = excluded.content,
-  author_name = excluded.author_name,
-  category = excluded.category,
-  prodi_tags = excluded.prodi_tags,
-  initials = excluded.initials,
-  updated_at = datetime('now');
-
-
-INSERT INTO guides (
-  id, title, summary, content, author_name, author_npm, category, prodi_tags, semester, initials, accent, video_url, diagram_url, views_count, copy_count, created_at, updated_at
-) VALUES (
-  'rumus-esensial-excel-akuntansi-kuliah',
-  'Rumus Esensial Excel untuk Tugas Kuliah, Olah Data & Akuntansi',
-  'Kumpulan rumus penting Microsoft Excel yang wajib dikuasai mahasiswa semua jurusan untuk menyelesaikan tugas laporan, olah data praktikum, dan tabel keuangan tanpa repot menghitung manual.',
-  '---
-id: rumus-esensial-excel-akuntansi-kuliah
-title: Rumus Esensial Excel untuk Tugas Kuliah, Olah Data & Akuntansi
-category: Olah Data & Office
-author: BEM & Perwakilan Prodi Akuntansi
-date: 2026-09-28
-readTime: 6 menit
-tags: ["excel", "office", "akuntansi", "olah-data", "vlookup", "statistik"]
-summary: Kumpulan rumus penting Microsoft Excel yang wajib dikuasai mahasiswa semua jurusan untuk menyelesaikan tugas laporan, olah data praktikum, dan tabel keuangan tanpa repot menghitung manual.
----
-
-## 1. Pendahuluan
-Banyak mahasiswa non-IT maupun teknik sering merasa kewalahan ketika dosen meminta olah data tabel di Microsoft Excel atau Google Sheets. Faktanya, 90% tugas perkuliahan hanya membutuhkan 5 formula dasar ini untuk selesai dengan cepat dan akurat.
-
----
-
-## 2. Lima Rumus Wajib Mahasiswa
-
-### 2.1. VLOOKUP & XLOOKUP (Pencarian Data Lintas Tabel)
-Digunakan untuk mengambil data dari tabel referensi secara otomatis tanpa menyalin satu per satu.
-
-* **Sintaks Dasar VLOOKUP:**
-  ```text
-  =VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup])
-  ```
-* **Contoh Kasus:** Mengisi nama mahasiswa berdasarkan NIM dari tabel master:
-  ```text
-  =VLOOKUP(A2, MasterMahasiswa!$A$2:$C$100, 2, FALSE)
-  ```
-* **Tips Kating:** Selalu gunakan tanda dollar (`$`) pada range tabel referensi agar formula tidak bergeser saat di-*drag* ke bawah.
-
-### 2.2. IF Bertingkat (Konversi Nilai Angka ke Huruf)
-Digunakan untuk membuat logika bertingkat, sangat sering dipakai pada tugas simulasi nilai kuliah:
-
-```text
-=IF(B2>=85, "A", IF(B2>=75, "B", IF(B2>=65, "C", IF(B2>=50, "D", "E"))))
-```
-
-### 2.3. COUNTIF & COUNTIFS (Menghitung Frekuensi Bersyarat)
-Menghitung jumlah data yang memenuhi kriteria tertentu (misal: menghitung berapa responden yang memilih opsi ''Setuju'' pada kuesioner tugas):
-
-```text
-=COUNTIF(C2:C120, "Setuju")
-```
-
-### 2.4. SUMIFS (Total Penjumlahan Bersyarat)
-Menjumlahkan angka hanya jika memenuhi kategori tertentu (sangat penting untuk mata kuliah Akuntansi dan Manajemen Operasional):
-
-```text
-=SUMIFS(D2:D100, B2:B100, "TRM", C2:C100, "Lunas")
-```
-
-### 2.5. Text Manipulation: TRIM & PROPER (Merapikan Data Berantakan)
-Seringkali data yang dicopy dari Google Form atau WhatsApp memuat spasi ganda atau huruf kapital tak beraturan:
-* `=TRIM(A2)` &mdash; Menghapus spasi berlebih di awal, tengah, dan akhir kata.
-* `=PROPER(A2)` &mdash; Mengubah teks menjadi format baku (Huruf pertama kapital di setiap kata).
-
----
-
-## 3. Pivot Table dalam 3 Klik
-Jika tabel data memiliki ratusan baris, jangan hitung manual satu per satu:
-1. Blok seluruh tabel (`Ctrl + A`).
-2. Klik tab **Insert** > pilih **PivotTable** > klik **OK**.
-3. Tarik kolom kategori ke bagian **Rows** dan kolom angka ke bagian **Values**.
-4. Laporan ringkasan selesai dalam 5 detik.
-',
-  'BEM & Mahasiswa Akuntansi',
-  '24903460014',
-  'Akademik & Laporan',
-  '["excel","office","akuntansi","olah-data","vlookup","statistik"]',
-  1,
-  'EXCL',
-  '#00ff66',
-  '',
-  '',
-  120,
-  35,
-  '2026-09-28 10:00:00',
-  '2026-09-28 10:00:00'
-) ON CONFLICT(id) DO UPDATE SET
-  title = excluded.title,
-  summary = excluded.summary,
-  content = excluded.content,
-  author_name = excluded.author_name,
-  category = excluded.category,
-  prodi_tags = excluded.prodi_tags,
-  initials = excluded.initials,
-  updated_at = datetime('now');
-
-
-INSERT INTO guides (
-  id, title, summary, content, author_name, author_npm, category, prodi_tags, semester, initials, accent, video_url, diagram_url, views_count, copy_count, created_at, updated_at
-) VALUES (
-  'tata-cara-sopan-menghubungi-dosen-kating',
-  'Tata Cara & Etika Sopan Menghubungi Dosen serta Kakak Tingkat',
-  'Panduan sopan dan templat pesan WhatsApp siap pakai saat ingin berkonsultasi mengenai tugas, meminta izin tidak hadir, atau meminta bimbingan kepada kakak tingkat tanpa rasa canggung.',
-  '---
-id: tata-cara-sopan-menghubungi-dosen-kating
-title: Tata Cara & Etika Sopan Menghubungi Dosen serta Kakak Tingkat
-category: Tips & Mentoring
-author: Tim Katakating & Himpunan Mahasiswa
-date: 2026-09-28
-readTime: 3 menit
-tags: ["mentoring", "etika", "whatsapp", "dosen", "tips-kuliah", "kating"]
-summary: Panduan sopan dan templat pesan WhatsApp siap pakai saat ingin berkonsultasi mengenai tugas, meminta izin tidak hadir, atau meminta bimbingan kepada kakak tingkat tanpa rasa canggung.
----
-
-## 1. Prinsip Dasar Komunikasi Akademik
-Menghubungi dosen atau kakak tingkat sering kali membuat mahasiswa baru merasa ragu dan segan. Kunci utama adalah:
-1. Perhatikan waktu (hubungi pada hari dan jam kerja: Senin &ndash; Jumat, pukul 08.00 &ndash; 16.00 WIB).
-2. Hindari kata singkatan tidak baku (*ass*, *dgn*, *sy*, *kpn*).
-3. Selalu perkenalkan identitas secara lengkap di awal pesan.
-
----
-
-## 2. Struktur Formula Pesan 5 Elemen
-Setiap pesan formal wajib memuat 5 elemen ini secara ringkas:
-1. **Salam Pembuka:** Selamat pagi / siang Bapak/Ibu Dosen...
-2. **Identitas Diri:** Nama lengkap, Program Studi, Angkatan, dan NIM.
-3. **Maksud & Tujuan:** To-the-point tanpa berbelit-belit.
-4. **Permohonan Maaf:** Maaf mengganggu waktu Bapak/Ibu...
-5. **Ucapan Terima Kasih:** Terima kasih banyak atas waktu dan perhatian Bapak/Ibu.
-
----
-
-## 3. Templat Pesan WhatsApp Siap Pakai
-
-### 3.1. Konsultasi Tugas ke Dosen Pengampu
-```text
-Selamat pagi Bapak/Ibu [Nama Dosen],
-Mohon maaf mengganggu waktunya.
-
-Saya [Nama Lengkap], mahasiswa program studi [Nama Prodi] angkatan [Tahun] dengan NIM [Nomor Induk Mahasiswa], peserta mata kuliah [Nama Mata Kuliah] kelas [Kelas].
-
-Terkait tugas [Nama Tugas] yang diberikan pada pertemuan kemarin, terdapat satu hal pada bagian [Nama Bagian] yang ingin saya konfirmasikan kepada Bapak/Ibu.
-
-Apakah sekiranya Bapak/Ibu memiliki waktu luang di kampus hari ini atau besok untuk saya berkonsultasi secara singkat?
-
-Terima kasih banyak atas waktu dan arahan Bapak/Ibu.
-```
-
-### 3.2. Menghubungi Kakak Tingkat untuk Meminta Saran Catatan Kuliah
-```text
-Halo Kak [Nama Kating], selamat siang.
-Mohon maaf mengganggu waktunya.
-
-Saya [Nama Lengkap] adik tingkat angkatan [Tahun] dari prodi [Nama Prodi]. 
-Saya mendapatkan kontak Kakak dari himpunan mahasiswa.
-
-Saat ini saya sedang menempuh mata kuliah [Nama Mata Kuliah] dan mengalami sedikit kendala pada [Sebutkan Kendala, misal: aturan margin laporan / software praktikum]. 
-
-Jika Kakak sedang senggang, apakah boleh saya bertanya sedikit mengenai tips praktikum di mata kuliah ini Kak?
-
-Terima kasih banyak sebelumnya Kak!
-```
-',
-  'Tim Katakating & Himpunan Mahasiswa',
-  '24903460014',
-  'Akademik & Laporan',
-  '["mentoring","etika","whatsapp","dosen","tips-kuliah","kating"]',
-  1,
-  'ETIK',
-  '#00ff66',
-  '',
-  '',
-  120,
-  35,
-  '2026-09-28 10:00:00',
-  '2026-09-28 10:00:00'
 ) ON CONFLICT(id) DO UPDATE SET
   title = excluded.title,
   summary = excluded.summary,
