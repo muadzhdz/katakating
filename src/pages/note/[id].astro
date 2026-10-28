@@ -388,7 +388,7 @@ const ogImageUrl = `/og/${note.id}.png`;
           </div>
         </div>
 
-        <audio id="kating-audio-element" src={audioUrl || `/audio/${note.id}.mp3`} preload="metadata"></audio>
+        <audio id="kating-audio-element" src={audioUrl || ''} preload={audioUrl ? "metadata" : "none"}></audio>
       </div>
     </aside>
 
@@ -893,6 +893,12 @@ const ogImageUrl = `/og/${note.id}.png`;
         return;
       }
 
+      const hasAudioSrc = audioEl.getAttribute('src');
+      if (!hasAudioSrc) {
+        startSpeech();
+        return;
+      }
+
       // Check if audio has valid duration or try playing
       const playPromise = audioEl.play();
       if (playPromise !== undefined) {
@@ -901,7 +907,7 @@ const ogImageUrl = `/og/${note.id}.png`;
             setPlayState(true);
           })
           .catch(() => {
-            // Audio file not found or failed -> fallback to SpeechSynthesis
+            // Audio file failed -> fallback to SpeechSynthesis
             startSpeech();
           });
       } else {

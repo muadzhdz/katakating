@@ -141,22 +141,22 @@ function sanitizeMarkdownToSpeech(rawContent, meta = {}) {
   });
 
   // 4. Transform terminal / CLI blocks into polite summaries
-  text = text.replace(/```(?:terminal|console|cli|bash|sh)([\s\S]*?)```/gi, (m, code) => {
+  text = text.replace(/```(?:terminal|console|cli|bash|sh|powershell|cmd)([\s\S]*?)```/gi, (m, code) => {
     const lines = code.trim().split('\n')
       .map(l => l.trim())
-      .filter(l => l && !l.startsWith('#'))
+      .filter(l => l && !l.startsWith('#') && !l.startsWith('//'))
       .map(l => l.replace(/^\$\s*/, ''));
-    if (lines.length === 1) {
+    if (lines.length === 1 && lines[0].length < 60) {
       return `Perintah terminal yang dijalankan: ${lines[0]}.\n\n`;
     }
-    if (lines.length > 1 && lines.length <= 3) {
-      return `Perintah terminal yang dijalankan meliputi: ${lines.join(', dilanjutkan dengan ')}.\n\n`;
-    }
-    return 'Daftar perintah terminal lengkap dapat disalin langsung dari kotak perintah pada halaman.\n\n';
+    return 'Langkah ini menjalankan perintah terminal yang dapat langsung disimak pada halaman panduan.\n\n';
   });
 
-  // 5. Transform generic code blocks
-  text = text.replace(/```[\s\S]*?```/g, 'Potongan kode atau struktur dokumen dapat Anda simak langsung pada tampilan layar.\n\n');
+  // 5. Transform tables and remaining code blocks
+  text = text.replace(/\|[^\n]+\|\n\|[-:| ]+\|\n(?:\|[^\n]+\|\n?)+/g, '\nRincian tabel parameter dapat disimak langsung pada catatan.\n\n');
+  text = text.replace(/\|/g, ', ');
+  text = text.replace(/<[^>]+>/g, '');
+  text = text.replace(/```[\s\S]*?```/g, 'Potongan kode atau konfigurasi dapat disimak langsung pada tampilan layar.\n\n');
 
   // 6. Headings into natural spoken section transitions
   text = text.replace(/^##\s+(?:(\d+(?:\.\d+)*)\.?\s*)?(.+)$/gm, (m, num, hText) => {
@@ -180,16 +180,37 @@ function sanitizeMarkdownToSpeech(rawContent, meta = {}) {
   text = text.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
   text = text.replace(/^>\s*/gm, '');
 
-  // 8. Apply pronunciation replacements
+  // 8. If text is excessively long (over 4000 chars), condense to high-yield audio guide (~3-5 mins)
+  if (text.length > 4000) {
+    const paragraphs = text.split('\n\n').map(p => p.trim()).filter(Boolean);
+    const keyParagraphs = [];
+    for (const p of paragraphs) {
+      if (
+        p.startsWith('Bagian') ||
+        p.startsWith('Langkah') ||
+        p.includes('Tips praktis') ||
+        p.includes('Peringatan') ||
+        p.includes('Catatan penting') ||
+        p.includes('Solusi') ||
+        p.includes('Tujuan') ||
+        keyParagraphs.length < 4
+      ) {
+        keyParagraphs.push(p);
+      }
+    }
+    text = keyParagraphs.join('\n\n');
+  }
+
+  // 9. Apply pronunciation replacements
   let fullText = intro + text;
   for (const [pattern, replacement] of PRONUNCIATION_MAP) {
     fullText = fullText.replace(pattern, replacement);
   }
 
-  // 9. Friendly outro
+  // 10. Friendly outro
   fullText += '\n\nDemikian panduan kali ini. Selamat mencoba dan semoga sukses dalam praktikum rekan-rekan.';
 
-  // 10. Clean up extra spaces, duplicate punctuation, and multiple blank lines
+  // 11. Clean up extra spaces, duplicate punctuation, and multiple blank lines
   fullText = fullText
     .replace(/[ \t]+/g, ' ')
     .replace(/\s*\n\s*/g, '\n')
@@ -242,62 +263,45 @@ function splitIntoChunks(text, maxChunkSize = 1500) {
 }
 
 /**
- * Synthesizes a text chunk to an in-memory MP3 Buffer using msedge-tts with automatic retry
+ * Synthesizes a text chunk to an in-memory MP3 Buffer using an active msedge-tts instance
  */
-async function synthesizeChunkWithRetry(voice, text, maxRetries = 3) {
+async function synthesizeChunk(tts, text, timeoutMs = 60000) {
   const safeText = escapeXml(text);
+  return new Promise((resolve, reject) => {
+    let isSettled = false;
+    const timer = setTimeout(() => {
+      if (!isSettled) {
+        isSettled = true;
+        reject(new Error(`TTS socket timed out after ${timeoutMs / 1000}s`));
+      }
+    }, timeoutMs);
 
-  for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
-      const tts = new MsEdgeTTS();
-      await tts.setMetadata(voice, OUTPUT_FORMAT.AUDIO_24KHZ_48KBITRATE_MONO_MP3);
-
-      const buffer = await new Promise((resolve, reject) => {
-        let isSettled = false;
-        const timer = setTimeout(() => {
-          if (!isSettled) {
-            isSettled = true;
-            reject(new Error('TTS socket timed out after 20s'));
-          }
-        }, 20000);
-
-        try {
-          const { audioStream } = tts.toStream(safeText);
-          const buffers = [];
-          audioStream.on('data', chunk => buffers.push(chunk));
-          audioStream.on('end', () => {
-            if (!isSettled) {
-              isSettled = true;
-              clearTimeout(timer);
-              resolve(Buffer.concat(buffers));
-            }
-          });
-          audioStream.on('error', err => {
-            if (!isSettled) {
-              isSettled = true;
-              clearTimeout(timer);
-              reject(err);
-            }
-          });
-        } catch (e) {
-          if (!isSettled) {
-            isSettled = true;
-            clearTimeout(timer);
-            reject(e);
-          }
+      const { audioStream } = tts.toStream(safeText);
+      const buffers = [];
+      audioStream.on('data', chunk => buffers.push(chunk));
+      audioStream.on('end', () => {
+        if (!isSettled) {
+          isSettled = true;
+          clearTimeout(timer);
+          resolve(Buffer.concat(buffers));
         }
       });
-
-      return buffer;
-    } catch (err) {
-      if (attempt < maxRetries) {
-        console.warn(`    (Percobaan ${attempt} gagal, mencoba kembali dalam 1.5 detik: ${err.message || err})`);
-        await new Promise(r => setTimeout(r, 1500));
-      } else {
-        throw err;
+      audioStream.on('error', err => {
+        if (!isSettled) {
+          isSettled = true;
+          clearTimeout(timer);
+          reject(err);
+        }
+      });
+    } catch (e) {
+      if (!isSettled) {
+        isSettled = true;
+        clearTimeout(timer);
+        reject(e);
       }
     }
-  }
+  });
 }
 
 /**
@@ -328,10 +332,6 @@ async function main() {
       console.error(`[ERROR] Catatan dengan ID '${targetId}' tidak ditemukan di katalog.`);
       process.exit(1);
     }
-  } else if (!allFlag) {
-    // Default initial guides to build audio for
-    const priorityIds = ['format-margin-laporan-4433', 'setup-wsl2-ubuntu-webdev'];
-    targetNotes = catalog.filter(n => priorityIds.includes(n.id));
   }
 
   console.log(`[KATAKATING TTS] Memproses ${targetNotes.length} catatan...`);
@@ -367,11 +367,28 @@ async function main() {
     console.log(`  - Panjang naskah lisan: ${spokenText.length} karakter (${chunks.length} bagian)`);
     const startTime = Date.now();
 
+    let tts = new MsEdgeTTS();
     try {
+      await tts.setMetadata(selectedVoice, OUTPUT_FORMAT.AUDIO_24KHZ_48KBITRATE_MONO_MP3);
       const audioParts = [];
       for (let i = 0; i < chunks.length; i++) {
         process.stdout.write(`  - Mengirim bagian ${i + 1}/${chunks.length} ke neural engine... `);
-        const partBuffer = await synthesizeChunkWithRetry(selectedVoice, chunks[i]);
+        let partBuffer = null;
+        for (let attempt = 1; attempt <= 3; attempt++) {
+          try {
+            partBuffer = await synthesizeChunk(tts, chunks[i], 60000);
+            break;
+          } catch (err) {
+            console.warn(`\n    (percobaan ${attempt} gagal: ${err.message})`);
+            try { tts.close(); } catch(e){}
+            tts = new MsEdgeTTS();
+            await tts.setMetadata(selectedVoice, OUTPUT_FORMAT.AUDIO_24KHZ_48KBITRATE_MONO_MP3);
+            await new Promise(r => setTimeout(r, 1500));
+          }
+        }
+        if (!partBuffer) {
+          throw new Error(`Gagal sintesis bagian ${i + 1}`);
+        }
         audioParts.push(partBuffer);
         console.log(`selesai (${(partBuffer.length / 1024).toFixed(1)} KB)`);
       }
@@ -385,6 +402,8 @@ async function main() {
       generatedCount++;
     } catch (err) {
       console.error(`  [ERROR] Gagal memproses audio untuk '${note.id}':`, err.message || err);
+    } finally {
+      try { tts.close(); } catch(e){}
     }
   }
 
